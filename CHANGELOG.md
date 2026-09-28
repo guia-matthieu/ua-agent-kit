@@ -9,4 +9,4 @@ First public release.
 - **`ua-kit check`**: types every case into a local HTML file or a URL in a headless browser (Chromium, Firefox or WebKit) and reports per class; nothing but `GET`/`HEAD` leaves the page, and a URL is never submitted.
 - **Pattern catalogue 1.0.0** (`patterns/catalogue.json`): published faulty validation rules, matched against the page's scripts.
 - **Guide 1.0.0** (`GUIDE.md`) and generated adapters for Claude Code, Cursor, `AGENTS.md` and GitHub Copilot.
-- **Bench results** (`bench/results/RESULTS.md`): 3 models × 3 languages × 2 conditions × 3 repeats, generated on 2026-09-25, every page published and re-scorable without an API call.
+- **Bench results** (`bench/results/RESULTS.md`): 3 models × 3 languages × 2 conditions × 3 repeats, generated on 2026-09-25, every page published and re-scorable without an API call. An index of the 54 forms (`bench/index.html`) is served by GitHub Pages.

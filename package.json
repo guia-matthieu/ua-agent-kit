@@ -9,6 +9,10 @@
     "type": "git",
     "url": "https://github.com/guia-matthieu/ua-agent-kit.git"
   },
+  "homepage": "https://github.com/guia-matthieu/ua-agent-kit#readme",
+  "bugs": {
+    "url": "https://github.com/guia-matthieu/ua-agent-kit/issues"
+  },
   "bin": {
     "ua-kit": "bin/ua-kit.mjs"
   },

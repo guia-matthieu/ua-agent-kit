@@ -162,7 +162,7 @@ A case passes when a valid value is accepted or an invalid one refused (see *How
 
 Two scoring rules were set after the pages had been looked at: a bare domain typed into a `type="url"` field gets `https://` in front, and on a form with `novalidate` a refusal is what the page shows, not the browser's internal validity flag. Their effect on every count is in `RESULTS.md`.
 
-Nine pages per model and condition, three per language: this is enough to see where forms fail, not to rank models. What the numbers say and what they do not, the two scoring rules and why they were set, per-class tables, cost and every limitation are in [`bench/results/RESULTS.md`](bench/results/RESULTS.md). Every generated page is in `bench/results/generations/`; `node bench/run-bench.mjs --rescore` scores them again, byte for byte, with no API call.
+Nine pages per model and condition, three per language: this is enough to see where forms fail, not to rank models. What the numbers say and what they do not, the two scoring rules and why they were set, per-class tables, cost and every limitation are in [`bench/results/RESULTS.md`](bench/results/RESULTS.md). Every generated page is in `bench/results/generations/`, and can be tried in a browser from the index at https://guia-matthieu.github.io/ua-agent-kit/bench/ (built from `runs.csv` by `node bench/build-index.mjs`); `node bench/run-bench.mjs --rescore` scores them again, byte for byte, with no API call.
 
 No model judges any result: every verdict is read from the page by the runner.
 
