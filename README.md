@@ -176,6 +176,18 @@ Nine pages per model and condition, three per language: this is enough to see wh
 
 No model judges any result: every verdict is read from the page by the runner.
 
+### A first baseline
+
+This bench is a first measurement, not a verdict on a model or a tool. Its limits are listed in `RESULTS.md` (*Limitations*) and under *What this does not measure* below: nine pages per model and condition, one prompt family, one browser engine, the client side only, one-shot generation through an API, and two scoring rules set after the pages had been looked at.
+
+Next, with the same battery, prompts and runner:
+
+- more models, among them more open-weight models from Chinese labs;
+- a second run with the scoring rules frozen before generation, new cases, and a third condition that gets a one-line reminder instead of the whole guide;
+- agents at work in a project rather than one-shot generation.
+
+The bench can already be run on another model: add it to `bench/models.json` under a key of its own, set `OPENROUTER_API_KEY` and run `node bench/run-bench.mjs`. Cells that already have their pages are skipped; the new pages and their rows are written next to the others, and `--rescore` scores every page again. Runs on other models are welcome as pull requests that include the generated pages. How runs made at different dates, with different model versions, are brought together into one comparable base is not settled yet.
+
 ## Where this comes from
 
 ICANN's *IDN Implementation and UA Adoption Report 2026* (1 September 2026, §2.2.2.1, p. 16) reports that ICANN assessed three AI coding tools: "The tools were tested against the five core UA functions: accept, validate, process, store, and display." It concludes that "the AI coding tools evaluated are not inherently UA-ready, particularly for validation and processing, but can generate substantially more UA-ready applications when appropriate UA guidance and checks are incorporated into the development process." The report does not name the tools and does not publish their prompts, test data or guidance. Report: https://www.icann.org/en/system/files/files/idn-implementation-ua-adoption-report-2026-01sep26-en.pdf
