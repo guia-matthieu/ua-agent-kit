@@ -263,9 +263,14 @@ export async function checkForm(target, { engine = 'chromium', lang = 'en', batt
         reloading = true;
         try {
           if (reloadDelayMs) await new Promise(resolve => setTimeout(resolve, reloadDelayMs));
-          await page.goto(finalUrl, { waitUntil: 'load', timeout: 30000 });
+          // In submit mode the reload is answered from the cache and takes milliseconds. A navigation the old
+          // document fires while it is under way can cancel it without any error: the competing navigation gets
+          // a 204 and commits nothing, and goto waits for a load that never comes (measured 28/09 on Linux,
+          // Playwright 1.63 image: 1 run in 6 of the timer fixture). There a timeout is that race, and is retried.
+          await page.goto(finalUrl, { waitUntil: 'load', timeout: submit ? 10000 : 30000 });
         } catch (e) {
-          if (!NAV_RACE.test(String(e.message))) throw e;
+          const cancelled = submit && e.name === 'TimeoutError';
+          if (!cancelled && !NAV_RACE.test(String(e.message))) throw e;
           if (attempt >= RELOAD_ATTEMPTS) return { ok: false, reason: 'reload-failed' };
           continue;
         } finally { reloading = false; }
