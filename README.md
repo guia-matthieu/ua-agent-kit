@@ -152,7 +152,17 @@ CI checks that the file matches its schema, that every U-label round-trips to it
 
 Three models (`anthropic/claude-opus-5.5`, `openai/gpt-6-astra`, `z-ai/glm-5.3`) were asked for a self-contained HTML signup form in English, French and Spanish, three times each, once with the prompt alone and once with `GUIDE.md` as the system prompt: 54 pages, 4 266 scored cases, generated on 25/09/2026 and scored in Chromium 153.
 
-A case passes when a valid value is accepted or an invalid one refused (see *How to read a verdict* above). Share of the 711 cases per model and condition (9 pages × 79) that passed:
+What this measures is one-shot generation through an API: no tools, no correction loop, no existing codebase. It shows what the guide changes in code a model writes from a prompt; what it changes for an agent at work in a real project is not measured here.
+
+The 79 cases of a page go through the same two fields and the same script: they are not 79 independent trials, and the page is the unit to count first. Pages where all 79 cases pass, out of 27 per condition: **1 with the prompt alone, 18 with the guide.**
+
+| model | pages where the 79 cases pass, prompt alone | with `GUIDE.md` |
+|---|---|---|
+| Claude Opus 5.5 | 1/9 | 8/9 |
+| GPT-6 Astra | 0/9 | 5/9 |
+| GLM 5.3 | 0/9 | 5/9 |
+
+A case passes when a valid value is accepted or an invalid one refused (see *How to read a verdict* above). Share of the 711 cases per model and condition (9 pages × 79) that passed; the guide raises both sides, valid values accepted from 89.3 % to 98.2 % and invalid values refused from 75.2 % to 95.6 %:
 
 | model | prompt alone | prompt + `GUIDE.md` |
 |---|---|---|
@@ -160,7 +170,7 @@ A case passes when a valid value is accepted or an invalid one refused (see *How
 | GPT-6 Astra | 85.4 % (607/711) | 94.7 % (673/711) |
 | GLM 5.3 | 88.0 % (626/711) | 98.6 % (701/711) |
 
-Two scoring rules were set after the pages had been looked at: a bare domain typed into a `type="url"` field gets `https://` in front, and on a form with `novalidate` a refusal is what the page shows, not the browser's internal validity flag. Their effect on every count is in `RESULTS.md`.
+Two scoring rules were set after the pages had been looked at: a bare domain typed into a `type="url"` field gets `https://` in front, and on a form with `novalidate` a refusal is what the page shows, not the browser's internal validity flag. Their effect on every count is in `RESULTS.md`, with the gap between the two conditions under each combination of the rules: with the guide the rate of all models is higher by 10.6 to 12.6 points whichever rules apply (`node bench/sensitivity.mjs`). Rule 1 looks at the type of the field: one GPT-6 Astra page with the guide asks for a full URL in a text field, does not get the `https://`, and holds 26 of that model's 38 failures.
 
 Nine pages per model and condition, three per language: this is enough to see where forms fail, not to rank models. What the numbers say and what they do not, the two scoring rules and why they were set, per-class tables, cost and every limitation are in [`bench/results/RESULTS.md`](bench/results/RESULTS.md). Every generated page is in `bench/results/generations/`, and can be tried in a browser from the index at https://guia-matthieu.github.io/ua-agent-kit/bench/ (built from `runs.csv` by `node bench/build-index.mjs`); `node bench/run-bench.mjs --rescore` scores them again, byte for byte, with no API call.
 

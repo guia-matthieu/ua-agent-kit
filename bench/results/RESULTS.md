@@ -55,6 +55,18 @@ What the two rules changed, against the first scoring:
 
 With the two rules, 850 valid values go from fail to pass and 89 invalid values from pass to fail. The other 3 327 cases have the outcome they had.
 
+**The gap under each rule.** The two rules move many outcomes, so the gap between the two conditions is given here under each combination of them, from the first scoring (`runs-first-scoring.csv`, kit at `55df22f`) and the current one (`node bench/sensitivity.mjs`):
+
+| scoring | anthropic no-guide → guide | openai no-guide → guide | open-weight no-guide → guide | all models | pages where the 79 cases pass |
+|---|---|---|---|---|---|
+| first scoring, neither rule | 72.4 → 96.2 % | 58.5 → 67.1 % | 73.7 → 77.4 % | 68.2 → 80.2 % | 1/27 → 11/27 |
+| rule 1 only | 85.9 → 99.7 % | 85.4 → 94.7 % | 84.0 → 98.7 % | 85.1 → 97.7 % | 1/27 → 18/27 |
+| rule 2 only | 72.4 → 96.2 % | 58.5 → 67.1 % | 77.8 → 77.2 % | 69.6 → 80.2 % | 1/27 → 11/27 |
+| both rules (published) | 85.9 → 99.7 % | 85.4 → 94.7 % | 88.0 → 98.6 % | 86.5 → 97.7 % | 1/27 → 18/27 |
+| both rules, and the 26 bare domains of the page outside rule 1 counted as passing | 85.9 → 99.7 % | 85.4 → 98.3 % | 88.0 → 98.6 % | 86.5 → 98.9 % | 1/27 → 19/27 |
+
+With the guide the rate of all models is higher under every combination, by 10.6 to 12.6 points, and so is the number of pages where the 79 cases pass. Per model it is higher in every row but one: `open-weight` under rule 2 alone, 77.8 % without the guide and 77.2 % with it. The last row is not a scoring: it shows what the page outside rule 1 (see *What the numbers say*) weighs, if its 26 bare domains had passed.
+
 ## Results
 
 **Per model** (711 cases per row: 9 pages × 79):
@@ -229,6 +241,7 @@ With 131 072, the longest GLM reply used 71 084 completion tokens (`es/guide/2`)
 ```sh
 node bench/run-bench.mjs --rescore   # scores every saved page again, no API call
 node bench/aggregate.mjs
+node bench/sensitivity.mjs         # the gap under each combination of the two scoring rules
 ```
 
 Scoring the 54 pages again gives the same `runs.csv`, byte for byte; `rescore.json` holds its sha256. A fresh run needs `OPENROUTER_API_KEY` and costs about the figure above.
