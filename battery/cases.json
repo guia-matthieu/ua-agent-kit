@@ -1,0 +1,719 @@
+{
+  "version": "1.0.0",
+  "generated": "2026-09-24",
+  "license": "CC0-1.0",
+  "method": "Cases written for this kit. UASG-004 'Use Cases for UA Readiness Evaluation' (2021) is the method reference; no case is copied from it.",
+  "cases": [
+    {
+      "id": "email-control-01",
+      "kind": "email",
+      "class": "control",
+      "value": "marie.dupont@example.com",
+      "expect": "accept",
+      "note": "plain ASCII",
+      "ref": "RFC 5322 §3.4.1"
+    },
+    {
+      "id": "email-control-02",
+      "kind": "email",
+      "class": "control",
+      "value": "Marie.Dupont@Example.COM",
+      "expect": "accept",
+      "note": "mixed case; domain is case-insensitive",
+      "ref": "RFC 1035 §2.3.3"
+    },
+    {
+      "id": "email-control-03",
+      "kind": "email",
+      "class": "control",
+      "value": "marie+newsletter@example.org",
+      "expect": "accept",
+      "note": "plus-addressing, often wrongly rejected",
+      "ref": "RFC 5322 §3.2.3 (atext includes +)"
+    },
+    {
+      "id": "email-control-04",
+      "kind": "email",
+      "class": "control",
+      "value": "o'neill@example.ie",
+      "expect": "accept",
+      "note": "apostrophe in local part",
+      "ref": "RFC 5322 §3.2.3 (atext includes ')"
+    },
+    {
+      "id": "email-control-05",
+      "kind": "email",
+      "class": "control",
+      "value": "prenom.nom@sub.example.co.uk",
+      "expect": "accept",
+      "note": "multi-label domain",
+      "ref": "RFC 5322 §3.4.1; RFC 1035 §2.3.1"
+    },
+    {
+      "id": "email-control-06",
+      "kind": "email",
+      "class": "control",
+      "value": "contact@2cv.example.com",
+      "expect": "accept",
+      "note": "label starting with a digit, often wrongly rejected",
+      "ref": "RFC 1123 §2.1"
+    },
+    {
+      "id": "email-ascii-tld-short-01",
+      "kind": "email",
+      "class": "ascii-tld-short",
+      "value": "contact@mairie.bzh",
+      "expect": "accept",
+      "note": "3-letter geoTLD",
+      "ref": "IANA root zone"
+    },
+    {
+      "id": "email-ascii-tld-short-02",
+      "kind": "email",
+      "class": "ascii-tld-short",
+      "value": "info@example.eus",
+      "expect": "accept",
+      "note": "3-letter geoTLD",
+      "ref": "IANA root zone"
+    },
+    {
+      "id": "email-ascii-tld-short-03",
+      "kind": "email",
+      "class": "ascii-tld-short",
+      "value": "hola@example.cat",
+      "expect": "accept",
+      "note": "3-letter geoTLD",
+      "ref": "IANA root zone"
+    },
+    {
+      "id": "email-ascii-tld-long-01",
+      "kind": "email",
+      "class": "ascii-tld-long",
+      "value": "contact@boutique.corsica",
+      "expect": "accept",
+      "note": "7-letter geoTLD",
+      "ref": "IANA root zone"
+    },
+    {
+      "id": "email-ascii-tld-long-02",
+      "kind": "email",
+      "class": "ascii-tld-long",
+      "value": "hello@example.technology",
+      "expect": "accept",
+      "note": "10-letter gTLD",
+      "ref": "IANA root zone"
+    },
+    {
+      "id": "email-ascii-tld-long-03",
+      "kind": "email",
+      "class": "ascii-tld-long",
+      "value": "info@example.international",
+      "expect": "accept",
+      "note": "13-letter gTLD",
+      "ref": "IANA root zone"
+    },
+    {
+      "id": "email-ascii-tld-long-04",
+      "kind": "email",
+      "class": "ascii-tld-long",
+      "value": "studio@example.photography",
+      "expect": "accept",
+      "note": "11-letter gTLD",
+      "ref": "IANA root zone"
+    },
+    {
+      "id": "email-idn-tld-alabel-01",
+      "kind": "email",
+      "class": "idn-tld-alabel",
+      "value": "info@example.xn--p1ai",
+      "expect": "accept",
+      "note": "A-label TLD (.рф)",
+      "ref": "RFC 5890 §2.3.2.1"
+    },
+    {
+      "id": "email-idn-sld-alabel-01",
+      "kind": "email",
+      "class": "idn-sld-alabel",
+      "value": "contact@xn--socit-esab.fr",
+      "expect": "accept",
+      "note": "A-label second level (société)",
+      "ref": "RFC 5890 §2.3.2.1"
+    },
+    {
+      "id": "email-idn-domain-01",
+      "kind": "email",
+      "class": "email-idn-domain",
+      "value": "contact@société.fr",
+      "expect": "accept",
+      "note": "ASCII local part, Latin U-label domain",
+      "ref": "RFC 6531 §3.3"
+    },
+    {
+      "id": "email-idn-domain-02",
+      "kind": "email",
+      "class": "email-idn-domain",
+      "value": "info@пример.рф",
+      "expect": "accept",
+      "note": "ASCII local part, Cyrillic domain and TLD",
+      "ref": "RFC 6531 §3.3"
+    },
+    {
+      "id": "email-idn-domain-03",
+      "kind": "email",
+      "class": "email-idn-domain",
+      "value": "info@例え.jp",
+      "expect": "accept",
+      "note": "ASCII local part, Japanese U-label under ASCII TLD",
+      "ref": "RFC 6531 §3.3"
+    },
+    {
+      "id": "email-idn-domain-04",
+      "kind": "email",
+      "class": "email-idn-domain",
+      "value": "info@παράδειγμα.ελ",
+      "expect": "accept",
+      "note": "ASCII local part, Greek domain and TLD",
+      "ref": "RFC 6531 §3.3"
+    },
+    {
+      "id": "email-eai-local-01",
+      "kind": "email",
+      "class": "eai-local",
+      "value": "josé.dupont@example.fr",
+      "expect": "accept",
+      "note": "Latin diacritic in local part",
+      "ref": "RFC 6531 §3.3"
+    },
+    {
+      "id": "email-eai-local-02",
+      "kind": "email",
+      "class": "eai-local",
+      "value": "用户@example.com",
+      "expect": "accept",
+      "note": "CJK local part",
+      "ref": "RFC 6531 §3.3"
+    },
+    {
+      "id": "email-eai-local-03",
+      "kind": "email",
+      "class": "eai-local",
+      "value": "пользователь@example.com",
+      "expect": "accept",
+      "note": "Cyrillic local part",
+      "ref": "RFC 6531 §3.3"
+    },
+    {
+      "id": "email-eai-full-01",
+      "kind": "email",
+      "class": "eai-full",
+      "value": "用户@例子.中国",
+      "expect": "accept",
+      "note": "CJK local part and domain",
+      "ref": "RFC 6531 §3.3"
+    },
+    {
+      "id": "email-eai-full-02",
+      "kind": "email",
+      "class": "eai-full",
+      "value": "مستخدم@مثال.مصر",
+      "expect": "accept",
+      "note": "Arabic local part and domain",
+      "ref": "RFC 6531 §3.3"
+    },
+    {
+      "id": "email-eai-full-03",
+      "kind": "email",
+      "class": "eai-full",
+      "value": "उपयोगकर्ता@उदाहरण.भारत",
+      "expect": "accept",
+      "note": "Devanagari local part and domain",
+      "ref": "RFC 6531 §3.3"
+    },
+    {
+      "id": "email-boundary-local64-01",
+      "kind": "email",
+      "class": "boundary",
+      "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@example.com",
+      "expect": "accept",
+      "note": "64-octet local part, the SMTP maximum",
+      "ref": "RFC 5321 §4.5.3.1.1"
+    },
+    {
+      "id": "email-guard-01",
+      "kind": "email",
+      "class": "guard",
+      "value": "a@@b.com",
+      "expect": "reject",
+      "note": "two @",
+      "ref": "RFC 5322 §3.4.1"
+    },
+    {
+      "id": "email-guard-02",
+      "kind": "email",
+      "class": "guard",
+      "value": "user@",
+      "expect": "reject",
+      "note": "empty domain",
+      "ref": "RFC 5322 §3.4.1"
+    },
+    {
+      "id": "email-guard-03",
+      "kind": "email",
+      "class": "guard",
+      "value": "@example.com",
+      "expect": "reject",
+      "note": "empty local part",
+      "ref": "RFC 5322 §3.4.1"
+    },
+    {
+      "id": "email-guard-04",
+      "kind": "email",
+      "class": "guard",
+      "value": "user@example..com",
+      "expect": "reject",
+      "note": "empty label",
+      "ref": "RFC 1035 §2.3.1"
+    },
+    {
+      "id": "email-guard-05",
+      "kind": "email",
+      "class": "guard",
+      "value": "us er@example.com",
+      "expect": "reject",
+      "note": "space inside the local part",
+      "ref": "RFC 5322 §3.2.3 (SP is not atext); WHATWG HTML valid e-mail address"
+    },
+    {
+      "id": "email-guard-06",
+      "kind": "email",
+      "class": "guard",
+      "value": "user@exa mple.com",
+      "expect": "reject",
+      "note": "space in domain",
+      "ref": "RFC 1035 §2.3.1"
+    },
+    {
+      "id": "email-guard-07",
+      "kind": "email",
+      "class": "guard",
+      "value": "plainaddress",
+      "expect": "reject",
+      "note": "no @",
+      "ref": "RFC 5322 §3.4.1"
+    },
+    {
+      "id": "domain-control-01",
+      "kind": "domain",
+      "class": "control",
+      "value": "example.com",
+      "expect": "accept",
+      "note": "plain ASCII",
+      "ref": "RFC 1035 §2.3.1"
+    },
+    {
+      "id": "domain-control-02",
+      "kind": "domain",
+      "class": "control",
+      "value": "Example.COM",
+      "expect": "accept",
+      "note": "mixed case",
+      "ref": "RFC 1035 §2.3.3"
+    },
+    {
+      "id": "domain-control-03",
+      "kind": "domain",
+      "class": "control",
+      "value": "sub.example.co.uk",
+      "expect": "accept",
+      "note": "four labels",
+      "ref": "RFC 1035 §2.3.1"
+    },
+    {
+      "id": "domain-control-04",
+      "kind": "domain",
+      "class": "control",
+      "value": "a.example.com",
+      "expect": "accept",
+      "note": "single-character label",
+      "ref": "RFC 1035 §2.3.1"
+    },
+    {
+      "id": "domain-ascii-tld-short-01",
+      "kind": "domain",
+      "class": "ascii-tld-short",
+      "value": "mairie.bzh",
+      "expect": "accept",
+      "note": "3-letter geoTLD",
+      "ref": "IANA root zone"
+    },
+    {
+      "id": "domain-ascii-tld-short-02",
+      "kind": "domain",
+      "class": "ascii-tld-short",
+      "value": "example.eus",
+      "expect": "accept",
+      "note": "3-letter geoTLD",
+      "ref": "IANA root zone"
+    },
+    {
+      "id": "domain-ascii-tld-short-03",
+      "kind": "domain",
+      "class": "ascii-tld-short",
+      "value": "example.wien",
+      "expect": "accept",
+      "note": "4-letter geoTLD",
+      "ref": "IANA root zone"
+    },
+    {
+      "id": "domain-ascii-tld-long-01",
+      "kind": "domain",
+      "class": "ascii-tld-long",
+      "value": "boutique.corsica",
+      "expect": "accept",
+      "note": "7-letter geoTLD",
+      "ref": "IANA root zone"
+    },
+    {
+      "id": "domain-ascii-tld-long-02",
+      "kind": "domain",
+      "class": "ascii-tld-long",
+      "value": "shop.example.technology",
+      "expect": "accept",
+      "note": "10-letter gTLD, three labels",
+      "ref": "IANA root zone"
+    },
+    {
+      "id": "domain-ascii-tld-long-03",
+      "kind": "domain",
+      "class": "ascii-tld-long",
+      "value": "example.international",
+      "expect": "accept",
+      "note": "13-letter gTLD",
+      "ref": "IANA root zone"
+    },
+    {
+      "id": "domain-ascii-tld-long-04",
+      "kind": "domain",
+      "class": "ascii-tld-long",
+      "value": "example.barcelona",
+      "expect": "accept",
+      "note": "9-letter geoTLD",
+      "ref": "IANA root zone"
+    },
+    {
+      "id": "domain-idn-tld-alabel-01",
+      "kind": "domain",
+      "class": "idn-tld-alabel",
+      "value": "example.xn--p1ai",
+      "expect": "accept",
+      "note": "A-label TLD (.рф)",
+      "ref": "RFC 5890 §2.3.2.1"
+    },
+    {
+      "id": "domain-idn-tld-alabel-02",
+      "kind": "domain",
+      "class": "idn-tld-alabel",
+      "value": "xn--e1afmkfd.xn--p1ai",
+      "expect": "accept",
+      "note": "both labels in A-label (ASCII) form (пример.рф)",
+      "ref": "RFC 5890 §2.3.2.1"
+    },
+    {
+      "id": "domain-idn-tld-alabel-upper-01",
+      "kind": "domain",
+      "class": "idn-tld-alabel",
+      "value": "example.XN--P1AI",
+      "expect": "accept",
+      "note": "uppercase A-label; case-insensitive",
+      "ref": "RFC 5890 §2.3.1"
+    },
+    {
+      "id": "domain-idn-sld-alabel-01",
+      "kind": "domain",
+      "class": "idn-sld-alabel",
+      "value": "xn--socit-esab.fr",
+      "expect": "accept",
+      "note": "A-label second level (société)",
+      "ref": "RFC 5890 §2.3.2.1"
+    },
+    {
+      "id": "domain-idn-sld-alabel-02",
+      "kind": "domain",
+      "class": "idn-sld-alabel",
+      "value": "xn--r8jz45g.jp",
+      "expect": "accept",
+      "note": "A-label second level (例え)",
+      "ref": "RFC 5890 §2.3.2.1"
+    },
+    {
+      "id": "domain-idn-ulabel-latin-01",
+      "kind": "domain",
+      "class": "idn-ulabel",
+      "value": "société.fr",
+      "expect": "accept",
+      "note": "Latin with diacritics",
+      "ref": "RFC 5890 §2.3.2.1"
+    },
+    {
+      "id": "domain-idn-ulabel-cyrillic-01",
+      "kind": "domain",
+      "class": "idn-ulabel",
+      "value": "пример.рф",
+      "expect": "accept",
+      "note": "Cyrillic, IDN TLD",
+      "ref": "RFC 5890 §2.3.2.1"
+    },
+    {
+      "id": "domain-idn-ulabel-arabic-01",
+      "kind": "domain",
+      "class": "idn-ulabel",
+      "value": "مثال.مصر",
+      "expect": "accept",
+      "note": "Arabic, right-to-left, IDN TLD",
+      "ref": "RFC 5890 §2.3.2.1"
+    },
+    {
+      "id": "domain-idn-ulabel-cjk-01",
+      "kind": "domain",
+      "class": "idn-ulabel",
+      "value": "例子.中国",
+      "expect": "accept",
+      "note": "Han, IDN TLD",
+      "ref": "RFC 5890 §2.3.2.1"
+    },
+    {
+      "id": "domain-idn-ulabel-devanagari-01",
+      "kind": "domain",
+      "class": "idn-ulabel",
+      "value": "उदाहरण.भारत",
+      "expect": "accept",
+      "note": "Devanagari, IDN TLD",
+      "ref": "RFC 5890 §2.3.2.1"
+    },
+    {
+      "id": "domain-idn-ulabel-greek-01",
+      "kind": "domain",
+      "class": "idn-ulabel",
+      "value": "παράδειγμα.ελ",
+      "expect": "accept",
+      "note": "Greek, IDN TLD",
+      "ref": "RFC 5890 §2.3.2.1"
+    },
+    {
+      "id": "domain-idn-ulabel-thai-01",
+      "kind": "domain",
+      "class": "idn-ulabel",
+      "value": "ตัวอย่าง.ไทย",
+      "expect": "accept",
+      "note": "Thai, IDN TLD",
+      "ref": "RFC 5890 §2.3.2.1"
+    },
+    {
+      "id": "domain-idn-ulabel-hangul-01",
+      "kind": "domain",
+      "class": "idn-ulabel",
+      "value": "예시.한국",
+      "expect": "accept",
+      "note": "Hangul, IDN TLD",
+      "ref": "RFC 5890 §2.3.2.1"
+    },
+    {
+      "id": "domain-boundary-label63-01",
+      "kind": "domain",
+      "class": "boundary",
+      "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.com",
+      "expect": "accept",
+      "note": "63-octet label, the maximum",
+      "ref": "RFC 1035 §2.3.4"
+    },
+    {
+      "id": "domain-boundary-label64-01",
+      "kind": "domain",
+      "class": "boundary",
+      "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.com",
+      "expect": "reject",
+      "note": "64-octet label, over the maximum",
+      "ref": "RFC 1035 §2.3.4"
+    },
+    {
+      "id": "domain-boundary-total253-01",
+      "kind": "domain",
+      "class": "boundary",
+      "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb.ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc.ddddddddddddddddddddddddddddddddddddddddddddddddddddddddd.com",
+      "expect": "accept",
+      "note": "253-octet name, the maximum in text form",
+      "ref": "RFC 1035 §2.3.4"
+    },
+    {
+      "id": "domain-guard-01",
+      "kind": "domain",
+      "class": "guard",
+      "value": "-bad-.com",
+      "expect": "reject",
+      "note": "label starts and ends with hyphen",
+      "ref": "RFC 1035 §2.3.1"
+    },
+    {
+      "id": "domain-guard-02",
+      "kind": "domain",
+      "class": "guard",
+      "value": "bad..dots.com",
+      "expect": "reject",
+      "note": "empty label",
+      "ref": "RFC 1035 §2.3.1"
+    },
+    {
+      "id": "domain-guard-03",
+      "kind": "domain",
+      "class": "guard",
+      "value": "exa mple.com",
+      "expect": "reject",
+      "note": "space",
+      "ref": "RFC 1035 §2.3.1"
+    },
+    {
+      "id": "domain-guard-04",
+      "kind": "domain",
+      "class": "guard",
+      "value": ".example.com",
+      "expect": "reject",
+      "note": "leading dot, empty first label",
+      "ref": "RFC 1035 §2.3.1"
+    },
+    {
+      "id": "url-control-01",
+      "kind": "url",
+      "class": "control",
+      "value": "https://example.com",
+      "expect": "accept",
+      "note": "plain",
+      "ref": "WHATWG URL"
+    },
+    {
+      "id": "url-control-02",
+      "kind": "url",
+      "class": "control",
+      "value": "http://example.technology",
+      "expect": "accept",
+      "note": "http scheme, long TLD",
+      "ref": "WHATWG URL"
+    },
+    {
+      "id": "url-control-03",
+      "kind": "url",
+      "class": "control",
+      "value": "https://example.com/café",
+      "expect": "accept",
+      "note": "Unicode in the path under an ASCII host",
+      "ref": "RFC 3987 §2.2; WHATWG URL"
+    },
+    {
+      "id": "url-ascii-tld-short-01",
+      "kind": "url",
+      "class": "ascii-tld-short",
+      "value": "https://mairie.bzh/",
+      "expect": "accept",
+      "note": "trailing slash",
+      "ref": "WHATWG URL"
+    },
+    {
+      "id": "url-ascii-tld-long-01",
+      "kind": "url",
+      "class": "ascii-tld-long",
+      "value": "https://boutique.corsica",
+      "expect": "accept",
+      "note": "long geoTLD",
+      "ref": "WHATWG URL"
+    },
+    {
+      "id": "url-ascii-tld-long-02",
+      "kind": "url",
+      "class": "ascii-tld-long",
+      "value": "https://example.corsica/contact?lang=fr",
+      "expect": "accept",
+      "note": "path and query",
+      "ref": "WHATWG URL"
+    },
+    {
+      "id": "url-ascii-tld-long-03",
+      "kind": "url",
+      "class": "ascii-tld-long",
+      "value": "https://sub.example.international:8443/x",
+      "expect": "accept",
+      "note": "port and path",
+      "ref": "WHATWG URL"
+    },
+    {
+      "id": "url-idn-sld-alabel-01",
+      "kind": "url",
+      "class": "idn-sld-alabel",
+      "value": "https://xn--socit-esab.fr",
+      "expect": "accept",
+      "note": "A-label host",
+      "ref": "WHATWG URL"
+    },
+    {
+      "id": "url-idn-ulabel-latin-01",
+      "kind": "url",
+      "class": "idn-ulabel",
+      "value": "https://société.fr/contact",
+      "expect": "accept",
+      "note": "Latin U-label host",
+      "ref": "RFC 3987 §2.2; WHATWG URL"
+    },
+    {
+      "id": "url-idn-ulabel-cyrillic-01",
+      "kind": "url",
+      "class": "idn-ulabel",
+      "value": "https://пример.рф",
+      "expect": "accept",
+      "note": "Cyrillic host and TLD",
+      "ref": "RFC 3987 §2.2; WHATWG URL"
+    },
+    {
+      "id": "url-idn-ulabel-cjk-01",
+      "kind": "url",
+      "class": "idn-ulabel",
+      "value": "https://例子.中国/path",
+      "expect": "accept",
+      "note": "Han host and TLD, path",
+      "ref": "RFC 3987 §2.2; WHATWG URL"
+    },
+    {
+      "id": "url-guard-01",
+      "kind": "url",
+      "class": "guard",
+      "value": "https://",
+      "expect": "reject",
+      "note": "no host",
+      "ref": "WHATWG URL"
+    },
+    {
+      "id": "url-guard-02",
+      "kind": "url",
+      "class": "guard",
+      "value": "http//example.com",
+      "expect": "reject",
+      "note": "missing colon after the scheme",
+      "ref": "WHATWG URL"
+    },
+    {
+      "id": "url-guard-03",
+      "kind": "url",
+      "class": "guard",
+      "value": "https://exa mple.com",
+      "expect": "reject",
+      "note": "space in host",
+      "ref": "WHATWG URL"
+    },
+    {
+      "id": "url-guard-04",
+      "kind": "url",
+      "class": "guard",
+      "value": "://example.com",
+      "expect": "reject",
+      "note": "no scheme",
+      "ref": "WHATWG URL"
+    }
+  ]
+}

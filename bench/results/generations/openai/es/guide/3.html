@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Formulario de registro</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 32px 16px;
+      font-family: system-ui, sans-serif;
+      color: #182337;
+      background: #f1f5f9;
+    }
+    main {
+      max-width: 480px;
+      margin: auto;
+      padding: 28px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px #18233714;
+    }
+    h1 { margin: 0 0 8px; }
+    .intro { margin-bottom: 24px; color: #475569; }
+    .field { margin-bottom: 20px; }
+    label { display: block; margin-bottom: 6px; font-weight: 600; }
+    input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #64748b;
+      border-radius: 8px;
+      font: inherit;
+    }
+    input:focus-visible, button:focus-visible {
+      outline: 3px solid #2563eb;
+      outline-offset: 3px;
+    }
+    input[aria-invalid="true"] { border: 2px solid #b42318; }
+    .hint, .error { margin: 6px 0 0; font-size: 0.875rem; }
+    .hint { color: #475569; }
+    .error { color: #b42318; }
+    .error:empty { display: none; }
+    button {
+      width: 100%;
+      padding: 12px;
+      border: 0;
+      border-radius: 8px;
+      background: #1d4ed8;
+      color: white;
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    button:hover { background: #1e40af; }
+    #status { margin-bottom: 0; color: #166534; }
+    #status:empty { display: none; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Crea tu cuenta</h1>
+    <p class="intro">Todos los campos son obligatorios.</p>
+
+    <noscript>
+      <p>Activa JavaScript para validar este formulario. No se enviarán datos sin validación.</p>
+    </noscript>
+
+    <form id="registration" novalidate>
+      <div class="field">
+        <label for="full-name">Nombre completo</label>
+        <input id="full-name" name="fullName" type="text"
+               autocomplete="name" required aria-describedby="name-error">
+        <p id="name-error" class="error" aria-live="polite"></p>
+      </div>
+
+      <div class="field">
+        <label for="email">Dirección de correo electrónico</label>
+        <!-- type="text" conserva el original y admite correos internacionales. -->
+        <input id="email" name="email" type="text" inputmode="email"
+               autocomplete="email" autocapitalize="none" spellcheck="false"
+               required aria-describedby="email-hint email-error">
+        <p id="email-hint" class="hint">
+          Se admiten caracteres internacionales, por ejemplo, josé@société.fr.
+        </p>
+        <p id="email-error" class="error" aria-live="polite"></p>
+      </div>
+
+      <div class="field">
+        <label for="website">Sitio web</label>
+        <input id="website" name="website" type="url" inputmode="url"
+               autocomplete="url" autocapitalize="none" spellcheck="false"
+               placeholder="https://ejemplo.technology" required
+               aria-describedby="website-hint website-error">
+        <p id="website-hint" class="hint">
+          Incluye https:// o http://. Se admiten dominios internacionales.
+        </p>
+        <p id="website-error" class="error" aria-live="polite"></p>
+      </div>
+
+      <div class="field">
+        <label for="password">Contraseña</label>
+        <input id="password" name="password" type="password"
+               autocomplete="new-password" required
+               aria-describedby="password-hint password-error">
+        <p id="password-hint" class="hint">
+          Usa al menos 12 caracteres. Puedes utilizar una frase larga.
+        </p>
+        <p id="password-error" class="error" aria-live="polite"></p>
+      </div>
+
+      <button id="submit-button" type="submit" disabled>Registrarme</button>
+      <p id="status" role="status" aria-live="polite"></p>
+    </form>
+  </main>
+
+  <script>
+    "use strict";
+
+    const form = document.getElementById("registration");
+    const fullName = document.getElementById("full-name");
+    const email = document.getElementById("email");
+    const website = document.getElementById("website");
+    const password = document.getElementById("password");
+    const status = document.getElementById("status");
+    const touched = new Set();
+    let submitted = false;
+
+    const whitespaceOrControl = /[\s\u0000-\u001f\u007f-\u009f]/u;
+
+    function emailForms(original) {
+      const parts = original.split("@");
+      if (parts.length !== 2) return null;
+
+      const [local, domain] = parts;
+      if (!local || !domain || whitespaceOrControl.test(original)) return null;
+
+      // Evita que un dominio se interprete como ruta, puerto o credenciales.
+      if (/[\/\\:?#%\[\]]/u.test(domain)) return null;
+
+      let asciiDomain;
+      try {
+        // El analizador URL del navegador convierte IDN mediante UTS #46.
+        asciiDomain = new URL("https://" + domain + "/").hostname.toLowerCase();
+      } catch {
+        return null;
+      }
+
+      if (!asciiDomain || asciiDomain.length > 253) return null;
+
+      const labels = asciiDomain.split(".");
+      if (labels.length < 2) return null;
+
+      // Los límites se comprueban después de convertir a etiquetas ASCII.
+      const validLabel = /^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i;
+      if (labels.some(label =>
+        !label || label.length > 63 || !validLabel.test(label)
+      )) return null;
+
+      const tld = labels[labels.length - 1];
+      if (!/^(?:[a-z]{2,}|xn--[a-z0-9-]+)$/i.test(tld)) return null;
+
+      // Conserva el local tal como se escribió; no lo pasa a minúsculas.
+      return {
+        original,
+        normalized: local + "@" + asciiDomain
+      };
+    }
+
+    function websiteForms(original) {
+      if (!original || whitespaceOrControl.test(original)) return null;
+      if (!/^https?:\/\//i.test(original) || original.includes("\\")) return null;
+
+      try {
+        const url = new URL(original);
+        if (!["https:", "http:"].includes(url.protocol) ||
+            !url.hostname || url.username || url.password) {
+          return null;
+        }
+
+        // URL normaliza también los dominios internacionales del sitio web.
+        return { original, normalized: url.href };
+      } catch {
+        return null;
+      }
+    }
+
+    const fields = [
+      {
+        input: fullName,
+        errorId: "name-error",
+        validate: value => value.trim()
+          ? ""
+          : "Introduce tu nombre completo."
+      },
+      {
+        input: email,
+        errorId: "email-error",
+        validate: value => !value
+          ? "Introduce tu dirección de correo electrónico."
+          : emailForms(value)
+            ? ""
+            : "Introduce un correo sin espacios, con un solo @ y un dominio como ejemplo.com."
+      },
+      {
+        input: website,
+        errorId: "website-error",
+        validate: value => !value
+          ? "Introduce la dirección de tu sitio web."
+          : websiteForms(value)
+            ? ""
+            : "Introduce una URL válida con http:// o https://, sin espacios ni credenciales."
+      },
+      {
+        input: password,
+        errorId: "password-error",
+        validate: value => !value.trim()
+          ? "Introduce una contraseña que no contenga solo espacios."
+          : Array.from(value).length < 12
+            ? "La contraseña debe tener al menos 12 caracteres."
+            : ""
+      }
+    ];
+
+    function validateField(field) {
+      const message = field.validate(field.input.value);
+      document.getElementById(field.errorId).textContent = message;
+      field.input.setAttribute("aria-invalid", String(Boolean(message)));
+      return !message;
+    }
+
+    for (const field of fields) {
+      field.input.addEventListener("blur", () => {
+        touched.add(field.input);
+        validateField(field);
+      });
+
+      field.input.addEventListener("input", () => {
+        status.textContent = "";
+        if (submitted || touched.has(field.input)) validateField(field);
+      });
+    }
+
+    form.addEventListener("submit", event => {
+      event.preventDefault();
+      submitted = true;
+      status.textContent = "";
+
+      let firstInvalid = null;
+      for (const field of fields) {
+        if (!validateField(field) && !firstInvalid) {
+          firstInvalid = field.input;
+        }
+      }
+
+      if (firstInvalid) {
+        firstInvalid.focus();
+        return;
+      }
+
+      // Para integrar un servidor, conserva ambas formas de correo y URL:
+      // emailForms(email.value) y websiteForms(website.value).
+      // Envía por HTTPS y repite la validación en el servidor.
+      // Esta demostración autónoma no almacena ni transmite contraseñas.
+      status.textContent =
+        "Datos válidos. El formulario está listo para enviar. " +
+        "Esta demostración no envía datos ni crea una cuenta.";
+    });
+
+    document.getElementById("submit-button").disabled = false;
+  </script>
+</body>
+</html>

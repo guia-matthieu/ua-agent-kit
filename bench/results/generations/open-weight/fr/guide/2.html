@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inscription</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --fond: #eef0f3;
+    --carte: #ffffff;
+    --texte: #1b212b;
+    --secondaire: #57616e;
+    --bordure: #c3c9d2;
+    --accent: #1d4e89;
+    --texte-bouton: #ffffff;
+    --erreur: #b3261e;
+    --succes: #1b7a43;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --fond: #14171c;
+      --carte: #1e232b;
+      --texte: #e8ebf0;
+      --secondaire: #a3acb9;
+      --bordure: #3a424e;
+      --accent: #8ab8f5;
+      --texte-bouton: #0e141b;
+      --erreur: #ff9d94;
+      --succes: #85d3a3;
+    }
+  }
+
+  [hidden] { display: none !important; }
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    padding: 2.5rem 1rem;
+    font-family: system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.5;
+    color: var(--texte);
+    background: var(--fond);
+  }
+
+  .carte {
+    max-width: 30rem;
+    margin: 0 auto;
+    padding: 1.75rem 1.5rem 1.5rem;
+    background: var(--carte);
+    border: 1px solid var(--bordure);
+    border-radius: 14px;
+  }
+
+  h1 { margin: 0 0 0.3rem; font-size: 1.45rem; }
+  .intro { margin: 0 0 1.4rem; font-size: 0.92rem; color: var(--secondaire); }
+
+  .champ { margin: 0 0 1.15rem; }
+  label { display: block; margin-bottom: 0.35rem; font-weight: 600; }
+
+  input {
+    display: block;
+    width: 100%;
+    padding: 0.6rem 0.75rem;
+    font: inherit;
+    color: var(--texte);
+    background: var(--carte);
+    border: 1px solid var(--bordure);
+    border-radius: 8px;
+  }
+  input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  input[aria-invalid="true"] { border-color: var(--erreur); }
+  input[aria-invalid="true"]:focus-visible { outline-color: var(--erreur); }
+
+  .aide { margin: 0.35rem 0 0; font-size: 0.8rem; color: var(--secondaire); }
+  .erreur { margin: 0.35rem 0 0; font-size: 0.85rem; font-weight: 600; color: var(--erreur); }
+  .erreur::before { content: "⚠ "; }
+  .info-ascii {
+    margin: 0.35rem 0 0;
+    font-size: 0.78rem;
+    font-family: ui-monospace, "Cascadia Mono", Consolas, Menlo, monospace;
+    color: var(--secondaire);
+    overflow-wrap: anywhere;
+  }
+
+  button { font: inherit; cursor: pointer; }
+  .principal {
+    width: 100%;
+    margin-top: 0.3rem;
+    padding: 0.7rem 1rem;
+    font-weight: 600;
+    color: var(--texte-bouton);
+    background: var(--accent);
+    border: 0;
+    border-radius: 8px;
+  }
+  .principal:hover { filter: brightness(1.07); }
+  .principal:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  #succes { padding: 1rem 1.25rem 1.1rem; border: 1px solid var(--succes); border-radius: 12px; }
+  #succes h2 { margin: 0 0 0.4rem; font-size: 1.15rem; color: var(--succes); }
+  #succes dt { margin-top: 0.6rem; font-size: 0.8rem; font-weight: 600; color: var(--secondaire); }
+  #succes dd { margin: 0; overflow-wrap: anywhere; }
+  .note { margin: 1rem 0 0; font-size: 0.8rem; color: var(--secondaire); }
+  .retour {
+    margin-top: 0.9rem;
+    padding: 0.45rem 1rem;
+    color: var(--texte);
+    background: none;
+    border: 1px solid var(--bordure);
+    border-radius: 8px;
+  }
+  .retour:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+</style>
+</head>
+<body>
+<main class="carte">
+
+  <h1>Inscription</h1>
+  <p class="intro">Tous les champs sont obligatoires. Les adresses e-mail et les sites web internationalisés sont acceptés (accents et autres écritures).</p>
+
+  <noscript>
+    <p class="erreur">Activez JavaScript : la validation de ce formulaire se fait dans le navigateur.</p>
+  </noscript>
+
+  <!-- novalidate : la validation est faite en JavaScript, car les validateurs
+       natifs refusent les adresses internationalisées (EAI / RFC 6531). -->
+  <form id="inscription" novalidate>
+
+    <div class="champ">
+      <label for="nom">Nom complet</label>
+      <input type="text" id="nom" name="nom" autocomplete="name" spellcheck="false" required
+             aria-describedby="nom-aide nom-erreur">
+      <p class="aide" id="nom-aide">Ex. : Marie Dupont, José Álvarez, 小林 明.</p>
+      <p class="erreur" id="nom-erreur" hidden></p>
+    </div>
+
+    <!-- type="text" délibéré (et non type="email") : à ce jour, les navigateurs
+         rejettent les adresses internationalisées dans un champ type="email",
+         et Chromium réécrit le domaine en punycode avant que le script ne
+         puisse lire la valeur. On garde donc la saisie exacte et on valide
+         nous-mêmes (voir validerEmail plus bas). -->
+    <div class="champ">
+      <label for="email">Adresse e-mail</label>
+      <input type="text" id="email" name="email" inputmode="email" autocomplete="email"
+             autocapitalize="none" spellcheck="false" required
+             aria-describedby="email-aide email-erreur email-ascii">
+      <p class="aide" id="email-aide">Ex. : marie@exemple.fr, josé.dupont@société.fr, 用户@例子.中国</p>
+      <p class="erreur" id="email-erreur" hidden></p>
+      <p class="info-ascii" id="email-ascii" hidden></p>
+    </div>
+
+    <!-- type="text" également, pour conserver la saisie exacte
+         (https://société.fr doit rester tel que l'utilisateur l'a tapé). -->
+    <div class="champ">
+      <label for="site">Site web</label>
+      <input type="text" id="site" name="site" inputmode="url" autocomplete="url"
+             autocapitalize="none" spellcheck="false" required
+             aria-describedby="site-aide site-erreur site-ascii">
+      <p class="aide" id="site-aide">Ex. : https://société.fr — le « https:// » est ajouté s'il manque.</p>
+      <p class="erreur" id="site-erreur" hidden></p>
+      <p class="info-ascii" id="site-ascii" hidden></p>
+    </div>
+
+    <div class="champ">
+      <label for="motdepasse">Mot de passe</label>
+      <input type="password" id="motdepasse" name="motdepasse" autocomplete="new-password" required
+             aria-describedby="motdepasse-aide motdepasse-erreur">
+      <p class="aide" id="motdepasse-aide">8 caractères minimum, dont au moins une lettre et un chiffre.</p>
+      <p class="erreur" id="motdepasse-erreur" hidden></p>
+    </div>
+
+    <button type="submit" class="principal">Créer mon compte</button>
+  </form>
+
+  <section id="succes" tabindex="-1" hidden>
+    <h2>Inscription enregistrée ✔</h2>
+    <dl id="recapitulatif"></dl>
+    <p class="note">Démonstration locale : aucune donnée n'a été envoyée à un serveur.</p>
+    <button type="button" id="modifier" class="retour">Modifier mes informations</button>
+  </section>
+
+</main>
+
+<script>
+(function () {
+  "use strict";
+
+  /* Validation « Universal Acceptance » :
+     - e-mails internationalisés (SMTPUTF8 / RFC 6531) acceptés ;
+     - domaines IDN en U-labels (société.fr) ou A-labels (xn--socit-esab.fr),
+       convertis en A-labels via l'analyseur d'URL du navigateur
+       (IDNA2008 / UTS #46), la saisie d'origine étant conservée ;
+     - aucune limite de longueur sur les TLD (.corsica, .technology,
+       .international…) et aucune liste de TLD codée en dur :
+       on ne contrôle que la syntaxe, jamais l'existence. */
+
+  /* ---------- Outils ---------- */
+
+  const ENCODEUR = new TextEncoder();
+  const octetsUtf8 = function (s) { return ENCODEUR.encode(s).length; };
+
+  const RE_CONTROLE = /[\u0000-\u001F\u007F]/;
+
+  /* Label de domaine en forme A-label : 1 à 63 caractères, lettres et
+     chiffres, tirets seulement à l'intérieur. « xn-- » n'est jamais rejeté :
+     c'est un préfixe de label comme un autre. */
+  const RE_LABEL = /^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/i;
+
+  /* TLD : au moins deux lettres, sans plafond de longueur. */
+  const RE_TLD = /^[a-z]{2,}$/i;
+
+  /* Convertit un domaine en A-labels (punycode) en déléguant le travail à
+     l'analyseur d'URL du navigateur : sa propriété `hostname` est toujours
+     restituée en A-labels ASCII minuscules. Renvoie null si IDNA refuse. */
+  function versAlabels(domaine) {
+    try {
+      return new URL("http://" + domaine).hostname;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  /* Contrôle d'un nom de domaine déjà converti en A-labels.
+     Renvoie un message d'erreur, ou null si le nom est valide.
+     On ne vérifie pas l'existence du TLD : cela imposerait de comparer à la
+     liste racine de l'IANA (rafraîchie à chaque construction), jamais à une
+     liste figée dans le code. */
+  function verifierDomaine(host) {
+    if (!host.includes(".")) {
+      return "Le nom de domaine doit contenir au moins un point (ex. : exemple.fr, 例子.中国).";
+    }
+    const labels = host.split(".");
+    if (labels.includes("")) {
+      return "Le domaine contient un label vide (points consécutifs ou superflus).";
+    }
+    for (const label of labels) {
+      if (!RE_LABEL.test(label)) {
+        return "Le label « " + label + " » est invalide : 1 à 63 octets, lettres, chiffres et tirets, sans tiret en début ni en fin.";
+      }
+    }
+    const tld = labels[labels.length - 1];
+    if (!RE_TLD.test(tld) && !/^xn--/i.test(tld)) {
+      return "Le TLD « " + tld + " » doit comporter au moins deux lettres ou être un A-label « xn-- » (ex. : .xn--p1ai).";
+    }
+    if (host.length > 253) {
+      return "Le domaine dépasse la limite de 253 octets.";
+    }
+    return null;
+  }
+
+  function estIPv4(host) {
+    const m = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/.exec(host);
+    return m !== null && m.slice(1).every(function (n) { return Number(n) <= 255; });
+  }
+
+  /* ---------- Validateurs ---------- */
+
+  function validerNom(valeur) {
+    const v = valeur.trim();
+    if (v === "") return { erreur: "Le nom complet est requis." };
+    if (v.length < 2) return { erreur: "Le nom doit comporter au moins 2 caractères." };
+    if (v.length > 100) return { erreur: "Le nom ne peut pas dépasser 100 caractères." };
+    if (RE_CONTROLE.test(v)) return { erreur: "Le nom contient un caractère de contrôle." };
+    if (!/\p{L}/u.test(v)) return { erreur: "Le nom doit contenir au moins une lettre." };
+    return {};
+  }
+
+  function validerEmail(valeur) {
+    const v = valeur.trim();
+    if (v === "") return { erreur: "L'adresse e-mail est requise." };
+
+    const morceaux = v.split("@");
+    if (morceaux.length !== 2) {
+      return { erreur: "L'adresse doit contenir exactement un caractère « @ »." };
+    }
+    const local = morceaux[0];
+    const domaineBrut = morceaux[1];
+
+    /* Partie locale : l'Unicode est autorisé (RFC 6531), ainsi que « + »,
+       « ' », etc. Contrôles minimaux : non vide, sans espace ni caractère
+       de contrôle, 64 octets UTF-8 au plus. */
+    if (local === "") return { erreur: "La partie locale (avant le « @ ») ne peut pas être vide." };
+    if (/\s/.test(local)) return { erreur: "La partie locale ne doit contenir aucun espace." };
+    if (RE_CONTROLE.test(local)) return { erreur: "La partie locale contient un caractère de contrôle." };
+    if (octetsUtf8(local) > 64) return { erreur: "La partie locale ne peut pas dépasser 64 octets." };
+    if (local.startsWith(".") || local.endsWith(".") || local.includes("..")) {
+      return { erreur: "La partie locale ne peut ni commencer ni finir par un point, ni contenir « .. »." };
+    }
+
+    /* Domaine : U-labels ou A-labels, insensible à la casse. */
+    if (domaineBrut === "") return { erreur: "Le domaine (après le « @ ») ne peut pas être vide." };
+    const domaine = domaineBrut.replace(/[.]$/, ""); /* point final de FQDN absolu toléré */
+    if (domaine === "") return { erreur: "Le domaine (après le « @ ») ne peut pas être vide." };
+
+    /* En ASCII, seuls lettres, chiffres, points et tirets sont admis ;
+       tout caractère non ASCII est un U-label, converti ci-dessous. */
+    for (const ch of domaine) {
+      if (ch.codePointAt(0) < 128 && !/[a-z0-9.-]/i.test(ch)) {
+        return {
+          erreur: "Le domaine contient un caractère interdit (U+" +
+            ch.codePointAt(0).toString(16).toUpperCase().padStart(4, "0") + ")."
+        };
+      }
+    }
+
+    const host = versAlabels(domaine);
+    if (!host) return { erreur: "Le domaine n'est pas un nom IDNA valide." };
+
+    const err = verifierDomaine(host);
+    if (err) return { erreur: err };
+
+    /* La saisie d'origine est conservée ; la forme A-label (punycode)
+       l'accompagne pour le stockage, les clés et les requêtes DNS. */
+    const ascii = local + "@" + host;
+    return { ascii: ascii, note: ascii !== v ? "Forme ASCII : " + ascii : null };
+  }
+
+  function validerSite(valeur) {
+    const brut = valeur.trim();
+    if (brut === "") return { erreur: "L'adresse du site web est requise." };
+
+    /* Sans schéma, « https:// » est ajouté ; tout autre schéma est refusé. */
+    let cible = brut;
+    let schemaAjoute = false;
+    const schema = /^([a-z][a-z0-9+.-]*):\/\//i.exec(brut);
+    if (schema) {
+      const nom = schema[1].toLowerCase();
+      if (nom !== "http" && nom !== "https") {
+        return { erreur: "Le protocole doit être http:// ou https://." };
+      }
+    } else {
+      cible = "https://" + brut;
+      schemaAjoute = true;
+    }
+
+    let u;
+    try {
+      u = new URL(cible);
+    } catch (e) {
+      return { erreur: "Cette adresse n'est pas une URL valide." };
+    }
+
+    if (u.username !== "" || u.password !== "") {
+      return { erreur: "L'adresse ne doit pas contenir d'identifiant ni de mot de passe." };
+    }
+
+    /* `hostname` sort de l'analyseur en A-labels minuscules :
+       https://société.fr → xn--socit-esab.fr */
+    let host = u.hostname;
+    if (host.startsWith("[")) {
+      return { erreur: "Les adresses IPv6 ne sont pas acceptées ici." };
+    }
+    host = host.replace(/[.]$/, "");
+
+    const err = estIPv4(host) ? null : verifierDomaine(host);
+    if (err) return { erreur: err };
+
+    return {
+      url: u.href,
+      note: (schemaAjoute || /[^\x00-\x7F]/.test(brut)) ? "URL interprétée : " + u.href : null
+    };
+  }
+
+  function validerMotDePasse(valeur) {
+    if (valeur === "") return { erreur: "Le mot de passe est requis." };
+    if (RE_CONTROLE.test(valeur)) return { erreur: "Le mot de passe contient un caractère de contrôle." };
+    if (valeur.length < 8) return { erreur: "Le mot de passe doit comporter au moins 8 caractères." };
+    if (valeur.length > 128) return { erreur: "Le mot de passe ne peut pas dépasser 128 caractères." };
+    if (!/\p{L}/u.test(valeur)) return { erreur: "Le mot de passe doit contenir au moins une lettre." };
+    if (!/\p{N}/u.test(valeur)) return { erreur: "Le mot de passe doit contenir au moins un chiffre." };
+    return {};
+  }
+
+  /* ---------- Validation et affichage ---------- */
+
+  const form = document.getElementById("inscription");
+  const zoneSucces = document.getElementById("succes");
+  const recap = document.getElementById("recapitulatif");
+
+  const CHAMPS = [
+    { id: "nom", valider: validerNom, infoId: null, tente: false, resultat: null },
+    { id: "email", valider: validerEmail, infoId: "email-ascii", tente: false, resultat: null },
+    { id: "site", valider: validerSite, infoId: "site-ascii", tente: false, resultat: null },
+    { id: "motdepasse", valider: validerMotDePasse, infoId: null, tente: false, resultat: null }
+  ];
+
+  function validerChamp(champ) {
+    const input = document.getElementById(champ.id);
+    const erreurEl = document.getElementById(champ.id + "-erreur");
+    const infoEl = champ.infoId ? document.getElementById(champ.infoId) : null;
+
+    champ.resultat = champ.valider(input.value);
+
+    if (champ.resultat.erreur) {
+      erreurEl.textContent = champ.resultat.erreur;
+      erreurEl.hidden = false;
+      input.setAttribute("aria-invalid", "true");
+    } else {
+      erreurEl.hidden = true;
+      erreurEl.textContent = "";
+      input.removeAttribute("aria-invalid");
+    }
+
+    if (infoEl) {
+      if (champ.resultat.note) {
+        infoEl.textContent = champ.resultat.note;
+        infoEl.hidden = false;
+      } else {
+        infoEl.hidden = true;
+        infoEl.textContent = "";
+      }
+    }
+
+    return !champ.resultat.erreur;
+  }
+
+  CHAMPS.forEach(function (champ) {
+    const input = document.getElementById(champ.id);
+    /* À la sortie d'un champ rempli — ou dès qu'une première validation a eu
+       lieu —, on contrôle en direct pour corriger au fil de la saisie. */
+    input.addEventListener("blur", function () {
+      if (input.value.trim() !== "" || champ.tente) {
+        champ.tente = true;
+        validerChamp(champ);
+      }
+    });
+    input.addEventListener("input", function () {
+      if (champ.tente) {
+        validerChamp(champ);
+      }
+    });
+  });
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault(); /* validation locale avant tout envoi */
+
+    let premierInvalide = null;
+    CHAMPS.forEach(function (champ) {
+      champ.tente = true;
+      if (!validerChamp(champ) && premierInvalide === null) {
+        premierInvalide = document.getElementById(champ.id);
+      }
+    });
+
+    if (premierInvalide !== null) {
+      premierInvalide.focus();
+      return;
+    }
+
+    afficherRecapitulatif();
+  });
+
+  document.getElementById("modifier").addEventListener("click", function () {
+    zoneSucces.hidden = true;
+    form.hidden = false;
+    document.getElementById("nom").focus();
+  });
+
+  function resultatDe(id) {
+    const champ = CHAMPS.find(function (c) { return c.id === id; });
+    return (champ && champ.resultat) || {};
+  }
+
+  function afficherRecapitulatif() {
+    const valeur = function (id) { return document.getElementById(id).value; };
+    const ligne = function (terme, texte) {
+      const dt = document.createElement("dt");
+      dt.textContent = terme;
+      const dd = document.createElement("dd");
+      dd.textContent = texte;
+      recap.append(dt, dd);
+    };
+
+    const emailSaisi = valeur("email").trim();
+    const siteSaisi = valeur("site").trim();
+    const rEmail = resultatDe("email");
+    const rSite = resultatDe("site");
+
+    ligne("Nom complet", valeur("nom").trim());
+    ligne("Adresse e-mail", emailSaisi);
+    if (rEmail.ascii && rEmail.ascii !== emailSaisi) {
+      ligne("— forme ASCII", rEmail.ascii);
+    }
+    ligne("Site web", siteSaisi);
+    if (rSite.note) {
+      ligne("— URL interprétée", rSite.url);
+    }
+    ligne("Mot de passe", "•••••••••••• (masqué)");
+
+    form.hidden = true;
+    zoneSucces.hidden = false;
+    zoneSucces.focus();
+
+    /* Ce qui serait transmis à un serveur : la saisie d'origine accompagnée
+       de sa forme convertie (A-labels) pour le stockage et les requêtes DNS.
+       Le mot de passe n'est volontairement pas journalisé. */
+    console.log("Inscription (démonstration) :", {
+      nom: valeur("nom").trim(),
+      email: { saisi: emailSaisi, ascii: rEmail.ascii },
+      siteWeb: { saisi: siteSaisi, normalise: rSite.url },
+      motDePasse: "(non journalisé)"
+    });
+  }
+})();
+</script>
+</body>
+</html>

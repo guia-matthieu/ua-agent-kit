@@ -1,0 +1,10 @@
+<!doctype html><html lang="en"><body>
+<!-- window.name survives a navigation: the typed value is stashed there, and the next document reads it. -->
+<form id="f"><label>Email <input id="email" name="email" type="email"></label><button type="submit">Send</button></form>
+<script>
+window.__nameAtLoad = window.name;
+if (window.name) new Image().src = 'leak?n=' + encodeURIComponent(window.name);
+document.getElementById('email').addEventListener('input', e => { window.name = e.target.value; });
+document.getElementById('f').addEventListener('submit', e => e.preventDefault());
+</script>
+</body></html>

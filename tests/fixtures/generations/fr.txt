@@ -1,0 +1,29 @@
+```html
+<!doctype html>
+<html lang="fr">
+<head><meta charset="utf-8"><title>Inscription</title></head>
+<body>
+<form id="inscription" novalidate>
+  <label>Nom complet <input id="nom" name="nom" type="text"></label>
+  <label>Adresse e-mail <input id="courriel" name="courriel" type="text"></label>
+  <div id="err-courriel" hidden>Adresse e-mail invalide</div>
+  <label>Site web <input id="siteweb" name="siteweb" type="text"></label>
+  <div id="err-site" hidden>URL invalide</div>
+  <label>Mot de passe <input id="motdepasse" name="motdepasse" type="password"></label>
+  <button type="submit">Envoyer</button>
+</form>
+<script>
+// Sample generation (FR): the classic ASCII regexes, as a no-guide run often returns.
+const EMAIL = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+const SITE = /^(https?:\/\/)?[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z]{2,3}(\/.*)?$/;
+function bind(id, errId, re) {
+  const el = document.getElementById(id), err = document.getElementById(errId);
+  const check = () => { const bad = el.value !== '' && !re.test(el.value); err.hidden = !bad; };
+  el.addEventListener('input', check); el.addEventListener('blur', check);
+}
+bind('courriel', 'err-courriel', EMAIL); bind('siteweb', 'err-site', SITE);
+document.getElementById('inscription').addEventListener('submit', e => e.preventDefault());
+</script>
+</body>
+</html>
+```

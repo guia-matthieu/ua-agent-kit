@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Ledger — Membership Application</title>
+<style>
+  /* ---------------- tokens ---------------- */
+  :root{
+    --paper:#f4efe3;
+    --ink:#221d16;
+    --ink-70:rgba(34,29,22,.70);
+    --ink-55:rgba(34,29,22,.55);
+    --ink-35:rgba(34,29,22,.35);
+    --ink-30:rgba(34,29,22,.30);
+    --ink-15:rgba(34,29,22,.15);
+    --accent:#c14b21;               /* vermillion — the one accent */
+    --error:#a81c11;
+    --ok:#2e6b4f;
+    --serif:Georgia,'Iowan Old Style','Times New Roman',Times,serif;
+    --mono:'SFMono-Regular',ui-monospace,'Cascadia Mono',Menlo,Consolas,'Liberation Mono',monospace;
+    /* subtle paper grain (self-contained SVG) */
+    --grain:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>");
+    /* harsher grain used as a mask, so the rubber stamp looks inked & distressed */
+    --stamp-grain:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='130' height='130'><filter id='m'><feTurbulence type='fractalNoise' baseFrequency='0.55' numOctaves='2' seed='7' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 18 -6'/></filter><rect width='130' height='130' filter='url(%23m)'/></svg>");
+  }
+
+  *{box-sizing:border-box}
+  [hidden]{display:none !important}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--serif);
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--accent);color:var(--paper)}
+
+  /* grain sits over the whole sheet, unifying everything */
+  body::after{
+    content:"";
+    position:fixed;inset:0;z-index:60;pointer-events:none;
+    background-image:var(--grain);
+    opacity:.06;
+    mix-blend-mode:multiply;
+  }
+
+  /* register marks framing the "paper" */
+  .crop{position:fixed;width:16px;height:16px;z-index:50;pointer-events:none;border:0 solid var(--ink-35)}
+  .crop.tl{top:14px;left:14px;border-top-width:1px;border-left-width:1px}
+  .crop.tr{top:14px;right:14px;border-top-width:1px;border-right-width:1px}
+  .crop.bl{bottom:14px;left:14px;border-bottom-width:1px;border-left-width:1px}
+  .crop.br{bottom:14px;right:14px;border-bottom-width:1px;border-right-width:1px}
+
+  .accent{color:var(--accent)}
+
+  /* ---------------- sheet ---------------- */
+  .page{position:relative;max-width:620px;margin:0 auto;padding:clamp(56px,9vh,90px) 26px 120px}
+
+  /* ---------------- masthead ---------------- */
+  .letterhead{
+    display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;
+    padding-bottom:16px;border-bottom:1px solid var(--ink);
+  }
+  .brand{display:flex;align-items:center;gap:10px;font:700 12px var(--mono);letter-spacing:.24em;text-transform:uppercase}
+  .brand .mark{width:15px;height:15px;color:var(--accent)}
+  .form-no{font:600 11px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-55)}
+
+  .title{margin:44px 0 0;font:400 clamp(44px,10vw,80px)/.98 var(--serif);letter-spacing:-.015em}
+  .title em{font-style:italic}
+  .lede{margin:22px 0 0;max-width:46ch;font:400 16.5px/1.62 var(--serif);color:var(--ink-70)}
+  .rule-double{margin-top:38px;border-top:2px solid var(--ink)}
+  .rule-double::after{content:"";display:block;margin-top:3px;border-top:1px solid var(--ink)}
+
+  /* ---------------- fields ---------------- */
+  .field{padding:28px 0 24px}
+  .field + .field{border-top:1px solid var(--ink-15)}
+  .field-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:11px}
+  .field-no{font:700 11px var(--mono);letter-spacing:.08em;color:var(--accent);transition:color .2s}
+  .field label{font:700 11px var(--mono);letter-spacing:.16em;text-transform:uppercase}
+  .hint{margin-left:auto;font:italic 400 12.5px var(--serif);color:var(--ink-55)}
+
+  .control{position:relative;margin-top:6px}
+  .control input{
+    display:block;width:100%;
+    background:transparent;border:0;border-bottom:1px solid var(--ink-35);border-radius:0;
+    padding:9px 38px 10px 1px;
+    font:400 18px/1.3 var(--serif);color:var(--ink);
+    caret-color:var(--accent);appearance:none;-webkit-appearance:none;
+    transition:border-color .2s;
+  }
+  .control:hover input{border-bottom-color:var(--ink-55)}
+  .control input::placeholder{color:var(--ink-30);font-style:italic}
+  .control input:focus{outline:none;border-bottom-color:var(--ink-55)}
+  .control::after{ /* accent underline that sweeps in on focus */
+    content:"";position:absolute;left:0;right:0;bottom:0;height:2px;
+    background:var(--accent);transform:scaleX(0);transform-origin:left;
+    transition:transform .28s cubic-bezier(.2,.7,.2,1);
+  }
+  .control:focus-within::after{transform:scaleX(1)}
+
+  .control.has-toggle input{padding-right:64px}
+
+  /* green check once a field actually validates */
+  .ok-check{
+    position:absolute;right:4px;top:50%;margin-top:-8px;width:16px;height:16px;
+    color:var(--ok);opacity:0;transform:scale(.5);pointer-events:none;
+    transition:opacity .2s,transform .25s cubic-bezier(.3,1.6,.4,1);
+  }
+  .field.ok .ok-check{opacity:1;transform:scale(1)}
+  .has-toggle .ok-check{right:46px}
+
+  /* invalid state */
+  .field.invalid .field-no{color:var(--error)}
+  .field.invalid input{border-bottom-color:rgba(168,28,17,.55)}
+  .field.invalid .control::after{background:var(--error)}
+  .field.invalid .ok-check{opacity:0}
+
+  .error{
+    display:none;margin:9px 0 0;align-items:flex-start;gap:7px;
+    color:var(--error);font:500 12px/1.5 var(--mono);letter-spacing:.02em;
+  }
+  .error.show{display:flex;animation:rise .18s ease-out both}
+  .error svg{width:14px;height:14px;flex:none;margin-top:1px}
+  @keyframes rise{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+
+  /* show / hide password */
+  .peek{
+    position:absolute;right:0;top:50%;transform:translateY(-50%);
+    display:flex;padding:4px 2px;background:none;border:0;border-radius:0;
+    color:var(--ink-35);cursor:pointer;transition:color .15s;
+  }
+  .peek:hover{color:var(--ink)}
+  .peek:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .peek svg{display:block;width:20px;height:20px}
+
+  /* password requirements, checked live */
+  .reqs{display:flex;flex-wrap:wrap;gap:7px 18px;margin:13px 0 0;padding:0;list-style:none}
+  .reqs li{
+    display:flex;align-items:center;gap:6px;
+    font:600 10.5px var(--mono);letter-spacing:.1em;text-transform:uppercase;
+    color:var(--ink-55);transition:color .2s;
+  }
+  .reqs li svg{width:13px;height:13px}
+  .reqs .i-on{display:none;color:var(--ok)}
+  .reqs li.met{color:var(--ok)}
+  .reqs li.met .i-on{display:block;animation:pop .28s cubic-bezier(.3,1.6,.4,1)}
+  .reqs li.met .i-off{display:none}
+  @keyframes pop{0%{transform:scale(.4)}60%{transform:scale(1.35)}100%{transform:scale(1)}}
+
+  /* ---------------- tally + submit ---------------- */
+  .progress{display:flex;align-items:center;justify-content:space-between;margin:32px 0 16px}
+  .progress-label{font:600 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-55);transition:color .3s}
+  .progress.done .progress-label{color:var(--ok)}
+  .ticks{display:flex;gap:7px}
+  .tick{width:26px;height:3px;background:var(--ink-15);transition:background .3s}
+  .tick.on{background:var(--accent)}
+  .progress.done .tick.on{background:var(--ok)}
+
+  .btn{
+    display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;
+    padding:17px 20px;background:var(--ink);color:var(--paper);
+    border:1.5px solid var(--ink);border-radius:0;
+    font:700 12.5px var(--mono);letter-spacing:.2em;text-transform:uppercase;
+    cursor:pointer;
+    transition:transform .16s ease,box-shadow .16s ease,background .2s,color .2s;
+  }
+  .btn-arrow{width:17px;height:17px;flex:none;transition:transform .2s}
+  .btn:hover .btn-arrow{transform:translateX(4px)}
+  @media (hover:hover){
+    .btn:hover{transform:translate(-2px,-2px);box-shadow:4px 4px 0 var(--accent)}
+    .btn.ghost:hover{box-shadow:4px 4px 0 var(--ink-35)}
+  }
+  .btn:active{transform:none;box-shadow:none}
+  .btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+  .btn.shake{animation:shake .45s}
+  @keyframes shake{20%{transform:translateX(-5px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
+
+  /* brief "reviewing" state before the receipt */
+  .btn.reviewing,.btn.reviewing:hover{background:transparent;color:var(--ink);transform:none;box-shadow:none;cursor:progress}
+  .btn.reviewing .btn-arrow{display:none}
+  .btn-busy .dots i{display:inline-block;font-style:normal;animation:blink 1.1s infinite}
+  .btn-busy .dots i:nth-child(2){animation-delay:.18s}
+  .btn-busy .dots i:nth-child(3){animation-delay:.36s}
+  @keyframes blink{0%,100%{opacity:.15}45%{opacity:1}}
+
+  .btn.ghost{display:inline-flex;width:auto;padding:14px 22px;background:transparent;color:var(--ink)}
+
+  .fineprint{margin:14px 0 0;font:italic 400 13px/1.55 var(--serif);color:var(--ink-55)}
+
+  /* ---------------- success / receipt ---------------- */
+  .success{position:relative;padding-top:36px}
+  .overline{margin:0;font:700 11px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-55)}
+  .success-title{margin:20px 0 0;font:400 clamp(34px,7vw,46px)/1.06 var(--serif);letter-spacing:-.01em}
+  .success-title em{font-style:italic}
+  .success-lede{margin:16px 0 0;max-width:46ch;font:400 15.5px/1.62 var(--serif);color:var(--ink-70)}
+
+  .summary{margin:30px 0 34px}
+  .summary > div{display:flex;align-items:baseline;padding:7px 0}
+  .summary dt{font:700 10.5px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-55)}
+  .summary .leader{flex:1;min-width:24px;border-bottom:1px dotted var(--ink-35);margin:0 12px}
+  .summary dd{margin:0;font:400 15px var(--serif);text-align:right;max-width:62%;overflow-wrap:anywhere}
+  .summary dd.mono{font:400 12.5px var(--mono);letter-spacing:.02em}
+
+  /* the rubber stamp */
+  .stamp{
+    position:absolute;top:-18px;right:-6px;
+    padding:9px 12px 8px 15px;
+    transform:rotate(-8deg);
+    color:var(--accent);border:2.5px solid currentColor;border-radius:4px;
+    font:700 15px/1 var(--mono);letter-spacing:.3em;text-transform:uppercase;
+    opacity:.9;mix-blend-mode:multiply;pointer-events:none;
+    -webkit-mask-image:var(--stamp-grain);mask-image:var(--stamp-grain);
+    -webkit-mask-size:130px;mask-size:130px;
+  }
+  .stamp span{margin-right:-.3em}
+  .stamp::after{content:"";position:absolute;inset:3px;border:1px solid currentColor;border-radius:2px}
+  @keyframes stamp-in{
+    0%{opacity:0;transform:rotate(-16deg) scale(2.2)}
+    55%{opacity:.95;transform:rotate(-7deg) scale(.96)}
+    75%{transform:rotate(-8.5deg) scale(1.02)}
+    100%{opacity:.9;transform:rotate(-8deg) scale(1)}
+  }
+  .success .stamp{animation:stamp-in .55s cubic-bezier(.2,1,.3,1) .55s both}
+
+  /* receipt content rises in, then the stamp lands */
+  .success > *:not(.stamp){animation:rise .45s ease both}
+  .success > *:nth-child(3){animation-delay:.07s}
+  .success > *:nth-child(4){animation-delay:.14s}
+  .success > *:nth-child(5){animation-delay:.21s}
+  .success > *:nth-child(6){animation-delay:.28s}
+  .success:focus{outline:none}
+
+  /* ---------------- colophon ---------------- */
+  .colophon{
+    display:flex;justify-content:space-between;gap:12px;
+    margin-top:72px;padding-top:14px;border-top:1px solid var(--ink-15);
+    font:500 10.5px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-55);
+  }
+
+  /* autofill shouldn't paint a yellow box over the paper */
+  input:-webkit-autofill{
+    -webkit-box-shadow:0 0 0 1000px var(--paper) inset;
+    -webkit-text-fill-color:var(--ink);
+    transition:background-color 99999s;
+  }
+
+  @media (max-width:559px){
+    .stamp{position:static;display:inline-block;margin:0 0 16px}
+    .success{padding-top:28px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation-duration:.01ms !important;animation-delay:0ms !important;transition-duration:.01ms !important}
+  }
+</style>
+</head>
+<body>
+
+<span class="crop tl" aria-hidden="true"></span>
+<span class="crop tr" aria-hidden="true"></span>
+<span class="crop bl" aria-hidden="true"></span>
+<span class="crop br" aria-hidden="true"></span>
+
+<main class="page">
+
+  <header class="masthead">
+    <div class="letterhead">
+      <div class="brand">
+        <svg class="mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true">
+          <path d="M12 3v18M4.2 7.5l15.6 9M19.8 7.5l-15.6 9"/>
+        </svg>
+        <span>The Ledger</span>
+      </div>
+      <span class="form-no">Form No. 01</span>
+    </div>
+
+    <h1 class="title">Apply for<br><em>membership</em><span class="accent">.</span></h1>
+    <p class="lede">Four fields and about a minute. Everything is checked right here in your browser — nothing is sent until it all reads right.</p>
+    <div class="rule-double" aria-hidden="true"></div>
+  </header>
+
+  <form id="signup-form" novalidate>
+
+    <noscript><p class="error show">JavaScript is required to validate this form.</p></noscript>
+
+    <!-- 01 · full name -->
+    <div class="field">
+      <div class="field-head">
+        <span class="field-no" aria-hidden="true">01</span>
+        <label for="f-name">Full name</label>
+        <span class="hint">First and last</span>
+      </div>
+      <div class="control">
+        <input type="text" id="f-name" name="name" autocomplete="name" spellcheck="false"
+               placeholder="Ada Lovelace" aria-describedby="err-name">
+        <svg class="ok-check" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 8.5 6.2 12 13.5 4.5"/></svg>
+      </div>
+      <p class="error" id="err-name" aria-live="polite">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.8 15 14H1Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 6.2v3.6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="8" cy="12" r=".95" fill="currentColor"/></svg>
+        <span class="msg"></span>
+      </p>
+    </div>
+
+    <!-- 02 · email -->
+    <div class="field">
+      <div class="field-head">
+        <span class="field-no" aria-hidden="true">02</span>
+        <label for="f-email">Email address</label>
+        <span class="hint">No newsletters, ever</span>
+      </div>
+      <div class="control">
+        <input type="email" id="f-email" name="email" autocomplete="email" autocapitalize="none" spellcheck="false"
+               placeholder="ada@example.com" aria-describedby="err-email">
+        <svg class="ok-check" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 8.5 6.2 12 13.5 4.5"/></svg>
+      </div>
+      <p class="error" id="err-email" aria-live="polite">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.8 15 14H1Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 6.2v3.6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="8" cy="12" r=".95" fill="currentColor"/></svg>
+        <span class="msg"></span>
+      </p>
+    </div>
+
+    <!-- 03 · website -->
+    <div class="field">
+      <div class="field-head">
+        <span class="field-no" aria-hidden="true">03</span>
+        <label for="f-website">Website</label>
+        <span class="hint">Protocol optional</span>
+      </div>
+      <div class="control">
+        <input type="url" id="f-website" name="website" autocomplete="url" autocapitalize="none" spellcheck="false"
+               placeholder="example.com" aria-describedby="err-website">
+        <svg class="ok-check" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 8.5 6.2 12 13.5 4.5"/></svg>
+      </div>
+      <p class="error" id="err-website" aria-live="polite">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.8 15 14H1Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 6.2v3.6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="8" cy="12" r=".95" fill="currentColor"/></svg>
+        <span class="msg"></span>
+      </p>
+    </div>
+
+    <!-- 04 · password -->
+    <div class="field">
+      <div class="field-head">
+        <span class="field-no" aria-hidden="true">04</span>
+        <label for="f-password">Password</label>
+        <span class="hint">Checked as you type</span>
+      </div>
+      <div class="control has-toggle">
+        <input type="password" id="f-password" name="password" autocomplete="new-password"
+               placeholder="••••••••" aria-describedby="err-password pw-reqs">
+        <svg class="ok-check" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 8.5 6.2 12 13.5 4.5"/></svg>
+        <button type="button" class="peek" id="peek" aria-label="Show password" aria-pressed="false">
+          <svg id="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M2.5 12S6 5.8 12 5.8 21.5 12 21.5 12 18 18.2 12 18.2 2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="2.7"/>
+          </svg>
+          <svg id="eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden>
+            <path d="M2.5 12S6 5.8 12 5.8 21.5 12 21.5 12 18 18.2 12 18.2 2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="2.7"/><path d="M4 4l16 16"/>
+          </svg>
+        </button>
+      </div>
+      <p class="error" id="err-password" aria-live="polite">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.8 15 14H1Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 6.2v3.6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="8" cy="12" r=".95" fill="currentColor"/></svg>
+        <span class="msg"></span>
+      </p>
+      <ul class="reqs" id="pw-reqs">
+        <li data-req="len">
+          <svg class="i-off" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="5.6" stroke="currentColor" stroke-width="1.6"/></svg>
+          <svg class="i-on" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 8.5 6.2 12 13.5 4.5"/></svg>
+          <span>8+ characters</span>
+        </li>
+        <li data-req="upper">
+          <svg class="i-off" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="5.6" stroke="currentColor" stroke-width="1.6"/></svg>
+          <svg class="i-on" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 8.5 6.2 12 13.5 4.5"/></svg>
+          <span>Uppercase</span>
+        </li>
+        <li data-req="lower">
+          <svg class="i-off" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="5.6" stroke="currentColor" stroke-width="1.6"/></svg>
+          <svg class="i-on" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 8.5 6.2 12 13.5 4.5"/></svg>
+          <span>Lowercase</span>
+        </li>
+        <li data-req="num">
+          <svg class="i-off" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="5.6" stroke="currentColor" stroke-width="1.6"/></svg>
+          <svg class="i-on" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 8.5 6.2 12 13.5 4.5"/></svg>
+          <span>Number</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="progress">
+      <span class="progress-label" id="progress-label">0 of 4 verified</span>
+      <span class="ticks" aria-hidden="true">
+        <span class="tick" data-for="name"></span>
+        <span class="tick" data-for="email"></span>
+        <span class="tick" data-for="website"></span>
+        <span class="tick" data-for="password"></span>
+      </span>
+    </div>
+
+    <button type="submit" class="btn" id="submit-btn">
+      <span class="btn-label">Submit application</span>
+      <span class="btn-busy" hidden>Reviewing<span class="dots"><i>.</i><i>.</i><i>.</i></span></span>
+      <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13.5 6l5.5 6-5.5 6"/></svg>
+    </button>
+    <p class="fineprint">All fields are required. Applications are reviewed in the order received; we write only when it matters.</p>
+  </form>
+
+  <!-- receipt shown after a successful submit -->
+  <section class="success" id="success" tabindex="-1" aria-labelledby="success-title" hidden>
+    <div class="stamp" aria-hidden="true"><span>Received</span></div>
+    <p class="overline">Application <span id="s-no"></span></p>
+    <h2 class="success-title" id="success-title">Welcome aboard,<br><em id="s-first"></em><span class="accent">.</span></h2>
+    <p class="success-lede">Every check passed. A confirmation is on its way to your inbox — keep half an eye out for it.</p>
+    <dl class="summary">
+      <div><dt>Full name</dt><span class="leader" aria-hidden="true"></span><dd id="s-name"></dd></div>
+      <div><dt>Email</dt><span class="leader" aria-hidden="true"></span><dd id="s-email"></dd></div>
+      <div><dt>Website</dt><span class="leader" aria-hidden="true"></span><dd id="s-site" class="mono"></dd></div>
+      <div><dt>Filed</dt><span class="leader" aria-hidden="true"></span><dd id="s-filed" class="mono"></dd></div>
+    </dl>
+    <button type="button" class="btn ghost" id="restart">
+      <span>File another application</span>
+      <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13.5 6l5.5 6-5.5 6"/></svg>
+    </button>
+  </section>
+
+  <footer class="colophon">
+    <span>The Ledger · Membership Office</span>
+    <span>Page 1 / 1</span>
+  </footer>
+
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  const form          = document.getElementById('signup-form');
+  const successPanel  = document.getElementById('success');
+  const submitBtn     = document.getElementById('submit-btn');
+  const btnLabel      = submitBtn.querySelector('.btn-label');
+  const btnBusy       = submitBtn.querySelector('.btn-busy');
+  const progressEl    = document.querySelector('.progress');
+  const progressLabel = document.getElementById('progress-label');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const ORDER = ['name', 'email', 'website', 'password'];
+
+  /* ---------- rules: each returns '' when the value is acceptable ---------- */
+  const validators = {
+    name(raw){
+      const v = raw.trim().replace(/\s+/g, ' ');
+      if (!v) return 'Full name is required.';
+      if (!/^\S+\s+\S+/.test(v)) return 'Please enter your first and last name.';
+      if (v.length > 60) return 'That name is too long for our filing system.';
+      return '';
+    },
+    email(raw){
+      const v = raw.trim();
+      if (!v) return 'Email address is required.';
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) return 'That doesn\u2019t look like a complete email address.';
+      return '';
+    },
+    website(raw){
+      const v = raw.trim();
+      if (!v) return 'Website is required.';
+      if (!/^(https?:\/\/)?([a-z\d-]+\.)+[a-z]{2,}(:\d+)?(\/[^\s]*)?$/i.test(v)) return 'Enter a valid URL, e.g. example.com or https://example.com';
+      return '';
+    },
+    password(v){
+      if (!v) return 'Password is required.';
+      const met = v.length >= 8 && /[A-Z]/.test(v) && /[a-z]/.test(v) && /\d/.test(v);
+      return met ? '' : 'Password doesn\u2019t meet all of the requirements marked below.';
+    }
+  };
+
+  const reqTests = {
+    len:   v => v.length >= 8,
+    upper: v => /[A-Z]/.test(v),
+    lower: v => /[a-z]/.test(v),
+    num:   v => /\d/.test(v)
+  };
+
+  /* ---------- per-field registry ---------- */
+  const fields = {};
+  ORDER.forEach(name => {
+    const input = document.getElementById('f-' + name);
+    const field = input.closest('.field');
+    fields[name] = {
+      input,
+      field,
+      error: field.querySelector('.error'),
+      msg:   field.querySelector('.error .msg'),
+      touched: false
+    };
+  });
+
+  /* ---------- check one field; showError controls whether messages appear ---------- */
+  function runCheck(name, showError){
+    const f = fields[name];
+    const error = validators[name](f.input.value);
+    f.field.classList.toggle('ok', !error);
+    if (showError){
+      f.field.classList.toggle('invalid', !!error);
+      f.input.setAttribute('aria-invalid', error ? 'true' : 'false');
+      if (error){
+        f.msg.textContent = error;
+        f.error.classList.add('show');
+      } else {
+        f.error.classList.remove('show');
+      }
+    }
+    return !error;
+  }
+
+  /* ---------- live wiring ---------- */
+  ORDER.forEach(name => {
+    const f = fields[name];
+    f.input.addEventListener('blur', () => {
+      f.touched = true;
+      /* don't shout "required" at a field the user merely tabbed past */
+      if (f.input.value.trim() !== '' || f.field.classList.contains('invalid')) runCheck(name, true);
+    });
+    f.input.addEventListener('input', () => {
+      runCheck(name, f.touched || f.field.classList.contains('invalid'));
+      if (name === 'password') updateReqs(f.input.value);
+      updateProgress();
+    });
+  });
+
+  /* ---------- password checklist ---------- */
+  const reqEls = {};
+  document.querySelectorAll('.reqs li').forEach(li => {
+    reqEls[li.getAttribute('data-req')] = li;
+  });
+  function updateReqs(value){
+    Object.keys(reqEls).forEach(key => {
+      reqEls[key].classList.toggle('met', reqTests[key](value));
+    });
+  }
+
+  /* ---------- verified-fields tally ---------- */
+  const tickEls = {};
+  document.querySelectorAll('.tick').forEach(t => {
+    tickEls[t.getAttribute('data-for')] = t;
+  });
+  function updateProgress(){
+    let count = 0;
+    ORDER.forEach(name => {
+      const ok = !validators[name](fields[name].input.value);
+      if (ok) count++;
+      tickEls[name].classList.toggle('on', ok);
+    });
+    progressLabel.textContent = count === ORDER.length
+      ? 'All fields verified'
+      : count + ' of ' + ORDER.length + ' verified';
+    progressEl.classList.toggle('done', count === ORDER.length);
+  }
+
+  /* ---------- show / hide password ---------- */
+  const pwInput   = fields.password.input;
+  const peek      = document.getElementById('peek');
+  const eyeOpen   = document.getElementById('eye-open');
+  const eyeClosed = document.getElementById('eye-closed');
+  peek.addEventListener('mousedown', e => e.preventDefault()); /* keep the caret in the field */
+  peek.addEventListener('click', () => {
+    const reveal = pwInput.type === 'password';
+    pwInput.type = reveal ? 'text' : 'password';
+    eyeOpen.hidden = reveal;
+    eyeClosed.hidden = !reveal;
+    peek.setAttribute('aria-label', reveal ? 'Hide password' : 'Show password');
+    peek.setAttribute('aria-pressed', String(reveal));
+  });
+
+  /* ---------- submit ---------- */
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    if (submitBtn.disabled) return;
+
+    let firstInvalid = null;
+    ORDER.forEach(name => {
+      fields[name].touched = true;
+      if (!runCheck(name, true) && firstInvalid === null) firstInvalid = name;
+    });
+
+    if (firstInvalid){
+      const f = fields[firstInvalid];
+      f.field.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'center' });
+      f.input.focus({ preventScroll: true });
+      submitBtn.classList.remove('shake');
+      void submitBtn.offsetWidth; /* restart the animation */
+      submitBtn.classList.add('shake');
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.classList.add('reviewing');
+    btnLabel.hidden = true;
+    btnBusy.hidden = false;
+    window.setTimeout(showSuccess, reducedMotion ? 150 : 950);
+  });
+
+  submitBtn.addEventListener('animationend', () => submitBtn.classList.remove('shake'));
+
+  /* ---------- success receipt ---------- */
+  function showSuccess(){
+    const val = name => fields[name].input.value.trim();
+    const fullName = val('name').replace(/\s+/g, ' ');
+    let site = val('website');
+    if (!/^https?:\/\//i.test(site)) site = 'https://' + site;
+    const now = new Date();
+
+    document.getElementById('s-first').textContent = fullName.split(' ')[0];
+    document.getElementById('s-no').textContent   = 'No. ' + (1000 + Math.floor(Math.random() * 9000));
+    document.getElementById('s-name').textContent  = fullName;
+    document.getElementById('s-email').textContent = val('email');
+    document.getElementById('s-site').textContent  = site;
+    document.getElementById('s-filed').textContent =
+      now.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }) +
+      ' \u00b7 ' + now.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
+
+    form.hidden = true;
+    successPanel.hidden = false;
+    successPanel.focus();
+  }
+
+  /* ---------- start over ---------- */
+  document.getElementById('restart').addEventListener('click', () => {
+    form.reset();
+    ORDER.forEach(name => {
+      const f = fields[name];
+      f.touched = false;
+      f.field.classList.remove('invalid', 'ok');
+      f.error.classList.remove('show');
+      f.input.setAttribute('aria-invalid', 'false');
+    });
+    Object.keys(reqEls).forEach(k => reqEls[k].classList.remove('met'));
+    pwInput.type = 'password';
+    eyeOpen.hidden = false;
+    eyeClosed.hidden = true;
+    peek.setAttribute('aria-label', 'Show password');
+    peek.setAttribute('aria-pressed', 'false');
+    submitBtn.disabled = false;
+    submitBtn.classList.remove('reviewing');
+    btnLabel.hidden = false;
+    btnBusy.hidden = true;
+    updateProgress();
+    successPanel.hidden = true;
+    form.hidden = false;
+    window.scrollTo({ top: 0, behavior: reducedMotion ? 'auto' : 'smooth' });
+    fields.name.input.focus({ preventScroll: true });
+  });
+
+  /* ---------- init ---------- */
+  updateReqs('');
+  updateProgress();
+})();
+</script>
+</body>
+</html>

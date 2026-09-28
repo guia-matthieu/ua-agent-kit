@@ -1,0 +1,16 @@
+<!doctype html><html lang="en"><body>
+<!-- After a valid submit the form is hidden behind a receipt (measured on a GLM 5.3 page, 25/09). -->
+<form id="f" novalidate><label>Email <input id="email" name="email" type="text"></label><div id="err" hidden>Invalid email</div>
+<label>Website <input id="site" name="website" type="text"></label><button type="submit">Send</button></form>
+<div id="receipt" hidden>Thank you</div>
+<script>
+const EMAIL = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+const f = document.getElementById('f');
+f.addEventListener('submit', e => {
+  e.preventDefault();
+  const ok = EMAIL.test(document.getElementById('email').value);
+  document.getElementById('err').hidden = ok;
+  if (ok) { f.hidden = true; document.getElementById('receipt').hidden = false; }
+});
+</script>
+</body></html>

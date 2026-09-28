@@ -1,0 +1,34 @@
+{
+  "pinned": "2026-09-25 — OpenRouter Code Generation ranking by spend, 25/09: Claude Opus 5 (#1), GPT-6 Astra (#2), GLM 5.3 (#3); Anthropic slot moved to its successor Claude Opus 5.5 (Matthieu). First-party provider, no fallback",
+  "models": [
+    {
+      "key": "anthropic",
+      "slug": "anthropic/claude-opus-5.5",
+      "provider": "anthropic"
+    },
+    {
+      "key": "openai",
+      "slug": "openai/gpt-6-astra",
+      "provider": "openai"
+    },
+    {
+      "key": "open-weight",
+      "slug": "z-ai/glm-5.3",
+      "provider": "z-ai",
+      "max_tokens": 131072
+    }
+  ],
+  "languages": [
+    "en",
+    "fr",
+    "es"
+  ],
+  "conditions": [
+    "no-guide",
+    "guide"
+  ],
+  "repeats": 3,
+  "temperature": null,
+  "max_tokens": 16000,
+  "max_tokens_note": "16000 for all; GLM 5.3 raised to 64000 on 25/09 after its first reply spent 15 968 of 16 000 tokens reasoning and returned no page (cell discarded and rerun). Reasoning effort left at the provider default. Raised again to 131072 on 25/09 for the last 7 GLM cells: 2 replies (en/guide/2, fr/guide/3) spent all 64 000 tokens reasoning (63 869 and 60 753 reasoning tokens) and were cut; kept aside in results/truncated-64000/ and regenerated. Replies that finished under 64 000 are unaffected by the ceiling."
+}

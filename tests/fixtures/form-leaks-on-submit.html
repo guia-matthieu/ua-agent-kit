@@ -1,0 +1,18 @@
+<!doctype html><html lang="en"><body>
+<!-- Every way out a submit handler has without a POST or a main-frame navigation: iframe-targeted GET form,
+     fetch GET, image beacon, WebSocket, popup. All carry the typed value. -->
+<iframe name="sink" id="sink"></iframe>
+<form id="f" method="get" action="leak-form" target="sink"><label>Email <input id="email" name="email" type="email"></label>
+<label>Website <input id="site" name="website" type="url"></label><button type="submit">Send</button></form>
+<script>
+window.__leaks = [];
+document.getElementById('f').addEventListener('submit', e => {
+  const v = encodeURIComponent(document.getElementById('email').value || document.getElementById('site').value);
+  fetch('leak-fetch?v=' + v).then(() => window.__leaks.push('fetch'), () => {});
+  new Image().src = 'leak-img?v=' + v;
+  try { const ws = new WebSocket(location.origin.replace('http', 'ws') + '/leak-ws?v=' + v); ws.onopen = () => window.__leaks.push('ws'); } catch {}
+  try { window.open('leak-popup?v=' + v); } catch {}
+  // no preventDefault: the iframe-targeted GET submission is the point
+});
+</script>
+</body></html>

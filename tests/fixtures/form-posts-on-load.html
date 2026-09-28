@@ -1,0 +1,11 @@
+<!doctype html><html lang="en"><body>
+<form><input id="email" name="email" type="email"><button type="submit">Send</button></form>
+<script>
+window.__posts = [];
+const post = async what => {
+  try { await fetch(location.href, { method: 'POST', body: what }); window.__posts.push('sent'); }
+  catch (e) { window.__posts.push('blocked'); }
+};
+post('inline');
+window.addEventListener('load', () => post('load'));
+</script></body></html>

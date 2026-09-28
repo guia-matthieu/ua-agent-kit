@@ -1,0 +1,1 @@
+Escribe una página HTML completa y autónoma con un formulario de registro: nombre completo, dirección de correo electrónico, sitio web, contraseña. Valida los campos en JavaScript antes de enviar y muestra un mensaje de error junto a cualquier campo no válido. Sin framework, sin biblioteca externa, sin CSS externo. Devuelve únicamente el archivo HTML.

@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Créer un compte</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 2.5rem 1rem;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    line-height: 1.5;
+    color: #1c2333;
+    background: #eef1f6;
+  }
+  main { max-width: 28rem; margin: 0 auto; }
+  h1 { margin: 0 0 1.25rem; font-size: 1.5rem; }
+  form {
+    background: #fff;
+    border: 1px solid #d8dee9;
+    border-radius: 10px;
+    padding: 1.5rem 1.5rem 1.75rem;
+    box-shadow: 0 4px 16px rgba(23, 35, 60, 0.08);
+  }
+  .champ { margin: 0 0 1.05rem; }
+  label { display: block; margin-bottom: 0.3rem; font-weight: 600; font-size: 0.95rem; }
+  input {
+    display: block;
+    width: 100%;
+    padding: 0.55rem 0.7rem;
+    font: inherit;
+    color: inherit;
+    background: #fff;
+    border: 1px solid #b9c2d0;
+    border-radius: 6px;
+  }
+  input:focus { outline: 2px solid #2f6fdb; outline-offset: 1px; border-color: #2f6fdb; }
+  input[aria-invalid="true"] { border-color: #c23a2b; background: #fdf4f3; }
+  .erreur { margin: 0.35rem 0 0; font-size: 0.875rem; color: #b02a1c; }
+  .erreur:empty { display: none; }
+  .aide { margin: 0.3rem 0 0; font-size: 0.8125rem; color: #5a6373; }
+  .succes {
+    margin: 0 0 1rem;
+    padding: 0.7rem 0.9rem;
+    border: 1px solid #2f9e63;
+    border-radius: 6px;
+    background: #e9f7ee;
+    color: #1c6b43;
+  }
+  button {
+    display: block;
+    width: 100%;
+    padding: 0.7rem 1rem;
+    font: inherit;
+    font-weight: 600;
+    color: #fff;
+    background: #2f6fdb;
+    border: 0;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  button:hover { background: #285fc0; }
+  button:focus-visible { outline: 2px solid #173d80; outline-offset: 2px; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Créer un compte</h1>
+
+  <!--
+    Universal Acceptance (RFC 5890/5891 — IDNA, RFC 6530/6531 — EAI) :
+    ce formulaire accepte les adresses et les noms de domaine
+    internationalisés (« marie.dupont@société.fr », « 用户@example.com »,
+    « пример@испытание.рф ») comme leurs équivalents « xn--… ».
+    Aucune liste de TLD n’est codée en dur et aucune limite arbitraire de
+    longueur n’est imposée aux extensions (« .technology », « .рф »…).
+
+    Le champ e-mail utilise type="text" (et le formulaire « novalidate ») :
+    selon les navigateurs, <input type="email"> rejette ou réécrit les
+    adresses internationalisées. La validation syntaxique est faite en
+    JavaScript, ci-dessous. Conformité vérifiable avec :
+    npx ua-agent-kit check <cette-page.html>
+  -->
+  <p id="succes" class="succes" role="status" tabindex="-1" hidden></p>
+  <noscript><p class="erreur">La validation des champs nécessite JavaScript.</p></noscript>
+
+  <form id="inscription" action="#" method="post" novalidate>
+    <div class="champ">
+      <label for="nom">Nom complet</label>
+      <input type="text" id="nom" name="nom" autocomplete="name" required
+             spellcheck="false" aria-describedby="erreur-nom">
+      <p class="erreur" id="erreur-nom" aria-live="polite"></p>
+    </div>
+
+    <div class="champ">
+      <label for="email">Adresse e-mail</label>
+      <input type="text" id="email" name="email" inputmode="email" autocomplete="email"
+             autocapitalize="none" spellcheck="false" required
+             aria-describedby="erreur-email">
+      <p class="erreur" id="erreur-email" aria-live="polite"></p>
+      <p class="aide">Les adresses internationalisées sont acceptées, par ex. « josé.dupont@société.fr » ou « 用户@example.com ».</p>
+    </div>
+
+    <div class="champ">
+      <label for="site">Site web</label>
+      <input type="url" id="site" name="site" autocomplete="url"
+             autocapitalize="none" spellcheck="false" required
+             placeholder="https://exemple.fr" aria-describedby="erreur-site">
+      <p class="erreur" id="erreur-site" aria-live="polite"></p>
+      <p class="aide">Le schéma est facultatif ; les domaines internationalisés sont acceptés (ex. « https://société.fr »).</p>
+    </div>
+
+    <div class="champ">
+      <label for="motdepasse">Mot de passe</label>
+      <input type="password" id="motdepasse" name="motdepasse" autocomplete="new-password"
+             required aria-describedby="erreur-motdepasse">
+      <p class="erreur" id="erreur-motdepasse" aria-live="polite"></p>
+      <p class="aide">8 caractères minimum, dont au moins une lettre et un chiffre.</p>
+    </div>
+
+    <button type="submit">Créer mon compte</button>
+  </form>
+</main>
+
+<script>
+'use strict';
+(function () {
+
+  var form = document.getElementById('inscription');
+  var succes = document.getElementById('succes');
+  var formulaireSoumis = false;
+
+  /* \p{L} (une lettre, tout script Unicode) n’existe pas dans les très
+     anciens moteurs JavaScript : construction dynamique, avec un repli. */
+  var RE_LETTRE;
+  try {
+    RE_LETTRE = new RegExp('\\p{L}', 'u');
+  } catch (e) {
+    /* Repli approximatif : ni espace, ni chiffre, ni ponctuation ASCII. */
+    RE_LETTRE = /[^\s\d\x21-\x2F\x3A-\x40\x5B-\x60\x7B-\x7E]/;
+  }
+
+  /* Caractères jamais acceptés dans un nom de domaine avant conversion.
+     Tout le reste — punycode, libellés vides, code points interdits par
+     IDNA2008 / UTS #46 — est vérifié par l’analyseur d’URL du navigateur. */
+  var RE_INTERDITS_DOMAINE = /[\s:\/?#\[\]@%\\]/;
+
+  /* Libellé une fois converti en A-label ASCII : lettres, chiffres,
+     underscore ou tirets — jamais en première ni dernière position. */
+  var RE_LIBELLE_ASCII = /^[a-z0-9_](?:[a-z0-9_-]*[a-z0-9_])?$/;
+
+  /* Extension valide : au moins deux lettres, ou une extension
+     internationalisée sous forme d’A-label « xn--… » (ex. « .рф » =
+     « .xn--p1ai »). Aucune liste codée en dur, aucun plafond de longueur. */
+  function extensionValide(tld) {
+    return /^[a-z]{2,63}$/.test(tld) || tld.slice(0, 4) === 'xn--';
+  }
+
+  /* Vérifie un nom de domaine (saisi en Unicode ou en ASCII).
+     Renvoie null si valide, sinon le message d’erreur à afficher. */
+  function verifierNomDomaine(domaine) {
+    if (domaine === '') {
+      return 'Le domaine ne peut pas être vide.';
+    }
+    if (/\s/.test(domaine)) {
+      return 'Le domaine ne doit pas contenir d’espace.';
+    }
+    if (RE_INTERDITS_DOMAINE.test(domaine)) {
+      return 'Le domaine contient des caractères interdits.';
+    }
+
+    /* Conversion U-labels → A-labels (IDNA2008 / UTS #46) via l’analyseur
+       d’URL du navigateur, sans bibliothèque externe. La valeur saisie
+       n’est jamais modifiée : on ne convertit que pour vérifier. */
+    var ascii;
+    try {
+      ascii = new URL('http://' + domaine).hostname;
+    } catch (e) {
+      return '« ' + domaine + ' » n’est pas un nom de domaine valide.';
+    }
+
+    if (ascii.length > 253) {
+      return 'Le domaine est trop long (253 octets maximum une fois converti).';
+    }
+
+    var libelles = ascii.split('.');
+    if (libelles.length < 2) {
+      return 'Le domaine doit comporter au moins deux parties séparées par un point (ex. « exemple.fr »).';
+    }
+    for (var i = 0; i < libelles.length; i++) {
+      var libelle = libelles[i];
+      if (libelle === '') {
+        return 'Le domaine contient une partie vide (point doublé, ou en début ou fin).';
+      }
+      if (libelle.length > 63) {
+        return 'Chaque partie du domaine est limitée à 63 octets.';
+      }
+      if (!RE_LIBELLE_ASCII.test(libelle)) {
+        return 'La partie « ' + libelle + ' » du domaine n’est pas valide (lettres, chiffres ou tirets ; tiret interdit en début ou fin de partie).';
+      }
+    }
+
+    var tld = libelles[libelles.length - 1];
+    if (!extensionValide(tld)) {
+      return 'L’extension « .' + tld + ' » n’est pas valide : deux lettres au minimum, ou une extension internationalisée (ex. « .fr », « .technology », « .рф »).';
+    }
+    return null;
+  }
+
+  /* Chaque validateur renvoie null si le champ est valide,
+     sinon le message d’erreur à afficher. */
+
+  function validerNom(valeur) {
+    var v = valeur.trim();
+    if (v === '') {
+      return 'Veuillez saisir votre nom complet.';
+    }
+    if (v.length < 2) {
+      return 'Le nom doit comporter au moins 2 caractères.';
+    }
+    if (v.length > 100) {
+      return 'Le nom est limité à 100 caractères.';
+    }
+    if (!RE_LETTRE.test(v)) {
+      return 'Le nom doit contenir au moins une lettre.';
+    }
+    return null;
+  }
+
+  function validerEmail(valeur) {
+    var v = valeur.trim();
+    if (v === '') {
+      return 'Veuillez saisir votre adresse e-mail.';
+    }
+    var morceaux = v.split('@');
+    if (morceaux.length !== 2) {
+      return 'L’adresse doit contenir exactement un « @ ».';
+    }
+    var local = morceaux[0];
+    if (local === '') {
+      return 'La partie située avant le « @ » ne peut pas être vide.';
+    }
+    if (/\s/.test(local)) {
+      return 'La partie située avant le « @ » ne doit pas contenir d’espace.';
+    }
+    if (/[\u0000-\u001F\u007F]/.test(local)) {
+      return 'La partie située avant le « @ » contient des caractères de contrôle interdits.';
+    }
+    if (local.length > 64) {
+      return 'La partie située avant le « @ » est limitée à 64 caractères.';
+    }
+    return verifierNomDomaine(morceaux[1]);
+  }
+
+  function validerSite(valeur) {
+    var v = valeur.trim();
+    if (v === '') {
+      return 'Veuillez indiquer l’adresse de votre site web.';
+    }
+    /* Schéma facultatif : on l’ajoute pour la validation seulement,
+       sans jamais modifier la saisie de l’utilisateur. */
+    var candidate = /^[a-z][a-z0-9+.-]*:\/\//i.test(v) ? v : 'https://' + v;
+    var u;
+    try {
+      u = new URL(candidate);
+    } catch (e) {
+      return 'Cette adresse n’est pas une URL valide (ex. « https://exemple.fr/mon-site »).';
+    }
+    if (u.protocol !== 'http:' && u.protocol !== 'https:') {
+      return 'L’adresse doit commencer par « http:// », par « https:// », ou par aucun schéma.';
+    }
+    if (u.username !== '' || u.password !== '') {
+      return 'L’adresse ne doit pas contenir d’identifiant (« …@… »).';
+    }
+    return verifierNomDomaine(u.hostname);
+  }
+
+  function validerMotDePasse(valeur) {
+    if (valeur === '') {
+      return 'Veuillez choisir un mot de passe.';
+    }
+    if (valeur.length < 8) {
+      return 'Le mot de passe doit contenir au moins 8 caractères.';
+    }
+    if (valeur.length > 128) {
+      return 'Le mot de passe est limité à 128 caractères.';
+    }
+    if (!RE_LETTRE.test(valeur) || !/[0-9]/.test(valeur)) {
+      return 'Le mot de passe doit contenir au moins une lettre et un chiffre.';
+    }
+    return null;
+  }
+
+  var validateurs = {
+    'nom': validerNom,
+    'email': validerEmail,
+    'site': validerSite,
+    'motdepasse': validerMotDePasse
+  };
+
+  function afficherErreur(champ, message) {
+    var p = document.getElementById('erreur-' + champ.id);
+    if (message) {
+      p.textContent = message;
+      p.hidden = false;
+      champ.setAttribute('aria-invalid', 'true');
+    } else {
+      p.textContent = '';
+      p.hidden = true;
+      champ.removeAttribute('aria-invalid');
+    }
+  }
+
+  function validerChamp(champ) {
+    var message = validateurs[champ.id](champ.value);
+    afficherErreur(champ, message);
+    return message === null;
+  }
+
+  function champEnErreur(champ) {
+    var p = document.getElementById('erreur-' + champ.id);
+    return p !== null && !p.hidden;
+  }
+
+  var champs = Array.prototype.slice.call(form.querySelectorAll('input'));
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault(); /* Page autonome : aucun envoi réel. */
+    formulaireSoumis = true;
+    var premierInvalide = null;
+    champs.forEach(function (champ) {
+      if (!validerChamp(champ) && premierInvalide === null) {
+        premierInvalide = champ;
+      }
+    });
+    if (premierInvalide !== null) {
+      succes.hidden = true;
+      premierInvalide.focus();
+    } else {
+      succes.textContent = 'Tous les champs sont valides — envoi simulé (page autonome : aucune donnée n’est transmise).';
+      succes.hidden = false;
+      succes.focus();
+    }
+  });
+
+  champs.forEach(function (champ) {
+    /* En quittant un champ : contrôle immédiat (sauf champ encore vide
+       avant toute tentative d’envoi). */
+    champ.addEventListener('blur', function () {
+      if (champ.value !== '' || formulaireSoumis) {
+        validerChamp(champ);
+      }
+    });
+    /* En cours de saisie : re-contrôle dès qu’une erreur est affichée
+       ou après une première tentative d’envoi. */
+    champ.addEventListener('input', function () {
+      if (!succes.hidden) {
+        succes.hidden = true;
+      }
+      if (formulaireSoumis || champEnErreur(champ)) {
+        validerChamp(champ);
+      }
+    });
+  });
+
+})();
+</script>
+</body>
+</html>

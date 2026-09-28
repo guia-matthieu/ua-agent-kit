@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Create your account</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 2.5rem 1rem 4rem;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.5;
+    color: #202429;
+    background: #eef1f5;
+  }
+  main { max-width: 32rem; margin: 0 auto; }
+  .card {
+    background: #ffffff;
+    border: 1px solid #d7dbe1;
+    border-radius: 12px;
+    padding: 1.75rem 1.5rem 1.5rem;
+    box-shadow: 0 8px 24px rgba(15, 25, 40, 0.07);
+  }
+  h1 { margin: 0 0 0.25rem; font-size: 1.45rem; }
+  h2 { margin: 0 0 0.5rem; font-size: 1.25rem; }
+  .lead { margin: 0 0 1.4rem; color: #5a6472; font-size: 0.95rem; }
+  .field { margin-bottom: 1.15rem; }
+  label { display: block; margin-bottom: 0.3rem; font-weight: 600; font-size: 0.9rem; }
+  input {
+    display: block;
+    width: 100%;
+    padding: 0.55rem 0.7rem;
+    font: inherit;
+    color: inherit;
+    background: #ffffff;
+    border: 1px solid #b9bfc8;
+    border-radius: 8px;
+  }
+  input:focus {
+    outline: 2px solid #2f6fed;
+    outline-offset: 1px;
+    border-color: #2f6fed;
+  }
+  input[aria-invalid="true"] { border-color: #d5423e; }
+  input[aria-invalid="true"]:focus { outline-color: #d5423e; }
+  .error { margin: 0.4rem 0 0; color: #c0261f; font-size: 0.85rem; }
+  .hint { margin: 0.4rem 0 0; color: #5a6472; font-size: 0.8rem; }
+  .hint code {
+    font-size: 0.92em;
+    background: #eef1f5;
+    border: 1px solid #dde2e8;
+    border-radius: 4px;
+    padding: 0.05em 0.3em;
+    word-break: break-all;
+  }
+  button { font: inherit; cursor: pointer; }
+  .primary {
+    display: block;
+    width: 100%;
+    margin-top: 0.5rem;
+    padding: 0.65rem 1rem;
+    font-weight: 600;
+    color: #ffffff;
+    background: #2160e6;
+    border: 1px solid #1b4fc0;
+    border-radius: 8px;
+  }
+  .primary:hover { background: #1b4fc0; }
+  .primary:active { transform: translateY(1px); }
+  .ghost {
+    padding: 0.45rem 0.95rem;
+    color: inherit;
+    background: #ffffff;
+    border: 1px solid #b9bfc8;
+    border-radius: 8px;
+  }
+  .ghost:hover { background: #f3f5f8; }
+  .success p { margin: 0.5rem 0; }
+  .success dl {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 0.4rem 1.2rem;
+    margin: 1rem 0;
+    font-size: 0.95rem;
+  }
+  .success dt { color: #5a6472; font-weight: 600; }
+  .success dd { margin: 0; overflow-wrap: anywhere; }
+  .success .hint { margin-top: 0.75rem; }
+</style>
+</head>
+<body>
+<main>
+  <form id="signup" class="card" novalidate>
+    <h1>Create your account</h1>
+    <p class="lead">All fields are required. Internationalized email addresses and domain names are supported.</p>
+
+    <div class="field">
+      <label for="fullname">Full name</label>
+      <input type="text" id="fullname" name="fullname" autocomplete="name" required
+             aria-describedby="fullname-error">
+      <p class="error" id="fullname-error" hidden></p>
+    </div>
+
+    <!-- Deliberately type="text", not type="email": browsers disagree on
+         internationalized addresses (one rejects them, another silently rewrites
+         them to punycode before scripts can read the value). We run our own,
+         Universal Acceptance compliant check instead. -->
+    <div class="field">
+      <label for="email">Email address</label>
+      <input type="text" id="email" name="email" autocomplete="email" inputmode="email" required
+             autocapitalize="none" autocorrect="off" spellcheck="false"
+             aria-describedby="email-hint email-error">
+      <p class="hint" id="email-hint">Any valid address works, including internationalized ones such as
+        <code>josé.dupont@société.fr</code> or <code>用户@例子.中国</code>.</p>
+      <p class="error" id="email-error" hidden></p>
+      <p class="hint" id="email-ascii" hidden></p>
+    </div>
+
+    <!-- Same idea: we validate the URL ourselves so behaviour is identical in
+         every browser, with or without an internationalized domain name. -->
+    <div class="field">
+      <label for="website">Website</label>
+      <input type="text" id="website" name="website" autocomplete="url" inputmode="url" required
+             autocapitalize="none" autocorrect="off" spellcheck="false"
+             aria-describedby="website-hint website-error">
+      <p class="hint" id="website-hint">Include the scheme, e.g. <code>https://www.example.com</code>;
+        it is assumed if omitted. Unicode domains such as <code>https://例子.中国</code> are accepted.</p>
+      <p class="error" id="website-error" hidden></p>
+    </div>
+
+    <div class="field">
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" autocomplete="new-password" required
+             aria-describedby="password-hint password-error">
+      <p class="hint" id="password-hint">At least 8 characters, including at least one letter and one digit.</p>
+      <p class="error" id="password-error" hidden></p>
+    </div>
+
+    <button type="submit" class="primary">Create account</button>
+  </form>
+
+  <section id="success" class="card success" role="status" tabindex="-1" hidden>
+    <h2>Account created</h2>
+    <p>Your account was registered with:</p>
+    <dl>
+      <dt>Full name</dt><dd id="s-fullname"></dd>
+      <dt>Email (as typed)</dt><dd id="s-email"></dd>
+      <dt>Email (A-label form)</dt><dd id="s-email-ascii"></dd>
+      <dt>Website</dt><dd id="s-website"></dd>
+    </dl>
+    <p class="hint">The A-label form is what gets used for DNS lookups and storage keys; the address
+      exactly as you typed it is kept for display and sign-in. Demo only — nothing leaves this page;
+      the payload is logged to the console.</p>
+    <p><button type="button" id="restart" class="ghost">Register someone else</button></p>
+  </section>
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  /* Universal Acceptance rules implemented below:
+     - local parts may contain Unicode and symbols like + or ' (RFC 6531)
+     - domains may be U-labels (société.fr) or A-labels (xn--socit-esab.fr),
+       case-insensitively; both spellings are the same name
+     - TLDs have no fixed length (.technology, .international, .xn--p1ai, ...)
+       and are never matched against a hard-coded list
+     - what the user typed is preserved alongside the converted ASCII form */
+
+  const CONTROL = /[\u0000-\u001F\u007F]/;          // C0 controls and DEL
+  const LABEL = /^[a-z0-9]([a-z0-9-]*[a-z0-9])?$/;  // shape of a valid A-label
+  const encoder = new TextEncoder();
+
+  const err = (message) => ({ error: message });
+
+  /* Convert a domain (U-labels or A-labels) to its A-label form using the
+     browser's IDNA2008 / UTS #46 implementation, reached through the URL
+     parser. Returns null for anything that is not a valid domain name. */
+  function toAsciiDomain(raw) {
+    let domain = raw;
+    if (!domain) return null;
+
+    if (domain.endsWith('.')) domain = domain.slice(0, -1); // FQDN trailing dot
+    if (!domain) return null;
+
+    // No whitespace/controls, and nothing that a URL parser could swallow as
+    // userinfo, port, path, query or fragment instead of the host.
+    if (/[\s\/\\?#@:%]/u.test(domain) || CONTROL.test(domain)) return null;
+
+    // No empty labels around ASCII dots (UTS #46 maps the other dot
+    // characters, such as 。, to a plain "." during conversion).
+    if (domain.split('.').some((label) => label.length === 0)) return null;
+
+    let host;
+    try {
+      const u = new URL('http://' + domain);
+      if (u.username || u.password || u.port ||
+          u.pathname !== '/' || u.search || u.hash) {
+        return null; // something other than the host was consumed
+      }
+      host = u.hostname; // punycode A-labels, lower-cased
+    } catch (_) {
+      return null;
+    }
+
+    // Validate the A-label form: 1–63 characters per label, only letters,
+    // digits and inner hyphens, 253 characters for the whole name.
+    if (!host || host.length > 253) return null;
+    const labels = host.split('.');
+    if (labels.some((label) => label.length > 63 || !LABEL.test(label))) {
+      return null;
+    }
+    return { host: host, labels: labels };
+  }
+
+  /* A syntactically plausible TLD: two or more letters (.fr, .technology),
+     or an internationalized TLD in A-label form (.xn--p1ai for .рф).
+     Deliberately no upper bound and no allow-list. */
+  function isPlausibleTld(label) {
+    return /^[a-z]{2,}$/.test(label) || label.startsWith('xn--');
+  }
+
+  function isIPv4(host) {
+    const m = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/.exec(host);
+    return !!m && m.slice(1).every((part) => Number(part) <= 255);
+  }
+
+  function isIPv6(host) { // IPv6 hosts come back in [brackets]
+    return /^\[[0-9A-Fa-f:.]+\]$/.test(host);
+  }
+
+  /* ------------------------------ validators ----------------------------- */
+
+  function validateFullName(value) {
+    const v = value.trim();
+    if (!v) return err('Please enter your full name.');
+    const length = Array.from(v).length; // code points, not UTF-16 units
+    if (length < 2) return err('Your name must be at least 2 characters long.');
+    if (length > 200) return err('Your name is too long (200 characters at most).');
+    if (CONTROL.test(v)) return err('Your name must not contain control characters.');
+    if (!/\p{L}/u.test(v)) return err('Your name must contain at least one letter.');
+    return { ok: true, value: v };
+  }
+
+  function validateEmail(value) {
+    const v = value.trim();
+    if (!v) return err('Please enter your email address.');
+
+    const parts = v.split('@');
+    if (parts.length !== 2) {
+      return err('An email address contains exactly one “@”, e.g. josé.dupont@example.fr.');
+    }
+    const local = parts[0];
+    const domain = parts[1];
+
+    if (!local) return err('The part before the “@” is missing.');
+    if (/\s/u.test(local) || CONTROL.test(local)) {
+      return err('The part before the “@” must not contain spaces or control characters.');
+    }
+    if (local.startsWith('.') || local.endsWith('.') || local.includes('..')) {
+      return err('Dots in the part before the “@” must not be doubled or sit at either end.');
+    }
+    if (encoder.encode(local).length > 64) {
+      return err('The part before the “@” must not exceed 64 bytes (UTF-8).');
+    }
+
+    const d = toAsciiDomain(domain);
+    if (!d) return err('Enter a valid domain after the “@”, e.g. example.com or société.fr.');
+    if (d.labels.length < 2) {
+      return err('The domain after the “@” needs at least two parts, like name.tld.');
+    }
+    if (!isPlausibleTld(d.labels[d.labels.length - 1])) {
+      return err('The domain ending must be at least two letters or an “xn--” A-label.');
+    }
+
+    return { ok: true, value: v, ascii: local + '@' + d.host };
+  }
+
+  function validateWebsite(value) {
+    const v = value.trim();
+    if (!v) return err('Please enter the address of your website, e.g. https://www.example.com.');
+    if (/\s/u.test(v) || CONTROL.test(v)) {
+      return err('The address must not contain spaces or control characters.');
+    }
+
+    let u = null;
+    try {
+      u = new URL(v);
+    } catch (_) {
+      try {
+        u = new URL('https://' + v); // tolerate a missing scheme
+      } catch (_e) {
+        return err('This does not look like a valid web address.');
+      }
+    }
+
+    if (u.protocol !== 'http:' && u.protocol !== 'https:') {
+      return err('The address must start with http:// or https://.');
+    }
+
+    // The URL parser has already converted the host to its A-label form.
+    const host = u.hostname;
+    if (!host) return err('The address is missing its domain name.');
+    if (isIPv4(host) || isIPv6(host) || host === 'localhost') {
+      return { ok: true, value: v };
+    }
+
+    const d = toAsciiDomain(host);
+    if (!d) return err('Enter a valid domain, e.g. example.com or société.fr.');
+    if (d.labels.length < 2) return err('The domain needs at least two parts, like name.tld.');
+    if (!isPlausibleTld(d.labels[d.labels.length - 1])) {
+      return err('The domain ending must be at least two letters or an “xn--” A-label.');
+    }
+    return { ok: true, value: v };
+  }
+
+  function validatePassword(value) {
+    if (!value) return err('Please choose a password.');
+    const length = Array.from(value).length; // characters, not UTF-16 units
+    if (length < 8) return err('Your password must be at least 8 characters long.');
+    if (length > 128) return err('Your password must be at most 128 characters long.');
+    if (!/\p{L}/u.test(value)) return err('Your password must contain at least one letter.');
+    if (!/\p{Nd}/u.test(value)) return err('Your password must contain at least one digit.');
+    return { ok: true, value: value };
+  }
+
+  /* ------------------------------- wiring -------------------------------- */
+
+  const validators = {
+    fullname: validateFullName,
+    email: validateEmail,
+    website: validateWebsite,
+    password: validatePassword
+  };
+
+  const form = document.getElementById('signup');
+  const successPanel = document.getElementById('success');
+  const emailAscii = document.getElementById('email-ascii');
+
+  const fields = Object.keys(validators).map((id) => ({
+    input: document.getElementById(id),
+    error: document.getElementById(id + '-error'),
+    validate: validators[id]
+  }));
+
+  function applyResult(field, result) {
+    if (result.ok) {
+      field.error.textContent = '';
+      field.error.hidden = true;
+      field.input.removeAttribute('aria-invalid');
+    } else {
+      field.error.textContent = result.error;
+      field.error.hidden = false;
+      field.input.setAttribute('aria-invalid', 'true');
+    }
+    if (field.input.id === 'email') {
+      if (result.ok && result.ascii && result.ascii.toLowerCase() !== result.value.toLowerCase()) {
+        emailAscii.textContent = 'Stored and looked up in DNS as: ' + result.ascii;
+        emailAscii.hidden = false;
+      } else {
+        emailAscii.hidden = true;
+      }
+    }
+  }
+
+  function checkField(field) {
+    const result = field.validate(field.input.value);
+    applyResult(field, result);
+    return result;
+  }
+
+  fields.forEach((field) => {
+    // Re-validate live, but only once a field has been marked invalid.
+    field.input.addEventListener('input', () => {
+      if (field.input.getAttribute('aria-invalid') === 'true') checkField(field);
+    });
+  });
+
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    const results = {};
+    let firstInvalid = null;
+    fields.forEach((field) => {
+      const result = checkField(field);
+      results[field.input.id] = result;
+      if (!result.ok && firstInvalid === null) firstInvalid = field.input;
+    });
+
+    if (firstInvalid) {
+      firstInvalid.focus();
+      return;
+    }
+
+    document.getElementById('s-fullname').textContent = results.fullname.value;
+    document.getElementById('s-email').textContent = results.email.value;
+    document.getElementById('s-email-ascii').textContent = results.email.ascii;
+    document.getElementById('s-website').textContent = results.website.value;
+
+    form.hidden = true;
+    successPanel.hidden = false;
+    successPanel.focus();
+
+    // In a real application this is what you would send to the server: the
+    // address as typed, plus its A-label form for DNS and storage keys.
+    console.log('signup payload', {
+      fullName: results.fullname.value,
+      email: { asTyped: results.email.value, aLabelForm: results.email.ascii },
+      website: results.website.value
+    });
+  });
+
+  document.getElementById('restart').addEventListener('click', () => {
+    form.reset();
+    fields.forEach((field) => {
+      field.error.textContent = '';
+      field.error.hidden = true;
+      field.input.removeAttribute('aria-invalid');
+    });
+    emailAscii.hidden = true;
+    successPanel.hidden = true;
+    form.hidden = false;
+    document.getElementById('fullname').focus();
+  });
+})();
+</script>
+</body>
+</html>

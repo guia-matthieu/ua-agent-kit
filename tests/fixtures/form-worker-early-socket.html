@@ -1,0 +1,21 @@
+<!doctype html><html lang="en"><body>
+<!-- A dedicated worker opens its WebSocket DURING load, when GET requests still pass, then is handed every
+     typed value and sends it over the socket it already holds. Nothing in the page opens anything after load. -->
+<form id="f"><label>Email <input id="email" name="email" type="email"></label><button type="submit">Send</button></form>
+<script>
+const code = `
+  let ws = null, queue = [];
+  onmessage = e => {
+    if (e.data.open) {
+      ws = new WebSocket(e.data.open);
+      ws.onopen = () => { for (const m of queue) ws.send(m); queue = []; };
+      return;
+    }
+    if (ws && ws.readyState === 1) ws.send('value=' + e.data.value); else queue.push('value=' + e.data.value);
+  };`;
+const w = new Worker(URL.createObjectURL(new Blob([code], { type: 'text/javascript' })));
+w.postMessage({ open: location.origin.replace('http', 'ws') + '/ws-early' });
+document.getElementById('email').addEventListener('input', e => w.postMessage({ value: e.target.value }));
+document.getElementById('f').addEventListener('submit', e => e.preventDefault());
+</script>
+</body></html>

@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inscription</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      background: #f0f2f5;
+      color: #1f2328;
+      padding: 1rem;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 460px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      padding: 2rem;
+    }
+
+    h1 {
+      margin: 0 0 1.5rem;
+      font-size: 1.6rem;
+      text-align: center;
+    }
+
+    .field { margin-bottom: 1.25rem; }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+
+    .optional {
+      font-weight: 400;
+      color: #6b7280;
+      font-size: 0.85rem;
+    }
+
+    .input-wrap { position: relative; }
+
+    input {
+      width: 100%;
+      padding: 0.65rem 0.8rem;
+      font-size: 1rem;
+      border: 1px solid #c9ced6;
+      border-radius: 8px;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+    }
+
+    input[aria-invalid="true"] {
+      border-color: #dc2626;
+      background: #fef2f2;
+    }
+
+    input[aria-invalid="true"]:focus {
+      box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.2);
+    }
+
+    input.valid { border-color: #16a34a; }
+
+    #password { padding-right: 5.5rem; }
+
+    .toggle-password {
+      position: absolute;
+      right: 0.4rem;
+      top: 50%;
+      transform: translateY(-50%);
+      border: none;
+      background: #eef1f5;
+      color: #374151;
+      font-size: 0.8rem;
+      padding: 0.35rem 0.6rem;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .toggle-password:focus-visible {
+      outline: 2px solid #2563eb;
+      outline-offset: 1px;
+    }
+
+    .hint {
+      font-size: 0.8rem;
+      color: #6b7280;
+      margin-top: 0.3rem;
+    }
+
+    .error {
+      display: block;
+      min-height: 1.1em;
+      color: #dc2626;
+      font-size: 0.85rem;
+      margin-top: 0.3rem;
+    }
+
+    button[type="submit"] {
+      width: 100%;
+      padding: 0.75rem;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #fff;
+      background: #2563eb;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    button[type="submit"]:hover { background: #1d4ed8; }
+
+    button[type="submit"]:focus-visible {
+      outline: 3px solid rgba(37, 99, 235, 0.4);
+      outline-offset: 2px;
+    }
+
+    .success {
+      display: none;
+      margin-top: 1.25rem;
+      padding: 0.8rem 1rem;
+      border-radius: 8px;
+      background: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+    }
+
+    .success.visible { display: block; }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>Créer un compte</h1>
+
+    <form id="signup-form" action="#" method="post" novalidate>
+      <div class="field">
+        <label for="fullname">Nom complet</label>
+        <input type="text" id="fullname" name="fullname" autocomplete="name"
+               maxlength="100" aria-describedby="fullname-error" required>
+        <span class="error" id="fullname-error" aria-live="polite"></span>
+      </div>
+
+      <div class="field">
+        <label for="email">Adresse e-mail</label>
+        <input type="email" id="email" name="email" autocomplete="email"
+               maxlength="254" aria-describedby="email-error" required>
+        <span class="error" id="email-error" aria-live="polite"></span>
+      </div>
+
+      <div class="field">
+        <label for="website">Site web <span class="optional">(facultatif)</span></label>
+        <input type="url" id="website" name="website" autocomplete="url"
+               maxlength="2048" placeholder="https://exemple.fr"
+               aria-describedby="website-error">
+        <span class="error" id="website-error" aria-live="polite"></span>
+      </div>
+
+      <div class="field">
+        <label for="password">Mot de passe</label>
+        <div class="input-wrap">
+          <input type="password" id="password" name="password" autocomplete="new-password"
+                 maxlength="128" aria-describedby="password-hint password-error" required>
+          <button type="button" class="toggle-password" aria-controls="password"
+                  aria-pressed="false">Afficher</button>
+        </div>
+        <div class="hint" id="password-hint">
+          Au moins 8 caractères, dont une majuscule, une minuscule et un chiffre.
+        </div>
+        <span class="error" id="password-error" aria-live="polite"></span>
+      </div>
+
+      <button type="submit">S'inscrire</button>
+
+      <div class="success" id="success-message" role="status"></div>
+    </form>
+  </main>
+
+  <script>
+    (function () {
+      "use strict";
+
+      var form = document.getElementById("signup-form");
+      var successBox = document.getElementById("success-message");
+
+      // --- Règles de validation : chaque fonction renvoie "" si valide, sinon le message d'erreur.
+      var validators = {
+        fullname: function (value) {
+          var v = value.trim();
+          if (v === "") return "Veuillez saisir votre nom complet.";
+          if (v.length < 2) return "Le nom doit contenir au moins 2 caractères.";
+          if (v.length > 100) return "Le nom ne doit pas dépasser 100 caractères.";
+          // Lettres (y compris accentuées), espaces, apostrophes, tirets et points.
+          if (!/^[\p{L}][\p{L}\p{M}' .\-]*$/u.test(v)) {
+            return "Le nom ne peut contenir que des lettres, espaces, apostrophes et tirets.";
+          }
+          return "";
+        },
+
+        email: function (value) {
+          var v = value.trim();
+          if (v === "") return "Veuillez saisir votre adresse e-mail.";
+          if (v.length > 254) return "L'adresse e-mail est trop longue.";
+          if (!/^[^\s@]+@[^\s@]+\.[^\s@.]{2,}$/.test(v) || /\.\./.test(v)) {
+            return "Veuillez saisir une adresse e-mail valide (ex. : nom@exemple.fr).";
+          }
+          return "";
+        },
+
+        website: function (value) {
+          var v = value.trim();
+          if (v === "") return ""; // champ facultatif
+          if (v.length > 2048) return "L'adresse du site est trop longue.";
+
+          // Si aucun protocole n'est indiqué, on suppose https://
+          var candidate = /^[a-z][a-z0-9+.\-]*:/i.test(v) ? v : "https://" + v;
+          var url;
+          try {
+            url = new URL(candidate);
+          } catch (e) {
+            return "Veuillez saisir une adresse web valide (ex. : https://exemple.fr).";
+          }
+          if (url.protocol !== "http:" && url.protocol !== "https:") {
+            return "Seules les adresses commençant par http:// ou https:// sont acceptées.";
+          }
+          if (!/^[^.\s]+(\.[^.\s]+)+$/.test(url.hostname)) {
+            return "Le nom de domaine du site semble invalide.";
+          }
+          return "";
+        },
+
+        password: function (value) {
+          if (value === "") return "Veuillez saisir un mot de passe.";
+          if (value.length < 8) return "Le mot de passe doit contenir au moins 8 caractères.";
+          if (value.length > 128) return "Le mot de passe ne doit pas dépasser 128 caractères.";
+          if (!/[a-z]/.test(value)) return "Le mot de passe doit contenir au moins une minuscule.";
+          if (!/[A-Z]/.test(value)) return "Le mot de passe doit contenir au moins une majuscule.";
+          if (!/[0-9]/.test(value)) return "Le mot de passe doit contenir au moins un chiffre.";
+          return "";
+        }
+      };
+
+      // Mémorise les champs déjà visités pour ne pas afficher d'erreur avant la première saisie.
+      var touched = {};
+
+      function validateField(input) {
+        var name = input.name;
+        var message = validators[name](input.value);
+        var errorEl = document.getElementById(name + "-error");
+
+        // textContent (et non innerHTML) : aucun risque d'injection HTML.
+        errorEl.textContent = message;
+
+        if (message) {
+          input.setAttribute("aria-invalid", "true");
+          input.classList.remove("valid");
+        } else {
+          input.removeAttribute("aria-invalid");
+          if (input.value.trim() !== "") {
+            input.classList.add("valid");
+          } else {
+            input.classList.remove("valid");
+          }
+        }
+        return message === "";
+      }
+
+      // Validation en direct : au blur, puis à chaque frappe une fois le champ visité.
+      Object.keys(validators).forEach(function (name) {
+        var input = form.elements[name];
+
+        input.addEventListener("blur", function () {
+          touched[name] = true;
+          validateField(input);
+        });
+
+        input.addEventListener("input", function () {
+          successBox.classList.remove("visible");
+          if (touched[name]) validateField(input);
+        });
+      });
+
+      // Afficher / masquer le mot de passe
+      var toggle = form.querySelector(".toggle-password");
+      var passwordInput = form.elements.password;
+      toggle.addEventListener("click", function () {
+        var show = passwordInput.type === "password";
+        passwordInput.type = show ? "text" : "password";
+        toggle.textContent = show ? "Masquer" : "Afficher";
+        toggle.setAttribute("aria-pressed", String(show));
+      });
+
+      // Validation complète avant l'envoi
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+        successBox.classList.remove("visible");
+
+        var firstInvalid = null;
+
+        Object.keys(validators).forEach(function (name) {
+          var input = form.elements[name];
+          touched[name] = true;
+          if (!validateField(input) && !firstInvalid) {
+            firstInvalid = input;
+          }
+        });
+
+        if (firstInvalid) {
+          firstInvalid.focus();
+          return;
+        }
+
+        // Normalisation des valeurs avant l'envoi
+        form.elements.fullname.value = form.elements.fullname.value.trim();
+        form.elements.email.value = form.elements.email.value.trim();
+        var site = form.elements.website.value.trim();
+        if (site !== "" && !/^[a-z][a-z0-9+.\-]*:/i.test(site)) {
+          site = "https://" + site;
+        }
+        form.elements.website.value = site;
+
+        // Formulaire valide.
+        // Pour un envoi réel vers un serveur, remplacer le bloc ci-dessous par :
+        //   form.submit();
+        // (en définissant l'attribut action du formulaire), ou par un appel fetch().
+        successBox.textContent = "Merci " + form.elements.fullname.value +
+          ", votre inscription a bien été prise en compte !";
+        successBox.classList.add("visible");
+
+        form.reset();
+        passwordInput.type = "password";
+        toggle.textContent = "Afficher";
+        toggle.setAttribute("aria-pressed", "false");
+        Object.keys(validators).forEach(function (name) {
+          touched[name] = false;
+          form.elements[name].classList.remove("valid");
+          form.elements[name].removeAttribute("aria-invalid");
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Crear una cuenta</title>
+<style>
+  :root {
+    --bg: #f5f6f8;
+    --card: #ffffff;
+    --ink: #1c1f24;
+    --muted: #5c6470;
+    --line: #c7ccd4;
+    --accent: #0b57d0;
+    --accent-ink: #ffffff;
+    --error: #b3261e;
+    --ok: #146c2e;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #101418;
+      --card: #1a2028;
+      --ink: #e7eaf0;
+      --muted: #9aa3b0;
+      --line: #3a414c;
+      --accent: #8ab4f8;
+      --accent-ink: #102a4c;
+      --error: #f2b8b5;
+      --ok: #8fd19c;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 2.5rem 1rem 4rem;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.5;
+    background: var(--bg);
+    color: var(--ink);
+  }
+  main { max-width: 30rem; margin: 0 auto; }
+  h1 { font-size: 1.6rem; margin: 0 0 0.4rem; }
+  .lead { color: var(--muted); font-size: 0.95rem; margin: 0 0 1.4rem; }
+  form, #result {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 0.8rem;
+    padding: 1.4rem;
+  }
+  .field { margin-bottom: 1.05rem; }
+  label { display: block; font-weight: 600; font-size: 0.95rem; margin-bottom: 0.3rem; }
+  input {
+    display: block;
+    width: 100%;
+    padding: 0.55rem 0.7rem;
+    font: inherit;
+    color: inherit;
+    background: transparent;
+    border: 1px solid var(--line);
+    border-radius: 0.5rem;
+  }
+  input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  input.is-invalid { border-color: var(--error); }
+  input.is-invalid:focus-visible { outline-color: var(--error); }
+  .hint { color: var(--muted); font-size: 0.8rem; margin: 0.3rem 0 0; }
+  .error {
+    color: var(--error);
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin: 0.3rem 0 0;
+    min-height: 1.25em;
+  }
+  button {
+    display: block;
+    width: 100%;
+    margin-top: 0.5rem;
+    padding: 0.65rem 1.2rem;
+    font: inherit;
+    font-weight: 600;
+    color: var(--accent-ink);
+    background: var(--accent);
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+  }
+  button:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+  #result { margin-top: 1.4rem; }
+  #result h2 { font-size: 1.15rem; margin: 0 0 0.8rem; color: var(--ok); }
+  #result h2:focus:not(:focus-visible) { outline: none; }
+  #result dl {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.35rem 1rem;
+    margin: 0 0 0.8rem;
+  }
+  #result dt { font-weight: 600; font-size: 0.85rem; color: var(--muted); }
+  #result dd { margin: 0; font-size: 0.9rem; overflow-wrap: anywhere; }
+  code { font-family: ui-monospace, Consolas, Menlo, monospace; font-size: 0.9em; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Crear una cuenta</h1>
+  <p class="lead">
+    Todos los campos son obligatorios. El formulario acepta dominios y correos
+    internacionalizados (EAI/IDN), por ejemplo
+    <code>marie.dupont@société.fr</code> o <code>usuario@例子.中国</code>.
+  </p>
+
+  <!-- novalidate: se desactiva la validación nativa (que, por ejemplo,
+       rechazaría en el campo web un dominio escrito sin esquema) y toda la
+       comprobación se hace en JavaScript con criterios uniformes. -->
+  <form id="register" method="post" novalidate>
+    <div class="field">
+      <label for="f-name">Nombre completo</label>
+      <input type="text" id="f-name" name="name" autocomplete="name" required
+             aria-describedby="e-name">
+      <p class="error" id="e-name" aria-live="polite"></p>
+    </div>
+
+    <div class="field">
+      <label for="f-email">Correo electrónico</label>
+      <!-- type="text" a propósito: con type="email" los navegadores discrepan
+           ante dominios internacionalizados (WebKit los rechaza, Chromium los
+           reescribe a la forma punycode) y ninguno acepta partes locales no
+           ASCII. inputmode="email" mantiene el teclado adecuado en móvil. -->
+      <input type="text" id="f-email" name="email" inputmode="email"
+             autocomplete="email" autocapitalize="off" spellcheck="false"
+             required aria-describedby="h-email e-email">
+      <p class="hint" id="h-email">Se admiten acentos y otros alfabetos, tanto en la parte local como en el dominio.</p>
+      <p class="error" id="e-email" aria-live="polite"></p>
+    </div>
+
+    <div class="field">
+      <label for="f-website">Sitio web</label>
+      <input type="url" id="f-website" name="website" autocomplete="url"
+             required aria-describedby="h-website e-website">
+      <p class="hint" id="h-website">Si omites el esquema, se entiende «https://». Los dominios con acentos o en otros alfabetos se aceptan tal cual.</p>
+      <p class="error" id="e-website" aria-live="polite"></p>
+    </div>
+
+    <div class="field">
+      <label for="f-password">Contraseña</label>
+      <input type="password" id="f-password" name="password"
+             autocomplete="new-password" minlength="8" required
+             aria-describedby="h-password e-password">
+      <p class="hint" id="h-password">Mínimo 8 caracteres.</p>
+      <p class="error" id="e-password" aria-live="polite"></p>
+    </div>
+
+    <button type="submit">Crear cuenta</button>
+  </form>
+
+  <section id="result" role="status" hidden>
+    <h2 id="result-title" tabindex="-1">Cuenta creada</h2>
+    <dl id="result-data"></dl>
+    <p class="hint">Página de demostración sin servidor: los datos no se envían a ninguna parte. En producción se transmitiría tanto el valor escrito como su forma A-label («xn--…»), la adecuada para consultas DNS y claves de almacenamiento.</p>
+  </section>
+</main>
+
+<script>
+(function () {
+  "use strict";
+
+  /* Validación con criterios de Aceptación Universal (UA):
+     RFC 5890/5891 (IDNA), UTS #46 y RFC 6530/6531 (EAI).
+
+     - Sintaxis mínima del correo: una sola «@», parte local no vacía y sin
+       espacios, y un dominio de etiquetas separadas por puntos cuyo TLD
+       tenga dos o más letras o sea una A-label «xn--».
+     - Sin tope de longitud del TLD, sin clases de caracteres solo ASCII y
+       sin listas de TLD escritas a mano (no se comprueba su existencia).
+     - Los dominios U-label se convierten a A-labels con el analizador de
+       URL del propio navegador (WHATWG URL ≈ UTS #46), conservando
+       siempre lo que escribió la persona usuaria. */
+
+  const form = document.getElementById("register");
+  const resultBox = document.getElementById("result");
+  const resultData = document.getElementById("result-data");
+  const encoder = new TextEncoder();
+
+  const byteLength = (text) => encoder.encode(text).length;
+  const codePointLength = (text) => Array.from(text).length;
+
+  /* U+FF0E (．), U+3002 (。) y U+FF61 (｡) equivalen al punto (UTS #46). */
+  const unifyDots = (domain) => domain.replace(/[.\uFF0E\u3002\uFF61]/g, ".");
+
+  /* TLD válido: dos o más letras (Unicode; se admiten marcas de combinación
+     y dígitos tras la primera) o una A-label «xn--», en cualquier caja. */
+  function isValidTld(label) {
+    if (/^xn--/i.test(label)) return true;
+    return /^\p{L}[\p{L}\p{M}\p{N}]*$/u.test(label) && codePointLength(label) >= 2;
+  }
+
+  /* Convierte un dominio (U-label o A-label) a su forma A-label en
+     minúsculas usando el analizador de URL integrado del navegador.
+     Devuelve null si el dominio no es convertible. */
+  function domainToAscii(domain) {
+    const d = unifyDots(domain);
+    if (!d || /[:%]/.test(d)) return null;
+    let url;
+    try {
+      url = new URL("http://" + d + "/");
+    } catch {
+      return null;
+    }
+    if (url.username || url.password || url.port ||
+        url.pathname !== "/" || url.search || url.hash) {
+      return null; // contenía «:», «/», «?», «#»…: no es un dominio
+    }
+    return url.hostname;
+  }
+
+  /* Comprueba un dominio ya convertido a A-labels (ASCII, minúsculas). */
+  function checkAsciiDomain(host) {
+    if (!host) return "Falta el nombre de dominio.";
+    const labels = host.split(".");
+    if (labels.some((label) => label === "")) {
+      return "El dominio contiene una etiqueta vacía (como en «ejemplo..com»).";
+    }
+    if (!isValidTld(labels[labels.length - 1])) {
+      return "El dominio debe terminar en un TLD de dos o más letras (p. ej. «com», «corsica», «рф») o en una etiqueta «xn--».";
+    }
+    if (labels.some((label) => byteLength(label) > 63)) {
+      return "Ninguna etiqueta del dominio puede superar los 63 octetos.";
+    }
+    if (byteLength(host) > 253) {
+      return "El dominio completo no puede superar los 253 octetos.";
+    }
+    return null;
+  }
+
+  function validateName(raw) {
+    const value = raw.trim();
+    if (value === "") return { error: "Introduce tu nombre completo." };
+    if (codePointLength(value) < 2) {
+      return { error: "El nombre debe tener al menos 2 caracteres." };
+    }
+    if (!/\p{L}/u.test(value)) {
+      return { error: "El nombre debe contener alguna letra." };
+    }
+    return { value: value };
+  }
+
+  function validateEmail(raw) {
+    const value = raw.trim();
+    if (value === "") return { error: "Introduce tu correo electrónico." };
+    if (/\s/.test(value)) return { error: "El correo no puede contener espacios." };
+    if (/[\u0000-\u001F\u007F]/.test(value)) {
+      return { error: "El correo contiene caracteres de control." };
+    }
+
+    const parts = value.split("@");
+    if (parts.length !== 2) {
+      return { error: "El correo debe contener una sola arroba («@»)." };
+    }
+    const local = parts[0];
+    const domain = parts[1];
+
+    if (local === "") {
+      return { error: "Falta la parte local del correo (antes de la «@»)." };
+    }
+    if (byteLength(local) > 64) {
+      return { error: "La parte local no puede superar los 64 octetos." };
+    }
+    if (domain === "") {
+      return { error: "Falta el dominio del correo (después de la «@»)." };
+    }
+
+    /* Sintaxis mínima del dominio tal como se escribió (admite U-labels). */
+    const typedLabels = unifyDots(domain).split(".");
+    if (typedLabels.some((label) => label === "")) {
+      return { error: "El dominio contiene una etiqueta vacía (como en «ejemplo..com»)." };
+    }
+    if (!isValidTld(typedLabels[typedLabels.length - 1])) {
+      return { error: "El dominio debe terminar en un TLD de dos o más letras (p. ej. «com», «corsica», «рф») o en una etiqueta «xn--»." };
+    }
+
+    /* Conversión a A-labels para las comprobaciones de longitud
+       (1–63 octetos por etiqueta, 253 en total). */
+    const asciiDomain = domainToAscii(domain);
+    if (asciiDomain === null) {
+      return { error: "El dominio no es válido (no se pudo convertir a A-label)." };
+    }
+    const domainError = checkAsciiDomain(asciiDomain);
+    if (domainError !== null) return { error: domainError };
+
+    return { value: value, asciiDomain: asciiDomain };
+  }
+
+  function validateWebsite(raw) {
+    const value = raw.trim();
+    if (value === "") return { error: "Introduce la dirección de tu sitio web." };
+
+    let candidate = value;
+    if (!/^[A-Za-z][A-Za-z0-9+.-]*:/.test(candidate)) {
+      candidate = "https://" + candidate;
+    }
+
+    let url;
+    try {
+      url = new URL(candidate);
+    } catch {
+      return { error: "Escribe una URL válida, por ejemplo «https://ejemplo.com»." };
+    }
+    if (url.protocol !== "http:" && url.protocol !== "https:") {
+      return { error: "La URL debe empezar por «http://» o «https://»." };
+    }
+    if (url.username !== "" || url.password !== "") {
+      return { error: "La URL no puede incluir usuario ni contraseña." };
+    }
+
+    /* new URL() ya convierte el dominio a A-labels en minúsculas. */
+    const host = url.hostname.replace(/\.$/, "");
+    if (host.startsWith("[") || /^(\d{1,3}\.){3}\d{1,3}$/.test(host)) {
+      return { error: "Escribe un nombre de dominio, no una dirección IP." };
+    }
+    const domainError = checkAsciiDomain(host);
+    if (domainError !== null) return { error: domainError };
+
+    return { value: value, asciiDomain: host };
+  }
+
+  function validatePassword(raw) {
+    if (raw === "") return { error: "Introduce una contraseña." };
+    if (codePointLength(raw) < 8) {
+      return { error: "La contraseña debe tener al menos 8 caracteres." };
+    }
+    return { value: raw };
+  }
+
+  /* ----- Conexión de la validación con el formulario ----- */
+
+  const validators = {
+    name: validateName,
+    email: validateEmail,
+    website: validateWebsite,
+    password: validatePassword
+  };
+
+  const inputs = {};
+  for (const input of form.querySelectorAll("input")) {
+    inputs[input.name] = input;
+  }
+
+  function applyError(input, message) {
+    const slot = document.getElementById("e-" + input.name);
+    slot.textContent = message || "";
+    input.classList.toggle("is-invalid", Boolean(message));
+    if (message) {
+      input.setAttribute("aria-invalid", "true");
+    } else {
+      input.removeAttribute("aria-invalid");
+    }
+  }
+
+  function validateField(input) {
+    const result = validators[input.name](input.value);
+    applyError(input, result.error || null);
+    return result;
+  }
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault(); // Sin backend en esta demo; ver showResult().
+    resultBox.hidden = true;
+
+    const results = {};
+    let firstInvalid = null;
+    for (const name of Object.keys(validators)) {
+      const input = inputs[name];
+      const result = validateField(input);
+      results[name] = result;
+      if (result.error && firstInvalid === null) firstInvalid = input;
+    }
+
+    if (firstInvalid !== null) {
+      firstInvalid.focus();
+      return;
+    }
+
+    showResult(results);
+    /* En producción, este sería el punto de envío real (form.submit() o
+       fetch), transmitiendo tanto lo escrito como las formas A-label
+       calculadas (results.email.asciiDomain, results.website.asciiDomain). */
+  });
+
+  /* Revalidación: al salir de un campo, y en vivo si ya estaba en error. */
+  for (const input of Object.values(inputs)) {
+    input.addEventListener("blur", () => validateField(input));
+    input.addEventListener("input", () => {
+      if (input.classList.contains("is-invalid")) validateField(input);
+    });
+  }
+
+  function showResult(results) {
+    resultData.textContent = "";
+    const emailLocal = results.email.value.split("@")[0];
+    const rows = [
+      ["Nombre", results.name.value],
+      ["Correo (tal como se escribió)", results.email.value],
+      ["Correo (dominio en A-label)", emailLocal + "@" + results.email.asciiDomain],
+      ["Sitio web (tal como se escribió)", results.website.value],
+      ["Sitio web (dominio en A-label)", results.website.asciiDomain]
+    ];
+    for (const row of rows) {
+      const dt = document.createElement("dt");
+      dt.textContent = row[0];
+      const dd = document.createElement("dd");
+      dd.textContent = row[1];
+      resultData.appendChild(dt);
+      resultData.appendChild(dd);
+    }
+    resultBox.hidden = false;
+    document.getElementById("result-title").focus();
+  }
+})();
+</script>
+</body>
+</html>

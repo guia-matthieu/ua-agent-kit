@@ -1,0 +1,19 @@
+<!doctype html><html lang="en"><body>
+<!-- Validation only in the submit handler, with the classic ASCII regex: the pattern "validate before submit" asks for. -->
+<form id="f" novalidate><label>Name <input id="name" name="name" type="text" required></label>
+<label>Email <input id="email" name="email" type="text"></label><div id="err-email" hidden>Invalid email</div>
+<label>Website <input id="site" name="website" type="text"></label><div id="err-site" hidden>Invalid website</div>
+<label>Password <input id="pw" name="password" type="password" required></label><div id="err-pw" hidden>Invalid password</div>
+<button type="submit">Send</button></form>
+<script>
+const EMAIL = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+document.getElementById('f').addEventListener('submit', e => {
+  e.preventDefault();
+  const v = id => document.getElementById(id).value;
+  document.getElementById('err-email').hidden = EMAIL.test(v('email'));
+  document.getElementById('err-pw').hidden = v('pw').length >= 8;
+  // wants a bare domain: the runner's companion value https://example.com is rejected on every submit
+  document.getElementById('err-site').hidden = !/^https?:/.test(v('site'));
+});
+</script>
+</body></html>

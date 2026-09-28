@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Formulario de registro</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 32px 16px;
+      font-family: system-ui, sans-serif;
+      line-height: 1.5;
+      color: #182235;
+      background: #f0f4f8;
+    }
+    main {
+      width: 100%;
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 28px;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px #18223514;
+    }
+    h1 { margin: 0 0 8px; font-size: 1.8rem; }
+    .intro { margin: 0 0 24px; color: #4b5563; }
+    .field { margin-bottom: 20px; }
+    label { display: block; margin-bottom: 6px; font-weight: 600; }
+    input {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #667085;
+      border-radius: 8px;
+      font: inherit;
+      background: #fff;
+      color: inherit;
+    }
+    input:focus-visible, button:focus-visible {
+      outline: 3px solid #2563eb;
+      outline-offset: 3px;
+    }
+    input[aria-invalid="true"] { border: 2px solid #b42318; }
+    .hint { margin: 6px 0 0; color: #4b5563; font-size: .875rem; }
+    .error {
+      margin: 6px 0 0;
+      color: #b42318;
+      font-size: .9rem;
+    }
+    .error:empty { display: none; }
+    button {
+      width: 100%;
+      padding: 12px 16px;
+      border: 0;
+      border-radius: 8px;
+      background: #1d4ed8;
+      color: white;
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    button:hover { background: #1e40af; }
+    #status { margin: 16px 0 0; }
+    #status:empty { display: none; }
+    noscript p { color: #b42318; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Crea tu cuenta</h1>
+    <p class="intro">Todos los campos son obligatorios.</p>
+
+    <noscript>
+      <p>Activa JavaScript para validar este formulario. Esta demostración no envía datos.</p>
+    </noscript>
+
+    <form id="registration" method="post" novalidate>
+      <div class="field">
+        <label for="full-name">Nombre completo</label>
+        <input
+          id="full-name"
+          name="nombre"
+          type="text"
+          autocomplete="name"
+          required
+          aria-describedby="name-error"
+        >
+        <p class="error" id="name-error" aria-live="polite"></p>
+      </div>
+
+      <div class="field">
+        <label for="email">Dirección de correo electrónico</label>
+        <!-- type="text" permite conservar dominios y partes locales Unicode. -->
+        <input
+          id="email"
+          name="correo_original"
+          type="text"
+          inputmode="email"
+          autocomplete="email"
+          autocapitalize="none"
+          spellcheck="false"
+          required
+          aria-describedby="email-hint email-error"
+        >
+        <p class="hint" id="email-hint">Se admiten direcciones internacionales, como josé@société.fr.</p>
+        <p class="error" id="email-error" aria-live="polite"></p>
+      </div>
+
+      <div class="field">
+        <label for="website">Sitio web</label>
+        <input
+          id="website"
+          name="sitio_original"
+          type="url"
+          inputmode="url"
+          autocomplete="url"
+          autocapitalize="none"
+          spellcheck="false"
+          placeholder="https://ejemplo.com"
+          required
+          aria-describedby="website-hint website-error"
+        >
+        <p class="hint" id="website-hint">Incluye https:// o http://. Se admiten dominios internacionales.</p>
+        <p class="error" id="website-error" aria-live="polite"></p>
+      </div>
+
+      <div class="field">
+        <label for="password">Contraseña</label>
+        <input
+          id="password"
+          name="contrasena"
+          type="password"
+          autocomplete="new-password"
+          required
+          aria-describedby="password-hint password-error"
+        >
+        <p class="hint" id="password-hint">Utiliza al menos 12 caracteres. Puedes usar una frase larga.</p>
+        <p class="error" id="password-error" aria-live="polite"></p>
+      </div>
+
+      <!-- Se conserva lo escrito y, por separado, su representación normalizada. -->
+      <input id="email-normalized" name="correo_normalizado" type="hidden">
+      <input id="website-normalized" name="sitio_normalizado" type="hidden">
+
+      <button id="submit-button" type="submit" disabled>Crear cuenta</button>
+      <p id="status" role="status" aria-live="polite"></p>
+    </form>
+  </main>
+
+  <script>
+    "use strict";
+
+    const form = document.getElementById("registration");
+    const status = document.getElementById("status");
+    const emailNormalized = document.getElementById("email-normalized");
+    const websiteNormalized = document.getElementById("website-normalized");
+
+    /*
+     * La API URL del navegador aplica conversión IDNA / UTS #46.
+     * Las comprobaciones ASCII se realizan DESPUÉS de convertir Unicode.
+     * No se comprueba aquí la existencia del dominio ni su capacidad de recibir correo.
+     */
+    function domainToASCII(domain) {
+      if (!domain || /[\s\u0000-\u001f\u007f/\\:@?#%\[\]]/u.test(domain)) {
+        throw new Error("Dominio no válido");
+      }
+
+      const ascii = new URL("https://" + domain + "/").hostname.toLowerCase();
+      const labels = ascii.split(".");
+
+      if (ascii.length > 253 || labels.length < 2) {
+        throw new Error("Longitud o estructura de dominio no válida");
+      }
+
+      for (const label of labels) {
+        if (
+          label.length < 1 ||
+          label.length > 63 ||
+          !/^[a-z0-9-]+$/i.test(label) ||
+          label.startsWith("-") ||
+          label.endsWith("-")
+        ) {
+          throw new Error("Etiqueta de dominio no válida");
+        }
+      }
+
+      const tld = labels[labels.length - 1];
+      if (!/^(?:[a-z]{2,}|xn--[a-z0-9-]+)$/i.test(tld)) {
+        throw new Error("Terminación de dominio no válida");
+      }
+
+      return ascii;
+    }
+
+    function validateName(value) {
+      if (!value.trim()) return "Introduce tu nombre completo.";
+      if (/[\u0000-\u001f\u007f]/u.test(value)) {
+        return "El nombre no puede contener caracteres de control.";
+      }
+      return "";
+    }
+
+    function validateEmail(value) {
+      emailNormalized.value = "";
+
+      if (!value) return "Introduce tu dirección de correo electrónico.";
+
+      const parts = value.split("@");
+      if (
+        parts.length !== 2 ||
+        !parts[0] ||
+        /[\s\u0000-\u001f\u007f]/u.test(parts[0])
+      ) {
+        return "Introduce un correo con una sola @ y una parte anterior sin espacios.";
+      }
+
+      try {
+        const domain = domainToASCII(parts[1]);
+        // No se cambia el uso de mayúsculas de la parte local.
+        emailNormalized.value = parts[0] + "@" + domain;
+        return "";
+      } catch {
+        return "Introduce un dominio válido, como ejemplo.technology o société.fr.";
+      }
+    }
+
+    function validateWebsite(value) {
+      websiteNormalized.value = "";
+
+      if (!value) return "Introduce la dirección de tu sitio web.";
+
+      if (
+        !/^https?:\/\//i.test(value) ||
+        /[\s\u0000-\u001f\u007f\\]/u.test(value)
+      ) {
+        return "Usa una URL que empiece por https:// o http://, sin espacios.";
+      }
+
+      try {
+        const url = new URL(value);
+        if (
+          !["https:", "http:"].includes(url.protocol) ||
+          !url.hostname ||
+          url.username ||
+          url.password
+        ) {
+          return "Introduce una URL HTTP o HTTPS sin credenciales.";
+        }
+
+        // URL normaliza el dominio internacional sin alterar el campo original.
+        websiteNormalized.value = url.href;
+        return "";
+      } catch {
+        return "Introduce una dirección web válida, como https://例子.中国.";
+      }
+    }
+
+    function validatePassword(value) {
+      if (!value) return "Introduce una contraseña.";
+      if (Array.from(value).length < 12) {
+        return "La contraseña debe tener al menos 12 caracteres.";
+      }
+      if (!value.trim()) return "La contraseña no puede contener solo espacios.";
+      return "";
+    }
+
+    const fields = [
+      { id: "full-name", error: "name-error", validate: validateName },
+      { id: "email", error: "email-error", validate: validateEmail },
+      { id: "website", error: "website-error", validate: validateWebsite },
+      { id: "password", error: "password-error", validate: validatePassword }
+    ];
+
+    const checkedFields = new Set();
+
+    function checkField(field) {
+      const input = document.getElementById(field.id);
+      const message = field.validate(input.value);
+
+      document.getElementById(field.error).textContent = message;
+      input.setAttribute("aria-invalid", message ? "true" : "false");
+      checkedFields.add(field.id);
+
+      return !message;
+    }
+
+    for (const field of fields) {
+      const input = document.getElementById(field.id);
+
+      input.addEventListener("blur", () => checkField(field));
+      input.addEventListener("input", () => {
+        status.textContent = "";
+        if (checkedFields.has(field.id)) checkField(field);
+      });
+    }
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      let firstInvalid = null;
+
+      for (const field of fields) {
+        if (!checkField(field) && !firstInvalid) {
+          firstInvalid = document.getElementById(field.id);
+        }
+      }
+
+      if (firstInvalid) {
+        status.textContent = "Revisa los campos indicados antes de continuar.";
+        firstInvalid.focus();
+        return;
+      }
+
+      /*
+       * Demostración autónoma: no se transmiten ni almacenan datos.
+       * En producción, enviar por HTTPS y repetir la validación en el servidor.
+       * El servidor de correo debe admitir SMTPUTF8 para partes locales Unicode.
+       */
+      status.textContent =
+        "Formulario validado correctamente. Esta demostración no envía datos ni crea una cuenta.";
+    });
+
+    document.getElementById("submit-button").disabled = false;
+  </script>
+</body>
+</html>

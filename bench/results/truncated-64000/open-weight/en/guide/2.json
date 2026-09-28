@@ -1,0 +1,44 @@
+{
+  "model": "open-weight",
+  "model_version": "z-ai/glm-5.3",
+  "lang": "en",
+  "condition": "guide",
+  "repeat": 2,
+  "usage": {
+    "prompt_tokens": 885,
+    "completion_tokens": 64000,
+    "total_tokens": 64885,
+    "cost": 0.282839,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost_details": {
+      "upstream_inference_cost": 0.282839,
+      "upstream_inference_prompt_cost": 0.001239,
+      "upstream_inference_completions_cost": 0.2816
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 63869,
+      "image_tokens": 0,
+      "audio_tokens": 0
+    }
+  },
+  "finish_reason": "length",
+  "date": "2026-09-25T14:01:43.646Z",
+  "battery": "1.0.0",
+  "runner_error": null,
+  "fields": {
+    "email": {
+      "status": "not-testable",
+      "reason": "no-form"
+    },
+    "website": {
+      "status": "not-testable",
+      "reason": "no-form"
+    }
+  }
+}

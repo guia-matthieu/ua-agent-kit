@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Meridian Society — Application for Entry</title>
+<style>
+  :root{
+    --paper:#f4efe4;
+    --paper-2:#f8f3e7;
+    --ink:#1b1710;
+    --ink-70:rgba(27,23,16,.7);
+    --ink-55:rgba(27,23,16,.55);
+    --ink-45:rgba(27,23,16,.45);
+    --ink-30:rgba(27,23,16,.3);
+    --rule:rgba(27,23,16,.22);
+    --accent:#1e5c3f;
+    --red:#b3401f;
+    --serif:Georgia,'Iowan Old Style','Palatino Linotype','Book Antiqua','Times New Roman',serif;
+    --mono:ui-monospace,'SF Mono','Cascadia Mono',Menlo,Consolas,'Liberation Mono',monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:var(--serif);
+    color:var(--ink);
+    background:var(--paper);
+    min-height:100vh;
+    display:flex;flex-direction:column;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--accent);color:var(--paper)}
+  [hidden]{display:none!important}
+  button{font:inherit;color:inherit}
+  button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+  /* paper grain */
+  .grain{
+    position:fixed;inset:0;z-index:60;pointer-events:none;
+    background-image:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='180' height='180' filter='url(%23n)' opacity='0.55'/></svg>");
+    background-size:180px;
+    mix-blend-mode:multiply;
+    opacity:.14;
+  }
+
+  /* vertical caption on the page edge */
+  .spine{
+    position:fixed;top:50%;right:16px;transform:translateY(-50%);
+    writing-mode:vertical-rl;
+    font-family:var(--mono);font-size:.58rem;letter-spacing:.38em;
+    color:var(--ink-45);white-space:nowrap;
+  }
+  @media(max-width:900px){.spine{display:none}}
+
+  .wrap{width:100%;max-width:47rem;margin-inline:auto;padding-inline:1.4rem}
+
+  /* ---------- masthead ---------- */
+  .masthead{border-bottom:3px double var(--ink)}
+  .masthead .wrap{display:flex;align-items:center;justify-content:space-between;padding-block:1.05rem .95rem}
+  .brand{display:flex;align-items:center;gap:.7rem}
+  .mark{color:var(--ink)}
+  .mark .dot{fill:var(--accent)}
+  .brand-name{font-family:var(--mono);font-size:.8rem;font-weight:600;letter-spacing:.34em}
+  .brand-sub{font-family:var(--mono);font-size:.58rem;letter-spacing:.18em;color:var(--ink-45);border-left:1px solid var(--rule);padding-left:.7rem}
+  .mast-loc{font-family:var(--mono);font-size:.6rem;letter-spacing:.18em;color:var(--ink-55)}
+  @media(max-width:520px){.brand-sub,.mast-loc{display:none}}
+
+  main{flex:1 0 auto}
+  .page{padding-top:4.2rem;padding-bottom:1rem}
+
+  /* ---------- intro ---------- */
+  .intro{display:grid;grid-template-columns:minmax(0,1fr) 215px;gap:3rem}
+  .kicker{display:flex;align-items:center;gap:.8rem;font-family:var(--mono);font-size:.62rem;letter-spacing:.22em;color:var(--ink-55)}
+  .kicker::before{content:"";width:2.1rem;height:1px;background:var(--ink);flex:none}
+  h1{font-size:clamp(2.5rem,6.5vw,3.9rem);font-weight:400;line-height:1.04;letter-spacing:-.015em;margin:1rem 0 1.15rem}
+  .dek{max-width:33rem;font-size:1.02rem;line-height:1.6;color:var(--ink-70)}
+  .intro-aside{align-self:end;border-left:1px solid var(--rule);padding-left:1.6rem}
+  .aside-dl div{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;padding:.5rem 0;border-bottom:1px solid var(--rule)}
+  .aside-dl div:first-child{border-top:1px solid var(--rule)}
+  .aside-dl dt{font-family:var(--mono);font-size:.56rem;letter-spacing:.14em;color:var(--ink-45)}
+  .aside-dl dd{font-family:var(--mono);font-size:.66rem;letter-spacing:.05em;display:flex;align-items:center;gap:.45rem}
+  .status-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);display:inline-block}
+  .aside-note{margin-top:1rem;font-style:italic;font-size:.85rem;line-height:1.5;color:var(--ink-55)}
+  @media(max-width:700px){
+    .intro{grid-template-columns:1fr;gap:2rem}
+    .intro-aside{border-left:0;padding-left:0;max-width:340px}
+  }
+
+  /* ---------- the ledger ---------- */
+  form{border-top:2px solid var(--ink);margin-top:3.4rem}
+  .field{display:grid;grid-template-columns:2.9rem minmax(0,1fr);column-gap:1.2rem;padding:1.5rem 0 1.55rem}
+  .field + .field{border-top:1px solid var(--rule)}
+  .field-body{min-width:0}
+  .num{font-family:var(--mono);font-size:.68rem;color:var(--ink-45);padding-top:.32rem;transition:color .25s}
+  .field:focus-within .num{color:var(--accent)}
+  .field.is-invalid .num{color:var(--red)}
+  .field-head{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;flex-wrap:wrap}
+  label{font-family:var(--mono);font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-70)}
+  .hint{font-family:var(--mono);font-size:.56rem;letter-spacing:.14em;color:var(--ink-45)}
+
+  .control{position:relative}
+  .control input{
+    width:100%;background:transparent;border:0;border-bottom:1px solid var(--rule);
+    border-radius:0;font-family:var(--serif);font-size:1.18rem;line-height:1.4;color:var(--ink);
+    padding:.5rem 2.4rem .6rem 0;caret-color:var(--accent);
+  }
+  .field--password .control input{padding-right:4.9rem}
+  .control input::placeholder{color:var(--ink-30);font-style:italic}
+  .control input:focus{outline:none}
+  input:-webkit-autofill{-webkit-box-shadow:0 0 0 1000px var(--paper) inset;-webkit-text-fill-color:var(--ink);transition:background-color 99999s}
+
+  .line{position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--ink);transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.22,.9,.32,1),background-color .25s;pointer-events:none}
+  .field:focus-within .line{transform:scaleX(1)}
+  .field.is-invalid .line{background:var(--red)}
+  .field.is-invalid .control input{border-bottom-color:var(--red)}
+
+  /* validity check that draws itself */
+  .check{position:absolute;right:0;bottom:.5rem;width:19px;height:19px;color:var(--accent);opacity:0;transform:scale(.5);transition:opacity .3s,transform .35s cubic-bezier(.3,1.6,.5,1);pointer-events:none}
+  .field--password .check{right:2.75rem}
+  .field.is-valid .check{opacity:1;transform:scale(1)}
+  .check circle{stroke-dasharray:64;stroke-dashoffset:64;transition:stroke-dashoffset .5s ease .05s}
+  .check path{stroke-dasharray:16;stroke-dashoffset:16;transition:stroke-dashoffset .3s ease .3s}
+  .field.is-valid .check circle,.field.is-valid .check path{stroke-dashoffset:0}
+
+  /* inline errors */
+  .error{display:none;align-items:center;gap:.5rem;margin-top:.6rem;font-family:var(--mono);font-size:.68rem;letter-spacing:.04em;color:var(--red)}
+  .error svg{width:13px;height:13px;flex:none}
+  .field.is-invalid .error{display:flex;animation:rise .3s ease both}
+  @keyframes rise{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+
+  /* password extras */
+  .pw-extra{display:none;margin-top:1rem}
+  .field.is-active .pw-extra{display:block;animation:rise .3s ease both}
+  .meter{height:2px;background:rgba(27,23,16,.12)}
+  .meter i{display:block;height:100%;width:0;background:var(--ink);transition:width .45s cubic-bezier(.25,.9,.3,1),background-color .3s}
+  .meter-row{display:flex;justify-content:space-between;margin-top:.4rem;font-family:var(--mono);font-size:.56rem;letter-spacing:.16em;color:var(--ink-45)}
+  #meterLabel{color:var(--ink)}
+  .criteria{list-style:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem 1.6rem;margin-top:1rem}
+  .criteria li{display:flex;align-items:center;gap:.55rem;font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-45);transition:color .25s}
+  .criteria li i{width:11px;height:11px;border-radius:50%;border:1px solid var(--ink-30);flex:none;transition:background-color .25s,border-color .25s,background-image .25s}
+  .criteria li.met{color:var(--ink)}
+  .criteria li.met i{border-color:var(--accent);background:var(--accent) url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'><path d='M2.1 5.3 4 7.1 7.9 3' fill='none' stroke='%23f4efe4' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'/></svg>") center/68% no-repeat}
+  @media(max-width:520px){.criteria{grid-template-columns:1fr}}
+
+  /* show / hide toggle */
+  .toggle{position:absolute;right:0;bottom:.4rem;display:grid;place-items:center;width:30px;height:30px;background:none;border:0;padding:0;color:var(--ink-45);cursor:pointer;transition:color .2s;border-radius:3px}
+  .toggle:hover{color:var(--ink)}
+  .toggle svg{width:20px;height:20px;display:block}
+  .toggle .i-hide{display:none}
+  .toggle.is-on .i-show{display:none}
+  .toggle.is-on .i-hide{display:block}
+
+  /* submit row */
+  .submit-row{display:flex;align-items:center;justify-content:space-between;gap:1.2rem;border-top:2px solid var(--ink);padding:1.7rem 0 2rem;flex-wrap:wrap}
+  .summary{flex:1 1 16ch;min-height:1rem;font-family:var(--mono);font-size:.66rem;letter-spacing:.1em}
+  .summary.bad{color:var(--red)}
+  .summary.ok{color:var(--accent)}
+  .submit{display:inline-flex;align-items:center;gap:.9rem;background:var(--ink);color:var(--paper);border:1px solid var(--ink);padding:1rem 1.7rem;font-family:var(--mono);font-size:.74rem;letter-spacing:.22em;cursor:pointer;transition:background-color .25s,border-color .25s,transform .15s}
+  .submit:hover{background:var(--accent);border-color:var(--accent)}
+  .submit:active{transform:translateY(1px)}
+  .submit svg{transition:transform .3s}
+  .submit:hover svg{transform:translateX(5px)}
+  .submit.shake{animation:shake .45s ease}
+  @keyframes shake{15%,45%,75%{transform:translateX(-6px)}30%,60%{transform:translateX(6px)}}
+  @media(max-width:640px){
+    .submit-row{flex-direction:column-reverse;align-items:stretch}
+    .submit{justify-content:center}
+  }
+
+  /* ---------- receipt ---------- */
+  .receipt{margin-top:3.4rem}
+  .receipt-card{position:relative;border:1px solid var(--ink);background:var(--paper-2);padding:2.8rem 2.5rem 2.4rem;animation:cardIn .55s cubic-bezier(.2,.9,.25,1) both,thump .28s ease .95s both}
+  .receipt-card::before{content:"";position:absolute;inset:5px;border:1px solid var(--ink);pointer-events:none}
+  @keyframes cardIn{from{opacity:0;transform:translateY(20px)}}
+  @keyframes thump{45%{transform:translateY(3px)}}
+  .stamp{position:absolute;top:-32px;right:-20px;width:136px;height:136px;color:var(--accent);mix-blend-mode:multiply;pointer-events:none;animation:stampIn .6s cubic-bezier(.2,1.1,.3,1) .55s both}
+  @keyframes stampIn{
+    0%{opacity:0;transform:rotate(5deg) scale(2.4)}
+    60%{opacity:.92;transform:rotate(-8deg) scale(.93)}
+    80%{transform:rotate(-8deg) scale(1.05)}
+    100%{opacity:.92;transform:rotate(-8deg) scale(1)}
+  }
+  .stamp text{fill:currentColor}
+  .stamp .arc{font-family:var(--mono)}
+  .r-name{font-size:clamp(2rem,5vw,2.6rem);font-weight:400;line-height:1.1;margin:.7rem 0 1rem}
+  .r-name em{font-style:italic;color:var(--accent)}
+  .r-note{max-width:34rem;font-size:.98rem;line-height:1.6;color:var(--ink-70)}
+  .r-dl{margin-top:1.9rem}
+  .r-dl>div{display:grid;grid-template-columns:minmax(105px,150px) minmax(0,1fr);gap:1rem;padding:.62rem 0;border-top:1px solid var(--rule)}
+  .r-dl>div:last-child{border-bottom:1px solid var(--rule)}
+  .r-dl dt{font-family:var(--mono);font-size:.58rem;letter-spacing:.16em;color:var(--ink-45);padding-top:.18rem}
+  .r-dl dd{font-family:var(--mono);font-size:.76rem;letter-spacing:.03em;overflow-wrap:anywhere}
+  .r-dl .ok-val{color:var(--accent)}
+  .restart{margin-top:2.3rem;display:inline-flex;align-items:center;gap:.7rem;background:none;border:0;border-bottom:1px solid var(--ink);padding:0 0 .35rem;font-family:var(--mono);font-size:.68rem;letter-spacing:.18em;cursor:pointer;transition:color .25s,border-color .25s}
+  .restart:hover{color:var(--accent);border-color:var(--accent)}
+  .restart svg{transform:scaleX(-1)}
+  @media(max-width:640px){
+    .receipt-card{padding:2.3rem 1.5rem 2rem}
+    .stamp{width:112px;height:112px;top:-26px;right:-10px}
+  }
+
+  /* ---------- colophon ---------- */
+  .colophon{border-top:3px double var(--ink);margin-top:4.5rem}
+  .colophon .wrap{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;padding-block:1rem 1.1rem;font-family:var(--mono);font-size:.56rem;letter-spacing:.16em;color:var(--ink-45)}
+
+  @media(max-width:640px){
+    .field{grid-template-columns:1fr;column-gap:0}
+    .num{padding-top:0;margin-bottom:.55rem}
+  }
+
+  @media(prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.01ms!important;animation-delay:0ms!important;transition-duration:.01ms!important}
+    html{scroll-behavior:auto}
+  }
+</style>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+<aside class="spine" aria-hidden="true">MEMBERS’ REGISTER · FORM Nº 1 · REV. C</aside>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="brand">
+      <svg class="mark" width="23" height="23" viewBox="0 0 26 26" aria-hidden="true">
+        <circle cx="13" cy="13" r="10.4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        <line x1="13" y1="2.6" x2="13" y2="23.4" stroke="currentColor" stroke-width="1.5"/>
+        <circle class="dot" cx="13" cy="13" r="2.7"/>
+      </svg>
+      <span class="brand-name">MERIDIAN</span>
+      <span class="brand-sub">EST. 1897</span>
+    </div>
+    <span class="mast-loc">LONDON · <span id="hdrDate">—</span></span>
+  </div>
+</header>
+
+<main>
+  <div class="wrap page">
+
+    <section class="intro">
+      <div>
+        <p class="kicker">FORM Nº 1 — APPLICATION FOR ENTRY</p>
+        <h1>Request entry to the <em>register</em>.</h1>
+        <p class="dek">The register of the Meridian Society is open to new members. Complete every line below in your own hand — entries are read, and argued over, each Friday.</p>
+      </div>
+      <div class="intro-aside">
+        <dl class="aside-dl">
+          <div><dt>DATE RECEIVED</dt><dd id="asideDate">—</dd></div>
+          <div><dt>ENTRANCE FEE</dt><dd>NONE</dd></div>
+          <div><dt>REVIEW CYCLE</dt><dd>FRIDAYS</dd></div>
+          <div><dt>REGISTER</dt><dd><span class="status-dot"></span>OPEN</dd></div>
+        </dl>
+        <p class="aside-note">* New entries are read aloud at the Friday sitting.</p>
+      </div>
+    </section>
+
+    <form id="signup" novalidate>
+
+      <div class="field">
+        <span class="num" aria-hidden="true">01</span>
+        <div class="field-body">
+          <div class="field-head">
+            <label for="f-name">Full name</label>
+            <span class="hint">AS IT SHOULD APPEAR</span>
+          </div>
+          <div class="control">
+            <input id="f-name" name="name" type="text" placeholder="Ada Byfield" autocomplete="name" autocapitalize="words" aria-describedby="err-name">
+            <span class="line" aria-hidden="true"></span>
+            <svg class="check" viewBox="0 0 20 20" aria-hidden="true">
+              <circle cx="10" cy="10" r="8.4" fill="none" stroke="currentColor" stroke-width="1.4"/>
+              <path d="M6.1 10.4l2.6 2.6 5.1-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <p class="error" id="err-name" aria-live="polite">
+            <svg viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="6.2" fill="none" stroke="currentColor" stroke-width="1.3"/><line x1="7" y1="3.7" x2="7" y2="7.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="7" cy="10.1" r=".9" fill="currentColor"/></svg>
+            <span></span>
+          </p>
+        </div>
+      </div>
+
+      <div class="field">
+        <span class="num" aria-hidden="true">02</span>
+        <div class="field-body">
+          <div class="field-head">
+            <label for="f-email">Email address</label>
+            <span class="hint">FOR CORRESPONDENCE</span>
+          </div>
+          <div class="control">
+            <input id="f-email" name="email" type="email" placeholder="ada@meridian.club" autocomplete="email" autocapitalize="off" spellcheck="false" aria-describedby="err-email">
+            <span class="line" aria-hidden="true"></span>
+            <svg class="check" viewBox="0 0 20 20" aria-hidden="true">
+              <circle cx="10" cy="10" r="8.4" fill="none" stroke="currentColor" stroke-width="1.4"/>
+              <path d="M6.1 10.4l2.6 2.6 5.1-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <p class="error" id="err-email" aria-live="polite">
+            <svg viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="6.2" fill="none" stroke="currentColor" stroke-width="1.3"/><line x1="7" y1="3.7" x2="7" y2="7.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="7" cy="10.1" r=".9" fill="currentColor"/></svg>
+            <span></span>
+          </p>
+        </div>
+      </div>
+
+      <div class="field">
+        <span class="num" aria-hidden="true">03</span>
+        <div class="field-body">
+          <div class="field-head">
+            <label for="f-website">Website</label>
+            <span class="hint">HTTPS:// OPTIONAL</span>
+          </div>
+          <div class="control">
+            <input id="f-website" name="website" type="url" placeholder="meridian.club/work" autocomplete="url" autocapitalize="off" spellcheck="false" aria-describedby="err-website">
+            <span class="line" aria-hidden="true"></span>
+            <svg class="check" viewBox="0 0 20 20" aria-hidden="true">
+              <circle cx="10" cy="10" r="8.4" fill="none" stroke="currentColor" stroke-width="1.4"/>
+              <path d="M6.1 10.4l2.6 2.6 5.1-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <p class="error" id="err-website" aria-live="polite">
+            <svg viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="6.2" fill="none" stroke="currentColor" stroke-width="1.3"/><line x1="7" y1="3.7" x2="7" y2="7.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="7" cy="10.1" r=".9" fill="currentColor"/></svg>
+            <span></span>
+          </p>
+        </div>
+      </div>
+
+      <div class="field field--password">
+        <span class="num" aria-hidden="true">04</span>
+        <div class="field-body">
+          <div class="field-head">
+            <label for="f-password">Password</label>
+            <span class="hint">MIN. 8 CHARACTERS</span>
+          </div>
+          <div class="control">
+            <input id="f-password" name="password" type="password" placeholder="Minimum eight characters" autocomplete="new-password" aria-describedby="err-password">
+            <span class="line" aria-hidden="true"></span>
+            <svg class="check" viewBox="0 0 20 20" aria-hidden="true">
+              <circle cx="10" cy="10" r="8.4" fill="none" stroke="currentColor" stroke-width="1.4"/>
+              <path d="M6.1 10.4l2.6 2.6 5.1-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <button type="button" class="toggle" id="pwToggle" aria-label="Show password" aria-pressed="false">
+              <svg class="i-show" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M2.5 12c2.7-4.3 5.8-6.5 9.5-6.5s6.8 2.2 9.5 6.5c-2.7 4.3-5.8 6.5-9.5 6.5S5.2 16.3 2.5 12Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                <circle cx="12" cy="12" r="2.7" fill="none" stroke="currentColor" stroke-width="1.6"/>
+              </svg>
+              <svg class="i-hide" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4.5 4.5l15 15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                <path d="M9.9 5.9c.7-.1 1.4-.2 2.1-.2 3.7 0 6.8 2.2 9.5 6.3a17.7 17.7 0 0 1-3.2 3.8M6.3 7.9A17.2 17.2 0 0 0 2.5 12c2.7 4.1 5.8 6.3 9.5 6.3 1 0 2-.2 2.9-.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+          <div class="pw-extra">
+            <div class="meter"><i id="meterFill"></i></div>
+            <div class="meter-row"><span>STRENGTH</span><span id="meterLabel">—</span></div>
+            <ul class="criteria" id="criteria">
+              <li data-c="len"><i></i>8+ characters</li>
+              <li data-c="case"><i></i>Upper &amp; lower case</li>
+              <li data-c="num"><i></i>At least one number</li>
+              <li data-c="sym"><i></i>A symbol (recommended)</li>
+            </ul>
+          </div>
+          <p class="error" id="err-password" aria-live="polite">
+            <svg viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="6.2" fill="none" stroke="currentColor" stroke-width="1.3"/><line x1="7" y1="3.7" x2="7" y2="7.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="7" cy="10.1" r=".9" fill="currentColor"/></svg>
+            <span></span>
+          </p>
+        </div>
+      </div>
+
+      <div class="submit-row">
+        <p class="summary" id="summary" role="status" aria-live="polite"></p>
+        <button class="submit" id="submitBtn" type="submit">
+          FILE APPLICATION
+          <svg width="22" height="12" viewBox="0 0 24 14" aria-hidden="true"><path d="M1 7h21M16 1.6 22 7l-6 5.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+
+    </form>
+
+    <section class="receipt" id="receipt" hidden>
+      <div class="receipt-card">
+        <div class="stamp" aria-hidden="true">
+          <svg viewBox="0 0 130 130">
+            <defs><path id="stampArc" d="M65 65m-45 0a45 45 0 1 1 90 0a45 45 0 1 1-90 0"/></defs>
+            <circle cx="65" cy="65" r="62" fill="none" stroke="currentColor" stroke-width="2.6"/>
+            <circle cx="65" cy="65" r="56.5" fill="none" stroke="currentColor" stroke-width="1"/>
+            <text class="arc" font-size="9.3" letter-spacing="1.7"><textPath href="#stampArc">RECEIVED • MERIDIAN SOCIETY • MMXXV •</textPath></text>
+            <text x="65" y="73" text-anchor="middle" font-size="33" font-family="Georgia, serif" font-style="italic">M</text>
+            <text x="65" y="86" text-anchor="middle" font-size="6.4" letter-spacing="2.2" font-family="Menlo, monospace">EST. 1897</text>
+            <circle cx="38" cy="62" r="1.7"/>
+            <circle cx="92" cy="62" r="1.7"/>
+          </svg>
+        </div>
+        <p class="kicker">FORM Nº 1 — FILED &amp; ACCEPTED</p>
+        <h2 class="r-name">Thank you, <em id="rFirst">—</em>.</h2>
+        <p class="r-note">Your entry has been added to the register and will be read at this Friday’s sitting. A copy of your application is reproduced below for your records.</p>
+        <dl class="r-dl">
+          <div><dt>APPLICATION Nº</dt><dd id="rNo">—</dd></div>
+          <div><dt>DATE FILED</dt><dd id="rDate">—</dd></div>
+          <div><dt>APPLICANT</dt><dd id="rApplicant">—</dd></div>
+          <div><dt>EMAIL</dt><dd id="rEmail">—</dd></div>
+          <div><dt>WEBSITE</dt><dd id="rSite">—</dd></div>
+          <div><dt>STATUS</dt><dd class="ok-val">RECEIVED — UNDER REVIEW</dd></div>
+        </dl>
+        <button type="button" class="restart" id="restart">
+          FILE ANOTHER APPLICATION
+          <svg width="22" height="12" viewBox="0 0 24 14" aria-hidden="true"><path d="M1 7h21M16 1.6 22 7l-6 5.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer class="colophon">
+  <div class="wrap">
+    <span>MERIDIAN SOCIETY — 12 CHAPEL YARD, LONDON</span>
+    <span>FORM 1 · REV. C · PRINTED IN ENGLAND</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  'use strict';
+  var byId = function(id){ return document.getElementById(id); };
+
+  /* ---------- dated chrome ---------- */
+  var now = new Date();
+  var dateFmt = new Intl.DateTimeFormat('en-GB',{day:'numeric',month:'long',year:'numeric'});
+  var timeFmt = new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit'});
+  var today = dateFmt.format(now).toUpperCase();
+  byId('hdrDate').textContent = today;
+  byId('asideDate').textContent = today;
+
+  /* ---------- validators (each returns an error string, or null when valid) ---------- */
+  var NAME_RE = /^(?:\p{L}|['’\-])+(?:\s+(?:\p{L}|['’\-])+)+$/u;
+  function testName(v){
+    v = v.trim().replace(/\s+/g,' ');
+    if(!v) return 'Enter your full name.';
+    if(!NAME_RE.test(v)) return /\s/.test(v)
+      ? 'Names may contain letters, spaces, hyphens and apostrophes — no digits or symbols.'
+      : 'Enter both a first and a last name.';
+    return null;
+  }
+  function testEmail(v){
+    v = v.trim();
+    if(!v) return 'Enter your email address — it’s how we write back.';
+    if(v.indexOf('@') === -1) return 'An address needs an “@”, e.g. ada@meridian.club.';
+    var parts = v.split('@');
+    if(parts.length > 2) return 'One “@” only, please.';
+    var local = parts[0], domain = parts[1];
+    if(!local) return 'The name before the “@” is missing.';
+    if(domain.indexOf('.') === -1) return 'The domain needs an ending, e.g. .com or .club.';
+    if(!/^[A-Za-z0-9](?:[A-Za-z0-9.-]*[A-Za-z0-9])?$/.test(domain)) return 'That domain doesn’t look right — check for stray spaces or symbols.';
+    if(!/^[A-Za-z0-9._%+-]+$/.test(local)) return 'The name before the “@” contains characters we can’t accept.';
+    return null;
+  }
+  function testWebsite(v){
+    v = v.trim();
+    if(!v) return 'Enter your website — it’s how we verify applicants.';
+    var candidate = /^https?:\/\//i.test(v) ? v : 'https://' + v;
+    try{
+      var u = new URL(candidate);
+      if(!/^https?:$/.test(u.protocol)) throw new Error('protocol');
+      if(!/^(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z]{2,}$/i.test(u.hostname)) throw new Error('host');
+    }catch(e){
+      return 'Enter a full address, e.g. meridian.club or https://meridian.club/work.';
+    }
+    return null;
+  }
+  function testPassword(v){
+    if(!v) return 'Choose a password.';
+    if(v.length < 8) return 'At least 8 characters — ' + (8 - v.length) + ' more to go.';
+    if(!/[a-z]/.test(v) || !/[A-Z]/.test(v)) return 'Mix upper-case and lower-case letters.';
+    if(!/\d/.test(v)) return 'Include at least one number.';
+    return null;
+  }
+
+  /* ---------- field registry ---------- */
+  var fields = [
+    { el: byId('f-name'),     err: byId('err-name'),     test: testName    },
+    { el: byId('f-email'),    err: byId('err-email'),    test: testEmail   },
+    { el: byId('f-website'),  err: byId('err-website'),  test: testWebsite },
+    { el: byId('f-password'), err: byId('err-password'), test: testPassword}
+  ];
+  fields.forEach(function(f){ f.touched = false; f.error = null; });
+
+  var form = byId('signup');
+  var summary = byId('summary');
+  var btn = byId('submitBtn');
+  var pw = byId('f-password');
+  var pwField = pw.closest('.field');
+  var attempted = false;
+
+  function check(f){
+    f.error = f.test(f.el.value);
+    var wrap = f.el.closest('.field');
+    var showErr = !!f.error && (f.touched || attempted);
+    var filled = f.el.value.trim() !== '';
+    wrap.classList.toggle('is-invalid', showErr);
+    wrap.classList.toggle('is-valid', !f.error && filled);
+    f.el.setAttribute('aria-invalid', showErr ? 'true' : 'false');
+    if(showErr) f.err.querySelector('span').textContent = f.error;
+  }
+
+  function refreshSummary(){
+    var n = fields.filter(function(f){ return !!f.error; }).length;
+    summary.classList.toggle('bad', n > 0);
+    summary.classList.toggle('ok', n === 0);
+    summary.textContent = n === 0
+      ? 'ALL LINES IN ORDER — READY TO FILE.'
+      : (n === 1 ? 'ONE LINE NEEDS ATTENTION BEFORE FILING.' : n + ' LINES NEED ATTENTION BEFORE FILING.');
+  }
+
+  /* ---------- password strength ---------- */
+  var meterFill = byId('meterFill');
+  var meterLabel = byId('meterLabel');
+  var critEls = {};
+  Array.prototype.forEach.call(document.querySelectorAll('#criteria li'), function(li){
+    critEls[li.getAttribute('data-c')] = li;
+  });
+  var SCORE_COLORS = ['#b3401f','#b3401f','rgba(27,23,16,.55)','#1b1710','#1e5c3f'];
+  var SCORE_LABELS = ['WEAK','WEAK','FAIR','GOOD','STRONG'];
+
+  function updateStrength(){
+    var v = pw.value;
+    var c = {
+      len:  v.length >= 8,
+      case: /[a-z]/.test(v) && /[A-Z]/.test(v),
+      num:  /\d/.test(v),
+      sym:  /[^A-Za-z0-9]/.test(v)
+    };
+    Object.keys(critEls).forEach(function(k){ critEls[k].classList.toggle('met', c[k]); });
+    var score = (c.len?1:0) + (c.case?1:0) + (c.num?1:0) + (c.sym?1:0);
+    if(v.length >= 14) score = Math.min(4, score + 1);
+    meterFill.style.width = v ? Math.max(12, score / 4 * 100) + '%' : '0%';
+    meterFill.style.backgroundColor = SCORE_COLORS[score];
+    meterLabel.textContent = v ? SCORE_LABELS[score] : '—';
+    meterLabel.style.color = v ? SCORE_COLORS[score] : '';
+  }
+
+  function syncPwActive(){
+    pwField.classList.toggle('is-active', pw.value.length > 0 || document.activeElement === pw);
+  }
+
+  /* ---------- wiring: live feedback, errors on blur ---------- */
+  fields.forEach(function(f){
+    f.el.addEventListener('input', function(){
+      check(f);
+      if(f.el === pw){ updateStrength(); syncPwActive(); }
+      if(attempted) refreshSummary();
+    });
+    f.el.addEventListener('blur', function(){
+      if(f.el !== pw) f.el.value = f.el.value.trim();
+      f.touched = true;
+      check(f);
+      if(f.el === pw) syncPwActive();
+      if(attempted) refreshSummary();
+    });
+  });
+  pw.addEventListener('focus', syncPwActive);
+
+  byId('pwToggle').addEventListener('click', function(){
+    var show = pw.type === 'password';
+    pw.type = show ? 'text' : 'password';
+    this.classList.toggle('is-on', show);
+    this.setAttribute('aria-pressed', String(show));
+    this.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+    pw.focus();
+  });
+
+  btn.addEventListener('animationend', function(){ btn.classList.remove('shake'); });
+
+  /* ---------- submit gate ---------- */
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    attempted = true;
+    var firstBad = null;
+    fields.forEach(function(f){
+      f.touched = true;
+      check(f);
+      if(f.error && !firstBad) firstBad = f;
+    });
+    refreshSummary();
+    if(firstBad){
+      btn.classList.remove('shake');
+      void btn.offsetWidth; /* restart the animation */
+      btn.classList.add('shake');
+      firstBad.el.closest('.field').scrollIntoView({behavior:'smooth', block:'center'});
+      firstBad.el.focus({preventScroll:true});
+      return;
+    }
+    fileApplication();
+  });
+
+  /* ---------- success ---------- */
+  function fileApplication(){
+    var name = fields[0].el.value.trim().replace(/\s+/g,' ');
+    var first = name.split(' ')[0];
+    var site = fields[2].el.value.trim();
+    if(!/^https?:\/\//i.test(site)) site = 'https://' + site;
+    var t = new Date();
+    byId('rFirst').textContent = first;
+    byId('rNo').textContent = 'M–' + t.getFullYear() + '–' + String(1000 + Math.floor(Math.random() * 9000));
+    byId('rDate').textContent = dateFmt.format(t) + ' · ' + timeFmt.format(t);
+    byId('rApplicant').textContent = name;
+    byId('rEmail').textContent = fields[1].el.value.trim();
+    byId('rSite').textContent = site;
+    form.hidden = true;
+    byId('receipt').hidden = false;
+    byId('receipt').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  /* ---------- start over ---------- */
+  byId('restart').addEventListener('click', function(){
+    form.reset();
+    attempted = false;
+    fields.forEach(function(f){
+      f.touched = false; f.error = null;
+      var w = f.el.closest('.field');
+      w.classList.remove('is-invalid','is-valid');
+      f.el.setAttribute('aria-invalid','false');
+    });
+    summary.textContent = '';
+    summary.classList.remove('bad','ok');
+    pwField.classList.remove('is-active');
+    pw.type = 'password';
+    var tg = byId('pwToggle');
+    tg.classList.remove('is-on');
+    tg.setAttribute('aria-pressed','false');
+    tg.setAttribute('aria-label','Show password');
+    updateStrength();
+    byId('receipt').hidden = true;
+    form.hidden = false;
+    window.scrollTo({top:0, behavior:'smooth'});
+    fields[0].el.focus();
+  });
+
+  updateStrength();
+})();
+</script>
+</body>
+</html>

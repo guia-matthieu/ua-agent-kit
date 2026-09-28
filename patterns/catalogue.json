@@ -1,0 +1,138 @@
+{
+  "version": "1.0.0",
+  "license": "CC0-1.0",
+  "generated": "2026-09-24",
+  "wording": "matches the pattern published at <source_url>; entries without a source_url are reported as 'matches the known pattern family <name>'",
+  "entries": [
+    {
+      "id": "whatwg-email-reference",
+      "kind": "email",
+      "name": "WHATWG HTML reference regex for a valid e-mail address (ASCII only)",
+      "pattern": "^[a-zA-Z0-9.!#$%&'*+\\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$",
+      "variants": [
+        "[a-zA-Z0-9.!#$%&'*+\\/=?^_`{|}~-]+@",
+        "[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@"
+      ],
+      "source_url": "https://html.spec.whatwg.org/multipage/input.html#valid-e-mail-address",
+      "source_title": "HTML Living Standard, 4.10.5.1.5 E-mail state, 'valid e-mail address'",
+      "rejects": [
+        "eai-local",
+        "email-idn-domain",
+        "eai-full"
+      ],
+      "accepts_note": "Long ASCII TLDs and xn-- A-labels pass; only Unicode is rejected.",
+      "verified": "2026-09-24",
+      "note": "The spec's own prose allows Unicode in the definition it introduces; its reference regex restricts every character class to ASCII. Measured 2026-09-24 on representative values."
+    },
+    {
+      "id": "so-201323-answer-201378",
+      "kind": "email",
+      "name": "Stack Overflow 201323, top answer (RFC 5322-derived, ASCII only)",
+      "pattern": "(?:[a-z0-9!#$%&'*+\\x2f=?^_`\\x7b-\\x7d~\\x2d]+(?:\\.[a-z0-9!#$%&'*+\\x2f=?^_`\\x7b-\\x7d~\\x2d]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9\\x2d]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9\\x2d]*[a-z0-9])?|\\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9\\x2d]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])",
+      "variants": [
+        "[a-z0-9!#$%&'*+\\x2f=?^_`\\x7b-\\x7d~\\x2d]+",
+        "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*"
+      ],
+      "source_url": "https://stackoverflow.com/a/201378",
+      "source_title": "'How can I validate an email address using a regular expression?', answer 201378",
+      "rejects": [
+        "eai-local",
+        "email-idn-domain",
+        "eai-full"
+      ],
+      "accepts_note": "Long ASCII TLDs and xn-- A-labels pass.",
+      "verified": "2026-09-24",
+      "note": "Score 3,555 on 2026-09-24 (Stack Exchange API, /questions/201323/answers sorted by votes). Measured 2026-09-24."
+    },
+    {
+      "id": "rei-simple-email",
+      "kind": "email",
+      "name": "regular-expressions.info 'simple' email regex (ASCII only, letters-only TLD)",
+      "pattern": "\\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}\\b",
+      "variants": [
+        "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$",
+        "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}",
+        "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,}",
+        "[A-Z0-9._%+-]+@",
+        "[a-zA-Z0-9._%+-]+@",
+        "[a-z0-9._%+-]+@"
+      ],
+      "source_url": "https://www.regular-expressions.info/email.html",
+      "source_title": "Jan Goyvaerts, 'How to Find or Validate an Email Address'",
+      "rejects": [
+        "idn-tld-alabel",
+        "eai-local",
+        "email-idn-domain",
+        "eai-full"
+      ],
+      "accepts_note": "Long ASCII TLDs pass; xn-- TLDs fail on the letters-only final label.",
+      "verified": "2026-09-24",
+      "note": "Page text: 'the one you'll find right on this site's home page: \\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}\\b. This regular expression, I claim, matches any email address.' The same page states it does not support internationalized domains. Measured 2026-09-24 with the i flag."
+    },
+    {
+      "id": "owasp-email",
+      "kind": "email",
+      "name": "OWASP Validation Regex Repository, e-mail pattern",
+      "pattern": "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,}$",
+      "variants": [
+        "[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@"
+      ],
+      "source_url": "https://owasp.org/www-community/OWASP_Validation_Regex_Repository",
+      "source_title": "OWASP Validation Regex Repository (raw: raw.githubusercontent.com/OWASP/www-community/master/pages/OWASP_Validation_Regex_Repository.md)",
+      "rejects": [
+        "idn-tld-alabel",
+        "eai-local",
+        "email-idn-domain",
+        "eai-full"
+      ],
+      "accepts_note": "Long ASCII TLDs pass; any xn-- TLD fails on [a-zA-Z]{2,}.",
+      "verified": "2026-09-24",
+      "note": "Read from the raw Markdown on 2026-09-24. Measured 2026-09-24."
+    },
+    {
+      "id": "so-161738-answer-8234912",
+      "kind": "url",
+      "name": "Stack Overflow 161738, second answer (URL matcher, ASCII host)",
+      "pattern": "((([A-Za-z]{3,9}:(?:\\/\\/)?)(?:[-;:&=\\+\\$,\\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\\+\\$,\\w]+@)[A-Za-z0-9.-]+)((?:\\/[\\+~%\\/.\\w-_]*)?\\??(?:[-\\+=&;%@.\\w_]*)#?(?:[\\w]*))?)",
+      "variants": [
+        "[A-Za-z]{3,9}:(?:\\/\\/)?)(?:[-;:&=\\+\\$,\\w]+@)?[A-Za-z0-9.-]+"
+      ],
+      "source_url": "https://stackoverflow.com/a/8234912",
+      "source_title": "'What is the best regular expression to check if a string is a valid URL?', answer 8234912",
+      "rejects": [
+        "idn-ulabel"
+      ],
+      "accepts_note": "Long ASCII TLDs and xn-- hosts pass; U-label hosts fail on the ASCII host class.",
+      "verified": "2026-09-24",
+      "note": "Score 198 on 2026-09-24 (Stack Exchange API). The top answer (score 501) is Unicode-aware and is NOT in this catalogue. Measured 2026-09-24."
+    },
+    {
+      "id": "tld-2-4-cap",
+      "kind": "email",
+      "name": "TLD capped at 2-4 letters",
+      "pattern": "\\.[a-zA-Z]{2,4}$",
+      "variants": [
+        "\\.[a-z]{2,4}$",
+        "\\.[A-Za-z]{2,4}$",
+        "\\.[A-Z]{2,4}$",
+        "\\.[a-zA-Z]{2,3}$",
+        "\\.[a-z]{2,3}$",
+        "\\.[A-Z]{2,3}$",
+        "\\.[a-zA-Z]{2,6}$",
+        "\\.[a-z]{2,6}$"
+      ],
+      "source_url": null,
+      "source_title": "Pattern family with no single published origin",
+      "rejects": [
+        "ascii-tld-long",
+        "idn-tld-alabel",
+        "idn-ulabel",
+        "email-idn-domain",
+        "eai-full"
+      ],
+      "accepts_note": "Rejects every TLD longer than the cap and every xn-- TLD.",
+      "verified": "2026-09-24",
+      "note": "Family, not a quotation. Reported as 'matches the known pattern family', never with a URL."
+    }
+  ]
+}

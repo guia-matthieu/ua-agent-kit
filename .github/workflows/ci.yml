@@ -1,0 +1,33 @@
+name: ci
+on:
+  push: { branches: [main] }
+  pull_request:
+jobs:
+  node:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+        env: { PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1" }
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+      - run: npx playwright install --with-deps chromium
+      - run: npm run lint
+      - run: npm test
+      - run: npm run check:battery
+        if: hashFiles('scripts/check-battery.mjs') != ''
+      - run: npm run check:adapters
+        if: hashFiles('scripts/build-adapters.mjs') != ''
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: pip install idna
+      - run: python3 -m unittest discover -s tests/py -p 'test_*.py'
+        if: hashFiles('tests/py/*.py') != ''

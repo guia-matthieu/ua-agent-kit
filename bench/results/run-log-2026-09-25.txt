@@ -1,0 +1,152 @@
+done anthropic/en/no-guide/1
+done anthropic/en/no-guide/2
+done anthropic/en/no-guide/3
+done anthropic/en/guide/1
+done anthropic/en/guide/2
+done anthropic/en/guide/3
+done anthropic/fr/no-guide/1
+done anthropic/fr/no-guide/2
+done anthropic/fr/no-guide/3
+done anthropic/fr/guide/1
+done anthropic/fr/guide/2
+done anthropic/fr/guide/3
+done anthropic/es/no-guide/1
+done anthropic/es/no-guide/2
+done anthropic/es/no-guide/3
+done anthropic/es/guide/1
+done anthropic/es/guide/2
+done anthropic/es/guide/3
+done openai/en/no-guide/1
+done openai/en/no-guide/2
+done openai/en/no-guide/3
+done openai/en/guide/1
+done openai/en/guide/2
+done openai/en/guide/3
+done openai/fr/no-guide/1
+done openai/fr/no-guide/2
+done openai/fr/no-guide/3
+done openai/fr/guide/1
+done openai/fr/guide/2
+done openai/fr/guide/3
+done openai/es/no-guide/1
+done openai/es/no-guide/2
+done openai/es/no-guide/3
+done openai/es/guide/1
+done openai/es/guide/2
+done openai/es/guide/3
+TRUNCATED open-weight/en/no-guide/1: reply hit max_tokens
+done open-weight/en/no-guide/1
+skip anthropic/en/no-guide/1
+skip anthropic/en/no-guide/2
+skip anthropic/en/no-guide/3
+skip anthropic/en/guide/1
+skip anthropic/en/guide/2
+skip anthropic/en/guide/3
+skip anthropic/fr/no-guide/1
+skip anthropic/fr/no-guide/2
+skip anthropic/fr/no-guide/3
+skip anthropic/fr/guide/1
+skip anthropic/fr/guide/2
+skip anthropic/fr/guide/3
+skip anthropic/es/no-guide/1
+skip anthropic/es/no-guide/2
+skip anthropic/es/no-guide/3
+skip anthropic/es/guide/1
+skip anthropic/es/guide/2
+skip anthropic/es/guide/3
+skip openai/en/no-guide/1
+skip openai/en/no-guide/2
+skip openai/en/no-guide/3
+skip openai/en/guide/1
+skip openai/en/guide/2
+skip openai/en/guide/3
+skip openai/fr/no-guide/1
+skip openai/fr/no-guide/2
+skip openai/fr/no-guide/3
+skip openai/fr/guide/1
+skip openai/fr/guide/2
+skip openai/fr/guide/3
+skip openai/es/no-guide/1
+skip openai/es/no-guide/2
+skip openai/es/no-guide/3
+skip openai/es/guide/1
+skip openai/es/guide/2
+skip openai/es/guide/3
+FAILED open-weight/en/no-guide/1: locator.fill: Timeout 30000ms exceeded.
+Call log:
+[2m  - waiting for locator('[data-ua-kit-field="email"]').first()[22m
+[2m    - locator resolved to <input id="f-email" name="email" type="email" spellcheck="false" autocomplete="email" data-ua-kit-field="email" aria-describedby="err-email" placeholder="ada@analyticalengine.org"/>[22m
+[2m    - fill("")[22m
+[2m  - attempting fill action[22m
+[2m    2 × waiting for element to be visible, enabled and editable[22m
+[2m      - element is not visible[22m
+[2m    - retrying fill action[22m
+[2m    - waiting 20ms[22m
+[2m    2 × waiting for element to be visible, enabled and editable[22m
+[2m      - element is not visible[22m
+[2m    - retrying fill action[22m
+[2m      - waiting 100ms[22m
+[2m    59 × waiting for element to be visible, enabled and editable[22m
+[2m       - element is not visible[22m
+[2m     - retrying fill action[22m
+[2m       - waiting 500ms[22m
+
+=== resume 2 ven. 25 sept. 2026 15:04:53 CEST
+skip anthropic/en/no-guide/1
+skip anthropic/en/no-guide/2
+skip anthropic/en/no-guide/3
+skip anthropic/en/guide/1
+skip anthropic/en/guide/2
+skip anthropic/en/guide/3
+skip anthropic/fr/no-guide/1
+skip anthropic/fr/no-guide/2
+skip anthropic/fr/no-guide/3
+skip anthropic/fr/guide/1
+skip anthropic/fr/guide/2
+skip anthropic/fr/guide/3
+skip anthropic/es/no-guide/1
+skip anthropic/es/no-guide/2
+skip anthropic/es/no-guide/3
+skip anthropic/es/guide/1
+skip anthropic/es/guide/2
+skip anthropic/es/guide/3
+skip openai/en/no-guide/1
+skip openai/en/no-guide/2
+skip openai/en/no-guide/3
+skip openai/en/guide/1
+skip openai/en/guide/2
+skip openai/en/guide/3
+skip openai/fr/no-guide/1
+skip openai/fr/no-guide/2
+skip openai/fr/no-guide/3
+skip openai/fr/guide/1
+skip openai/fr/guide/2
+skip openai/fr/guide/3
+skip openai/es/no-guide/1
+skip openai/es/no-guide/2
+skip openai/es/no-guide/3
+skip openai/es/guide/1
+skip openai/es/guide/2
+skip openai/es/guide/3
+done open-weight/en/no-guide/1
+done open-weight/en/no-guide/2
+done open-weight/en/no-guide/3
+done open-weight/en/guide/1
+TRUNCATED open-weight/en/guide/2: reply hit max_tokens
+done open-weight/en/guide/2
+done open-weight/en/guide/3
+done open-weight/fr/no-guide/1
+done open-weight/fr/no-guide/2
+done open-weight/fr/no-guide/3
+done open-weight/fr/guide/1
+done open-weight/fr/guide/2
+TRUNCATED open-weight/fr/guide/3: reply hit max_tokens
+done open-weight/fr/guide/3
+done open-weight/es/no-guide/1
+FAILED open-weight/es/no-guide/2: openrouter 402: {"error":{"message":"This request requires more credits, or fewer max_tokens. You requested up to 64000 tokens, but can only afford 7073. To increase, visit https://openrouter.ai/settings/credits and add more credits","code":402,"metadata":{"limit_source":"openrouter_credits","remedy_hint":"Add credits at https://openrouter.ai/settings/credits, or lower max_tokens / prompt size to fit your remaining balance.","provider_name":null}},"user_id":"user_2oWsUXiq1zbfre9TqfORpiEPOGP"}
+FAILED open-weight/es/no-guide/3: openrouter 402: {"error":{"message":"This request requires more credits, or fewer max_tokens. You requested up to 64000 tokens, but can only afford 7073. To increase, visit https://openrouter.ai/settings/credits and add more credits","code":402,"metadata":{"limit_source":"openrouter_credits","remedy_hint":"Add credits at https://openrouter.ai/settings/credits, or lower max_tokens / prompt size to fit your remaining balance.","provider_name":null}},"user_id":"user_2oWsUXiq1zbfre9TqfORpiEPOGP"}
+FAILED open-weight/es/guide/1: openrouter 402: {"error":{"message":"This request requires more credits, or fewer max_tokens. You requested up to 64000 tokens, but can only afford 7073. To increase, visit https://openrouter.ai/settings/credits and add more credits","code":402,"metadata":{"limit_source":"openrouter_credits","remedy_hint":"Add credits at https://openrouter.ai/settings/credits, or lower max_tokens / prompt size to fit your remaining balance.","provider_name":null}},"user_id":"user_2oWsUXiq1zbfre9TqfORpiEPOGP"}
+FAILED open-weight/es/guide/2: openrouter 402: {"error":{"message":"This request requires more credits, or fewer max_tokens. You requested up to 64000 tokens, but can only afford 7073. To increase, visit https://openrouter.ai/settings/credits and add more credits","code":402,"metadata":{"limit_source":"openrouter_credits","remedy_hint":"Add credits at https://openrouter.ai/settings/credits, or lower max_tokens / prompt size to fit your remaining balance.","provider_name":null}},"user_id":"user_2oWsUXiq1zbfre9TqfORpiEPOGP"}
+FAILED open-weight/es/guide/3: openrouter 402: {"error":{"message":"This request requires more credits, or fewer max_tokens. You requested up to 64000 tokens, but can only afford 7073. To increase, visit https://openrouter.ai/settings/credits and add more credits","code":402,"metadata":{"limit_source":"openrouter_credits","remedy_hint":"Add credits at https://openrouter.ai/settings/credits, or lower max_tokens / prompt size to fit your remaining balance.","provider_name":null}},"user_id":"user_2oWsUXiq1zbfre9TqfORpiEPOGP"}
+5 cell(s) failed; rerun to retry them.
+exit=1

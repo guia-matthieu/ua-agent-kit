@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#F3EFE4">
+<title>Inscription — L’Atelier</title>
+<style>
+  /* ============ Fondations ============ */
+  :root{
+    --paper: #F3EFE4;
+    --ink: #1C1914;
+    --ink-soft: #6B6357;
+    --hair: rgba(28,25,20,.22);
+    --err: #B03526;
+    --ok: #33582F;
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+    --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0 }
+  [hidden]{ display:none !important }
+  body{
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--serif);
+    padding: 0 clamp(14px, 4vw, 56px);
+    -webkit-font-smoothing: antialiased;
+  }
+  /* Grain papier (SVG inline, très discret) */
+  body::after{
+    content:""; position:fixed; inset:0; z-index:50; pointer-events:none;
+    opacity:.05; mix-blend-mode:multiply;
+    background-image:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='140' height='140' filter='url(%23n)'/></svg>");
+  }
+  ::selection{ background:var(--ink); color:var(--paper) }
+
+  .sheet{
+    max-width:1160px; margin:0 auto; min-height:100vh;
+    display:flex; flex-direction:column;
+    border-left:1px solid var(--ink); border-right:1px solid var(--ink);
+  }
+
+  /* ============ Barres du document ============ */
+  .topbar{
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:.5rem 1.5rem;
+    padding:.95rem 0; border-bottom:1px solid var(--ink);
+    font:600 .68rem var(--mono); letter-spacing:.16em; text-transform:uppercase;
+  }
+  #validCount{ color:var(--ink-soft); font-weight:500 }
+  #validCount.done{ color:var(--ok); font-weight:700 }
+  .bottombar{
+    margin-top:auto; display:flex; justify-content:space-between; flex-wrap:wrap; gap:.5rem 1.5rem;
+    padding:.95rem 0; border-top:1px solid var(--ink);
+    font:600 .62rem var(--mono); letter-spacing:.16em; text-transform:uppercase; color:var(--ink-soft);
+  }
+
+  /* ============ Grille éditoriale ============ */
+  .grid{ display:grid; grid-template-columns:.92fr 1.08fr; flex:1 }
+  .intro{
+    padding:clamp(1.8rem,4vw,3.4rem) clamp(1.4rem,3vw,3rem) clamp(2rem,4vw,3.4rem) 0;
+    border-right:1px solid var(--ink);
+  }
+  .intro-inner{ position:sticky; top:2.2rem }
+  .kicker{
+    display:flex; align-items:center; gap:.7rem;
+    font:600 .68rem var(--mono); letter-spacing:.18em; text-transform:uppercase; color:var(--err);
+  }
+  .kicker::before{ content:""; width:2.2rem; height:1px; background:var(--err) }
+  h1{
+    font-weight:400; font-size:clamp(2.7rem,5.4vw,4.5rem);
+    line-height:.98; letter-spacing:-.015em; margin:1.3rem 0 1.4rem;
+  }
+  h1 em{ font-style:italic }
+  .lede{ font-size:1.05rem; line-height:1.65; color:var(--ink-soft); max-width:36ch }
+  .meta{
+    margin-top:clamp(2.4rem,7vh,4.8rem);
+    font:400 .7rem/1.9 var(--mono); color:var(--ink-soft);
+    text-transform:uppercase; letter-spacing:.1em;
+  }
+  .meta strong{ color:var(--ink); font-weight:600 }
+
+  .panel{ padding:clamp(1.8rem,4vw,3rem) 0 clamp(2rem,4vw,3rem) clamp(1.4rem,3vw,3rem) }
+
+  /* ============ Champs ============ */
+  .field{ padding:1.5rem 0 1.15rem; position:relative }
+  .field + .field{ border-top:1px solid var(--hair) }
+  .field-head{ display:flex; align-items:baseline; gap:.8rem; margin-bottom:.1rem }
+  .field-num{
+    font:700 .68rem var(--mono); color:var(--err); letter-spacing:.08em;
+    transition:color .3s;
+  }
+  .field.is-valid .field-num{ color:var(--ink-soft); text-decoration:line-through; text-decoration-thickness:1px }
+  .field label{
+    font:600 .72rem var(--mono); text-transform:uppercase; letter-spacing:.16em;
+    transition:letter-spacing .35s;
+  }
+  .field:focus-within label{ letter-spacing:.24em }
+  .req{ color:var(--err) }
+  .hint{ margin-left:auto; font:400 .68rem var(--mono); color:var(--ink-soft); letter-spacing:.05em }
+
+  .control{ position:relative }
+  .field input{
+    width:100%; background:transparent; border:none; border-radius:0;
+    border-bottom:1px solid var(--ink);
+    font:400 clamp(1.1rem,1.8vw,1.3rem)/1.4 var(--serif);
+    color:var(--ink); caret-color:var(--err);
+    padding:.5rem 0 .55rem;
+  }
+  .field input::placeholder{ color:rgba(28,25,20,.34); font-style:italic }
+  .field input:focus{ outline:none }
+  /* Ligne animée sous le champ */
+  .control::after{
+    content:""; position:absolute; left:0; bottom:0; width:100%; height:2px;
+    background:var(--ink); transform:scaleX(0); transform-origin:left;
+    transition:transform .4s cubic-bezier(.22,1,.36,1), background .25s;
+  }
+  .field:focus-within .control::after{ transform:scaleX(1) }
+  .field.is-error .control::after{ transform:scaleX(1); background:var(--err) }
+  .field.is-error input{ border-bottom-color:var(--err) }
+
+  /* Message d'erreur */
+  .error{ display:none; padding-top:.55rem; font:400 .78rem/1.5 var(--mono); color:var(--err); max-width:56ch }
+  .error::before{ content:"— " }
+  .field.is-error .error{ display:block; animation:rise .3s both; animation-delay:var(--d,0ms) }
+  @keyframes rise{ from{ opacity:0; transform:translateY(4px) } }
+  @keyframes shake{
+    10%,90%{ transform:translateX(-1px) } 20%,80%{ transform:translateX(2px) }
+    30%,50%,70%{ transform:translateX(-3px) } 40%,60%{ transform:translateX(3px) }
+  }
+  .field.shake{ animation:shake .45s }
+
+  /* Bascule d’affichage du mot de passe */
+  .pw-toggle{
+    margin-left:auto; background:none; border:none; cursor:pointer;
+    font:600 .68rem var(--mono); letter-spacing:.1em; text-transform:uppercase;
+    color:var(--ink-soft); border-bottom:1px dotted currentColor; padding:2px 0;
+  }
+  .pw-toggle:hover{ color:var(--ink) }
+  .pw-toggle:focus-visible{ outline:2px solid var(--ink); outline-offset:3px }
+
+  /* Jauge de force */
+  .pw-meter{ display:flex; align-items:center; justify-content:space-between; gap:1rem; margin-top:.95rem }
+  .segs{ display:flex; gap:4px }
+  .segs i{ width:26px; height:3px; background:rgba(28,25,20,.15); transition:background .35s }
+  .pw-meter.l-low  .segs i.on{ background:var(--err) }
+  .pw-meter.l-mid  .segs i.on{ background:var(--ink) }
+  .pw-meter.l-high .segs i.on{ background:var(--ok) }
+  .pw-meter-label{ font:600 .62rem var(--mono); letter-spacing:.14em; color:var(--ink-soft); text-transform:uppercase }
+  .pw-meter.l-low  .pw-meter-label{ color:var(--err) }
+  .pw-meter.l-high .pw-meter-label{ color:var(--ok) }
+
+  /* Checklist des critères */
+  .pw-rules{ list-style:none; display:grid; grid-template-columns:1fr 1fr; gap:.5rem 1.4rem; margin-top:.9rem }
+  .pw-rules li{
+    display:flex; align-items:center; gap:.6rem;
+    font:400 .76rem/1.3 var(--mono); color:var(--ink-soft); transition:color .3s;
+  }
+  .pw-rules .box{
+    flex:none; width:15px; height:15px; border:1px solid rgba(28,25,20,.4);
+    display:grid; place-items:center; color:var(--paper); transition:all .25s;
+  }
+  .pw-rules svg{ opacity:0; transform:scale(.4); transition:all .25s }
+  .pw-rules li.ok{ color:var(--ink) }
+  .pw-rules li.ok .box{ background:var(--ok); border-color:var(--ok) }
+  .pw-rules li.ok svg{ opacity:1; transform:scale(1) }
+
+  /* Résumé d'erreurs au moment de l'envoi */
+  .summary{
+    margin-top:1.9rem; display:flex; gap:.8rem; align-items:baseline;
+    padding:.85rem 1rem; border:1px solid var(--err); color:var(--err);
+    font:500 .78rem/1.5 var(--mono); animation:rise .3s both;
+  }
+  .summary .badge{
+    flex:none; width:16px; height:16px; border:1px solid currentColor;
+    display:grid; place-items:center; font-weight:700; font-size:.7rem;
+    transform:translateY(2px);
+  }
+
+  /* ============ Envoi ============ */
+  .submit{
+    width:100%; margin-top:1.9rem; padding:1.05rem 1.4rem;
+    background:var(--ink); color:var(--paper); border:1px solid var(--ink); cursor:pointer;
+    font:600 .85rem var(--mono); letter-spacing:.2em; text-transform:uppercase;
+    display:flex; justify-content:center; align-items:center; gap:.7rem;
+    transition:background .25s, color .25s, transform .15s, opacity .25s;
+  }
+  .submit:hover{ background:var(--paper); color:var(--ink) }
+  .submit:active{ transform:translateY(1px) }
+  .submit:focus-visible{ outline:2px dashed var(--ink); outline-offset:4px }
+  .submit .arrow{ display:inline-block; transition:transform .25s }
+  .submit:hover .arrow{ transform:translateX(5px) }
+  .submit.busy{ opacity:.65; pointer-events:none }
+  .footnote{ margin-top:1rem; font:400 .68rem var(--mono); color:var(--ink-soft); letter-spacing:.04em }
+
+  /* ============ Confirmation ============ */
+  .success{ padding-top:1.2rem }
+  .stamp{
+    display:inline-block; padding:.55rem 1.3rem .62rem;
+    border:2px solid var(--ok);
+    box-shadow:0 0 0 4px var(--paper), 0 0 0 5px var(--ok);
+    color:var(--ok); font:700 .95rem var(--mono); letter-spacing:.34em; text-transform:uppercase;
+    mix-blend-mode:multiply;
+    animation:stamp .55s cubic-bezier(.2,1.3,.4,1) both;
+  }
+  @keyframes stamp{
+    0%{ transform:rotate(-14deg) scale(2.1); opacity:0 }
+    55%{ opacity:1 }
+    72%{ transform:rotate(-4deg) scale(.95) }
+    100%{ transform:rotate(-5deg) scale(1) }
+  }
+  .ref{ margin-top:1.3rem; font:600 .66rem var(--mono); letter-spacing:.18em; text-transform:uppercase; color:var(--ink-soft); animation:fadeUp .5s .1s both }
+  .success-title{ font-weight:400; font-size:clamp(1.9rem,3.6vw,2.9rem); line-height:1.05; margin:1.2rem 0 .9rem; animation:fadeUp .5s .18s both }
+  .success-title em{ font-style:italic }
+  .success-lede{ font-size:1.02rem; line-height:1.65; color:var(--ink-soft); max-width:46ch; animation:fadeUp .5s .26s both }
+  .recap{ margin:2.1rem 0; border-top:1px solid var(--ink); animation:fadeUp .5s .34s both }
+  .recap > div{ display:flex; justify-content:space-between; gap:1.2rem; padding:.7rem 0; border-bottom:1px dashed rgba(28,25,20,.3) }
+  .recap dt{ font:600 .66rem var(--mono); text-transform:uppercase; letter-spacing:.16em; color:var(--ink-soft); align-self:center }
+  .recap dd{ font:500 1rem var(--serif); text-align:right; overflow-wrap:anywhere }
+  .btn-ghost{
+    background:none; border:none; cursor:pointer; padding:.4rem 0;
+    border-bottom:1px solid var(--ink);
+    font:600 .74rem var(--mono); letter-spacing:.14em; text-transform:uppercase; color:var(--ink);
+    animation:fadeUp .5s .42s both; transition:color .2s, border-color .2s;
+  }
+  .btn-ghost:hover{ color:var(--err); border-color:var(--err) }
+  .btn-ghost:focus-visible{ outline:2px solid var(--ink); outline-offset:4px }
+  @keyframes fadeUp{ from{ opacity:0; transform:translateY(10px) } }
+
+  /* ============ Responsive ============ */
+  @media (max-width:860px){
+    .grid{ grid-template-columns:1fr }
+    .intro{ border-right:none; border-bottom:1px solid var(--ink); padding-right:0; padding-bottom:2.2rem }
+    .intro-inner{ position:static }
+    .panel{ padding-left:0; padding-top:1.6rem }
+    .pw-rules{ grid-template-columns:1fr }
+    .sheet{ border-left:none; border-right:none }
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{ animation-duration:.01ms !important; transition-duration:.01ms !important }
+    html{ scroll-behavior:auto }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <header class="topbar">
+    <span>Formulaire d’inscription — L’Atelier</span>
+    <span>Validation&nbsp;: <span id="validCount">0/4</span></span>
+  </header>
+
+  <main class="grid">
+
+    <!-- ===== Colonne document ===== -->
+    <aside class="intro">
+      <div class="intro-inner">
+        <p class="kicker">N° 04-A — Ouverture de compte</p>
+        <h1>Rejoindre<br><em>l’atelier</em></h1>
+        <p class="lede">Quatre renseignements suffisent pour ouvrir votre dossier. Chacun est vérifié ici même, dans votre navigateur — rien n’est envoyé tant que tout n’est pas conforme.</p>
+        <div class="meta">
+          <p>Émis le <strong id="today">…</strong></p>
+          <p>Ce document ne quitte pas votre navigateur.</p>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ===== Colonne formulaire ===== -->
+    <section class="panel">
+
+      <form id="form" action="#" method="get" novalidate>
+
+        <div class="field">
+          <div class="field-head">
+            <span class="field-num">01</span>
+            <label for="name">Nom complet <span class="req">*</span></label>
+            <span class="hint">prénom &amp; nom</span>
+          </div>
+          <div class="control">
+            <input id="name" name="name" type="text" autocomplete="name" maxlength="80"
+                   placeholder="Camille Dupont" aria-describedby="name-error">
+          </div>
+          <p class="error" id="name-error" aria-live="polite"></p>
+        </div>
+
+        <div class="field">
+          <div class="field-head">
+            <span class="field-num">02</span>
+            <label for="email">Adresse e-mail <span class="req">*</span></label>
+            <span class="hint">nom@domaine.fr</span>
+          </div>
+          <div class="control">
+            <input id="email" name="email" type="email" autocomplete="email" maxlength="120"
+                   placeholder="camille@exemple.fr" spellcheck="false" autocapitalize="none"
+                   aria-describedby="email-error">
+          </div>
+          <p class="error" id="email-error" aria-live="polite"></p>
+        </div>
+
+        <div class="field">
+          <div class="field-head">
+            <span class="field-num">03</span>
+            <label for="url">Site web</label>
+            <span class="hint">facultatif</span>
+          </div>
+          <div class="control">
+            <input id="url" name="url" type="text" autocomplete="url" maxlength="200"
+                   placeholder="https://monsite.fr" spellcheck="false" autocapitalize="none"
+                   inputmode="url" aria-describedby="url-error">
+          </div>
+          <p class="error" id="url-error" aria-live="polite"></p>
+        </div>
+
+        <div class="field">
+          <div class="field-head">
+            <span class="field-num">04</span>
+            <label for="password">Mot de passe <span class="req">*</span></label>
+            <button type="button" class="pw-toggle" id="pwToggle" aria-pressed="false">Afficher</button>
+          </div>
+          <div class="control">
+            <input id="password" name="password" type="password" autocomplete="new-password" maxlength="100"
+                   placeholder="Minimum 8 caractères" spellcheck="false" autocapitalize="none"
+                   aria-describedby="password-error pw-rules">
+          </div>
+          <p class="error" id="password-error" aria-live="polite"></p>
+
+          <div class="pw-meter" id="pwMeter" aria-hidden="true">
+            <div class="segs" id="segs"><i></i><i></i><i></i><i></i><i></i></div>
+            <span class="pw-meter-label" id="pwMeterLabel">Force —</span>
+          </div>
+          <ul class="pw-rules" id="pw-rules">
+            <li data-rule="len"><span class="box"><svg viewBox="0 0 12 12" width="10" height="10" aria-hidden="true" focusable="false"><path d="M2 6.5 4.8 9.3 10 3.2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>8 caractères min.</span></li>
+            <li data-rule="case"><span class="box"><svg viewBox="0 0 12 12" width="10" height="10" aria-hidden="true" focusable="false"><path d="M2 6.5 4.8 9.3 10 3.2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Majuscule &amp; minuscule</span></li>
+            <li data-rule="digit"><span class="box"><svg viewBox="0 0 12 12" width="10" height="10" aria-hidden="true" focusable="false"><path d="M2 6.5 4.8 9.3 10 3.2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Un chiffre</span></li>
+            <li data-rule="special"><span class="box"><svg viewBox="0 0 12 12" width="10" height="10" aria-hidden="true" focusable="false"><path d="M2 6.5 4.8 9.3 10 3.2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Un caractère spécial</span></li>
+          </ul>
+        </div>
+
+        <p class="summary" id="summary" hidden>
+          <span class="badge">!</span>
+          <span id="summaryText"></span>
+        </p>
+
+        <button type="submit" class="submit" id="submitBtn">
+          <span id="submitLabel">S’inscrire</span><span class="arrow">→</span>
+        </button>
+        <p class="footnote">Les champs marqués <span class="req">*</span> sont obligatoires. Le site web est laissé vide si vous n’en avez pas.</p>
+      </form>
+
+      <!-- ===== Confirmation ===== -->
+      <div class="success" id="success" hidden aria-live="polite">
+        <div class="stamp">Enregistré</div>
+        <p class="ref">Dossier n° <span id="refNo">A-0000</span></p>
+        <h2 class="success-title">Bienvenue, <em id="succName">…</em>.</h2>
+        <p class="success-lede">Votre dossier est complet. Un e-mail de confirmation partirait vers <strong id="succEmail">…</strong> — et comme promis, rien d’autre ne quitte cette page.</p>
+        <dl class="recap">
+          <div><dt>Membre</dt><dd id="rName">—</dd></div>
+          <div><dt>E-mail</dt><dd id="rEmail">—</dd></div>
+          <div><dt>Site web</dt><dd id="rUrl">—</dd></div>
+          <div><dt>Enregistré le</dt><dd id="rDate">—</dd></div>
+        </dl>
+        <button type="button" class="btn-ghost" id="backBtn">← Corriger mes informations</button>
+      </div>
+
+    </section>
+  </main>
+
+  <footer class="bottombar">
+    <span>Registre des membres — Form. 04-A</span>
+    <span>Simulation locale · aucun envoi réel</span>
+  </footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  const $ = (s, c) => (c || document).querySelector(s);
+
+  /* ---------- Règles de validation, champ par champ ---------- */
+  const RULES = {
+    len:    v => v.length >= 8,
+    case:   v => /[a-zà-öø-ÿ]/.test(v) && /[A-ZÀ-ÖØ-Ÿ]/.test(v),
+    digit:  v => /\d/.test(v),
+    special:v => /[^A-Za-z0-9]/.test(v)
+  };
+
+  const fields = {
+    name: {
+      el: $("#name"), error: $("#name-error"), touched: false,
+      validate(v){
+        const t = v.trim();
+        if(!t) return "Le nom complet est requis.";
+        if(t.length < 3) return "Trois caractères au minimum, s’il vous plaît.";
+        if(!/^[\p{L}\p{M}’' -]+$/u.test(t)) return "Lettres, espaces, tirets et apostrophes uniquement.";
+        if(t.split(/\s+/u).length < 2) return "Indiquez votre prénom et votre nom (deux mots).";
+        return "";
+      }
+    },
+    email: {
+      el: $("#email"), error: $("#email-error"), touched: false,
+      validate(v){
+        const t = v.trim();
+        if(!t) return "L’adresse e-mail est requise.";
+        if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(t)) return "Format attendu : prenom@domaine.fr";
+        return "";
+      }
+    },
+    url: {
+      el: $("#url"), error: $("#url-error"), touched: false,
+      optional: true,
+      validate(v){
+        const t = v.trim();
+        if(!t) return ""; /* champ facultatif */
+        const candidate = /^https?:\/\//i.test(t) ? t : "https://" + t;
+        try{
+          const u = new URL(candidate);
+          if(/\s/.test(t) || !u.hostname || !u.hostname.includes(".")) throw 0;
+          return "";
+        }catch(e){ return "Format attendu : https://monsite.fr"; }
+      }
+    },
+    password: {
+      el: $("#password"), error: $("#password-error"), touched: false,
+      validate(v){
+        if(!v) return "Le mot de passe est requis.";
+        const ok = RULES.len(v) && RULES.case(v) && RULES.digit(v) && RULES.special(v);
+        return ok ? "" : "Il ne remplit pas encore toutes les conditions listées ci-dessous.";
+      }
+    }
+  };
+
+  const form      = $("#form");
+  const success   = $("#success");
+  const summary   = $("#summary");
+  const sumText   = $("#summaryText");
+  const submitBtn = $("#submitBtn");
+  const subLabel  = $("#submitLabel");
+  const counter   = $("#validCount");
+  const pwToggle  = $("#pwToggle");
+  const pwMeter   = $("#pwMeter");
+  const pwLabel   = $("#pwMeterLabel");
+  const segEls    = Array.from(document.querySelectorAll("#segs i"));
+  const ruleEls   = Array.from(document.querySelectorAll("#pw-rules li"));
+
+  /* ---------- État d'un champ : erreur / valide ---------- */
+  function showState(name, msg){
+    const f = fields[name];
+    const wrap = f.el.closest(".field");
+    if(msg){
+      wrap.classList.add("is-error");
+      wrap.classList.remove("is-valid");
+      f.el.setAttribute("aria-invalid", "true");
+      f.error.textContent = msg;
+    }else{
+      wrap.classList.remove("is-error");
+      wrap.classList.toggle("is-valid", f.touched && f.el.value.trim() !== "");
+      f.el.setAttribute("aria-invalid", "false");
+      f.error.textContent = "";
+    }
+    updateCounter();
+    updateSummary();
+  }
+
+  /* ---------- Compteur de conformité (barre du haut) ---------- */
+  function updateCounter(){
+    const n = Object.values(fields)
+      .filter(f => f.el.value.trim() !== "" && f.validate(f.el.value) === "").length;
+    counter.textContent = n === 4 ? "4/4 — prêt à l’envoi" : n + "/4";
+    counter.classList.toggle("done", n === 4);
+  }
+
+  /* ---------- Résumé d'erreurs ---------- */
+  function updateSummary(){
+    const n = document.querySelectorAll(".field.is-error").length;
+    if(n === 0){ summary.hidden = true; return; }
+    sumText.textContent = (n === 1 ? "Un champ à corriger" : n + " champs à corriger") +
+                          " avant l’envoi — suivez les indications en rouge.";
+    summary.hidden = false;
+  }
+
+  /* ---------- Jauge de force + checklist du mot de passe ---------- */
+  function updatePwExtras(){
+    const v = fields.password.el.value;
+    let passed = 0;
+    ruleEls.forEach(li => {
+      const ok = RULES[li.dataset.rule](v);
+      li.classList.toggle("ok", ok);
+      if(ok) passed++;
+    });
+    const score = passed + (v.length >= 12 ? 1 : 0);
+    const n = v ? Math.max(1, score) : 0;
+    segEls.forEach((s, i) => s.classList.toggle("on", i < n));
+    pwMeter.classList.remove("l-low", "l-mid", "l-high");
+    let label = "Force —";
+    if(v){
+      if(score <= 2){ pwMeter.classList.add("l-low");  label = "Force — faible"; }
+      else if(score === 3){ pwMeter.classList.add("l-mid");  label = "Force — moyen"; }
+      else if(score === 4){ pwMeter.classList.add("l-high"); label = "Force — solide"; }
+      else { pwMeter.classList.add("l-high"); label = "Force — robuste"; }
+    }
+    pwLabel.textContent = label;
+  }
+
+  /* ---------- Normalisation douce du site web au blur ---------- */
+  function normalizeUrl(){
+    const el = fields.url.el;
+    const t = el.value.trim();
+    if(!t || /^https?:\/\//i.test(t)) return;
+    const withScheme = "https://" + t;
+    if(fields.url.validate(withScheme) === "") el.value = withScheme;
+  }
+
+  /* ---------- Écouteurs live ---------- */
+  Object.keys(fields).forEach(name => {
+    const f = fields[name];
+    f.el.addEventListener("input", () => {
+      if(f.touched) showState(name, f.validate(f.el.value));
+      if(name === "password") updatePwExtras();
+      updateCounter();
+    });
+    f.el.addEventListener("blur", () => {
+      f.touched = true;
+      if(name === "url") normalizeUrl();
+      showState(name, f.validate(f.el.value));
+    });
+  });
+
+  pwToggle.addEventListener("click", () => {
+    const show = fields.password.el.type === "password";
+    fields.password.el.type = show ? "text" : "password";
+    pwToggle.textContent = show ? "Masquer" : "Afficher";
+    pwToggle.setAttribute("aria-pressed", String(show));
+    fields.password.el.focus();
+  });
+
+  /* ---------- Envoi ---------- */
+  form.addEventListener("submit", e => {
+    e.preventDefault();
+    let firstBad = null, count = 0;
+
+    Object.keys(fields).forEach((name, i) => {
+      const f = fields[name];
+      f.touched = true;
+      f.el.closest(".field").style.setProperty("--d", (i * 70) + "ms"); /* cascade */
+      const msg = f.validate(f.el.value);
+      showState(name, msg);
+      if(msg){ count++; if(!firstBad) firstBad = f; }
+    });
+
+    if(count){
+      document.querySelectorAll(".field.is-error").forEach(w => {
+        w.classList.remove("shake"); void w.offsetWidth; w.classList.add("shake");
+      });
+      firstBad.el.focus();
+      return;
+    }
+
+    /* Tout est conforme : court délai de « vérification », puis confirmation */
+    submitBtn.classList.add("busy");
+    submitBtn.disabled = true;
+    subLabel.textContent = "Vérification…";
+    setTimeout(showSuccess, 650);
+  });
+
+  /* ---------- Confirmation ---------- */
+  function showSuccess(){
+    const name  = fields.name.el.value.trim();
+    const email = fields.email.el.value.trim();
+    const url   = fields.url.el.value.trim();
+    const now   = new Date();
+    const d = now.toLocaleDateString("fr-FR", { day:"numeric", month:"long", year:"numeric" });
+    const h = now.toLocaleTimeString("fr-FR", { hour:"2-digit", minute:"2-digit" });
+
+    $("#succName").textContent  = name.split(/\s+/u)[0];
+    $("#succEmail").textContent = email;
+    $("#rName").textContent  = name;
+    $("#rEmail").textContent = email;
+    $("#rUrl").textContent   = url || "— non renseigné";
+    $("#rDate").textContent  = d + " à " + h;
+    $("#refNo").textContent  = "A-" + String(1000 + Math.floor(Math.random() * 9000));
+
+    form.hidden = true;
+    success.hidden = false;
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    $("#backBtn").focus({ preventScroll: true });
+  }
+
+  /* ---------- Retour au formulaire ---------- */
+  $("#backBtn").addEventListener("click", () => {
+    success.hidden = true;
+    form.hidden = false;
+    submitBtn.classList.remove("busy");
+    submitBtn.disabled = false;
+    subLabel.textContent = "S’inscrire";
+    fields.name.el.focus();
+  });
+
+  /* ---------- Initialisation ---------- */
+  $("#today").textContent =
+    new Date().toLocaleDateString("fr-FR", { day:"numeric", month:"long", year:"numeric" });
+  updatePwExtras();
+  updateCounter();
+})();
+</script>
+</body>
+</html>

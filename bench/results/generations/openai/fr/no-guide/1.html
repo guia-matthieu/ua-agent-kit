@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Formulaire d’inscription</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 32px 16px;
+      font-family: system-ui, sans-serif;
+      line-height: 1.5;
+      color: #172033;
+      background: #f3f5f9;
+    }
+
+    main {
+      max-width: 540px;
+      margin: 0 auto;
+      padding: 32px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 6px 24px rgb(0 0 0 / 8%);
+    }
+
+    h1 { margin: 0 0 8px; }
+    .intro { margin: 0 0 24px; color: #475569; }
+    .field { margin-bottom: 20px; }
+    label { display: block; margin-bottom: 6px; font-weight: 600; }
+
+    input {
+      width: 100%;
+      padding: 11px 12px;
+      border: 1px solid #64748b;
+      border-radius: 6px;
+      font: inherit;
+      background: #fff;
+      color: inherit;
+    }
+
+    input:focus-visible, button:focus-visible {
+      outline: 3px solid #2563eb;
+      outline-offset: 3px;
+    }
+
+    input[aria-invalid="true"] { border: 2px solid #b91c1c; }
+
+    .hint, .error {
+      margin: 6px 0 0;
+      font-size: 0.9rem;
+    }
+
+    .hint { color: #475569; }
+    .error { color: #b91c1c; }
+    .error:empty { display: none; }
+
+    button {
+      width: 100%;
+      padding: 12px 16px;
+      border: 0;
+      border-radius: 6px;
+      background: #1d4ed8;
+      color: #fff;
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    button:hover { background: #1e40af; }
+    button:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    #status {
+      margin: 20px 0 0;
+      color: #166534;
+      font-weight: 600;
+    }
+
+    #status:empty { display: none; }
+
+    @media (max-width: 400px) {
+      main { padding: 24px 18px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Créer un compte</h1>
+    <p class="intro">Tous les champs sont obligatoires.</p>
+
+    <noscript>
+      <p>Activez JavaScript pour valider et utiliser ce formulaire.</p>
+    </noscript>
+
+    <form id="registration-form" method="post" novalidate>
+      <div class="field">
+        <label for="full-name">Nom complet</label>
+        <input
+          id="full-name"
+          name="fullName"
+          type="text"
+          autocomplete="name"
+          required
+          maxlength="100"
+          aria-describedby="full-name-error"
+        >
+        <p class="error" id="full-name-error"></p>
+      </div>
+
+      <div class="field">
+        <label for="email">Adresse e-mail</label>
+        <input
+          id="email"
+          name="email"
+          type="email"
+          autocomplete="email"
+          spellcheck="false"
+          autocapitalize="none"
+          required
+          maxlength="254"
+          aria-describedby="email-error"
+        >
+        <p class="error" id="email-error"></p>
+      </div>
+
+      <div class="field">
+        <label for="website">Site web</label>
+        <input
+          id="website"
+          name="website"
+          type="url"
+          autocomplete="url"
+          spellcheck="false"
+          autocapitalize="none"
+          placeholder="https://exemple.fr"
+          required
+          aria-describedby="website-hint website-error"
+        >
+        <p class="hint" id="website-hint">Adresse complète commençant par https:// ou http://.</p>
+        <p class="error" id="website-error"></p>
+      </div>
+
+      <div class="field">
+        <label for="password">Mot de passe</label>
+        <input
+          id="password"
+          name="password"
+          type="password"
+          autocomplete="new-password"
+          required
+          minlength="12"
+          maxlength="128"
+          aria-describedby="password-hint password-error"
+        >
+        <p class="hint" id="password-hint">Entre 12 et 128 caractères. Utilisez un mot de passe unique.</p>
+        <p class="error" id="password-error"></p>
+      </div>
+
+      <button id="submit-button" type="submit" disabled>S’inscrire</button>
+      <p id="status" role="status" aria-live="polite" aria-atomic="true"></p>
+    </form>
+  </main>
+
+  <script>
+    "use strict";
+
+    const form = document.getElementById("registration-form");
+    const status = document.getElementById("status");
+    const fields = Array.from(form.querySelectorAll("input"));
+    const touched = new Set();
+
+    function getError(field) {
+      const value = field.type === "password"
+        ? field.value
+        : field.value.trim();
+
+      if (value.length === 0) {
+        const requiredMessages = {
+          "full-name": "Veuillez saisir votre nom complet.",
+          "email": "Veuillez saisir votre adresse e-mail.",
+          "website": "Veuillez saisir l’adresse de votre site web.",
+          "password": "Veuillez saisir un mot de passe."
+        };
+        return requiredMessages[field.id];
+      }
+
+      switch (field.id) {
+        case "full-name":
+          if (value.length > 100) {
+            return "Le nom complet ne doit pas dépasser 100 caractères.";
+          }
+          break;
+
+        case "email":
+          if (value.length > 254 || field.validity.typeMismatch) {
+            return "Veuillez saisir une adresse e-mail valide, par exemple nom@exemple.fr.";
+          }
+          break;
+
+        case "website":
+          try {
+            const url = new URL(value);
+            if (
+              !/^https?:\/\//i.test(value) ||
+              !["http:", "https:"].includes(url.protocol) ||
+              !url.hostname ||
+              /\s/.test(value)
+            ) {
+              return "Veuillez saisir une adresse web valide commençant par https:// ou http://.";
+            }
+          } catch {
+            return "Veuillez saisir une adresse web valide, par exemple https://exemple.fr.";
+          }
+          break;
+
+        case "password":
+          if (value.length < 12 || value.length > 128) {
+            return "Le mot de passe doit contenir entre 12 et 128 caractères.";
+          }
+          if (value.trim().length === 0) {
+            return "Le mot de passe ne peut pas contenir uniquement des espaces.";
+          }
+          break;
+      }
+
+      return "";
+    }
+
+    function validate(field) {
+      const message = getError(field);
+      document.getElementById(field.id + "-error").textContent = message;
+      field.setAttribute("aria-invalid", message ? "true" : "false");
+      return message === "";
+    }
+
+    fields.forEach((field) => {
+      field.addEventListener("blur", () => {
+        if (field.type !== "password") {
+          field.value = field.value.trim();
+        }
+        touched.add(field);
+        validate(field);
+      });
+
+      field.addEventListener("input", () => {
+        status.textContent = "";
+        if (touched.has(field)) {
+          validate(field);
+        }
+      });
+    });
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      status.textContent = "";
+
+      let firstInvalidField = null;
+
+      fields.forEach((field) => {
+        if (field.type !== "password") {
+          field.value = field.value.trim();
+        }
+
+        touched.add(field);
+
+        if (!validate(field) && firstInvalidField === null) {
+          firstInvalidField = field;
+        }
+      });
+
+      if (firstInvalidField) {
+        firstInvalidField.focus();
+        return;
+      }
+
+      // Démonstration autonome : aucune donnée n’est envoyée ni stockée.
+      // Une inscription réelle nécessite un serveur et une nouvelle
+      // validation côté serveur, la validation JavaScript étant contournable.
+      status.textContent =
+        "Formulaire valide. Cette démonstration n’envoie aucune donnée et ne crée pas de compte.";
+    });
+
+    document.getElementById("submit-button").disabled = false;
+  </script>
+</body>
+</html>

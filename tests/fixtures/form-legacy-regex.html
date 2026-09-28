@@ -1,0 +1,18 @@
+<!doctype html><html lang="fr"><body>
+<form id="f" novalidate>
+<label for="courriel">Courriel</label><input id="courriel" name="courriel" type="text">
+<div id="err-courriel" class="help" hidden>Adresse e-mail invalide</div>
+<label for="siteweb">Site web</label><input id="siteweb" name="siteweb" type="text">
+<div id="err-site" class="help" hidden>URL invalide</div>
+<button type="submit">Envoyer</button></form>
+<script>
+const EMAIL = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+const SITE = /^(https?:\/\/)?[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z]{2,3}(\/.*)?$/;
+function bind(id, errId, re) {
+  const el = document.getElementById(id), err = document.getElementById(errId);
+  const check = () => { const bad = el.value !== '' && !re.test(el.value); err.hidden = !bad; el.classList.toggle('is-invalid', bad); };
+  el.addEventListener('input', check); el.addEventListener('blur', check);
+}
+bind('courriel', 'err-courriel', EMAIL); bind('siteweb', 'err-site', SITE);
+document.getElementById('f').addEventListener('submit', e => { e.preventDefault(); window.__submitted = true; });
+</script></body></html>

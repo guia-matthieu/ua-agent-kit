@@ -1,0 +1,13 @@
+<!doctype html><html lang="en"><body>
+<!-- During load, before the lock: a popup by window.open, another by a target=_blank link, and a WebSocket
+     from the page itself. After load each of them could carry the typed value out. -->
+<form id="f"><label>Email <input id="email" name="email" type="email"></label><button type="submit">Send</button></form>
+<script>
+window.__popupOpened = !!window.open('popup-ws.html');
+const a = document.createElement('a'); a.href = 'popup-ws.html'; a.target = '_blank'; document.body.append(a); a.click();
+let ws = null;
+try { ws = new WebSocket(location.origin.replace('http', 'ws') + '/ws-page'); } catch { /* no WebSocket */ }
+document.getElementById('email').addEventListener('input', e => { if (ws && ws.readyState === 1) ws.send(e.target.value); });
+document.getElementById('f').addEventListener('submit', e => e.preventDefault());
+</script>
+</body></html>

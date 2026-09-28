@@ -1,0 +1,15 @@
+<!doctype html><html lang="en"><body>
+<!-- Submit-time validation with a confirm-email pair, a required radio group and a required select. -->
+<form id="f"><label>Email <input id="email" name="email" type="email"></label>
+<label>Confirm email <input id="email2" name="email_confirm" type="email"></label><div id="err-match" hidden>Emails do not match: invalid</div>
+<label>Website <input id="site" name="website" type="url"></label>
+<fieldset><input type="radio" name="plan" value="a" required> A <input type="radio" name="plan" value="b"> B</fieldset>
+<select name="country" required><option value="">Choose</option><option value="fr">France</option></select>
+<button type="submit">Send</button></form>
+<script>
+document.getElementById('f').addEventListener('submit', e => {
+  e.preventDefault();
+  document.getElementById('err-match').hidden = document.getElementById('email').value === document.getElementById('email2').value;
+});
+</script>
+</body></html>

@@ -1,0 +1,6 @@
+<!doctype html><html lang="en"><head><title>external validator</title>
+<script src="validator-legacy.js" defer></script></head><body>
+<!-- No native validation (type=text, novalidate): only the external script rejects. -->
+<form id="f" novalidate><label for="email">Email</label><input id="email" name="email" type="text">
+<span id="err" hidden>Invalid email</span><button type="submit">Send</button></form>
+</body></html>

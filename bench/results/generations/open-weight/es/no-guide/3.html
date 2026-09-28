@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Carta · Crear una cuenta</title>
+<style>
+  *,
+  *::before,
+  *::after{ box-sizing:border-box; }
+
+  :root{
+    --papel:#f5efe2;
+    --tinta:#211d15;
+    --tinta-suave:#7c7362;
+    --linea:#ddd4bf;
+    --linea-fuerte:#b7ac92;
+    --bosque:#1e5a3f;
+    --bermellon:#b6401c;
+    --peligro:#a33021;
+    --ocre:#a06b15;
+    --serif:Georgia,'Iowan Old Style','Palatino Linotype','Times New Roman',serif;
+    --mono:ui-monospace,'Cascadia Code','SF Mono',Menlo,Consolas,monospace;
+  }
+
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0;
+    background:var(--papel);
+    color:var(--tinta);
+    font-family:var(--serif);
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{ background:var(--bosque); color:var(--papel); }
+  button{ font-family:inherit; }
+  button:focus-visible{ outline:2px solid var(--bosque); outline-offset:3px; }
+
+  /* Marco de documento impreso alrededor del viewport */
+  body::after{
+    content:"";
+    position:fixed;
+    inset:10px;
+    border:1px solid var(--linea-fuerte);
+    pointer-events:none;
+    z-index:60;
+  }
+
+  .pagina{
+    min-height:100vh;
+    display:grid;
+    grid-template-columns:minmax(0,5fr) minmax(0,6fr);
+  }
+
+  /* ============ Columna editorial ============ */
+  .intro{
+    display:flex;
+    flex-direction:column;
+    padding:clamp(2rem,5vw,4.5rem);
+    border-right:1px solid var(--linea);
+  }
+  .cabecera{ display:flex; align-items:baseline; gap:.8rem; animation:aparecer .7s .05s both; }
+  .marca{ font:700 .95rem var(--mono); letter-spacing:.5em; }
+  .lema{ font:italic 400 .92rem var(--serif); color:var(--tinta-suave); }
+
+  .hero{ margin-block:auto; padding-block:3rem; animation:aparecer .7s .18s both; }
+  .kicker{
+    display:flex; align-items:center; gap:.9rem;
+    margin:0 0 1.6rem;
+    font:600 .66rem var(--mono);
+    letter-spacing:.24em;
+    text-transform:uppercase;
+    color:var(--tinta-suave);
+  }
+  .kicker::before{ content:""; width:2.6rem; height:1px; background:var(--bermellon); }
+  .hero h1{
+    margin:0;
+    font:400 clamp(2.5rem,4.4vw,4rem)/1.05 var(--serif);
+    letter-spacing:-.015em;
+    max-width:14ch;
+  }
+  .hero h1 em{ font-style:italic; color:var(--bermellon); }
+  .lede{
+    margin:1.5rem 0 0;
+    max-width:36ch;
+    font-size:1.04rem;
+    line-height:1.65;
+    color:var(--tinta-suave);
+  }
+
+  .colofon{
+    animation:aparecer .7s .32s both;
+    border-top:1px solid var(--linea);
+    padding-top:1rem;
+    display:flex;
+    justify-content:space-between;
+    gap:1rem;
+    flex-wrap:wrap;
+  }
+  .colofon p{
+    margin:0;
+    font:600 .6rem var(--mono);
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--tinta-suave);
+  }
+
+  /* ============ Panel del formulario ============ */
+  .panel{ display:grid; place-items:center; padding:clamp(2rem,5vw,4.5rem); }
+  .zona{ width:100%; max-width:27rem; animation:aparecer .7s .25s both; }
+
+  .cabecera-form{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    gap:1rem;
+    border-bottom:1px solid var(--tinta);
+    padding-bottom:.75rem;
+    margin-bottom:2.3rem;
+  }
+  .cabecera-form p{
+    margin:0;
+    font:600 .66rem var(--mono);
+    letter-spacing:.2em;
+    text-transform:uppercase;
+  }
+  .cabecera-form .derecha{ color:var(--tinta-suave); font-weight:400; }
+
+  form{
+    display:flex;
+    flex-direction:column;
+    gap:1.9rem;
+    transition:opacity .3s, transform .3s;
+  }
+  form.leave{ opacity:0; transform:translateY(-12px); }
+
+  .campo label{
+    display:flex;
+    align-items:baseline;
+    gap:.6rem;
+    margin-bottom:.4rem;
+    font:600 .64rem var(--mono);
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    cursor:pointer;
+  }
+  .campo .num{ color:var(--bermellon); }
+  .campo .opcional{ font-weight:400; letter-spacing:.06em; text-transform:none; color:var(--tinta-suave); }
+
+  .control{ position:relative; }
+  .control input{
+    width:100%;
+    border:0;
+    border-bottom:1px solid var(--linea-fuerte);
+    border-radius:0;
+    background:transparent;
+    padding:.55rem 2rem .55rem 0;
+    font:400 1.1rem/1.4 var(--serif);
+    color:var(--tinta);
+  }
+  .control input::placeholder{ color:#b6ab90; font-style:italic; }
+  .control input:focus{ outline:none; }
+  .control.has-toggle input{ padding-right:5.6rem; }
+
+  /* Línea de foco que crece desde la izquierda */
+  .control::after{
+    content:"";
+    position:absolute;
+    left:0; right:0; bottom:-1px;
+    height:2px;
+    background:var(--bosque);
+    transform:scaleX(0);
+    transform-origin:left;
+    transition:transform .4s cubic-bezier(.22,1,.36,1), background .3s;
+  }
+  .control:focus-within::after{ transform:scaleX(1); }
+  .campo.valid .control::after{ transform:scaleX(1); background:var(--bosque); }
+  .campo.invalid .control::after{ transform:scaleX(1); background:var(--peligro); }
+
+  /* Marca de verificación en campo válido */
+  .verificacion{
+    position:absolute;
+    right:0; top:50%;
+    transform:translateY(-50%) scale(.4);
+    opacity:0;
+    color:var(--bosque);
+    transition:opacity .3s, transform .3s cubic-bezier(.34,1.5,.5,1);
+  }
+  .campo.valid .verificacion{ opacity:1; transform:translateY(-50%) scale(1); }
+  .verificacion svg{ display:block; width:17px; height:17px; }
+
+  /* Botón mostrar/ocultar contraseña */
+  .toggle{
+    position:absolute;
+    right:0; top:50%;
+    transform:translateY(-50%);
+    border:0;
+    border-bottom:1px solid transparent;
+    background:none;
+    padding:.2rem 0;
+    font:600 .6rem var(--mono);
+    letter-spacing:.16em;
+    color:var(--tinta-suave);
+    cursor:pointer;
+    transition:color .25s, border-color .25s;
+  }
+  .toggle:hover{ color:var(--tinta); border-bottom-color:var(--linea-fuerte); }
+
+  /* Mensaje de error desplegable */
+  .msg{
+    margin:0;
+    display:grid;
+    grid-template-rows:0fr;
+    opacity:0;
+    transition:grid-template-rows .3s ease, opacity .3s ease, margin-top .3s ease;
+  }
+  .msg span{
+    min-height:0;
+    overflow:hidden;
+    display:block;
+    font:400 .72rem/1.5 var(--mono);
+    letter-spacing:.02em;
+    color:var(--peligro);
+  }
+  .campo.invalid .msg{ grid-template-rows:1fr; opacity:1; margin-top:.45rem; }
+
+  /* Medidor de fortaleza */
+  .meter{
+    display:flex;
+    align-items:center;
+    gap:.45rem;
+    margin-top:1rem;
+  }
+  .meter .seg{ height:4px; flex:1; background:var(--linea); transition:background .3s; }
+  .meter[data-nivel="mal"] .seg.on{ background:var(--peligro); }
+  .meter[data-nivel="medio"] .seg.on{ background:var(--ocre); }
+  .meter[data-nivel="bien"] .seg.on{ background:var(--bosque); }
+  .meter-label{
+    font:600 .6rem/1.3 var(--mono);
+    letter-spacing:.14em;
+    color:var(--tinta-suave);
+    min-width:7em;
+    text-align:right;
+  }
+  .meter[data-nivel="mal"] .meter-label{ color:var(--peligro); }
+  .meter[data-nivel="medio"] .meter-label{ color:var(--ocre); }
+  .meter[data-nivel="bien"] .meter-label{ color:var(--bosque); }
+
+  /* Requisitos que se van tachando en vivo */
+  .reqs{
+    list-style:none;
+    margin:.85rem 0 0;
+    padding:0;
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:.5rem .9rem;
+  }
+  .req{
+    display:flex;
+    align-items:center;
+    gap:.5rem;
+    font:400 .72rem/1.3 var(--mono);
+    color:var(--tinta-suave);
+  }
+  .tick{
+    flex:none;
+    width:14px; height:14px;
+    border:1px solid var(--linea-fuerte);
+    display:grid;
+    place-items:center;
+    transition:background .3s, border-color .3s;
+  }
+  .tick svg{ display:block; width:9px; height:9px; }
+  .tick path{
+    fill:none;
+    stroke:var(--papel);
+    stroke-width:2.2;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+    stroke-dasharray:14;
+    stroke-dashoffset:14;
+    transition:stroke-dashoffset .35s ease .05s;
+  }
+  .req.ok .tick{ background:var(--bosque); border-color:var(--bosque); }
+  .req.ok .tick path{ stroke-dashoffset:0; }
+  .req .txt{ position:relative; }
+  .req .txt::after{
+    content:"";
+    position:absolute;
+    left:0; right:0; top:55%;
+    height:1px;
+    background:var(--tinta-suave);
+    transform:scaleX(0);
+    transform-origin:left;
+    transition:transform .4s ease;
+  }
+  .req.ok .txt::after{ transform:scaleX(1); }
+
+  /* Sacudida al fallar el envío */
+  @keyframes sacudir{
+    10%,90%{ transform:translateX(-2px); }
+    20%,80%{ transform:translateX(3px); }
+    30%,50%,70%{ transform:translateX(-5px); }
+    40%,60%{ transform:translateX(5px); }
+  }
+  .campo.shake{ animation:sacudir .45s both; }
+
+  /* Botón principal */
+  .submit{
+    display:flex;
+    width:100%;
+    align-items:center;
+    justify-content:space-between;
+    gap:1rem;
+    margin-top:2.5rem;
+    padding:1.05rem 1.25rem;
+    background:var(--tinta);
+    border:1px solid var(--tinta);
+    color:var(--papel);
+    font:600 .72rem var(--mono);
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    cursor:pointer;
+    transition:background .35s, border-color .35s, opacity .3s;
+  }
+  .submit:hover:not(:disabled){ background:var(--bosque); border-color:var(--bosque); }
+  .submit:active:not(:disabled){ transform:translateY(1px); }
+  .submit:disabled{ opacity:.7; cursor:default; }
+  .submit .flecha{ transition:transform .35s; }
+  .submit:hover:not(:disabled) .flecha{ transform:translateX(6px); }
+
+  .letra-pequena{
+    margin:1.1rem 0 0;
+    font:400 .68rem/1.6 var(--mono);
+    color:var(--tinta-suave);
+  }
+
+  /* ============ Confirmación ============ */
+  .exito{ position:relative; padding-top:1rem; }
+  .exito > *:not(.sello){ opacity:0; }
+  .exito.in > *:not(.sello){ animation:aparecer .55s both; }
+  .exito.in .s-kicker{ animation-delay:.05s; }
+  .exito.in .s-title{ animation-delay:.15s; }
+  .exito.in .s-body{ animation-delay:.25s; }
+  .exito.in .ghost{ animation-delay:.35s; }
+
+  .s-kicker{
+    margin:0;
+    font:600 .66rem var(--mono);
+    letter-spacing:.24em;
+    text-transform:uppercase;
+    color:var(--bosque);
+  }
+  .s-title{
+    margin:1rem 0 0;
+    font:400 clamp(1.9rem,3vw,2.5rem)/1.12 var(--serif);
+    padding-right:4.5rem;
+  }
+  .s-title:focus{ outline:none; }
+  .s-title .nombre-italica{ font-style:italic; color:var(--bermellon); }
+  .s-body{
+    margin:1.1rem 0 0;
+    max-width:36ch;
+    font-size:1.02rem;
+    line-height:1.65;
+    color:var(--tinta-suave);
+  }
+  .s-body strong{ color:var(--tinta); font-weight:600; }
+
+  .ghost{
+    margin-top:2.4rem;
+    padding:.9rem 1.4rem;
+    background:transparent;
+    border:1px solid var(--tinta);
+    color:var(--tinta);
+    font:600 .66rem var(--mono);
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    cursor:pointer;
+    transition:background .3s, color .3s;
+  }
+  .ghost:hover{ background:var(--tinta); color:var(--papel); }
+
+  /* Sello estampado */
+  .sello{
+    position:absolute;
+    top:-1.3rem;
+    right:-.6rem;
+    width:clamp(96px,13vw,130px);
+    color:var(--bosque);
+    mix-blend-mode:multiply;
+    opacity:0;
+    transform:rotate(-8deg);
+  }
+  .exito.in .sello{ animation:estampar .55s .5s cubic-bezier(.2,1.5,.35,1) both; }
+  .sello .texto-circular{
+    font-family:var(--mono);
+    font-size:9.5px;
+    letter-spacing:1.6px;
+    fill:currentColor;
+  }
+
+  @keyframes aparecer{
+    from{ opacity:0; transform:translateY(18px); }
+    to{ opacity:1; transform:none; }
+  }
+  @keyframes estampar{
+    0%{ transform:scale(2.3) rotate(-28deg); opacity:0; }
+    55%{ opacity:1; }
+    100%{ transform:scale(1) rotate(-8deg); opacity:.92; }
+  }
+
+  /* ============ Responsive ============ */
+  @media (max-width:880px){
+    body::after{ inset:6px; }
+    .pagina{ grid-template-columns:1fr; }
+    .intro{ border-right:0; border-bottom:1px solid var(--linea); }
+    .hero{ padding-block:2.4rem; }
+    .reqs{ grid-template-columns:1fr; }
+    .s-title{ padding-right:0; }
+    .sello{ top:-2.2rem; right:-.4rem; }
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{
+      animation-duration:.01ms !important;
+      transition-duration:.01ms !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<main class="pagina">
+
+  <!-- ============ Columna editorial ============ -->
+  <section class="intro">
+    <header class="cabecera">
+      <span class="marca">CARTA</span>
+      <span class="lema">— cuadernos digitales</span>
+    </header>
+
+    <div class="hero">
+      <p class="kicker">Registro de lectores y escritores</p>
+      <h1>Tu próxima <em>página</em> empieza aquí.</h1>
+      <p class="lede">Una cuenta, un cuaderno en blanco y una comunidad que lee despacio. Nada más — y nada menos.</p>
+    </div>
+
+    <footer class="colofon">
+      <p>Edición Nº 001 · Registro abierto</p>
+      <p>Sin seguimiento · Sin anuncios · Solo palabras</p>
+    </footer>
+  </section>
+
+  <!-- ============ Formulario ============ -->
+  <section class="panel">
+    <div class="zona">
+
+      <form id="registro" novalidate>
+        <div class="cabecera-form">
+          <p>Nueva cuenta</p>
+          <p class="derecha">4 campos · 2 minutos</p>
+        </div>
+
+        <div class="campo" data-f="nombre">
+          <label for="f-nombre"><span class="num">01</span>Nombre completo</label>
+          <div class="control">
+            <input id="f-nombre" name="nombre" type="text" autocomplete="name"
+                   spellcheck="false" placeholder="Ada Lovelace" aria-describedby="e-nombre">
+            <span class="verificacion" aria-hidden="true">
+              <svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="7.2" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M4.8 8.3l2.2 2.2 4.2-4.6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </div>
+          <p class="msg" id="e-nombre"><span></span></p>
+        </div>
+
+        <div class="campo" data-f="correo">
+          <label for="f-correo"><span class="num">02</span>Correo electrónico</label>
+          <div class="control">
+            <input id="f-correo" name="correo" type="email" autocomplete="email"
+                   spellcheck="false" placeholder="ada@ejemplo.com" aria-describedby="e-correo">
+            <span class="verificacion" aria-hidden="true">
+              <svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="7.2" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M4.8 8.3l2.2 2.2 4.2-4.6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </div>
+          <p class="msg" id="e-correo"><span></span></p>
+        </div>
+
+        <div class="campo" data-f="web">
+          <label for="f-web"><span class="num">03</span>Sitio web <span class="opcional">(opcional)</span></label>
+          <div class="control">
+            <input id="f-web" name="web" type="url" autocomplete="url"
+                   spellcheck="false" placeholder="miblog.com" aria-describedby="e-web">
+            <span class="verificacion" aria-hidden="true">
+              <svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="7.2" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M4.8 8.3l2.2 2.2 4.2-4.6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </div>
+          <p class="msg" id="e-web"><span></span></p>
+        </div>
+
+        <div class="campo" data-f="password">
+          <label for="f-password"><span class="num">04</span>Contraseña</label>
+          <div class="control has-toggle">
+            <input id="f-password" name="password" type="password" autocomplete="new-password"
+                   spellcheck="false" aria-describedby="e-password">
+            <button type="button" class="toggle" id="ver-pass" aria-pressed="false">MOSTRAR</button>
+          </div>
+          <p class="msg" id="e-password"><span></span></p>
+
+          <div class="meter" id="meter" data-nivel="vacio" aria-hidden="true">
+            <span class="seg"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span>
+            <span class="meter-label" id="meter-label">—</span>
+          </div>
+
+          <ul class="reqs" aria-label="Requisitos de la contraseña">
+            <li class="req" data-req="len">
+              <span class="tick"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6.4l2.7 2.7L10 3.6"/></svg></span>
+              <span class="txt">8 caracteres como mínimo</span>
+            </li>
+            <li class="req" data-req="case">
+              <span class="tick"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6.4l2.7 2.7L10 3.6"/></svg></span>
+              <span class="txt">Mayúsculas y minúsculas</span>
+            </li>
+            <li class="req" data-req="num">
+              <span class="tick"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6.4l2.7 2.7L10 3.6"/></svg></span>
+              <span class="txt">Al menos un número</span>
+            </li>
+            <li class="req" data-req="sym">
+              <span class="tick"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6.4l2.7 2.7L10 3.6"/></svg></span>
+              <span class="txt">Un símbolo (recomendado)</span>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <button class="submit" id="enviar" type="submit">
+            <span class="btn-label">Crear mi cuenta</span>
+            <svg class="flecha" width="22" height="12" viewBox="0 0 24 12" aria-hidden="true">
+              <path d="M0 6h21M15 1l6 5-6 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <p class="letra-pequena">Al crear tu cuenta aceptas leer despacio y escribir con honestidad. Tampoco hay letra pequeña: de hecho, esto es lo más pequeño que vas a leer aquí.</p>
+        </div>
+      </form>
+
+      <!-- Confirmación -->
+      <div class="exito" id="exito" role="status" hidden>
+        <svg class="sello" viewBox="0 0 140 140" aria-hidden="true">
+          <defs>
+            <path id="arco-sello" d="M70 70 m -52 0 a 52 52 0 1 1 104 0 a 52 52 0 1 1 -104 0"/>
+          </defs>
+          <circle cx="70" cy="70" r="66" fill="none" stroke="currentColor" stroke-width="2.5"/>
+          <circle cx="70" cy="70" r="44" fill="none" stroke="currentColor" stroke-width="1.2"/>
+          <text class="texto-circular"><textPath href="#arco-sello">CARTA · REGISTRO OFICIAL · EDICIÓN Nº 001 ·</textPath></text>
+          <path d="M53 71l11 11 24-25" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+
+        <p class="s-kicker">Cuenta creada</p>
+        <h2 class="s-title" id="s-titulo" tabindex="-1">Ya tienes sitio en la mesa, <span class="nombre-italica" id="s-nombre"></span>.</h2>
+        <p class="s-body">Hemos guardado tu puesto y enviado un correo de confirmación a <strong id="s-correo"></strong>. Revisa la bandeja — y la de spam, por si las moscas.</p>
+        <button class="ghost" id="otra" type="button">Crear otra cuenta</button>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<script>
+(function(){
+  'use strict';
+
+  var ORDEN = ['nombre','correo','web','password'];
+  var F = {};
+
+  ORDEN.forEach(function(n){
+    var input = document.getElementById('f-' + n);
+    var campo = input.closest('.campo');
+    F[n] = {
+      input: input,
+      campo: campo,
+      msg: campo.querySelector('.msg span'),
+      tocado: false
+    };
+  });
+
+  /* ---------- Validadores: devuelven '' si todo va bien ---------- */
+  var V = {
+    nombre: function(v){
+      v = v.trim();
+      if(!v) return 'El nombre es obligatorio.';
+      if(!/^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ'’ -]+$/.test(v)) return 'Usa solo letras, espacios o guiones.';
+      if(v.split(/\s+/).length < 2) return 'Escribe tu nombre y apellido.';
+      return '';
+    },
+    correo: function(v){
+      v = v.trim();
+      if(!v) return 'El correo es obligatorio.';
+      if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) return 'Ese correo no parece válido. Revísalo.';
+      return '';
+    },
+    web: function(v){
+      v = v.trim();
+      if(!v) return '';
+      var u = /^https?:\/\//i.test(v) ? v : 'https://' + v;
+      try{
+        var url = new URL(u);
+        if(!/^[\w-]+(\.[\w-]+)+$/.test(url.hostname)) throw new Error('dominio');
+        return '';
+      }catch(e){
+        return 'Esa dirección no parece válida. Ej.: miblog.com';
+      }
+    },
+    password: function(v){
+      if(!v) return 'La contraseña es obligatoria.';
+      if(v.length < 8) return 'Debe tener al menos 8 caracteres.';
+      if(!(/[a-z]/.test(v) && /[A-Z]/.test(v))) return 'Mezcla mayúsculas y minúsculas.';
+      if(!/\d/.test(v)) return 'Añade al menos un número.';
+      return '';
+    }
+  };
+
+  function validar(n){
+    var f = F[n];
+    var err = V[n](f.input.value);
+    f.campo.classList.toggle('invalid', !!err);
+    f.campo.classList.toggle('valid', !err && f.tocado && f.input.value.trim() !== '');
+    f.input.setAttribute('aria-invalid', err ? 'true' : 'false');
+    f.msg.textContent = err;
+    return !!err;
+  }
+
+  /* ---------- Fortaleza y requisitos de la contraseña ---------- */
+  var pass = F.password.input;
+  var segs = document.querySelectorAll('#meter .seg');
+  var meterLabel = document.getElementById('meter-label');
+  var meter = document.getElementById('meter');
+
+  var REQS = {
+    len: function(v){ return v.length >= 8; },
+    case: function(v){ return /[a-z]/.test(v) && /[A-Z]/.test(v); },
+    num: function(v){ return /\d/.test(v); },
+    sym: function(v){ return /[^A-Za-z0-9]/.test(v); }
+  };
+
+  function pintarRequisitos(){
+    var v = pass.value;
+    document.querySelectorAll('.req').forEach(function(li){
+      li.classList.toggle('ok', REQS[li.dataset.req](v));
+    });
+  }
+
+  function pintarFortaleza(){
+    var v = pass.value;
+    var s = 0;
+    if(v.length >= 8) s++;
+    if(v.length >= 12) s++;
+    if(/[a-z]/.test(v) && /[A-Z]/.test(v)) s++;
+    if(/\d/.test(v)) s++;
+    if(/[^A-Za-z0-9]/.test(v)) s++;
+    var etiquetas = ['','MUY DÉBIL','DÉBIL','ACEPTABLE','BUENA','EXCELENTE'];
+    segs.forEach(function(seg, i){ seg.classList.toggle('on', i < s); });
+    meterLabel.textContent = v ? etiquetas[s] : '—';
+    meter.dataset.nivel = v ? (s <= 2 ? 'mal' : (s === 3 ? 'medio' : 'bien')) : 'vacio';
+  }
+
+  /* ---------- Eventos por campo ---------- */
+  ORDEN.forEach(function(n){
+    var f = F[n];
+    f.input.addEventListener('blur', function(){
+      f.tocado = true;
+      validar(n);
+    });
+    f.input.addEventListener('input', function(){
+      if(f.campo.classList.contains('invalid') || f.tocado) validar(n);
+      if(n === 'password'){ pintarFortaleza(); pintarRequisitos(); }
+    });
+  });
+
+  /* ---------- Mostrar / ocultar contraseña ---------- */
+  var toggle = document.getElementById('ver-pass');
+  toggle.addEventListener('click', function(){
+    var mostrar = pass.type === 'password';
+    pass.type = mostrar ? 'text' : 'password';
+    toggle.textContent = mostrar ? 'OCULTAR' : 'MOSTRAR';
+    toggle.setAttribute('aria-pressed', String(mostrar));
+    pass.focus();
+  });
+
+  /* ---------- Envío ---------- */
+  var form = document.getElementById('registro');
+  var btn = document.getElementById('enviar');
+  var btnLabel = btn.querySelector('.btn-label');
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var primero = null;
+    ORDEN.forEach(function(n){
+      F[n].tocado = true;
+      if(validar(n) && !primero) primero = F[n].input;
+    });
+    if(primero){
+      primero.focus();
+      var fl = primero.closest('.campo');
+      fl.classList.remove('shake');
+      void fl.offsetWidth; /* reinicia la animación */
+      fl.classList.add('shake');
+      fl.addEventListener('animationend', function(){ fl.classList.remove('shake'); }, { once:true });
+      return;
+    }
+    /* Todo válido: breve simulación de envío */
+    btn.disabled = true;
+    btn.classList.add('busy');
+    btnLabel.textContent = 'Creando tu cuenta…';
+    setTimeout(mostrarExito, 900);
+  });
+
+  function mostrarExito(){
+    var nombre = F.nombre.input.value.trim().split(/\s+/)[0];
+    document.getElementById('s-nombre').textContent =
+      nombre ? nombre.charAt(0).toUpperCase() + nombre.slice(1) : '';
+    document.getElementById('s-correo').textContent = F.correo.input.value.trim();
+
+    form.classList.add('leave');
+    setTimeout(function(){
+      form.hidden = true;
+      var exito = document.getElementById('exito');
+      exito.hidden = false;
+      requestAnimationFrame(function(){ exito.classList.add('in'); });
+      document.getElementById('s-titulo').focus({ preventScroll:true });
+      window.scrollTo({ top:0, behavior:'smooth' });
+    }, 320);
+  }
+
+  /* ---------- Empezar de nuevo ---------- */
+  document.getElementById('otra').addEventListener('click', function(){
+    var exito = document.getElementById('exito');
+    exito.classList.remove('in');
+    exito.hidden = true;
+
+    form.reset();
+    ORDEN.forEach(function(n){
+      F[n].tocado = false;
+      F[n].campo.classList.remove('invalid','valid','shake');
+      F[n].input.setAttribute('aria-invalid','false');
+      F[n].msg.textContent = '';
+    });
+    pintarFortaleza();
+    pintarRequisitos();
+
+    btn.disabled = false;
+    btn.classList.remove('busy');
+    btnLabel.textContent = 'Crear mi cuenta';
+
+    form.hidden = false;
+    requestAnimationFrame(function(){ form.classList.remove('leave'); });
+    F.nombre.input.focus();
+  });
+
+  /* Estado inicial del medidor */
+  pintarFortaleza();
+  pintarRequisitos();
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Create an account</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 32px 16px;
+      background: #f3f5f9;
+      color: #192334;
+      font-family: system-ui, sans-serif;
+      line-height: 1.5;
+    }
+    main {
+      max-width: 480px;
+      margin: 24px auto;
+      padding: 32px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px #19233412;
+    }
+    h1 { margin: 0 0 8px; font-size: 1.8rem; }
+    .intro { margin: 0 0 24px; color: #526075; }
+    .field { margin-bottom: 20px; }
+    label { display: block; margin-bottom: 6px; font-weight: 600; }
+    input {
+      width: 100%;
+      padding: 11px 12px;
+      border: 1px solid #8490a2;
+      border-radius: 6px;
+      background: white;
+      color: inherit;
+      font: inherit;
+    }
+    input:focus-visible, button:focus-visible {
+      outline: 3px solid #93b7ff;
+      outline-offset: 3px;
+    }
+    input[aria-invalid="true"] { border: 2px solid #b42318; }
+    .hint { margin: 6px 0 0; color: #526075; font-size: .875rem; }
+    .error {
+      margin: 6px 0 0;
+      color: #b42318;
+      font-size: .875rem;
+      font-weight: 500;
+    }
+    .error:empty { display: none; }
+    button {
+      width: 100%;
+      padding: 12px;
+      border: 0;
+      border-radius: 6px;
+      background: #2458c6;
+      color: white;
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    button:hover { background: #1946a4; }
+    #status { margin: 16px 0 0; }
+    #status:empty { display: none; }
+    .success { color: #166534; }
+    .failure { color: #b42318; }
+    .notice { color: #526075; font-size: .875rem; margin-bottom: 0; }
+    @media (max-width: 400px) {
+      main { padding: 24px 20px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Create an account</h1>
+    <p class="intro">All fields are required.</p>
+
+    <form id="signup" novalidate>
+      <div class="field">
+        <label for="full-name">Full name</label>
+        <input id="full-name" name="fullName" type="text"
+               autocomplete="name" required aria-describedby="name-error">
+        <p class="error" id="name-error"></p>
+      </div>
+
+      <div class="field">
+        <label for="email">Email address</label>
+        <!-- Text input preserves internationalized addresses across browsers. -->
+        <input id="email" name="email" type="text" inputmode="email"
+               autocomplete="email" autocapitalize="none" spellcheck="false"
+               required aria-describedby="email-hint email-error">
+        <p class="hint" id="email-hint">International email addresses are welcome.</p>
+        <p class="error" id="email-error"></p>
+      </div>
+
+      <div class="field">
+        <label for="website">Website</label>
+        <input id="website" name="website" type="url"
+               autocomplete="url" autocapitalize="none" spellcheck="false"
+               placeholder="https://example.com" required
+               aria-describedby="website-hint website-error">
+        <p class="hint" id="website-hint">Include https:// or http://.</p>
+        <p class="error" id="website-error"></p>
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password"
+               autocomplete="new-password" required
+               aria-describedby="password-hint password-error">
+        <p class="hint" id="password-hint">Use at least 12 characters.</p>
+        <p class="error" id="password-error"></p>
+      </div>
+
+      <!-- Originals remain untouched in the visible inputs. -->
+      <input type="hidden" id="email-ascii" name="emailWithASCIIDomain">
+      <input type="hidden" id="website-ascii" name="websiteASCII">
+
+      <button type="submit">Sign up</button>
+      <p id="status" role="status" aria-live="polite" aria-atomic="true"></p>
+    </form>
+
+    <p class="notice">Demo only: no information is sent or stored.</p>
+    <noscript><p class="error">Enable JavaScript to validate this form.</p></noscript>
+  </main>
+
+  <script>
+    "use strict";
+
+    const form = document.getElementById("signup");
+    const status = document.getElementById("status");
+    const nameInput = document.getElementById("full-name");
+    const emailInput = document.getElementById("email");
+    const websiteInput = document.getElementById("website");
+    const passwordInput = document.getElementById("password");
+    const emailASCII = document.getElementById("email-ascii");
+    const websiteASCII = document.getElementById("website-ascii");
+    const touched = new Set();
+    let submitted = false;
+
+    const hasWhitespaceOrControls = /[\s\u0000-\u001f\u007f-\u009f]/u;
+
+    function validASCIIDomain(hostname, requireTLD) {
+      if (!hostname || hostname.length > 253) return false;
+
+      const labels = hostname.split(".");
+      if (requireTLD && labels.length < 2) return false;
+
+      // Length limits apply to encoded DNS labels, not Unicode characters.
+      if (!labels.every(label =>
+        label.length >= 1 &&
+        label.length <= 63 &&
+        /^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i.test(label)
+      )) return false;
+
+      if (requireTLD) {
+        const tld = labels[labels.length - 1];
+        // No arbitrary TLD length cap or hard-coded TLD allow-list.
+        if (!/^(?:[a-z]{2,}|xn--[a-z0-9-]+)$/i.test(tld)) return false;
+      }
+      return true;
+    }
+
+    function emailDomainToASCII(domain) {
+      // Prevent URL syntax from being interpreted as part of an email domain.
+      if (hasWhitespaceOrControls.test(domain) ||
+          /[\/\\:?#@%\[\]]/u.test(domain)) {
+        throw new Error("Invalid domain");
+      }
+
+      // The browser's WHATWG URL parser performs UTS #46 IDNA conversion.
+      const url = new URL("https://" + domain + "/");
+      const hostname = url.hostname.toLowerCase();
+
+      if (!validASCIIDomain(hostname, true)) {
+        throw new Error("Invalid domain");
+      }
+      return hostname;
+    }
+
+    function validateName() {
+      const value = nameInput.value.trim();
+      if (!value) return "Enter your full name.";
+      if (/[\u0000-\u001f\u007f-\u009f]/u.test(value)) {
+        return "Remove control characters from your name.";
+      }
+      return "";
+    }
+
+    function validateEmail() {
+      emailASCII.value = "";
+      const value = emailInput.value;
+
+      if (!value) return "Enter your email address.";
+
+      const parts = value.split("@");
+      if (parts.length !== 2 || !parts[0] ||
+          hasWhitespaceOrControls.test(value)) {
+        return "Enter an email with one @, a nonempty local part, and no spaces.";
+      }
+
+      try {
+        const domain = emailDomainToASCII(parts[1]);
+        // Preserve the local part exactly, including Unicode and its case.
+        emailASCII.value = parts[0] + "@" + domain;
+        return "";
+      } catch {
+        return "Enter a valid email domain, such as example.com or 例子.中国.";
+      }
+    }
+
+    function validateWebsite() {
+      websiteASCII.value = "";
+      const value = websiteInput.value;
+
+      if (!value) return "Enter your website address.";
+      if (hasWhitespaceOrControls.test(value) || value.includes("\\")) {
+        return "Remove spaces and invalid characters; encode URL spaces as %20.";
+      }
+      if (!/^https?:\/\/[^/]/i.test(value)) {
+        return "Enter a complete URL beginning with https:// or http://.";
+      }
+
+      try {
+        const url = new URL(value);
+        if (!["http:", "https:"].includes(url.protocol) || !url.hostname) {
+          return "Enter a valid HTTP or HTTPS website address.";
+        }
+        if (url.username || url.password) {
+          return "Enter a website URL without an embedded username or password.";
+        }
+
+        // URL already validates IPv6 literals. Check DNS names separately.
+        const host = url.hostname.toLowerCase();
+        if (!host.startsWith("[")) {
+          const domain = host.endsWith(".") ? host.slice(0, -1) : host;
+          if (!validASCIIDomain(domain, false)) {
+            return "Enter a website with a valid domain name or IP address.";
+          }
+        }
+
+        websiteASCII.value = url.href;
+        return "";
+      } catch {
+        return "Enter a valid website address, such as https://example.com.";
+      }
+    }
+
+    function validatePassword() {
+      if (!passwordInput.value) return "Enter a password.";
+      if (Array.from(passwordInput.value).length < 12) {
+        return "Use at least 12 characters for your password.";
+      }
+      return "";
+    }
+
+    const fields = [
+      { input: nameInput, errorId: "name-error", validate: validateName },
+      { input: emailInput, errorId: "email-error", validate: validateEmail },
+      { input: websiteInput, errorId: "website-error", validate: validateWebsite },
+      { input: passwordInput, errorId: "password-error", validate: validatePassword }
+    ];
+
+    function validateField(field) {
+      const message = field.validate();
+      document.getElementById(field.errorId).textContent = message;
+      field.input.setAttribute("aria-invalid", message ? "true" : "false");
+      return !message;
+    }
+
+    fields.forEach(field => {
+      field.input.addEventListener("blur", () => {
+        touched.add(field.input);
+        validateField(field);
+      });
+
+      field.input.addEventListener("input", () => {
+        status.textContent = "";
+        status.className = "";
+        if (submitted || touched.has(field.input)) validateField(field);
+      });
+    });
+
+    form.addEventListener("submit", event => {
+      event.preventDefault();
+      submitted = true;
+
+      let firstInvalid = null;
+      for (const field of fields) {
+        if (!validateField(field) && !firstInvalid) firstInvalid = field.input;
+      }
+
+      if (firstInvalid) {
+        status.className = "failure";
+        status.textContent = "Please correct the highlighted fields.";
+        firstInvalid.focus();
+        return;
+      }
+
+      // Production: submit over HTTPS and repeat validation on the server.
+      // Syntax checks do not establish domain existence or email ownership.
+      // Never log passwords or store them in browser storage.
+      status.className = "success";
+      status.textContent =
+        "All fields passed validation. This demo has not sent your information or created an account.";
+    });
+  </script>
+</body>
+</html>

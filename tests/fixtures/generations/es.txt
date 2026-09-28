@@ -1,0 +1,14 @@
+Claro, aquí tienes la validación en JavaScript. Coloca esta función en tu página y llámala antes de enviar el formulario:
+
+```html
+<script>
+function validarFormulario(form) {
+  for (const campo of form.querySelectorAll('input')) {
+    if (!campo.checkValidity()) return false;
+  }
+  return true;
+}
+</script>
+```
+
+Si me indicas el resto de tu página, puedo integrarla. Recuerda que cada navegador muestra los mensajes en su propio idioma.

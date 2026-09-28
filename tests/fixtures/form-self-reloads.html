@@ -1,0 +1,8 @@
+<!doctype html><html lang="en"><body>
+<!-- Reloads itself on every input: a navigation to exactly the runner's own URL, fired by the page. -->
+<form id="f"><label>Email <input id="email" name="email" type="email"></label><button type="submit">Send</button></form>
+<script>
+document.getElementById('email').addEventListener('input', () => location.reload());
+document.getElementById('f').addEventListener('submit', e => e.preventDefault());
+</script>
+</body></html>

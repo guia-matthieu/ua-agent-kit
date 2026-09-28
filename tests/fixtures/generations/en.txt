@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Sign up</title></head>
+<body>
+<form id="signup" novalidate>
+  <label>Full name <input name="name" type="text" required></label>
+  <label>Email address <input name="email" type="email" required></label>
+  <span class="error" data-error-for="email" hidden></span>
+  <label>Website <input name="website" type="url"></label>
+  <span class="error" data-error-for="website" hidden></span>
+  <label>Password <input name="password" type="password" required minlength="8"></label>
+  <span class="error" data-error-for="password" hidden></span>
+  <button type="submit">Create account</button>
+</form>
+<script>
+// Sample generation (EN): native constraint validation surfaced next to each field.
+const form = document.getElementById('signup');
+form.addEventListener('submit', e => {
+  e.preventDefault();
+  let ok = true;
+  for (const input of form.querySelectorAll('input')) {
+    const err = form.querySelector(`[data-error-for="${input.name}"]`);
+    if (!input.checkValidity()) {
+      ok = false;
+      err.textContent = input.validationMessage;
+      err.hidden = false;
+    } else {
+      err.hidden = true;
+    }
+  }
+  if (ok) form.submit();
+});
+</script>
+</body>
+</html>

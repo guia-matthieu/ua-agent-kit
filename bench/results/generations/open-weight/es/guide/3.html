@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Crear una cuenta · Formulario de registro</title>
+<style>
+  :root {
+    --fondo: #f4f5f7;
+    --tarjeta: #ffffff;
+    --texto: #1f2733;
+    --suave: #5b6673;
+    --borde: #b9c2cd;
+    --acento: #2f6fdb;
+    --acento-texto: #ffffff;
+    --error: #b3261e;
+    --exito: #1c7c3c;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --fondo: #12161d;
+      --tarjeta: #1c2430;
+      --texto: #e7ebf0;
+      --suave: #9aa6b4;
+      --borde: #414d5c;
+      --acento: #6ea8ff;
+      --acento-texto: #0d1520;
+      --error: #ff9d94;
+      --exito: #63d68d;
+    }
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    padding: 2.5rem 1rem;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.5;
+    background: var(--fondo);
+    color: var(--texto);
+  }
+
+  .tarjeta {
+    max-width: 32rem;
+    margin: 0 auto 1.25rem;
+    padding: 1.75rem 1.5rem;
+    background: var(--tarjeta);
+    border: 1px solid var(--borde);
+    border-radius: 14px;
+  }
+
+  h1 { margin: 0 0 0.25rem; font-size: 1.45rem; }
+  h2 { margin: 0 0 0.5rem; font-size: 1.2rem; }
+  .intro { margin: 0 0 1.5rem; color: var(--suave); }
+
+  label { display: block; font-weight: 600; margin-bottom: 0.3rem; }
+
+  input {
+    display: block;
+    width: 100%;
+    padding: 0.6rem 0.7rem;
+    font: inherit;
+    color: var(--texto);
+    background: var(--fondo);
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+  }
+  input::placeholder { color: var(--suave); opacity: 0.85; }
+  input:focus-visible, button:focus-visible { outline: 2px solid var(--acento); outline-offset: 1px; }
+
+  .campo { margin-bottom: 1.05rem; }
+  .campo.invalido input { border-color: var(--error); }
+
+  .control-clave { position: relative; }
+  .control-clave input { padding-right: 5.4rem; }
+  .alternar {
+    position: absolute;
+    top: 50%;
+    right: 0.35rem;
+    transform: translateY(-50%);
+    padding: 0.25rem 0.45rem;
+    font: inherit;
+    font-size: 0.8em;
+    color: var(--acento);
+    background: none;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  .error { display: none; margin: 0.35rem 0 0; color: var(--error); font-size: 0.875rem; }
+  .campo.invalido .error { display: block; }
+
+  .ayuda { margin: 0.35rem 0 0; color: var(--suave); font-size: 0.85rem; }
+
+  .requisitos { list-style: none; margin: 0.45rem 0 0; padding: 0; font-size: 0.85rem; color: var(--suave); }
+  .requisitos li { margin: 0.15rem 0; }
+  .requisitos li::before { content: "— "; }
+  .requisitos li.cumplido { color: var(--exito); }
+  .requisitos li.cumplido::before { content: "✓ "; }
+
+  .enviar {
+    display: block;
+    width: 100%;
+    margin-top: 0.5rem;
+    padding: 0.7rem;
+    font: inherit;
+    font-weight: 600;
+    color: var(--acento-texto);
+    background: var(--acento);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .enviar:hover { filter: brightness(1.08); }
+
+  .secundario {
+    padding: 0.55rem 0.9rem;
+    font: inherit;
+    color: var(--texto);
+    background: none;
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .resumen { margin: 1rem 0 0; }
+  .resumen dt { font-weight: 600; margin-top: 0.7rem; }
+  .resumen dd { margin: 0; overflow-wrap: anywhere; }
+
+  .pie { max-width: 32rem; margin: 0 auto; text-align: center; color: var(--suave); font-size: 0.8rem; }
+</style>
+</head>
+<body>
+<!--
+  ─────────────────────────────────────────────────────────────────────
+  Notas de Aceptación Universal (UA) — decisiones de esta página:
+
+  1) «Correo» y «sitio web» usan type="text" + inputmode, no
+     type="email" ni type="url". Motivo: los navegadores discrepan con
+     las direcciones internacionalizadas; con type="email" y la entrada
+     «marie.dupont@société.fr», Chromium reescribe el dominio a
+     punycode, Firefox lo respeta y WebKit lo rechaza, y los tres
+     rechazan partes locales con Unicode. type="url" exigiría además
+     el esquema por defecto. Aquí validamos nosotros, con soporte EAI
+     (RFC 6530/6531) e IDNA2008 / UTS #46 (RFC 5890/5891).
+
+  2) El TLD no tiene longitud máxima (.corsica, .technology,
+     .international, .xn--p1ai…) y no se usa ninguna lista fija de TLD.
+
+  3) La conversión U-label → A-label se delega en new URL()
+     (domain-to-ASCII + minúsculas: el equivalente en el navegador de
+     url.domainToASCII). Se conserva lo que escribió la persona y se
+     calcula la forma A-label para DNS y claves de almacenamiento.
+
+  4) No hay clases de caracteres solo-ASCII ([a-zA-Z0-9.-] y
+     similares): rechazarían «josé@fundación.es» o «用户@例子.中国».
+     Casos de referencia: UASG-004.
+  ─────────────────────────────────────────────────────────────────────
+-->
+<main>
+<form id="registro" class="tarjeta" novalidate autocomplete="on">
+  <h1>Crear tu cuenta</h1>
+  <p class="intro">Validamos cada campo en tu navegador antes de enviar nada.</p>
+
+  <div class="campo">
+    <label for="nombre">Nombre completo</label>
+    <input type="text" id="nombre" name="nombre" autocomplete="name" required
+           placeholder="María José López" aria-describedby="error-nombre">
+    <p class="error" id="error-nombre" aria-live="polite"></p>
+  </div>
+
+  <div class="campo">
+    <label for="correo">Correo electrónico</label>
+    <!-- type="text" deliberado: ver las notas de UA al principio del body -->
+    <input type="text" id="correo" name="correo" inputmode="email" autocomplete="email"
+           required spellcheck="false" autocapitalize="none"
+           placeholder="josé.dupont@société.fr" aria-describedby="error-correo">
+    <p class="error" id="error-correo" aria-live="polite"></p>
+    <p class="ayuda">Se aceptan direcciones internacionalizadas: dominios con acentos o en otros alfabetos, y signos como «+» o «'» antes de la «@».</p>
+  </div>
+
+  <div class="campo">
+    <label for="web">Sitio web</label>
+    <input type="text" id="web" name="web" inputmode="url" autocomplete="url"
+           required spellcheck="false" autocapitalize="none"
+           placeholder="https://société.fr" aria-describedby="error-web">
+    <p class="error" id="error-web" aria-live="polite"></p>
+    <p class="ayuda">Puedes omitir «https://» y escribir el dominio tal cual, acentos incluidos.</p>
+  </div>
+
+  <div class="campo">
+    <label for="clave">Contraseña</label>
+    <div class="control-clave">
+      <input type="password" id="clave" name="clave" autocomplete="new-password" required
+             aria-describedby="error-clave requisitos-clave">
+      <button type="button" id="alternar-clave" class="alternar" aria-pressed="false">Mostrar</button>
+    </div>
+    <p class="error" id="error-clave" aria-live="polite"></p>
+    <ul class="requisitos" id="requisitos-clave">
+      <li id="req-longitud">10 caracteres como mínimo</li>
+      <li id="req-letra">Al menos una letra</li>
+      <li id="req-numero">Al menos un número</li>
+    </ul>
+  </div>
+
+  <button type="submit" class="enviar">Crear cuenta</button>
+</form>
+
+<section id="resultado" class="tarjeta" hidden tabindex="-1" aria-labelledby="titulo-resultado">
+  <h2 id="titulo-resultado">Todo correcto</h2>
+  <p>El formulario superó la validación. Así llegarían los datos al servidor (demostración local: no se envía nada a ninguna parte):</p>
+  <dl class="resumen">
+    <dt>Nombre</dt><dd id="res-nombre"></dd>
+    <dt>Correo, tal como lo escribiste</dt><dd id="res-correo"></dd>
+    <dt>Correo con el dominio en A-label, para DNS y almacenamiento</dt><dd id="res-correo-ascii"></dd>
+    <dt>Sitio web, tal como lo escribiste</dt><dd id="res-web"></dd>
+    <dt>Sitio web con el host en A-label</dt><dd id="res-web-ascii"></dd>
+    <dt>Contraseña</dt><dd>recibida, pero se omite en este resumen</dd>
+  </dl>
+  <p class="ayuda">Consejo: guarda siempre la forma escrita por la persona usuaria y usa la forma A-label (punycode) solo para consultas DNS y claves de almacenamiento.</p>
+  <p><button type="button" id="reiniciar" class="secundario">Rellenar otro registro</button></p>
+</section>
+
+<p class="pie">Página autónoma de demostración: sin frameworks, sin bibliotecas, sin CSS externo y sin peticiones de red.</p>
+</main>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ════════════════ Validadores (Aceptación Universal) ════════════════ */
+
+  var codificador = new TextEncoder();
+  function octetos(texto) {
+    return codificador.encode(texto).length; /* longitud UTF-8 en octetos */
+  }
+
+  var RE_LETRA  = /\p{L}/u; /* letra de cualquier alfabeto */
+  var RE_NUMERO = /\p{N}/u; /* dígito de cualquier alfabeto */
+
+  /* Listas de bloqueo mínimas. Importante: NO son clases de
+     permitidos ASCII ([a-zA-Z0-9.-] y similares), que rechazarían
+     dominios y partes locales internacionalizados válidos. Son
+     caracteres que jamás aparecen sin entrecomillar en cada parte. */
+  var PROHIBIDOS_DOMINIO = /[\s:/?#[\]@%\\]/;
+  var PROHIBIDOS_LOCAL   = /[\s\u0000-\u001F:,;"<>()[\]\\]/;
+
+  function mal(mensaje) {
+    return { ok: false, error: mensaje };
+  }
+
+  /**
+   * analizaDominio("société.fr")
+   *   → { ok: true, ascii: "xn--socit-esab.fr" }  o  { ok: false, error: "…" }
+   *
+   * Acepta U-labels (Unicode: «société.fr», «例子.中国») y A-labels
+   * («xn--socit-esab.fr»). La conversión a A-label la realiza el
+   * analizador de URLs de la plataforma (IDNA2008 / UTS #46), que
+   * además pasa el nombre a minúsculas (los dominios son
+   * insensibles a mayúsculas, incluidos los «xn--»).
+   */
+  function analizaDominio(dominio) {
+    if (PROHIBIDOS_DOMINIO.test(dominio)) {
+      return mal("El dominio contiene caracteres que no se permiten en un nombre de dominio.");
+    }
+
+    var ascii;
+    try {
+      ascii = new URL("http://" + dominio + "/").hostname;
+    } catch (error) {
+      return mal("El dominio no parece válido.");
+    }
+
+    var etiquetas = ascii.split(".");
+    if (etiquetas.length < 2) {
+      return mal("El dominio necesita al menos dos etiquetas separadas por puntos (p. ej. «ejemplo.com»).");
+    }
+
+    for (var i = 0; i < etiquetas.length; i++) {
+      var etiqueta = etiquetas[i];
+      if (etiqueta === "") {
+        return mal("El dominio no puede empezar ni terminar en punto, ni llevar puntos seguidos.");
+      }
+      if (etiqueta.length > 63) {
+        return mal("Ninguna etiqueta puede superar los 63 octetos en forma codificada (A-label).");
+      }
+      if (etiqueta.charAt(0) === "-" || etiqueta.charAt(etiqueta.length - 1) === "-") {
+        return mal("Ninguna etiqueta puede empezar ni terminar con un guion.");
+      }
+    }
+
+    if (ascii.length > 253) {
+      return mal("El dominio supera la longitud máxima de 253 octetos.");
+    }
+
+    /* El TLD no tiene máximo de longitud: dos letras o más, o una
+       etiqueta «xn--…» (.technology, .international, .xn--p1ai…).
+       Nunca una lista fija de TLD ni topes de 2–4 letras. */
+    var tld = etiquetas[etiquetas.length - 1];
+    if (tld.indexOf("xn--") !== 0 && !/^[a-z]{2,}$/.test(tld)) {
+      return mal("El dominio debe terminar en un TLD válido: dos letras como mínimo o una etiqueta «xn--…».");
+    }
+
+    return { ok: true, ascii: ascii };
+  }
+
+  /**
+   * Correo con soporte EAI / SMTPUTF8 (RFC 6531): la parte local
+   * admite Unicode («josé.dupont@…», «用户@…») y símbolos ASCII como
+   * «+», «'», «#», «%»…
+   */
+  function validarCorreo(valor) {
+    var v = valor.trim();
+    if (!v) return "Introduce tu dirección de correo electrónico.";
+
+    var partes = v.split("@");
+    if (partes.length !== 2) {
+      return "Escribe el correo con la forma «local@dominio», con una sola «@».";
+    }
+    var local = partes[0];
+    var dominio = partes[1];
+
+    if (local === "") {
+      return "Falta la parte local (lo que va antes de la «@»).";
+    }
+    if (PROHIBIDOS_LOCAL.test(local)) {
+      return "La parte local contiene caracteres no permitidos (espacios, «:», «,»…).";
+    }
+    if (octetos(local) > 64) {
+      return "La parte local supera el máximo de 64 octetos (los caracteres no latinos ocupan más de un octeto).";
+    }
+
+    var analisis = analizaDominio(dominio);
+    return analisis.ok ? null : analisis.error;
+  }
+
+  function validarWeb(valor) {
+    var v = valor.trim();
+    if (!v) return "Introduce la dirección de tu sitio web.";
+
+    /* Solo http(s). Si hay esquema pero no es http/https, mejor un
+       mensaje claro que un error críptico de análisis. */
+    var esquema = /^([A-Za-z][A-Za-z0-9+.-]*):\/\//.exec(v);
+    if (esquema && !/^https?$/i.test(esquema[1])) {
+      return "La dirección debe empezar por «http://» o «https://».";
+    }
+
+    var completa = /^https?:\/\//i.test(v) ? v : "https://" + v;
+    var u;
+    try {
+      u = new URL(completa);
+    } catch (error) {
+      return "No parece una dirección web válida (p. ej. «https://ejemplo.com»).";
+    }
+
+    if (u.username !== "" || u.password !== "") {
+      return "La dirección no debe incluir usuario ni contraseña.";
+    }
+    if (/^\d{1,3}(\.\d{1,3}){3}$/.test(u.hostname)) {
+      return "Escribe el nombre de dominio del sitio (p. ej. «ejemplo.com»), no una dirección IP.";
+    }
+
+    /* u.hostname llega en minúsculas y en forma A-label:
+       «https://société.fr» → «xn--socit-esab.fr». */
+    var analisis = analizaDominio(u.hostname);
+    return analisis.ok ? null : analisis.error;
+  }
+
+  function validarNombre(valor) {
+    var v = valor.trim();
+    if (!v) return "Introduce tu nombre completo.";
+    if (!RE_LETRA.test(v)) return "El nombre debe contener alguna letra.";
+    if (v.length < 2) return "El nombre parece demasiado corto.";
+    if (v.length > 100) return "El nombre no puede superar los 100 caracteres.";
+    return null;
+  }
+
+  function validarClave(valor) {
+    if (!valor) return "Elige una contraseña.";
+    if (valor.length < 10) return "Usa al menos 10 caracteres.";
+    if (valor.length > 128) return "La contraseña no puede superar los 128 caracteres.";
+    if (!RE_LETRA.test(valor)) return "Incluye al menos una letra.";
+    if (!RE_NUMERO.test(valor)) return "Incluye al menos un número.";
+    return null;
+  }
+
+  /* ════════════════ Conexión con el formulario ════════════════ */
+
+  var formulario = document.getElementById("registro");
+  var resultado = document.getElementById("resultado");
+
+  var validadores = {
+    nombre: validarNombre,
+    correo: validarCorreo,
+    web: validarWeb,
+    clave: validarClave
+  };
+  var campos = {};
+  Object.keys(validadores).forEach(function (id) {
+    campos[id] = document.getElementById(id);
+  });
+
+  function pintarError(entrada, mensaje) {
+    document.getElementById("error-" + entrada.id).textContent = mensaje || "";
+    var grupo = entrada.closest(".campo");
+    if (mensaje) {
+      grupo.classList.add("invalido");
+      entrada.setAttribute("aria-invalid", "true");
+    } else {
+      grupo.classList.remove("invalido");
+      entrada.removeAttribute("aria-invalid");
+    }
+  }
+
+  /* Validar al salir de un campo ya rellenado y revalidar en cuanto
+     se corrige uno marcado con error. */
+  Object.keys(validadores).forEach(function (id) {
+    var entrada = campos[id];
+    var validar = validadores[id];
+    entrada.addEventListener("blur", function () {
+      if (entrada.value.trim() !== "") {
+        pintarError(entrada, validar(entrada.value));
+      }
+    });
+    entrada.addEventListener("input", function () {
+      if (entrada.getAttribute("aria-invalid") === "true") {
+        pintarError(entrada, validar(entrada.value));
+      }
+    });
+  });
+
+  /* Requisitos de la contraseña, al día mientras se escribe. */
+  var requisitos = [
+    { el: document.getElementById("req-longitud"), ok: function (v) { return v.length >= 10; } },
+    { el: document.getElementById("req-letra"), ok: function (v) { return RE_LETRA.test(v); } },
+    { el: document.getElementById("req-numero"), ok: function (v) { return RE_NUMERO.test(v); } }
+  ];
+  function pintarRequisitos(v) {
+    requisitos.forEach(function (r) {
+      r.el.classList.toggle("cumplido", r.ok(v));
+    });
+  }
+  campos.clave.addEventListener("input", function () {
+    pintarRequisitos(campos.clave.value);
+  });
+  pintarRequisitos("");
+
+  /* Mostrar u ocultar la contraseña. */
+  var alternar = document.getElementById("alternar-clave");
+  alternar.addEventListener("click", function () {
+    var oculta = campos.clave.type === "password";
+    campos.clave.type = oculta ? "text" : "password";
+    alternar.textContent = oculta ? "Ocultar" : "Mostrar";
+    alternar.setAttribute("aria-pressed", oculta ? "true" : "false");
+  });
+
+  formulario.addEventListener("submit", function (evento) {
+    evento.preventDefault(); /* demostración sin servidor */
+
+    var primeroInvalido = null;
+    Object.keys(validadores).forEach(function (id) {
+      var entrada = campos[id];
+      var mensaje = validadores[id](entrada.value);
+      pintarError(entrada, mensaje);
+      if (mensaje && primeroInvalido === null) {
+        primeroInvalido = entrada;
+      }
+    });
+
+    if (primeroInvalido !== null) {
+      primeroInvalido.focus();
+      return;
+    }
+    mostrarResumen();
+  });
+
+  function mostrarResumen() {
+    /* Conservamos lo escrito y, además, la forma A-label (punycode)
+       que conviene usar para DNS y claves de almacenamiento. */
+    var correo = campos.correo.value.trim();
+    var partes = correo.split("@");
+    var dominioAscii = analizaDominio(partes[1]).ascii;
+
+    var web = campos.web.value.trim();
+    if (!/^https?:\/\//i.test(web)) web = "https://" + web;
+    var u = new URL(web);
+    var webAscii = u.protocol + "//" + u.host + u.pathname + u.search + u.hash;
+
+    document.getElementById("res-nombre").textContent = campos.nombre.value.trim();
+    document.getElementById("res-correo").textContent = correo;
+    document.getElementById("res-correo-ascii").textContent = partes[0] + "@" + dominioAscii;
+    document.getElementById("res-web").textContent = campos.web.value.trim();
+    document.getElementById("res-web-ascii").textContent = webAscii;
+
+    formulario.hidden = true;
+    resultado.hidden = false;
+    resultado.focus();
+  }
+
+  document.getElementById("reiniciar").addEventListener("click", function () {
+    formulario.reset();
+    Object.keys(validadores).forEach(function (id) {
+      pintarError(campos[id], null);
+    });
+    pintarRequisitos("");
+    campos.clave.type = "password";
+    alternar.textContent = "Mostrar";
+    alternar.setAttribute("aria-pressed", "false");
+    resultado.hidden = true;
+    formulario.hidden = false;
+    campos.nombre.focus();
+  });
+})();
+</script>
+</body>
+</html>

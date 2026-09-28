@@ -1,0 +1,266 @@
+```html
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Créer un compte</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #f3f4f6;
+    --card: #ffffff;
+    --text: #1b1e24;
+    --muted: #5b6472;
+    --border: #b8bec8;
+    --input-bg: #ffffff;
+    --accent: #0b57d0;
+    --accent-contrast: #ffffff;
+    --accent-hover: #0a4aab;
+    --focus: #0b57d0;
+    --error: #b3261e;
+    --ok: #146c43;
+    --ok-bg: #e9f6ee;
+    --ok-border: #a5d4b8;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #131519;
+      --card: #1c1f25;
+      --text: #e8eaee;
+      --muted: #9aa3b2;
+      --border: #3d434d;
+      --input-bg: #131519;
+      --accent: #8ab4f8;
+      --accent-contrast: #0b2a5b;
+      --accent-hover: #a7c7fa;
+      --focus: #8ab4f8;
+      --error: #f2b8b5;
+      --ok: #a5d4b8;
+      --ok-bg: #18281e;
+      --ok-border: #2f5b41;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.5;
+    background: var(--bg);
+    color: var(--text);
+  }
+  main {
+    width: min(100% - 2rem, 34rem);
+    margin-inline: auto;
+    padding-block: 2.5rem 4rem;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.75rem 1.5rem 1.9rem;
+    margin-bottom: 1.25rem;
+  }
+  h1 { margin: 0 0 0.3rem; font-size: 1.45rem; }
+  .sub { margin: 0 0 1.5rem; color: var(--muted); }
+  .field { margin-bottom: 1.15rem; }
+  label { display: block; font-weight: 600; font-size: 0.95rem; margin-bottom: 0.3rem; }
+  .hint { margin: 0 0 0.4rem; font-size: 0.82rem; color: var(--muted); }
+  input {
+    display: block;
+    width: 100%;
+    padding: 0.62rem 0.75rem;
+    font: inherit;
+    color: var(--text);
+    background: var(--input-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  input:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
+  input[aria-invalid="true"] { border-color: var(--error); }
+  input[aria-invalid="true"]:focus-visible { outline-color: var(--error); }
+  .error {
+    margin: 0.35rem 0 0;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--error);
+    overflow-wrap: anywhere;
+  }
+  .error:empty { display: none; }
+  button {
+    display: block;
+    width: 100%;
+    margin-top: 0.4rem;
+    padding: 0.72rem 1rem;
+    font: inherit;
+    font-weight: 600;
+    color: var(--accent-contrast);
+    background: var(--accent);
+    border: 0;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  button:hover { background: var(--accent-hover); }
+  button:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+  #success { background: var(--ok-bg); border-color: var(--ok-border); }
+  #success h2 { margin: 0 0 0.5rem; font-size: 1.15rem; color: var(--ok); }
+  #success p { margin: 0 0 0.9rem; }
+  #success dl { margin: 0.4rem 0 0; }
+  #success dt { margin-top: 0.65rem; font-size: 0.8rem; font-weight: 600; color: var(--muted); }
+  #success dd { margin: 0; font-size: 0.9rem; overflow-wrap: anywhere; }
+  .ace { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+  .noscript {
+    margin: 0 0 1.25rem;
+    padding: 0.7rem 0.9rem;
+    border: 1px dashed var(--error);
+    border-radius: 8px;
+    color: var(--error);
+  }
+</style>
+</head>
+<body>
+<main>
+  <div class="card">
+    <h1>Créer un compte</h1>
+    <p class="sub">Quelques informations et votre compte sera prêt.</p>
+    <noscript>
+      <p class="noscript">Activez JavaScript pour bénéficier de la validation des champs avant l'envoi.</p>
+    </noscript>
+
+    <form id="signup" method="post" novalidate>
+      <div class="field">
+        <label for="fullname">Nom complet</label>
+        <input type="text" id="fullname" name="fullname" autocomplete="name" dir="auto" required aria-describedby="fullname-error">
+        <p class="error" id="fullname-error" aria-live="polite"></p>
+      </div>
+
+      <!-- Adresse e-mail : « type="text" » et validation dédiée, car
+           « type="email" » se comporte de façon incohérente selon les
+           navigateurs sur les adresses internationalisées (réécriture du
+           domaine en A-label par Chromium, rejet par WebKit, refus des
+           parties locales Unicode partout). -->
+      <div class="field">
+        <label for="email">Adresse e-mail</label>
+        <p class="hint" id="email-hint">Adresses internationalisées acceptées (ex. josé.dupont@société.fr, 用户@例子.中国).</p>
+        <input type="text" id="email" name="email" autocomplete="email" inputmode="email" spellcheck="false" autocapitalize="none" required aria-describedby="email-hint email-error">
+        <p class="error" id="email-error" aria-live="polite"></p>
+      </div>
+
+      <!-- Site web : « type="url" » conserve les domaines Unicode tels que
+           saisis ; la validation native est neutralisée par « novalidate »
+           pour laisser le contrôle au script, plus souple sur le schéma. -->
+      <div class="field">
+        <label for="website">Site web</label>
+        <p class="hint" id="website-hint">Domaines internationalisés acceptés ; « https:// » est ajouté s'il est absent.</p>
+        <input type="url" id="website" name="website" autocomplete="url" spellcheck="false" autocapitalize="none" required aria-describedby="website-hint website-error">
+        <p class="error" id="website-error" aria-live="polite"></p>
+      </div>
+
+      <div class="field">
+        <label for="password">Mot de passe</label>
+        <p class="hint" id="password-hint">8 caractères minimum.</p>
+        <input type="password" id="password" name="password" autocomplete="new-password" minlength="8" required aria-describedby="password-hint password-error">
+        <p class="error" id="password-error" aria-live="polite"></p>
+      </div>
+
+      <button type="submit">Créer mon compte</button>
+    </form>
+  </div>
+
+  <section id="success" class="card" hidden>
+    <h2>Inscription validée</h2>
+    <p>Merci <strong id="s-name"></strong>&nbsp;! Un e-mail de confirmation sera envoyé à l'adresse indiquée. <em>(Démonstration&nbsp;: aucune donnée n'est réellement transmise.)</em></p>
+    <dl>
+      <dt>E-mail saisi (conservé tel quel)</dt>
+      <dd id="s-email"></dd>
+      <dt>Domaine en forme ASCII / A-label (pour le DNS ou le stockage)</dt>
+      <dd id="s-email-ace" class="ace"></dd>
+      <dt>Site web saisi (conservé tel quel)</dt>
+      <dd id="s-site"></dd>
+      <dt>Hôte du site en forme ASCII / A-label</dt>
+      <dd id="s-site-ace" class="ace"></dd>
+    </dl>
+  </section>
+</main>
+
+<script>
+"use strict";
+
+/* =====================================================================
+   Validation côté client, sans bibliothèque, conforme « Universal
+   Acceptance » (domaines et adresses e-mail internationaux) :
+
+   - partie locale d'e-mail en Unicode (EAI / RFC 6531) :
+     « josé.dupont@… », « 用户@… » ; « + », «'», etc. également permis ;
+   - domaines U-label (« société.fr », « 例子.中国 ») et A-label
+     (« xn--socit-esab.fr ») considérés comme équivalents, la casse
+     étant ignorée (« XN--P1AI » = « xn--p1ai ») ;
+   - TLD sans limite de longueur (au moins deux lettres) ou A-label
+     « xn--… » ; aucune liste de TLD en dur : contrôle de syntaxe seul,
+     l'existence réelle du domaine relève du serveur (e-mail de
+     confirmation) ;
+   - conversion IDNA (UTS #46) confiée à l'analyseur d'URL du navigateur
+     (« new URL »), qui valide le punycode et permet de contrôler les
+     longueurs en octets (1 à 63 par label, 253 au total) ;
+   - la saisie de l'utilisateur n'est jamais modifiée ; seule la forme
+     ASCII est calculée à côté (utile pour le DNS ou comme clé de
+     stockage).
+   ===================================================================== */
+
+const form = document.getElementById("signup");
+const successBox = document.getElementById("success");
+
+/* Label de domaine (forme saisie) : lettres, chiffres et signes
+   combinants Unicode, plus des tirets, mais jamais en début ni en fin
+   de label. Aucune classe restreinte à l'ASCII : « société », « 用户 »
+   ou « пример » sont des labels valides, tout comme « xn--p1ai ». */
+const LABEL_RE = /^[\p{L}\p{N}\p{M}]([\p{L}\p{N}\p{M}-]*[\p{L}\p{N}\p{M}])?$/u;
+
+/* TLD : au moins deux lettres, sans limite haute (« .fr », « .corsica »,
+   « .technology », « .international », « .рф », « .中国 »…). */
+const TLD_RE = /^\p{L}[\p{L}\p{M}]+$/u;
+
+function domainToAscii(domain) {
+  /* U-label vers A-label (« xn--… ») via l'analyseur d'URL du navigateur
+     (IDNA / UTS #46). Lève une exception si le domaine est irrécupérable
+     (punycode invalide, caractère interdit…). */
+  return new URL("http://" + domain).hostname;
+}
+
+function checkDomainLabels(labels, kind) {
+  if (labels.length < 2) {
+    return "Le " + kind + " doit comporter au moins deux parties séparées par un point (par exemple « exemple.fr »).";
+  }
+  for (const label of labels) {
+    if (!label) {
+      return "Le " + kind + " contient une partie vide (points consécutifs ou point final).";
+    }
+    if (!LABEL_RE.test(label)) {
+      return "La partie « " + label + " » du " + kind + " n'est pas valide : uniquement des lettres, des chiffres et des tirets, jamais de tiret en début ou en fin.";
+    }
+  }
+  const tld = labels[labels.length - 1];
+  if (!TLD_RE.test(tld) && !/^xn--/i.test(tld)) {
+    return "Le suffixe « " + tld + " » doit contenir au moins deux lettres ou être un domaine internationalisé (« xn--… »).";
+  }
+  return null;
+}
+
+function validateEmail(value) {
+  const email = value.trim();
+  if (!email) return "Veuillez saisir votre adresse e-mail.";
+
+  const parts = email.split("@");
+  if (parts.length !== 2) return "Une adresse e-mail contient exactement un « @ ».";
+
+  const local = parts[0];
+  const domain = parts[1];
+
+  if (!local) return "La partie avant le « @ » ne peut pas être vide.";
+  if (/[\s\p{Cc}]/u.test(local)) {
+    return "La partie avant le « @ » ne doit contenir ni espaces ni caractères de contrôle.";
+  }
+  if (!domain) return "Le domaine (après le « @ ») ne peut pas être vide.";
+
+  let error = checkDomainLabels(domain.split("."), "domaine");
+  if (error

@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f0f2f5;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: #1f2328;
+      padding: 1.5rem;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 440px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+      padding: 2rem;
+    }
+
+    h1 {
+      margin: 0 0 0.25rem;
+      font-size: 1.6rem;
+    }
+
+    .subtitle {
+      margin: 0 0 1.5rem;
+      color: #59636e;
+      font-size: 0.95rem;
+    }
+
+    .field {
+      margin-bottom: 1.1rem;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .optional {
+      font-weight: 400;
+      color: #59636e;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.65rem 0.75rem;
+      font-size: 1rem;
+      border: 1px solid #c9d1d9;
+      border-radius: 6px;
+      background: #fff;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+    }
+
+    input[aria-invalid="true"] {
+      border-color: #d1242f;
+    }
+
+    input[aria-invalid="true"]:focus {
+      box-shadow: 0 0 0 3px rgba(209, 36, 47, 0.2);
+    }
+
+    .hint {
+      display: block;
+      font-size: 0.8rem;
+      color: #59636e;
+      margin-top: 0.3rem;
+    }
+
+    .error {
+      display: block;
+      min-height: 1.1em;
+      font-size: 0.85rem;
+      color: #d1242f;
+      margin-top: 0.3rem;
+    }
+
+    .error:empty {
+      min-height: 0;
+      margin-top: 0;
+    }
+
+    .password-wrap {
+      position: relative;
+    }
+
+    .password-wrap input {
+      padding-right: 4.5rem;
+    }
+
+    .toggle-password {
+      position: absolute;
+      top: 50%;
+      right: 0.4rem;
+      transform: translateY(-50%);
+      border: none;
+      background: transparent;
+      color: #2563eb;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 0.35rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    .toggle-password:focus-visible {
+      outline: 2px solid #2563eb;
+    }
+
+    button[type="submit"] {
+      width: 100%;
+      margin-top: 0.5rem;
+      padding: 0.75rem;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #fff;
+      background: #2563eb;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    button[type="submit"]:hover {
+      background: #1d4ed8;
+    }
+
+    button[type="submit"]:focus-visible {
+      outline: 3px solid rgba(37, 99, 235, 0.4);
+      outline-offset: 2px;
+    }
+
+    .form-status {
+      margin-top: 1rem;
+      padding: 0.75rem;
+      border-radius: 6px;
+      font-size: 0.95rem;
+    }
+
+    .form-status:empty {
+      display: none;
+    }
+
+    .form-status.success {
+      background: #dafbe1;
+      color: #116329;
+      border: 1px solid #aceebb;
+    }
+
+    .form-status.failure {
+      background: #ffebe9;
+      color: #a40e26;
+      border: 1px solid #ffcecb;
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>Create an account</h1>
+    <p class="subtitle">Fill in the details below to get started.</p>
+
+    <form id="signup-form" novalidate>
+      <div class="field">
+        <label for="fullname">Full name</label>
+        <input
+          type="text"
+          id="fullname"
+          name="fullname"
+          autocomplete="name"
+          aria-describedby="fullname-error"
+          required>
+        <span class="error" id="fullname-error" aria-live="polite"></span>
+      </div>
+
+      <div class="field">
+        <label for="email">Email address</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          autocomplete="email"
+          aria-describedby="email-error"
+          required>
+        <span class="error" id="email-error" aria-live="polite"></span>
+      </div>
+
+      <div class="field">
+        <label for="website">Website <span class="optional">(optional)</span></label>
+        <input
+          type="url"
+          id="website"
+          name="website"
+          autocomplete="url"
+          placeholder="https://example.com"
+          aria-describedby="website-hint website-error">
+        <span class="hint" id="website-hint">Must start with http:// or https://</span>
+        <span class="error" id="website-error" aria-live="polite"></span>
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <div class="password-wrap">
+          <input
+            type="password"
+            id="password"
+            name="password"
+            autocomplete="new-password"
+            aria-describedby="password-hint password-error"
+            required>
+          <button type="button" class="toggle-password" aria-controls="password" aria-pressed="false">Show</button>
+        </div>
+        <span class="hint" id="password-hint">At least 8 characters, including a letter and a number.</span>
+        <span class="error" id="password-error" aria-live="polite"></span>
+      </div>
+
+      <button type="submit">Sign up</button>
+
+      <div class="form-status" id="form-status" role="status" aria-live="polite"></div>
+    </form>
+  </main>
+
+  <script>
+    (function () {
+      "use strict";
+
+      var form = document.getElementById("signup-form");
+      var statusBox = document.getElementById("form-status");
+
+      // Each validator returns an error message string, or "" if valid.
+      var validators = {
+        fullname: function (value) {
+          var v = value.trim();
+          if (v === "") return "Please enter your full name.";
+          if (v.length < 2) return "Name must be at least 2 characters.";
+          if (v.length > 100) return "Name must be 100 characters or fewer.";
+          // Letters (any language), spaces, apostrophes, hyphens, periods.
+          if (!/^[\p{L}\p{M}' .-]+$/u.test(v)) {
+            return "Name can only contain letters, spaces, apostrophes, hyphens and periods.";
+          }
+          if (!/\p{L}/u.test(v)) return "Name must contain at least one letter.";
+          return "";
+        },
+
+        email: function (value) {
+          var v = value.trim();
+          if (v === "") return "Please enter your email address.";
+          if (v.length > 254) return "Email address is too long.";
+          // Pragmatic check: local@domain.tld, no spaces, single @.
+          var re = /^[^\s@]+@[^\s@.]+(\.[^\s@.]+)+$/;
+          if (!re.test(v)) return "Please enter a valid email address (e.g. name@example.com).";
+          return "";
+        },
+
+        website: function (value) {
+          var v = value.trim();
+          if (v === "") return ""; // optional field
+          var url;
+          try {
+            url = new URL(v);
+          } catch (e) {
+            return "Please enter a valid URL (e.g. https://example.com).";
+          }
+          if (url.protocol !== "http:" && url.protocol !== "https:") {
+            return "URL must start with http:// or https://";
+          }
+          // Require a hostname with a dot (e.g. example.com) or localhost.
+          if (!/^[^.\s]+(\.[^.\s]+)+$/.test(url.hostname) && url.hostname !== "localhost") {
+            return "Please enter a valid domain (e.g. https://example.com).";
+          }
+          return "";
+        },
+
+        password: function (value) {
+          if (value === "") return "Please enter a password.";
+          if (value.length < 8) return "Password must be at least 8 characters.";
+          if (value.length > 128) return "Password must be 128 characters or fewer.";
+          if (!/[A-Za-z]/.test(value)) return "Password must include at least one letter.";
+          if (!/[0-9]/.test(value)) return "Password must include at least one number.";
+          return "";
+        }
+      };
+
+      function showError(input, message) {
+        var errorEl = document.getElementById(input.id + "-error");
+        errorEl.textContent = message;
+        if (message) {
+          input.setAttribute("aria-invalid", "true");
+        } else {
+          input.removeAttribute("aria-invalid");
+        }
+      }
+
+      function validateField(input) {
+        var validate = validators[input.name];
+        if (!validate) return true;
+        var message = validate(input.value);
+        showError(input, message);
+        return message === "";
+      }
+
+      // Validate on blur; re-validate while typing once a field has shown an error.
+      Object.keys(validators).forEach(function (name) {
+        var input = form.elements[name];
+
+        input.addEventListener("blur", function () {
+          // Skip blur validation on untouched empty fields to avoid nagging.
+          if (input.value !== "" || input.hasAttribute("aria-invalid")) {
+            validateField(input);
+          }
+        });
+
+        input.addEventListener("input", function () {
+          if (input.hasAttribute("aria-invalid")) {
+            validateField(input);
+          }
+          statusBox.textContent = "";
+          statusBox.className = "form-status";
+        });
+      });
+
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        var firstInvalid = null;
+        Object.keys(validators).forEach(function (name) {
+          var input = form.elements[name];
+          if (!validateField(input) && !firstInvalid) {
+            firstInvalid = input;
+          }
+        });
+
+        if (firstInvalid) {
+          statusBox.className = "form-status failure";
+          statusBox.textContent = "Please fix the highlighted fields and try again.";
+          firstInvalid.focus();
+          return;
+        }
+
+        // All fields valid. Replace this block with a real submission
+        // (e.g. form.submit() with an action attribute, or fetch()).
+        var name = form.elements.fullname.value.trim();
+        statusBox.className = "form-status success";
+        statusBox.textContent = "Thanks, " + name + "! Your account has been created.";
+        form.reset();
+        Object.keys(validators).forEach(function (n) {
+          showError(form.elements[n], "");
+        });
+      });
+
+      // Show / hide password toggle.
+      var toggle = form.querySelector(".toggle-password");
+      var passwordInput = form.elements.password;
+      toggle.addEventListener("click", function () {
+        var isHidden = passwordInput.type === "password";
+        passwordInput.type = isHidden ? "text" : "password";
+        toggle.textContent = isHidden ? "Hide" : "Show";
+        toggle.setAttribute("aria-pressed", String(isHidden));
+        toggle.setAttribute("aria-label", isHidden ? "Hide password" : "Show password");
+      });
+    })();
+  </script>
+</body>
+</html>

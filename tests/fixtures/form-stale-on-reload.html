@@ -1,0 +1,21 @@
+<!doctype html><html lang="en"><body>
+<!-- From its fifth document on (IndexedDB counter, the one storage the runner does not reset), the page looks
+     like a document the runner already typed into: it sets the runner's own marker. No fixture can make three
+     real reloads fail in a row against the guards (measured 26/09: a reload loop and a random-URL loop both
+     recover), so this is how the exhaustion path is exercised: the runner must give up after its attempts,
+     report the cases left as reload-failed and keep the results collected before. -->
+<form id="f"><label>Email <input id="email" name="email" type="email"></label><button type="submit">Send</button></form>
+<script>
+const spin = ms => { const t0 = Date.now(); while (Date.now() - t0 < ms) { /* let the storage answer queue before the load event */ } };
+const req = indexedDB.open('ua-kit-fixture-stale', 1);
+req.onupgradeneeded = () => req.result.createObjectStore('kv');
+req.onsuccess = () => {
+  const store = req.result.transaction('kv', 'readwrite').objectStore('kv');
+  const get = store.get('documents');
+  get.onsuccess = () => { const n = (get.result || 0) + 1; store.put(n, 'documents'); if (n > 4) window.__uaProbed = true; };
+  spin(40);
+};
+spin(40);
+document.getElementById('f').addEventListener('submit', e => e.preventDefault());
+</script>
+</body></html>

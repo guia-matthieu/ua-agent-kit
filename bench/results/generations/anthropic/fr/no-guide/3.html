@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inscription</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: #f0f2f5;
+      color: #1f2937;
+      padding: 1rem;
+    }
+
+    .carte {
+      background: #fff;
+      width: 100%;
+      max-width: 640px;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    h1 {
+      margin: 0 0 0.25rem;
+      font-size: 1.6rem;
+    }
+
+    .sous-titre {
+      margin: 0 0 1.5rem;
+      color: #6b7280;
+      font-size: 0.95rem;
+    }
+
+    .champ {
+      margin-bottom: 1.25rem;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.35rem;
+      font-size: 0.95rem;
+    }
+
+    .facultatif {
+      font-weight: 400;
+      color: #6b7280;
+      font-size: 0.85rem;
+    }
+
+    /* Champ + message d'erreur côte à côte */
+    .ligne {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .ligne input {
+      flex: 1 1 260px;
+    }
+
+    input {
+      padding: 0.65rem 0.8rem;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+    }
+
+    input[aria-invalid="true"] {
+      border-color: #dc2626;
+      background: #fef2f2;
+    }
+
+    input[aria-invalid="true"]:focus {
+      box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.2);
+    }
+
+    input.valide {
+      border-color: #16a34a;
+    }
+
+    .erreur {
+      flex: 1 1 180px;
+      color: #dc2626;
+      font-size: 0.85rem;
+      min-height: 1em;
+    }
+
+    .erreur:not(:empty)::before {
+      content: "⚠ ";
+    }
+
+    .aide {
+      margin: 0.35rem 0 0;
+      font-size: 0.8rem;
+      color: #6b7280;
+    }
+
+    .mdp-conteneur {
+      position: relative;
+      flex: 1 1 260px;
+      display: flex;
+    }
+
+    .mdp-conteneur input {
+      flex: 1;
+      padding-right: 5.5rem;
+    }
+
+    .basculer-mdp {
+      position: absolute;
+      right: 0.4rem;
+      top: 50%;
+      transform: translateY(-50%);
+      border: none;
+      background: #e5e7eb;
+      color: #374151;
+      border-radius: 6px;
+      padding: 0.3rem 0.6rem;
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
+
+    .basculer-mdp:hover {
+      background: #d1d5db;
+    }
+
+    button[type="submit"] {
+      width: 100%;
+      padding: 0.8rem;
+      border: none;
+      border-radius: 8px;
+      background: #2563eb;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    button[type="submit"]:hover {
+      background: #1d4ed8;
+    }
+
+    button[type="submit"]:focus-visible,
+    .basculer-mdp:focus-visible {
+      outline: 3px solid rgba(37, 99, 235, 0.4);
+      outline-offset: 2px;
+    }
+
+    .message-global {
+      margin-top: 1rem;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      display: none;
+    }
+
+    .message-global.succes {
+      display: block;
+      background: #f0fdf4;
+      color: #166534;
+      border: 1px solid #bbf7d0;
+    }
+
+    .message-global.echec {
+      display: block;
+      background: #fef2f2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+    }
+  </style>
+</head>
+<body>
+  <main class="carte">
+    <h1>Créer un compte</h1>
+    <p class="sous-titre">Tous les champs sont obligatoires sauf mention contraire.</p>
+
+    <!-- novalidate : on désactive la validation native pour utiliser la nôtre -->
+    <form id="formulaire-inscription" novalidate>
+      <div class="champ">
+        <label for="nom">Nom complet</label>
+        <div class="ligne">
+          <input type="text" id="nom" name="nom" autocomplete="name"
+                 maxlength="100" aria-describedby="erreur-nom">
+          <span class="erreur" id="erreur-nom" aria-live="polite"></span>
+        </div>
+      </div>
+
+      <div class="champ">
+        <label for="email">Adresse e-mail</label>
+        <div class="ligne">
+          <input type="email" id="email" name="email" autocomplete="email"
+                 maxlength="254" aria-describedby="erreur-email">
+          <span class="erreur" id="erreur-email" aria-live="polite"></span>
+        </div>
+      </div>
+
+      <div class="champ">
+        <label for="site">Site web <span class="facultatif">(facultatif)</span></label>
+        <div class="ligne">
+          <input type="url" id="site" name="site" autocomplete="url"
+                 maxlength="2048" placeholder="https://exemple.fr"
+                 aria-describedby="erreur-site">
+          <span class="erreur" id="erreur-site" aria-live="polite"></span>
+        </div>
+      </div>
+
+      <div class="champ">
+        <label for="mdp">Mot de passe</label>
+        <div class="ligne">
+          <div class="mdp-conteneur">
+            <input type="password" id="mdp" name="mdp" autocomplete="new-password"
+                   maxlength="128" aria-describedby="erreur-mdp aide-mdp">
+            <button type="button" class="basculer-mdp" id="basculer-mdp"
+                    aria-controls="mdp" aria-pressed="false">Afficher</button>
+          </div>
+          <span class="erreur" id="erreur-mdp" aria-live="polite"></span>
+        </div>
+        <p class="aide" id="aide-mdp">
+          Au moins 8 caractères, dont une majuscule, une minuscule, un chiffre et un caractère spécial.
+        </p>
+      </div>
+
+      <button type="submit">S'inscrire</button>
+
+      <div class="message-global" id="message-global" role="status" aria-live="polite"></div>
+    </form>
+  </main>
+
+  <script>
+    (function () {
+      "use strict";
+
+      var formulaire = document.getElementById("formulaire-inscription");
+      var messageGlobal = document.getElementById("message-global");
+
+      /* ---------- Règles de validation ----------
+         Chaque fonction reçoit la valeur et renvoie un message d'erreur,
+         ou une chaîne vide si la valeur est valide. */
+
+      function validerNom(valeur) {
+        var v = valeur.trim();
+        if (v === "") return "Le nom complet est obligatoire.";
+        if (v.length < 2) return "Le nom doit contenir au moins 2 caractères.";
+        if (v.length > 100) return "Le nom ne doit pas dépasser 100 caractères.";
+        // Lettres (y compris accentuées), espaces, tirets, apostrophes et points
+        if (!/^[\p{L}][\p{L}\s'’.\-]*$/u.test(v)) {
+          return "Le nom ne peut contenir que des lettres, espaces, tirets et apostrophes.";
+        }
+        if (!/\S+\s+\S+/.test(v)) return "Veuillez indiquer votre prénom et votre nom.";
+        return "";
+      }
+
+      function validerEmail(valeur) {
+        var v = valeur.trim();
+        if (v === "") return "L'adresse e-mail est obligatoire.";
+        if (v.length > 254) return "L'adresse e-mail est trop longue.";
+        var motif = /^[A-Za-z0-9.!#$%&'*+\/=?^_`{|}~-]+@[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?(?:\.[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?)*\.[A-Za-z]{2,}$/;
+        if (!motif.test(v)) return "Adresse e-mail invalide (ex. : nom@domaine.fr).";
+        if (v.indexOf("..") !== -1) return "L'adresse e-mail ne doit pas contenir « .. ».";
+        return "";
+      }
+
+      function validerSite(valeur) {
+        var v = valeur.trim();
+        if (v === "") return ""; // champ facultatif
+        if (v.length > 2048) return "L'adresse du site est trop longue.";
+        var url;
+        try {
+          url = new URL(v);
+        } catch (e) {
+          return "URL invalide. Elle doit commencer par http:// ou https://";
+        }
+        // N'autoriser que http et https (bloque javascript:, data:, etc.)
+        if (url.protocol !== "http:" && url.protocol !== "https:") {
+          return "Seules les adresses http:// ou https:// sont acceptées.";
+        }
+        // Exiger un nom de domaine avec extension (ou localhost)
+        if (!/^([a-z0-9-]+\.)+[a-z]{2,}$/i.test(url.hostname) && url.hostname !== "localhost") {
+          return "Le nom de domaine du site semble invalide.";
+        }
+        return "";
+      }
+
+      function validerMotDePasse(valeur) {
+        // Pas de trim : les espaces font partie du mot de passe
+        if (valeur === "") return "Le mot de passe est obligatoire.";
+        if (valeur.length < 8) return "Au moins 8 caractères requis.";
+        if (valeur.length > 128) return "128 caractères maximum.";
+        var manquants = [];
+        if (!/[a-z]/.test(valeur)) manquants.push("une minuscule");
+        if (!/[A-Z]/.test(valeur)) manquants.push("une majuscule");
+        if (!/[0-9]/.test(valeur)) manquants.push("un chiffre");
+        if (!/[^A-Za-z0-9]/.test(valeur)) manquants.push("un caractère spécial");
+        if (manquants.length > 0) return "Il manque " + manquants.join(", ") + ".";
+        return "";
+      }
+
+      var champs = [
+        { id: "nom",   valider: validerNom },
+        { id: "email", valider: validerEmail },
+        { id: "site",  valider: validerSite },
+        { id: "mdp",   valider: validerMotDePasse }
+      ];
+
+      /* ---------- Affichage des erreurs ---------- */
+
+      function afficherResultat(input, message) {
+        var zoneErreur = document.getElementById("erreur-" + input.id);
+        // textContent (et non innerHTML) : aucun risque d'injection HTML
+        zoneErreur.textContent = message;
+        if (message) {
+          input.setAttribute("aria-invalid", "true");
+          input.classList.remove("valide");
+        } else {
+          input.removeAttribute("aria-invalid");
+          if (input.value.trim() !== "") {
+            input.classList.add("valide");
+          } else {
+            input.classList.remove("valide");
+          }
+        }
+      }
+
+      function validerChamp(champ) {
+        var input = document.getElementById(champ.id);
+        var message = champ.valider(input.value);
+        afficherResultat(input, message);
+        return message === "";
+      }
+
+      /* ---------- Validation en direct ----------
+         Un champ n'est validé qu'après avoir été quitté une première fois
+         (ou après une tentative d'envoi), pour ne pas harceler l'utilisateur. */
+
+      champs.forEach(function (champ) {
+        var input = document.getElementById(champ.id);
+
+        input.addEventListener("blur", function () {
+          input.dataset.touche = "1";
+          validerChamp(champ);
+        });
+
+        input.addEventListener("input", function () {
+          messageGlobal.className = "message-global";
+          messageGlobal.textContent = "";
+          if (input.dataset.touche === "1") {
+            validerChamp(champ);
+          }
+        });
+      });
+
+      /* ---------- Envoi du formulaire ---------- */
+
+      formulaire.addEventListener("submit", function (evenement) {
+        evenement.preventDefault();
+
+        var premierInvalide = null;
+
+        champs.forEach(function (champ) {
+          var input = document.getElementById(champ.id);
+          input.dataset.touche = "1";
+          if (!validerChamp(champ) && !premierInvalide) {
+            premierInvalide = input;
+          }
+        });
+
+        if (premierInvalide) {
+          messageGlobal.className = "message-global echec";
+          messageGlobal.textContent = "Veuillez corriger les champs signalés avant de continuer.";
+          premierInvalide.focus();
+          return;
+        }
+
+        /* Tous les champs sont valides.
+           Pour un envoi réel vers un serveur, remplacez ce bloc par
+           formulaire.submit() (avec un attribut action sur le formulaire)
+           ou par un appel fetch(). La validation côté serveur reste indispensable. */
+        var nom = document.getElementById("nom").value.trim();
+        messageGlobal.className = "message-global succes";
+        messageGlobal.textContent = "Merci " + nom + ", votre inscription a bien été prise en compte !";
+
+        formulaire.reset();
+        champs.forEach(function (champ) {
+          var input = document.getElementById(champ.id);
+          delete input.dataset.touche;
+          input.classList.remove("valide");
+          input.removeAttribute("aria-invalid");
+          document.getElementById("erreur-" + champ.id).textContent = "";
+        });
+        reinitialiserBasculeMdp();
+      });
+
+      /* ---------- Afficher / masquer le mot de passe ---------- */
+
+      var champMdp = document.getElementById("mdp");
+      var boutonMdp = document.getElementById("basculer-mdp");
+
+      function reinitialiserBasculeMdp() {
+        champMdp.type = "password";
+        boutonMdp.textContent = "Afficher";
+        boutonMdp.setAttribute("aria-pressed", "false");
+      }
+
+      boutonMdp.addEventListener("click", function () {
+        var masque = champMdp.type === "password";
+        champMdp.type = masque ? "text" : "password";
+        boutonMdp.textContent = masque ? "Masquer" : "Afficher";
+        boutonMdp.setAttribute("aria-pressed", masque ? "true" : "false");
+        champMdp.focus();
+      });
+    })();
+  </script>
+</body>
+</html>

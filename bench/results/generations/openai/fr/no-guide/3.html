@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Formulaire d’inscription</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 24px;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      font-family: system-ui, sans-serif;
+      line-height: 1.5;
+      color: #1f2937;
+      background: #f3f4f6;
+    }
+
+    main {
+      width: 100%;
+      max-width: 580px;
+      padding: 32px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 8px 30px #00000012;
+    }
+
+    h1 { margin: 0 0 8px; }
+    .introduction { margin: 0 0 24px; color: #4b5563; }
+    .field { margin-bottom: 20px; }
+    label { display: block; margin-bottom: 6px; font-weight: 600; }
+
+    .control {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px 12px;
+    }
+
+    input {
+      flex: 1 1 250px;
+      width: 100%;
+      min-width: 0;
+      padding: 11px 12px;
+      border: 1px solid #6b7280;
+      border-radius: 6px;
+      font: inherit;
+    }
+
+    input:focus-visible, button:focus-visible {
+      outline: 3px solid #2563eb;
+      outline-offset: 3px;
+    }
+
+    input[aria-invalid="true"] { border: 2px solid #b91c1c; }
+    .error { flex: 1 1 160px; color: #b91c1c; font-size: 0.875rem; }
+    .hint { margin: 6px 0 0; color: #4b5563; font-size: 0.875rem; }
+    [hidden] { display: none !important; }
+
+    button {
+      width: 100%;
+      padding: 12px 16px;
+      border: 0;
+      border-radius: 6px;
+      color: #fff;
+      background: #1d4ed8;
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    button:hover { background: #1e40af; }
+    #status { margin: 16px 0 0; color: #166534; }
+    #status:empty { display: none; }
+
+    @media (max-width: 420px) {
+      main { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Créer un compte</h1>
+    <p class="introduction">Tous les champs sont obligatoires.</p>
+
+    <form id="registration-form" method="post" novalidate>
+      <div class="field">
+        <label for="full-name">Nom complet</label>
+        <div class="control">
+          <input
+            id="full-name"
+            name="fullName"
+            type="text"
+            autocomplete="name"
+            required
+            aria-describedby="full-name-error"
+          >
+          <span id="full-name-error" class="error" aria-live="polite" hidden></span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="email">Adresse e-mail</label>
+        <div class="control">
+          <input
+            id="email"
+            name="email"
+            type="email"
+            autocomplete="email"
+            spellcheck="false"
+            required
+            aria-describedby="email-error"
+          >
+          <span id="email-error" class="error" aria-live="polite" hidden></span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="website">Site web</label>
+        <div class="control">
+          <input
+            id="website"
+            name="website"
+            type="url"
+            autocomplete="url"
+            placeholder="https://exemple.fr"
+            spellcheck="false"
+            required
+            aria-describedby="website-hint website-error"
+          >
+          <span id="website-error" class="error" aria-live="polite" hidden></span>
+        </div>
+        <p id="website-hint" class="hint">Adresse complète commençant par https:// ou http://.</p>
+      </div>
+
+      <div class="field">
+        <label for="password">Mot de passe</label>
+        <div class="control">
+          <input
+            id="password"
+            name="password"
+            type="password"
+            autocomplete="new-password"
+            minlength="8"
+            required
+            aria-describedby="password-hint password-error"
+          >
+          <span id="password-error" class="error" aria-live="polite" hidden></span>
+        </div>
+        <p id="password-hint" class="hint">Au moins 8 caractères, et pas uniquement des espaces.</p>
+      </div>
+
+      <button type="submit">S’inscrire</button>
+      <p id="status" role="status" aria-live="polite"></p>
+    </form>
+
+    <noscript>
+      <p>Activez JavaScript pour utiliser la validation de ce formulaire.</p>
+    </noscript>
+  </main>
+
+  <script>
+    "use strict";
+
+    const form = document.getElementById("registration-form");
+    const fields = Array.from(form.querySelectorAll("input"));
+    const status = document.getElementById("status");
+
+    function getError(field) {
+      const value = field.value;
+
+      switch (field.id) {
+        case "full-name":
+          return value.trim() ? "" : "Veuillez saisir votre nom complet.";
+
+        case "email":
+          if (!value.trim()) return "Veuillez saisir votre adresse e-mail.";
+          return field.validity.typeMismatch
+            ? "Veuillez saisir une adresse e-mail valide."
+            : "";
+
+        case "website":
+          if (!value.trim()) return "Veuillez saisir l’adresse de votre site web.";
+          try {
+            const url = new URL(value.trim());
+            if (
+              !/^https?:\/\//i.test(value.trim()) ||
+              !["http:", "https:"].includes(url.protocol) ||
+              !url.hostname ||
+              field.validity.typeMismatch
+            ) {
+              return "Utilisez une adresse valide commençant par http:// ou https://.";
+            }
+          } catch {
+            return "Veuillez saisir une URL valide, par exemple https://exemple.fr.";
+          }
+          return "";
+
+        case "password":
+          if (!value.trim()) return "Veuillez saisir un mot de passe.";
+          return value.length < 8
+            ? "Le mot de passe doit contenir au moins 8 caractères."
+            : "";
+
+        default:
+          return "";
+      }
+    }
+
+    function validate(field) {
+      const message = getError(field);
+      const error = document.getElementById(field.id + "-error");
+
+      error.textContent = message;
+      error.hidden = !message;
+      field.setAttribute("aria-invalid", String(Boolean(message)));
+
+      return !message;
+    }
+
+    fields.forEach((field) => {
+      field.addEventListener("blur", () => {
+        if (field.type !== "password") field.value = field.value.trim();
+        validate(field);
+      });
+
+      field.addEventListener("input", () => {
+        status.textContent = "";
+        if (field.hasAttribute("aria-invalid")) validate(field);
+      });
+    });
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      status.textContent = "";
+
+      let firstInvalid = null;
+
+      fields.forEach((field) => {
+        if (field.type !== "password") field.value = field.value.trim();
+        if (!validate(field) && !firstInvalid) firstInvalid = field;
+      });
+
+      if (firstInvalid) {
+        firstInvalid.focus();
+        return;
+      }
+
+      // Démonstration autonome : aucune donnée n’est envoyée.
+      // En production, envoyer ici vers un serveur HTTPS et revalider
+      // impérativement tous les champs côté serveur.
+      status.textContent =
+        "Tous les champs sont valides. Aucun compte n’a été créé : cette démonstration n’envoie aucune donnée.";
+    });
+  </script>
+</body>
+</html>

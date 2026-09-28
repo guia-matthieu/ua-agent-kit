@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Ouvrir un compte · La Revue</title>
+<style>
+  /* ============ Réglages ============ */
+  :root{
+    --desk:#E8E0CD;
+    --paper:#F9F5EB;
+    --ink:#211C17;
+    --ink-65:rgba(33,28,23,.65);
+    --ink-45:rgba(33,28,23,.45);
+    --ink-30:rgba(33,28,23,.30);
+    --ink-12:rgba(33,28,23,.12);
+    --red:#A5231B;
+    --green:#31603F;
+    --serif:Georgia,'Times New Roman',Times,serif;
+    --mono:ui-monospace,'Cascadia Mono','SF Mono',Menlo,Consolas,'Liberation Mono','Courier New',monospace;
+  }
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+  [hidden]{display:none!important}
+  ::selection{background:var(--ink);color:var(--paper)}
+
+  body{
+    font-family:var(--serif);
+    color:var(--ink);
+    background:var(--desk);
+    line-height:1.6;
+    padding:clamp(1.25rem,4vw,3.5rem) clamp(.75rem,3vw,2.5rem);
+  }
+  /* grain de papier */
+  body::after{
+    content:"";
+    position:fixed;inset:0;z-index:60;pointer-events:none;
+    opacity:.05;mix-blend-mode:multiply;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .sheet{
+    max-width:44rem;margin:0 auto;
+    background:var(--paper);
+    border:1px solid var(--ink-30);
+    box-shadow:10px 10px 0 rgba(33,28,23,.08);
+    padding:clamp(1.6rem,5vw,3.4rem) clamp(1.15rem,5vw,3.2rem) clamp(1.4rem,4vw,2.4rem);
+    animation:arrive .55s cubic-bezier(.2,.7,.2,1) both;
+  }
+  @keyframes arrive{from{opacity:0;transform:translateY(12px)}}
+
+  /* ============ Masthead ============ */
+  .masthead-row{
+    display:flex;justify-content:space-between;align-items:baseline;gap:1rem;
+    font-family:var(--mono);font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--ink-65);margin-bottom:.6rem;
+  }
+  .masthead-row strong{color:var(--ink);font-weight:700}
+  .rule-double{border-top:3px solid var(--ink);position:relative}
+  .rule-double::after{content:"";position:absolute;left:0;right:0;top:4px;border-top:1px solid var(--ink)}
+  .dossier-no{
+    font-family:var(--mono);font-size:.64rem;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--ink-45);margin-top:.8rem;
+  }
+  h1{font-size:clamp(2.6rem,8vw,4.2rem);line-height:1.02;letter-spacing:-.02em;font-weight:700;margin:.7rem 0 1rem}
+  h1 em{font-style:italic;font-weight:400}
+  .lede{font-style:italic;color:var(--ink-65);max-width:42ch;font-size:1.02rem}
+
+  /* ============ Champs ============ */
+  #signup,.receipt{margin-top:2.3rem;border-top:1px solid var(--ink-30)}
+
+  .field{display:grid;grid-template-columns:2.7rem 1fr;column-gap:.9rem;padding:1.35rem 0}
+  .field + .field{border-top:1px solid var(--ink-12)}
+  .field-no{font-family:var(--mono);font-size:.66rem;letter-spacing:.14em;color:var(--ink-45);padding-top:.12rem}
+
+  label{
+    display:block;font-family:var(--mono);font-size:.66rem;font-weight:700;
+    letter-spacing:.2em;text-transform:uppercase;color:var(--ink-65);
+    transition:color .2s;
+  }
+  .field:focus-within label{color:var(--ink)}
+  .req{color:var(--red)}
+  .opt{font-weight:400;letter-spacing:.08em;text-transform:none;color:var(--ink-45)}
+
+  .control{position:relative}
+  .control::before,.control::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px}
+  .control::before{background:var(--ink-30)}
+  .control::after{
+    background:var(--ink);transform:scaleX(0);transform-origin:left;
+    transition:transform .3s cubic-bezier(.4,0,.2,1);
+  }
+  .control:focus-within::after{transform:scaleX(1)}
+  .field.invalid .control::before,
+  .field.invalid .control::after{background:var(--red)}
+
+  input{
+    width:100%;border:0;outline:0;background:transparent;
+    font-family:var(--serif);font-size:1.08rem;color:var(--ink);
+    padding:.45rem 2.3rem .65rem 0;
+  }
+  .field[data-field="password"] input{padding-right:4.5rem}
+  input::placeholder{color:var(--ink-45);font-style:italic;opacity:1}
+  input:-webkit-autofill{-webkit-box-shadow:0 0 0 1000px var(--paper) inset;-webkit-text-fill-color:var(--ink)}
+
+  /* coche de validation */
+  .tick{position:absolute;right:.1rem;top:50%;width:1.1rem;height:1.1rem;margin-top:-.6rem;opacity:0}
+  .field[data-field="password"] .tick{right:2.2rem}
+  .tick path{
+    fill:none;stroke:var(--green);stroke-width:2.1;
+    stroke-linecap:round;stroke-linejoin:round;
+    stroke-dasharray:20;stroke-dashoffset:20;
+  }
+  .field.valid .tick{opacity:1}
+  .field.valid .tick path{animation:draw .35s ease .05s forwards}
+  @keyframes draw{to{stroke-dashoffset:0}}
+
+  /* afficher / masquer le mot de passe */
+  .peek{
+    position:absolute;right:0;top:50%;transform:translateY(-50%);
+    background:none;border:0;padding:.4rem;cursor:pointer;color:var(--ink-45);
+    transition:color .2s;
+  }
+  .peek:hover,.peek:focus-visible{color:var(--ink)}
+  .peek:focus-visible{outline:1.5px solid var(--ink);outline-offset:2px}
+  .peek svg{display:block;width:1.15rem;height:1.15rem;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+  .peek .slash{display:none}
+  .peek.on .slash{display:block}
+
+  /* message d’erreur, à côté du champ */
+  .error{display:flex;align-items:center;gap:.45rem;margin-top:.55rem;font-style:italic;font-size:.87rem;color:var(--red)}
+  .error:not([hidden]){animation:rise .25s ease}
+  @keyframes rise{from{opacity:0;transform:translateY(-3px)}}
+  .error svg{flex:none;width:.8rem;height:.8rem;fill:none;stroke:var(--red);stroke-width:1.2;stroke-linecap:round}
+  .error svg .dot{fill:var(--red);stroke:none}
+
+  /* jauge et conditions du mot de passe */
+  .meter{display:flex;align-items:center;gap:.42rem;margin-top:.7rem}
+  .meter i{display:block;width:1.8rem;height:3px;background:var(--ink-12);transition:background .25s}
+  .meter i.on{background:var(--ink)}
+  .meter span{margin-left:.45rem;font-family:var(--mono);font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-65)}
+  .checks{list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(12.5rem,1fr));gap:.35rem 1rem;margin-top:.8rem}
+  .checks li{
+    position:relative;padding-left:1.1rem;
+    font-family:var(--mono);font-size:.68rem;letter-spacing:.04em;color:var(--ink-65);
+    transition:color .25s;
+  }
+  .checks li::before{
+    content:"";position:absolute;left:0;top:.28em;width:.52rem;height:.52rem;
+    border:1px solid var(--ink-45);transition:background .25s,border-color .25s;
+  }
+  .checks li.done{color:var(--ink-45);text-decoration:line-through;text-decoration-color:var(--green)}
+  .checks li.done::before{background:var(--green);border-color:var(--green)}
+
+  /* ============ Envoi ============ */
+  .submit-area{margin-top:1.6rem}
+  .progress{height:3px;background:var(--ink-12)}
+  .progress i{display:block;height:100%;width:0;background:var(--ink);transition:width .45s cubic-bezier(.4,0,.2,1)}
+  .submit-row{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;margin-top:1.15rem}
+  .counter{font-family:var(--mono);font-size:.64rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-65)}
+  .counter.ready{color:var(--green)}
+  .submit{
+    display:inline-flex;align-items:center;gap:.7rem;
+    font-family:var(--mono);font-size:.7rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--paper);background:var(--ink);border:1px solid var(--ink);
+    padding:.95rem 1.5rem;cursor:pointer;
+    box-shadow:4px 4px 0 rgba(33,28,23,.18);
+    transition:transform .15s,box-shadow .15s;
+  }
+  .submit svg{width:.9rem;height:.9rem;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s}
+  .submit:hover{transform:translate(-1px,-1px);box-shadow:5px 5px 0 rgba(33,28,23,.22)}
+  .submit:hover svg{transform:translateX(3px)}
+  .submit:active{transform:translate(2px,2px);box-shadow:1px 1px 0 rgba(33,28,23,.18)}
+  .submit:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+  .submit.shake{animation:shake .4s}
+  @keyframes shake{20%{transform:translateX(-5px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(2px)}}
+  .fineprint{margin-top:1.05rem;font-size:.82rem;font-style:italic;color:var(--ink-65)}
+
+  /* ============ Récapitulatif ============ */
+  .receipt{position:relative;padding-top:2rem;animation:rise .35s ease}
+  .stamp{
+    position:absolute;top:2.6rem;right:-.3rem;
+    font-family:var(--mono);font-size:.78rem;font-weight:700;letter-spacing:.3em;text-transform:uppercase;
+    color:var(--red);border:2px solid var(--red);
+    padding:.55rem .7rem .55rem 1rem;
+    transform:rotate(-8deg);opacity:.9;mix-blend-mode:multiply;
+  }
+  .stamp::after{content:"";position:absolute;inset:3px;border:1px solid var(--red)}
+  .receipt.stamped .stamp{animation:stamp .5s cubic-bezier(.2,.85,.3,1.15) both}
+  @keyframes stamp{
+    0%{opacity:0;transform:rotate(-8deg) scale(2.3)}
+    60%{opacity:.9;transform:rotate(-8deg) scale(.95)}
+    100%{opacity:.9;transform:rotate(-8deg) scale(1)}
+  }
+  .receipt-kicker{font-family:var(--mono);font-size:.64rem;letter-spacing:.24em;text-transform:uppercase;color:var(--ink-65)}
+  .receipt h2{font-size:clamp(2rem,6vw,2.9rem);line-height:1.05;letter-spacing:-.015em;margin:.5rem 0 1.1rem}
+  .receipt h2 em{font-style:italic;font-weight:400}
+  .receipt .intro{font-style:italic;color:var(--ink-65);max-width:44ch;margin-bottom:1.4rem}
+  .summary div{display:grid;grid-template-columns:9.5rem 1fr;column-gap:1rem;align-items:baseline;padding:.68rem 0;border-bottom:1px solid var(--ink-12)}
+  .summary div:first-child{border-top:1px solid var(--ink-30)}
+  .summary dt{font-family:var(--mono);font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-65)}
+  .summary dd{font-size:1.02rem;overflow-wrap:anywhere}
+  .dots{letter-spacing:.18em}
+  .note{font-family:var(--mono);font-size:.64rem;letter-spacing:.05em;color:var(--ink-65);margin-left:.6rem}
+  .ghost{
+    margin-top:1.7rem;background:transparent;border:1px solid var(--ink);color:var(--ink);
+    font-family:var(--mono);font-size:.66rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+    padding:.75rem 1.15rem;cursor:pointer;transition:background .2s,color .2s;
+  }
+  .ghost:hover,.ghost:focus-visible{background:var(--ink);color:var(--paper)}
+  .ghost:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+
+  /* ============ Colophon ============ */
+  .colophon{margin-top:2.4rem}
+  .colophon .rule{border-top:1px solid var(--ink-30);margin-bottom:.85rem}
+  .colophon p{font-family:var(--mono);font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-45);text-align:center}
+
+  @media (max-width:600px){
+    .field{grid-template-columns:1fr}
+    .field-no{margin-bottom:.3rem;padding-top:0}
+    .summary div{grid-template-columns:1fr}
+    .stamp{position:static;display:inline-block;margin-bottom:1.3rem}
+    .submit-row{flex-direction:column;align-items:stretch}
+    .submit{justify-content:center}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation:none!important;transition:none!important}
+  }
+</style>
+</head>
+<body>
+<main class="sheet">
+
+  <header>
+    <p class="masthead-row"><strong>La Revue</strong><span>Service des inscriptions</span></p>
+    <div class="rule-double" aria-hidden="true"></div>
+    <p class="dossier-no">Dossier <span id="dossier-no"></span></p>
+    <h1>Ouvrir un <em>compte</em></h1>
+    <p class="lede">Quatre rubriques à remplir, vérifiées au fil de la saisie&nbsp;: chaque anomalie est signalée à côté du champ concerné — rien ne part tant que tout n’est pas en ordre.</p>
+  </header>
+
+  <form id="signup" novalidate>
+
+    <!-- 01 · Nom complet -->
+    <div class="field" data-field="name">
+      <p class="field-no" aria-hidden="true">01</p>
+      <div class="field-body">
+        <label for="f-name">Nom complet <span class="req" aria-hidden="true">*</span></label>
+        <div class="control">
+          <input id="f-name" name="name" type="text" autocomplete="name"
+                 placeholder="Camille Dupont" required aria-describedby="e-name">
+          <svg class="tick" viewBox="0 0 18 18" aria-hidden="true"><path d="M3.6 9.7l3.3 3.3 7.7-8.2"/></svg>
+        </div>
+        <p class="error" id="e-name" aria-live="polite" hidden>
+          <svg viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="5.2"/><path d="M6 3.3v3.4"/><circle class="dot" cx="6" cy="9" r=".8"/></svg>
+          <span class="msg"></span>
+        </p>
+      </div>
+    </div>
+
+    <!-- 02 · Adresse e-mail -->
+    <div class="field" data-field="email">
+      <p class="field-no" aria-hidden="true">02</p>
+      <div class="field-body">
+        <label for="f-email">Adresse e-mail <span class="req" aria-hidden="true">*</span></label>
+        <div class="control">
+          <input id="f-email" name="email" type="email" autocomplete="email"
+                 spellcheck="false" autocapitalize="none"
+                 placeholder="camille@exemple.fr" required aria-describedby="e-email">
+          <svg class="tick" viewBox="0 0 18 18" aria-hidden="true"><path d="M3.6 9.7l3.3 3.3 7.7-8.2"/></svg>
+        </div>
+        <p class="error" id="e-email" aria-live="polite" hidden>
+          <svg viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="5.2"/><path d="M6 3.3v3.4"/><circle class="dot" cx="6" cy="9" r=".8"/></svg>
+          <span class="msg"></span>
+        </p>
+      </div>
+    </div>
+
+    <!-- 03 · Site web (facultatif) -->
+    <div class="field" data-field="site">
+      <p class="field-no" aria-hidden="true">03</p>
+      <div class="field-body">
+        <label for="f-site">Site web <span class="opt">(facultatif)</span></label>
+        <div class="control">
+          <input id="f-site" name="website" type="url" autocomplete="url"
+                 spellcheck="false" autocapitalize="none"
+                 placeholder="https://exemple.fr" aria-describedby="e-site">
+          <svg class="tick" viewBox="0 0 18 18" aria-hidden="true"><path d="M3.6 9.7l3.3 3.3 7.7-8.2"/></svg>
+        </div>
+        <p class="error" id="e-site" aria-live="polite" hidden>
+          <svg viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="5.2"/><path d="M6 3.3v3.4"/><circle class="dot" cx="6" cy="9" r=".8"/></svg>
+          <span class="msg"></span>
+        </p>
+      </div>
+    </div>
+
+    <!-- 04 · Mot de passe -->
+    <div class="field" data-field="password">
+      <p class="field-no" aria-hidden="true">04</p>
+      <div class="field-body">
+        <label for="f-password">Mot de passe <span class="req" aria-hidden="true">*</span></label>
+        <div class="control">
+          <input id="f-password" name="password" type="password" autocomplete="new-password"
+                 placeholder="••••••••" required aria-describedby="e-password">
+          <svg class="tick" viewBox="0 0 18 18" aria-hidden="true"><path d="M3.6 9.7l3.3 3.3 7.7-8.2"/></svg>
+          <button type="button" class="peek" id="peek" aria-label="Afficher le mot de passe" aria-pressed="false">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M2.5 12S6 5.9 12 5.9 21.5 12 21.5 12 18 18.1 12 18.1 2.5 12 2.5 12z"/>
+              <circle cx="12" cy="12" r="2.6"/>
+              <line class="slash" x1="4.8" y1="4.8" x2="19.2" y2="19.2"/>
+            </svg>
+          </button>
+        </div>
+        <div class="meter" id="meter" aria-hidden="true">
+          <i></i><i></i><i></i><i></i><span id="meter-word"></span>
+        </div>
+        <ul class="checks" id="checks">
+          <li data-check="len">8 caractères minimum</li>
+          <li data-check="case">Une majuscule &amp; une minuscule</li>
+          <li data-check="digit">Au moins un chiffre</li>
+          <li data-check="extra">Un symbole ou 14 caractères (conseillé)</li>
+        </ul>
+        <p class="error" id="e-password" aria-live="polite" hidden>
+          <svg viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="5.2"/><path d="M6 3.3v3.4"/><circle class="dot" cx="6" cy="9" r=".8"/></svg>
+          <span class="msg"></span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Envoi -->
+    <div class="submit-area">
+      <div class="progress" id="progress" role="progressbar" aria-label="Progression du formulaire" aria-valuemin="0" aria-valuemax="4" aria-valuenow="0">
+        <i id="progress-fill"></i>
+      </div>
+      <div class="submit-row">
+        <p class="counter" id="counter">Champs valides&nbsp;: 0/4</p>
+        <button class="submit" id="submit-btn" type="submit">
+          Créer le compte
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M1.5 8h12M9.5 3.5L14 8l-4.5 4.5"/></svg>
+        </button>
+      </div>
+      <p class="fineprint">* Champ obligatoire. Démonstration locale&nbsp;: aucune information ne quitte cette page.</p>
+    </div>
+  </form>
+
+  <!-- Récapitulatif après validation -->
+  <section class="receipt" id="receipt" hidden aria-labelledby="receipt-title">
+    <div class="stamp" aria-hidden="true">Dossier reçu</div>
+    <p class="receipt-kicker">Récapitulatif</p>
+    <h2 id="receipt-title">C’est <em>noté</em>.</h2>
+    <p class="intro">Voici le détail de votre dossier, conservé sur cette page. Aucune donnée n’a été transmise.</p>
+    <dl class="summary">
+      <div><dt>Dossier</dt><dd id="r-dossier"></dd></div>
+      <div><dt>Nom</dt><dd id="r-name"></dd></div>
+      <div><dt>Adresse e-mail</dt><dd id="r-email"></dd></div>
+      <div><dt>Site web</dt><dd id="r-site"></dd></div>
+      <div><dt>Mot de passe</dt><dd id="r-password"></dd></div>
+      <div><dt>Enregistré le</dt><dd id="r-date"></dd></div>
+    </dl>
+    <button class="ghost" id="edit-btn" type="button">← Modifier mes informations</button>
+  </section>
+
+  <footer class="colophon">
+    <div class="rule" aria-hidden="true"></div>
+    <p>La Revue · formulaire de démonstration — la validation s’exécute intégralement dans votre navigateur</p>
+  </footer>
+</main>
+
+<script>
+(function(){
+  'use strict';
+
+  var ORDER = ['name','email','site','password'];
+
+  var inputs = {
+    name:     document.getElementById('f-name'),
+    email:    document.getElementById('f-email'),
+    site:     document.getElementById('f-site'),
+    password: document.getElementById('f-password')
+  };
+  var errorEls = {
+    name:     document.getElementById('e-name'),
+    email:    document.getElementById('e-email'),
+    site:     document.getElementById('e-site'),
+    password: document.getElementById('e-password')
+  };
+  var touched = {name:false, email:false, site:false, password:false};
+  var valid   = {name:false, email:false, site:false, password:false};
+
+  /* ---------- Règles de validation ---------- */
+
+  var NAME_RE = /^[\p{L}\p{M}'’.\- ]+$/u;
+
+  function vName(v){
+    v = v.trim();
+    if(!v) return 'Veuillez indiquer votre nom complet.';
+    if(v.length < 2) return 'Deux caractères au minimum, s’il vous plaît.';
+    if(!NAME_RE.test(v)) return 'Lettres, espaces, tirets et apostrophes uniquement.';
+    return '';
+  }
+
+  function vEmail(v){
+    v = v.trim();
+    if(!v) return 'Veuillez indiquer votre adresse e-mail.';
+    if(v.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v))
+      return 'Adresse invalide — format attendu : « nom@domaine.fr »';
+    return '';
+  }
+
+  function normalizeSite(v){
+    v = v.trim();
+    if(v && !/^https?:\/\//i.test(v)) v = 'https://' + v;
+    return v;
+  }
+  function vSite(v){
+    v = v.trim();
+    if(!v) return ''; /* champ facultatif : rien à signaler s’il est vide */
+    var ok = true;
+    try{
+      var u = new URL(normalizeSite(v));
+      ok = u.hostname.indexOf('.') !== -1;
+    }catch(e){ ok = false; }
+    return ok ? '' : 'Adresse incomplète — format attendu : « https://exemple.fr »';
+  }
+
+  function passChecks(v){
+    return {
+      len:   v.length >= 8,
+      'case': /[a-z]/.test(v) && /[A-Z]/.test(v),
+      digit: /[0-9]/.test(v),
+      extra: v.length >= 14 || /[^a-zA-Z0-9]/.test(v)
+    };
+  }
+  function vPassword(v){
+    if(!v) return 'Choisissez un mot de passe.';
+    var c = passChecks(v);
+    if(!(c.len && c['case'] && c.digit))
+      return 'Le mot de passe ne remplit pas encore toutes les conditions requises.';
+    return '';
+  }
+
+  var validators = {name:vName, email:vEmail, site:vSite, password:vPassword};
+
+  /* ---------- Rendu d’un champ ---------- */
+
+  var counter      = document.getElementById('counter');
+  var progressFill = document.getElementById('progress-fill');
+  var progressEl   = document.getElementById('progress');
+
+  function updateProgress(){
+    var done = ORDER.filter(function(k){ return valid[k]; }).length;
+    progressFill.style.width = (done / ORDER.length * 100) + '%';
+    progressEl.setAttribute('aria-valuenow', done);
+    if(done === ORDER.length){
+      counter.textContent = '4/4 — prêt à envoyer';
+      counter.classList.add('ready');
+    }else{
+      counter.textContent = 'Champs valides\u00a0: ' + done + '/4';
+      counter.classList.remove('ready');
+    }
+  }
+
+  function refresh(key){
+    var el   = inputs[key];
+    var wrap = el.closest('.field');
+    var msg  = validators[key](el.value);
+    valid[key] = !msg;
+
+    /* la coche n’apparaît sur le site web que s’il est renseigné */
+    var tickOn = !msg && (key !== 'site' || el.value.trim() !== '');
+    wrap.classList.toggle('valid', tickOn);
+
+    var showError = !!msg && touched[key];
+    wrap.classList.toggle('invalid', showError);
+
+    var errEl = errorEls[key];
+    if(showError){
+      errEl.querySelector('.msg').textContent = msg;
+      errEl.hidden = false;
+      el.setAttribute('aria-invalid','true');
+    }else{
+      errEl.hidden = true;
+      el.removeAttribute('aria-invalid');
+    }
+    updateProgress();
+  }
+
+  /* ---------- Jauge et conditions du mot de passe ---------- */
+
+  var bars      = document.querySelectorAll('#meter i');
+  var meterWord = document.getElementById('meter-word');
+  var checkEls  = {};
+  document.querySelectorAll('#checks li').forEach(function(li){
+    checkEls[li.dataset.check] = li;
+  });
+  var STRENGTH = [null,'faible','correct','bon','excellent'];
+
+  function renderPasswordUI(){
+    var v = inputs.password.value;
+    var c = passChecks(v);
+    ['len','case','digit','extra'].forEach(function(k){
+      checkEls[k].classList.toggle('done', c[k]);
+    });
+    var score = (c.len?1:0) + (c['case']?1:0) + (c.digit?1:0) + (c.extra?1:0);
+    var shown = 0, word = '';
+    if(v.length){
+      if(!c.len){ shown = 1; word = 'trop court'; }
+      else{ shown = score; word = STRENGTH[score]; }
+    }
+    bars.forEach(function(b,i){ b.classList.toggle('on', i < shown); });
+    meterWord.textContent = word;
+  }
+
+  /* ---------- Écouteurs ---------- */
+
+  ORDER.forEach(function(key){
+    var el = inputs[key];
+    el.addEventListener('input', function(){
+      if(key === 'password') renderPasswordUI();
+      refresh(key);
+    });
+    el.addEventListener('blur', function(){
+      touched[key] = true;
+      if(key === 'site'){
+        var v = el.value.trim();
+        /* on complète gentiment le protocole manquant */
+        if(v && !vSite(v)) el.value = normalizeSite(v);
+      }
+      refresh(key);
+    });
+  });
+
+  /* afficher / masquer le mot de passe */
+  var peek = document.getElementById('peek');
+  peek.addEventListener('click', function(){
+    var revealed = inputs.password.type === 'password';
+    inputs.password.type = revealed ? 'text' : 'password';
+    peek.classList.toggle('on', revealed);
+    peek.setAttribute('aria-pressed', revealed ? 'true' : 'false');
+    peek.setAttribute('aria-label', revealed ? 'Masquer le mot de passe' : 'Afficher le mot de passe');
+    inputs.password.focus();
+  });
+
+  /* ---------- Envoi ---------- */
+
+  var form    = document.getElementById('signup');
+  var receipt = document.getElementById('receipt');
+  var btn     = document.getElementById('submit-btn');
+
+  btn.addEventListener('animationend', function(){ btn.classList.remove('shake'); });
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    ORDER.forEach(function(k){ touched[k] = true; refresh(k); });
+
+    var first = ORDER.filter(function(k){ return !valid[k]; })[0];
+    if(first){
+      btn.classList.remove('shake');
+      void btn.offsetWidth; /* relance l’animation */
+      btn.classList.add('shake');
+      inputs[first].focus({preventScroll:true});
+      inputs[first].closest('.field').scrollIntoView({behavior:'smooth', block:'center'});
+      return;
+    }
+    showReceipt();
+  });
+
+  /* ---------- Récapitulatif ---------- */
+
+  var dossierNo = 'nº ' + new Date().getFullYear() + '-' +
+                  String(Math.floor(1000 + Math.random() * 9000));
+  document.getElementById('dossier-no').textContent = dossierNo;
+
+  var ADJ = {1:'faible', 2:'correcte', 3:'bonne', 4:'excellente'};
+
+  function showReceipt(){
+    var v = inputs.password.value;
+    var c = passChecks(v);
+    var score = (c.len?1:0) + (c['case']?1:0) + (c.digit?1:0) + (c.extra?1:0);
+
+    document.getElementById('r-dossier').textContent = dossierNo;
+    document.getElementById('r-name').textContent  = inputs.name.value.trim();
+    document.getElementById('r-email').textContent = inputs.email.value.trim();
+    document.getElementById('r-site').textContent  = inputs.site.value.trim() || '—';
+
+    var dd = document.getElementById('r-password');
+    dd.textContent = '';
+    var dots = document.createElement('span');
+    dots.className = 'dots';
+    dots.textContent = '•'.repeat(Math.min(v.length, 12));
+    var note = document.createElement('span');
+    note.className = 'note';
+    note.textContent = v.length + ' caractères · robustesse : ' + ADJ[score];
+    dd.appendChild(dots);
+    dd.appendChild(note);
+
+    var now = new Date();
+    document.getElementById('r-date').textContent =
+      now.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'}) +
+      ' à ' + now.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+
+    form.hidden = true;
+    receipt.hidden = false;
+    receipt.classList.remove('stamped');
+    setTimeout(function(){ receipt.classList.add('stamped'); }, 220);
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  document.getElementById('edit-btn').addEventListener('click', function(){
+    receipt.hidden = true;
+    receipt.classList.remove('stamped');
+    form.hidden = false;
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+
+  /* état initial */
+  renderPasswordUI();
+  updateProgress();
+})();
+</script>
+</body>
+</html>

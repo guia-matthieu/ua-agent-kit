@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sign Up</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 2rem 1rem;
+      font-family: system-ui, sans-serif;
+      line-height: 1.5;
+      color: #1f2937;
+      background: #f3f4f6;
+    }
+
+    main {
+      width: 100%;
+      max-width: 28rem;
+      margin: 0 auto;
+      padding: 2rem;
+      background: #fff;
+      border-radius: 0.75rem;
+      box-shadow: 0 4px 20px rgb(0 0 0 / 8%);
+    }
+
+    h1 {
+      margin: 0 0 0.5rem;
+    }
+
+    .intro {
+      margin: 0 0 1.5rem;
+      color: #4b5563;
+    }
+
+    .field {
+      margin-bottom: 1.25rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.35rem;
+      font-weight: 600;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.7rem;
+      border: 1px solid #6b7280;
+      border-radius: 0.35rem;
+      background: #fff;
+      color: inherit;
+      font: inherit;
+    }
+
+    input:focus-visible,
+    button:focus-visible {
+      outline: 3px solid #2563eb;
+      outline-offset: 3px;
+    }
+
+    input[aria-invalid="true"] {
+      border: 2px solid #b91c1c;
+    }
+
+    .hint,
+    .error {
+      margin: 0.35rem 0 0;
+      font-size: 0.875rem;
+    }
+
+    .hint {
+      color: #4b5563;
+    }
+
+    .error {
+      color: #b91c1c;
+    }
+
+    .error:empty {
+      display: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 0.75rem;
+      border: 0;
+      border-radius: 0.35rem;
+      font: inherit;
+      font-weight: 600;
+      color: #fff;
+      background: #1d4ed8;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #1e40af;
+    }
+
+    #status {
+      margin: 1rem 0 0;
+    }
+
+    #status:empty {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Create an account</h1>
+    <p class="intro">All fields are required.</p>
+
+    <noscript>
+      <p>This demo requires JavaScript to validate the form. No account will be created.</p>
+    </noscript>
+
+    <form id="signup-form" method="post" novalidate>
+      <div class="field">
+        <label for="full-name">Full name</label>
+        <input
+          type="text"
+          id="full-name"
+          name="fullName"
+          autocomplete="name"
+          required
+          aria-describedby="full-name-error"
+        >
+        <p class="error" id="full-name-error" aria-live="polite"></p>
+      </div>
+
+      <div class="field">
+        <label for="email">Email address</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          autocomplete="email"
+          autocapitalize="none"
+          spellcheck="false"
+          required
+          aria-describedby="email-error"
+        >
+        <p class="error" id="email-error" aria-live="polite"></p>
+      </div>
+
+      <div class="field">
+        <label for="website">Website</label>
+        <input
+          type="url"
+          id="website"
+          name="website"
+          autocomplete="url"
+          autocapitalize="none"
+          spellcheck="false"
+          placeholder="https://example.com"
+          required
+          aria-describedby="website-hint website-error"
+        >
+        <p class="hint" id="website-hint">Enter a full URL starting with http:// or https://.</p>
+        <p class="error" id="website-error" aria-live="polite"></p>
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          autocomplete="new-password"
+          minlength="8"
+          required
+          aria-describedby="password-hint password-error"
+        >
+        <p class="hint" id="password-hint">Use at least 8 characters.</p>
+        <p class="error" id="password-error" aria-live="polite"></p>
+      </div>
+
+      <button type="submit" id="submit-button" disabled>Sign up</button>
+      <p id="status" role="status" aria-live="polite"></p>
+    </form>
+  </main>
+
+  <script>
+    "use strict";
+
+    const form = document.getElementById("signup-form");
+    const status = document.getElementById("status");
+    const fields = Array.from(form.querySelectorAll("input"));
+    const touched = new Set();
+    let submitted = false;
+
+    function getError(field) {
+      const value = field.value;
+
+      switch (field.id) {
+        case "full-name":
+          return value.trim() ? "" : "Please enter your full name.";
+
+        case "email":
+          if (!value.trim()) {
+            return "Please enter your email address.";
+          }
+          return field.validity.typeMismatch
+            ? "Please enter a valid email address, such as name@example.com."
+            : "";
+
+        case "website":
+          if (!value.trim()) {
+            return "Please enter your website URL.";
+          }
+
+          try {
+            const url = new URL(value.trim());
+            if (
+              !/^https?:\/\//i.test(value.trim()) ||
+              !["http:", "https:"].includes(url.protocol) ||
+              !url.hostname ||
+              field.validity.typeMismatch
+            ) {
+              return "Please enter a valid website URL starting with http:// or https://.";
+            }
+          } catch {
+            return "Please enter a valid website URL, such as https://example.com.";
+          }
+          return "";
+
+        case "password":
+          if (!value) {
+            return "Please enter a password.";
+          }
+          return Array.from(value).length < 8
+            ? "Your password must contain at least 8 characters."
+            : "";
+
+        default:
+          return "";
+      }
+    }
+
+    function validateField(field) {
+      const message = getError(field);
+      document.getElementById(field.id + "-error").textContent = message;
+
+      if (message) {
+        field.setAttribute("aria-invalid", "true");
+      } else {
+        field.removeAttribute("aria-invalid");
+      }
+
+      return !message;
+    }
+
+    fields.forEach((field) => {
+      field.addEventListener("blur", () => {
+        touched.add(field);
+        validateField(field);
+      });
+
+      field.addEventListener("input", () => {
+        status.textContent = "";
+        if (submitted || touched.has(field)) {
+          validateField(field);
+        }
+      });
+    });
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      submitted = true;
+      status.textContent = "";
+
+      let firstInvalidField = null;
+
+      fields.forEach((field) => {
+        if (!validateField(field) && !firstInvalidField) {
+          firstInvalidField = field;
+        }
+      });
+
+      if (firstInvalidField) {
+        firstInvalidField.focus();
+        return;
+      }
+
+      // Demo only: no credentials are transmitted or stored.
+      // A real signup endpoint must also validate all fields on the server.
+      status.textContent =
+        "All fields are valid. This is a demo; no data was sent and no account was created.";
+    });
+
+    document.getElementById("submit-button").disabled = false;
+  </script>
+</body>
+</html>

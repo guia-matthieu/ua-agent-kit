@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Estudio Meridiano · Crear cuenta</title>
+<style>
+/* ---------- base ---------- */
+*,
+*::before,
+*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --paper:#f4efe4;
+  --ink:#1d1912;
+  --ink-soft:#6b6350;
+  --line:#d6ccb4;
+  --accent:#c8451e;      /* bermellón sobre papel */
+  --accent-hi:#e2603a;   /* bermellón sobre tinta */
+  --error:#b3231a;
+  --ok:#2f6b4a;
+  --panel:#171410;
+  --panel-text:#efe8d7;
+  --serif:Georgia,'Iowan Old Style','Times New Roman',serif;
+  --mono:ui-monospace,'SF Mono','Cascadia Mono',Menlo,Consolas,'Liberation Mono',monospace;
+}
+
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--serif);
+  background:var(--paper);
+  color:var(--ink);
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+::selection{background:var(--accent);color:var(--paper)}
+[hidden]{display:none !important}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+input:focus{outline:none}
+
+/* ---------- estructura ---------- */
+.layout{
+  display:grid;
+  grid-template-columns:minmax(340px,2fr) 3fr;
+  min-height:100vh;
+}
+
+/* ---------- panel lateral ---------- */
+.panel{
+  background:var(--panel);
+  color:var(--panel-text);
+  padding:clamp(32px,4.5vw,60px);
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  gap:48px;
+}
+.kicker{
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:rgba(239,232,215,.62);
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+.kicker .rule{flex:1;height:1px;background:rgba(239,232,215,.2)}
+.panel h1{
+  font-size:clamp(2.7rem,4.4vw,4.3rem);
+  font-weight:400;
+  line-height:.98;
+  letter-spacing:-.015em;
+  margin-bottom:22px;
+}
+.panel h1 em{font-style:italic;color:var(--accent-hi)}
+.lede{
+  font-size:15.5px;
+  line-height:1.7;
+  color:rgba(239,232,215,.72);
+  max-width:36ch;
+  margin-bottom:44px;
+}
+.rules-title{
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:rgba(239,232,215,.55);
+  padding-bottom:12px;
+  margin-bottom:6px;
+  border-bottom:1px solid rgba(239,232,215,.14);
+}
+.checks{list-style:none}
+.checks li{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:7px 0;
+  font-family:var(--mono);
+  font-size:12.5px;
+  color:rgba(239,232,215,.78);
+  transition:opacity .3s;
+}
+.checks li.done{opacity:.5}
+.dot{
+  flex:none;
+  width:15px;height:15px;
+  border:1px solid rgba(239,232,215,.4);
+  border-radius:50%;
+  position:relative;
+  transition:background .3s,border-color .3s;
+}
+.checks li.done .dot{background:var(--accent-hi);border-color:var(--accent-hi)}
+.checks li.done .dot::after{
+  content:"";
+  position:absolute;left:3px;top:4px;
+  width:7px;height:4px;
+  border-left:2px solid var(--panel);
+  border-bottom:2px solid var(--panel);
+  transform:rotate(-45deg);
+}
+.strength{
+  margin-top:18px;
+  font-family:var(--mono);
+  font-size:12px;
+  color:rgba(239,232,215,.55);
+}
+.strength span{color:rgba(239,232,215,.65);transition:color .3s}
+.strength span[data-level="1"]{color:var(--accent-hi)}
+.strength span[data-level="2"]{color:#d9a05b}
+.strength span[data-level="3"]{color:var(--panel-text)}
+.strength span[data-level="4"]{color:#85c2a2}
+.segs{display:flex;gap:6px}
+.segs i{flex:1;height:3px;background:rgba(239,232,215,.15);transition:background .35s}
+.segs i.on{background:var(--accent-hi)}
+.progress-label{
+  margin-top:10px;
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.08em;
+  color:rgba(239,232,215,.55);
+}
+.fine{
+  margin-top:20px;
+  font-family:var(--mono);
+  font-size:10.5px;
+  line-height:1.6;
+  color:rgba(239,232,215,.5);
+}
+
+/* ---------- hoja del formulario ---------- */
+.sheet{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:clamp(32px,6vw,80px);
+}
+#regForm,.success{width:100%;max-width:480px}
+.sheet-head{
+  display:flex;
+  justify-content:space-between;
+  gap:16px;
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--ink-soft);
+  padding-bottom:14px;
+  border-bottom:1px solid var(--line);
+  margin-bottom:42px;
+}
+
+/* campos */
+.field{margin-bottom:30px}
+.field-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  min-height:20px;
+}
+.field label{
+  display:flex;
+  align-items:baseline;
+  gap:10px;
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--ink-soft);
+  cursor:pointer;
+}
+.idx{color:#b3a889;transition:color .25s}
+.field:focus-within .idx{color:var(--accent)}
+.opt{
+  font-size:10px;
+  letter-spacing:.08em;
+  color:#a89d84;
+  text-transform:lowercase;
+  margin-left:2px;
+}
+.valid-mark{
+  width:18px;height:18px;
+  border-radius:50%;
+  background:var(--ok);
+  color:var(--paper);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  opacity:0;
+  transform:scale(.4);
+  transition:opacity .25s,transform .35s cubic-bezier(.34,1.56,.64,1);
+}
+.field.is-valid .valid-mark{opacity:1;transform:scale(1)}
+
+.control{position:relative}
+.control input{
+  width:100%;
+  background:transparent;
+  border:none;
+  border-bottom:1px solid var(--line);
+  padding:10px 2px 11px;
+  font-family:var(--serif);
+  font-size:17px;
+  color:var(--ink);
+  border-radius:0;
+  transition:border-color .25s;
+}
+.control input::placeholder{color:#a99e85;font-style:italic}
+.control::after{
+  content:"";
+  position:absolute;
+  left:0;bottom:0;
+  height:2px;width:0;
+  background:var(--ink);
+  transition:width .35s cubic-bezier(.22,.9,.3,1),background .25s;
+}
+.field:focus-within .control::after{width:100%}
+.field.has-error .control input{border-bottom-color:var(--error)}
+.field.has-error .control::after{width:100%;background:var(--error)}
+
+/* botón mostrar / ocultar contraseña */
+.field--pass .control input{padding-right:46px}
+.pass-toggle{
+  position:absolute;
+  right:0;top:50%;
+  transform:translateY(-50%);
+  padding:6px;
+  color:#a99e85;
+  display:inline-flex;
+  transition:color .2s;
+}
+.pass-toggle:hover{color:var(--ink)}
+.pass-toggle .ic-hide{display:none}
+.pass-toggle[aria-pressed="true"] .ic-eye{display:none}
+.pass-toggle[aria-pressed="true"] .ic-hide{display:block}
+
+/* mensajes de error (se despliegan con suavidad) */
+.error{
+  display:grid;
+  grid-template-rows:0fr;
+  transition:grid-template-rows .3s ease;
+}
+.error span{
+  overflow:hidden;
+  min-height:0;
+  display:block;
+  padding-top:8px;
+  font-family:var(--mono);
+  font-size:12px;
+  line-height:1.5;
+  color:var(--error);
+  opacity:0;
+  transition:opacity .25s;
+}
+.field.has-error .error{grid-template-rows:1fr}
+.field.has-error .error span{opacity:1}
+.error span::before{
+  content:"!";
+  display:inline-block;
+  width:14px;height:14px;
+  margin-right:7px;
+  border:1px solid currentColor;
+  border-radius:50%;
+  font-size:10px;
+  line-height:13px;
+  text-align:center;
+  vertical-align:1px;
+}
+
+/* sacudida al enviar con errores */
+@keyframes shake{
+  20%{transform:translateX(-4px)}
+  40%{transform:translateX(4px)}
+  60%{transform:translateX(-3px)}
+  80%{transform:translateX(2px)}
+}
+.field.shake{animation:shake .4s ease}
+
+/* botón principal */
+.submit{
+  margin-top:42px;
+  width:100%;
+  height:56px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 20px;
+  background:var(--ink);
+  color:var(--paper);
+  font-family:var(--mono);
+  font-size:13px;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  transition:background .25s;
+}
+.submit:hover{background:var(--accent)}
+.submit:active{transform:translateY(1px)}
+.submit svg{transition:transform .25s}
+.submit:hover svg{transform:translateX(5px)}
+.local-note{
+  margin-top:16px;
+  text-align:center;
+  font-family:var(--mono);
+  font-size:10.5px;
+  letter-spacing:.04em;
+  color:#a89d84;
+}
+
+/* ---------- pantalla de confirmación ---------- */
+.success>*{animation:rise .55s cubic-bezier(.22,.9,.3,1) both}
+.success>*:nth-child(1){animation-delay:.05s}
+.success>*:nth-child(2){animation-delay:.16s}
+.success>*:nth-child(3){animation-delay:.26s}
+.success>*:nth-child(4){animation-delay:.36s}
+.success>*:nth-child(5){animation-delay:.46s}
+.success>*:nth-child(6){animation-delay:.56s}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.s-check{display:block;margin-bottom:26px}
+.s-check circle{stroke-dasharray:189;stroke-dashoffset:189;animation:draw .8s ease .15s forwards}
+.s-check path{stroke-dasharray:34;stroke-dashoffset:34;animation:draw .4s ease .85s forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.s-kicker{
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:var(--accent);
+  margin-bottom:10px;
+}
+.success h2{
+  font-size:clamp(2rem,4vw,2.6rem);
+  font-weight:400;
+  line-height:1.05;
+  margin-bottom:14px;
+}
+.success h2:focus{outline:none}
+.s-text{
+  font-size:15.5px;
+  line-height:1.7;
+  color:var(--ink-soft);
+  margin-bottom:34px;
+}
+.s-data div{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  gap:20px;
+  padding:11px 2px;
+  border-top:1px solid var(--line);
+}
+.s-data div:last-child{border-bottom:1px solid var(--line)}
+.s-data dt{
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--ink-soft);
+}
+.s-data dd{font-size:15px;text-align:right;word-break:break-word}
+.again{
+  margin-top:36px;
+  width:100%;
+  height:52px;
+  border:1px solid var(--ink);
+  font-family:var(--mono);
+  font-size:12px;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  transition:background .25s,color .25s;
+}
+.again:hover{background:var(--ink);color:var(--paper)}
+
+/* ---------- responsive ---------- */
+@media (max-width:920px){
+  .layout{grid-template-columns:1fr;min-height:auto}
+  .panel{gap:36px}
+  .panel h1{font-size:clamp(2.4rem,9vw,3.4rem);margin-bottom:16px}
+  .lede{margin-bottom:32px}
+}
+@media (max-width:480px){
+  .panel,.sheet{padding-left:22px;padding-right:22px}
+  .sheet-head{flex-direction:column;gap:4px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;
+  }
+}
+</style>
+</head>
+<body>
+<main class="layout">
+
+  <!-- Panel lateral: identidad, requisitos en vivo y progreso -->
+  <aside class="panel">
+    <p class="kicker"><span>Estudio Meridiano</span><span class="rule"></span><span>Nº 01</span></p>
+
+    <div>
+      <h1>Crea<br>tu <em>cuenta.</em></h1>
+      <p class="lede">Un espacio tranquilo para guardar y ordenar tu trabajo. Rellena el formulario y te enviaremos la confirmación por correo.</p>
+
+      <p class="rules-title">Requisitos de la contraseña</p>
+      <ul class="checks" id="passChecks">
+        <li data-check="len"><span class="dot"></span>Al menos 8 caracteres</li>
+        <li data-check="upper"><span class="dot"></span>Una letra mayúscula</li>
+        <li data-check="lower"><span class="dot"></span>Una letra minúscula</li>
+        <li data-check="digit"><span class="dot"></span>Un número</li>
+      </ul>
+      <p class="strength">Fuerza: <span id="strengthWord" data-level="0">—</span></p>
+    </div>
+
+    <div>
+      <div class="segs" id="segs" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+      <p class="progress-label" id="progressLabel">0 / 4 campos listos</p>
+      <p class="fine">Al registrarte aceptas recibir nuestro boletín mensual. Puedes darte de baja en cualquier momento.</p>
+    </div>
+  </aside>
+
+  <!-- Hoja del formulario -->
+  <section class="sheet">
+    <form id="regForm" novalidate>
+      <p class="sheet-head"><span>Formulario de registro</span><span>4 campos · 1 opcional</span></p>
+
+      <div class="field" id="f-name">
+        <div class="field-head">
+          <label for="name"><span class="idx">01</span>Nombre completo</label>
+          <span class="valid-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.8l4.7 4.7L19.5 7"/></svg>
+          </span>
+        </div>
+        <div class="control">
+          <input type="text" id="name" name="name" autocomplete="name" placeholder="Ada Lovelace" aria-describedby="err-name">
+        </div>
+        <p class="error" id="err-name" aria-live="polite"><span></span></p>
+      </div>
+
+      <div class="field" id="f-email">
+        <div class="field-head">
+          <label for="email"><span class="idx">02</span>Correo electrónico</label>
+          <span class="valid-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.8l4.7 4.7L19.5 7"/></svg>
+          </span>
+        </div>
+        <div class="control">
+          <input type="email" id="email" name="email" autocomplete="email" autocapitalize="none" spellcheck="false" placeholder="ada@ejemplo.com" aria-describedby="err-email">
+        </div>
+        <p class="error" id="err-email" aria-live="polite"><span></span></p>
+      </div>
+
+      <div class="field" id="f-site">
+        <div class="field-head">
+          <label for="site"><span class="idx">03</span>Sitio web <span class="opt">(opcional)</span></label>
+          <span class="valid-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.8l4.7 4.7L19.5 7"/></svg>
+          </span>
+        </div>
+        <div class="control">
+          <input type="url" id="site" name="website" autocomplete="url" autocapitalize="none" spellcheck="false" placeholder="https://ejemplo.com" aria-describedby="err-site">
+        </div>
+        <p class="error" id="err-site" aria-live="polite"><span></span></p>
+      </div>
+
+      <div class="field field--pass" id="f-pass">
+        <div class="field-head">
+          <label for="password"><span class="idx">04</span>Contraseña</label>
+          <span class="valid-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.8l4.7 4.7L19.5 7"/></svg>
+          </span>
+        </div>
+        <div class="control">
+          <input type="password" id="password" name="password" autocomplete="new-password" placeholder="Mínimo 8 caracteres" aria-describedby="err-pass">
+          <button type="button" class="pass-toggle" id="passToggle" aria-pressed="false" aria-label="Mostrar contraseña">
+            <svg class="ic-eye" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M2.5 12S6 5.8 12 5.8 21.5 12 21.5 12 18 18.2 12 18.2 2.5 12 2.5 12Z"/>
+              <circle cx="12" cy="12" r="2.7"/>
+            </svg>
+            <svg class="ic-hide" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M2.5 12S6 5.8 12 5.8 21.5 12 21.5 12 18 18.2 12 18.2 2.5 12 2.5 12Z"/>
+              <path d="M4 20 20 4"/>
+            </svg>
+          </button>
+        </div>
+        <p class="error" id="err-pass" aria-live="polite"><span></span></p>
+      </div>
+
+      <button type="submit" class="submit">
+        <span>Crear cuenta</span>
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15"/><path d="M13 6l6 6-6 6"/></svg>
+      </button>
+      <p class="local-note">La validación ocurre íntegramente en tu navegador: nada se envía a ningún servidor.</p>
+    </form>
+
+    <!-- Confirmación -->
+    <div class="success" id="success" hidden>
+      <svg class="s-check" viewBox="0 0 64 64" width="60" height="60" fill="none" aria-hidden="true">
+        <circle cx="32" cy="32" r="30" stroke="#1d1912" stroke-width="1.5"/>
+        <path d="M20 33l8.5 8.5L45 24" stroke="#2f6b4a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <p class="s-kicker">Solicitud enviada</p>
+      <h2 id="s-title" tabindex="-1">Hola.</h2>
+      <p class="s-text" id="s-text"></p>
+      <dl class="s-data">
+        <div><dt>Correo</dt><dd id="s-email"></dd></div>
+        <div><dt>Sitio web</dt><dd id="s-site"></dd></div>
+        <div><dt>Contraseña</dt><dd id="s-pass"></dd></div>
+        <div><dt>Fecha</dt><dd id="s-date"></dd></div>
+      </dl>
+      <button type="button" class="again" id="againBtn">Registrar otra cuenta</button>
+    </div>
+  </section>
+
+</main>
+
+<script>
+(function(){
+'use strict';
+
+/* ---------- referencias ---------- */
+var form = document.getElementById('regForm');
+var successBox = document.getElementById('success');
+var passInput = document.getElementById('password');
+var passToggle = document.getElementById('passToggle');
+var strengthWord = document.getElementById('strengthWord');
+var progressLabel = document.getElementById('progressLabel');
+var segs = Array.prototype.slice.call(document.querySelectorAll('#segs i'));
+
+var checkEls = {};
+Array.prototype.forEach.call(document.querySelectorAll('#passChecks li'), function(li){
+  checkEls[li.getAttribute('data-check')] = li;
+});
+
+/* ---------- reglas de la contraseña (compartidas entre validación y lista lateral) ---------- */
+var passTests = {
+  len:   function(v){ return v.length >= 8; },
+  upper: function(v){ return /[A-ZÁÉÍÓÚÜÑ]/.test(v); },
+  lower: function(v){ return /[a-záéíóúüñ]/.test(v); },
+  digit: function(v){ return /[0-9]/.test(v); }
+};
+var strengthWords = ['', 'Débil', 'Floja', 'Sólida', 'Robusta'];
+var RE_EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+/* ---------- validadores: devuelven '' si todo va bien, o el mensaje de error ---------- */
+function validateName(v){
+  var t = v.trim();
+  if(!t) return 'Introduce tu nombre completo.';
+  if(t.length < 3) return 'El nombre es demasiado corto.';
+  var words = t.split(/\s+/).filter(function(w){ return w.length >= 2; });
+  if(words.length < 2) return 'Incluye al menos tu nombre y tu apellido.';
+  return '';
+}
+function validateEmail(v){
+  var t = v.trim();
+  if(!t) return 'Introduce tu correo electrónico.';
+  if(!RE_EMAIL.test(t)) return 'Ese correo no parece válido. Revisa el formato (nombre@dominio.com).';
+  return '';
+}
+function normalizeSite(v){
+  var t = v.trim();
+  return /^https?:\/\//i.test(t) ? t : 'https://' + t;
+}
+function validateSite(v){
+  var t = v.trim();
+  if(!t) return ''; /* campo opcional: vacío es válido */
+  try{
+    var u = new URL(normalizeSite(t));
+    var h = u.hostname;
+    if(!h || h.indexOf('.') === -1 || /^\d+(\.\d+)*$/.test(h)) throw new Error('host');
+    return '';
+  }catch(e){
+    return 'Introduce una URL válida (p. ej. https://ejemplo.com).';
+  }
+}
+function validatePass(v){
+  if(!v) return 'Crea una contraseña.';
+  if(!passTests.len(v))   return 'Usa al menos 8 caracteres.';
+  if(!passTests.upper(v)) return 'Añade al menos una letra mayúscula.';
+  if(!passTests.lower(v)) return 'Añade al menos una letra minúscula.';
+  if(!passTests.digit(v)) return 'Añade al menos un número.';
+  return '';
+}
+
+/* ---------- estado de los campos ---------- */
+var fields = [
+  { key:'name',  validate:validateName },
+  { key:'email', validate:validateEmail },
+  { key:'site',  validate:validateSite, optional:true },
+  { key:'pass',  validate:validatePass }
+];
+fields.forEach(function(f){
+  f.input = document.getElementById(f.key === 'pass' ? 'password' : f.key);
+  f.row = document.getElementById('f-' + f.key);
+  f.errorText = document.querySelector('#err-' + f.key + ' span');
+  f.touched = false;
+});
+
+function showError(f, msg){
+  if(msg){
+    f.errorText.textContent = msg;
+    f.row.classList.add('has-error');
+    f.input.setAttribute('aria-invalid', 'true');
+  }else{
+    f.row.classList.remove('has-error');
+    f.input.removeAttribute('aria-invalid');
+  }
+}
+
+/* actualiza la marca de validez del campo y devuelve el mensaje de error (o '') */
+function refreshField(f){
+  var v = f.input.value;
+  var msg = f.validate(v);
+  var filled = (f.key === 'pass') ? v !== '' : v.trim() !== '';
+  f.row.classList.toggle('is-valid', !msg && filled);
+  return msg;
+}
+
+/* ---------- lista lateral de requisitos y medidor de fuerza ---------- */
+function updatePassMeta(){
+  var v = passInput.value;
+  var met = 0;
+  Object.keys(passTests).forEach(function(k){
+    var ok = v !== '' && passTests[k](v);
+    checkEls[k].classList.toggle('done', ok);
+    if(ok) met++;
+  });
+  strengthWord.textContent = (v === '') ? '—' : strengthWords[met];
+  strengthWord.setAttribute('data-level', (v === '') ? '0' : String(met));
+}
+
+/* ---------- progreso: 4 segmentos, uno por campo ---------- */
+function updateProgress(){
+  var done = 0;
+  fields.forEach(function(f, i){
+    var v = f.input.value;
+    var valid = f.validate(v) === '';
+    /* el campo opcional cuenta en cuanto el usuario lo ha visitado o rellenado bien */
+    var counted = valid && (f.optional ? (f.touched || v.trim() !== '') : v.trim() !== '');
+    segs[i].classList.toggle('on', counted);
+    if(counted) done++;
+  });
+  progressLabel.textContent = done + ' / 4 campo' + (done === 1 ? '' : 's') + ' listo' + (done === 1 ? '' : 's');
+}
+
+/* ---------- eventos por campo ---------- */
+fields.forEach(function(f){
+  /* al salir del campo: validar y mostrar el error si lo hay */
+  f.input.addEventListener('blur', function(){
+    f.touched = true;
+    showError(f, refreshField(f));
+    updateProgress();
+  });
+  /* al escribir: revalidar en vivo solo si el error ya estaba a la vista */
+  f.input.addEventListener('input', function(){
+    f.touched = true;
+    var msg = refreshField(f);
+    if(f.row.classList.contains('has-error')) showError(f, msg);
+    if(f.key === 'pass') updatePassMeta();
+    updateProgress();
+  });
+});
+
+/* ---------- mostrar / ocultar contraseña ---------- */
+passToggle.addEventListener('click', function(){
+  var show = passInput.type === 'password';
+  passInput.type = show ? 'text' : 'password';
+  passToggle.setAttribute('aria-pressed', show ? 'true' : 'false');
+  passToggle.setAttribute('aria-label', show ? 'Ocultar contraseña' : 'Mostrar contraseña');
+  passInput.focus();
+});
+
+/* ---------- envío ---------- */
+form.addEventListener('submit', function(e){
+  e.preventDefault();
+  var firstBad = null;
+  fields.forEach(function(f){
+    f.touched = true;
+    var msg = refreshField(f);
+    showError(f, msg);
+    f.row.classList.remove('shake');
+    if(msg){
+      void f.row.offsetWidth; /* reinicia la animación de sacudida */
+      f.row.classList.add('shake');
+      if(!firstBad) firstBad = f;
+    }
+  });
+  updateProgress();
+  if(firstBad){
+    firstBad.input.focus();
+    return;
+  }
+  showSuccess();
+});
+
+/* ---------- pantalla de confirmación ---------- */
+function showSuccess(){
+  var name = document.getElementById('name').value.trim();
+  var email = document.getElementById('email').value.trim();
+  var siteRaw = document.getElementById('site').value.trim();
+  var pass = passInput.value;
+
+  document.getElementById('s-title').textContent = 'Hola, ' + name.split(/\s+/)[0] + '.';
+  document.getElementById('s-text').textContent =
+    'Hemos recibido tu solicitud de registro. Como todo se procesa en este navegador, ' +
+    'nada ha salido de aquí; en un entorno real recibirías un correo de confirmación en ' + email + '.';
+
+  var siteEl = document.getElementById('s-site');
+  if(siteRaw){
+    try{ siteEl.textContent = new URL(normalizeSite(siteRaw)).hostname; }
+    catch(e){ siteEl.textContent = siteRaw; }
+  }else{
+    siteEl.textContent = '—';
+  }
+
+  var met = Object.keys(passTests).filter(function(k){ return passTests[k](pass); }).length;
+  document.getElementById('s-pass').textContent = strengthWords[met].toLowerCase();
+  document.getElementById('s-date').textContent =
+    new Date().toLocaleDateString('es-ES', { day:'numeric', month:'long', year:'numeric' });
+
+  form.hidden = true;
+  successBox.hidden = false;
+  document.getElementById('s-title').focus();
+}
+
+/* ---------- empezar de nuevo ---------- */
+document.getElementById('againBtn').addEventListener('click', function(){
+  form.reset();
+  fields.forEach(function(f){
+    f.touched = false;
+    showError(f, '');
+    f.row.classList.remove('is-valid', 'shake');
+  });
+  passInput.type = 'password';
+  passToggle.setAttribute('aria-pressed', 'false');
+  passToggle.setAttribute('aria-label', 'Mostrar contraseña');
+  updatePassMeta();
+  updateProgress();
+  successBox.hidden = true;
+  form.hidden = false;
+  document.getElementById('name').focus();
+});
+
+/* ---------- estado inicial ---------- */
+updatePassMeta();
+updateProgress();
+})();
+</script>
+</body>
+</html>

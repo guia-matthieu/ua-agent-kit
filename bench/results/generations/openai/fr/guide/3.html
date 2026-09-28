@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Inscription</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 32px 16px;
+      font-family: system-ui, sans-serif;
+      line-height: 1.5;
+      color: #172033;
+      background: #f2f5fa;
+    }
+    main {
+      max-width: 520px;
+      margin: auto;
+      padding: 32px;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px #17203312;
+    }
+    h1 { margin-top: 0; }
+    .introduction, .aide { color: #526079; }
+    .champ { margin: 24px 0; }
+    label { display: block; margin-bottom: 6px; font-weight: 600; }
+    input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #8490a3;
+      border-radius: 6px;
+      font: inherit;
+    }
+    input:focus-visible, button:focus-visible {
+      outline: 3px solid #2563eb;
+      outline-offset: 3px;
+    }
+    input[aria-invalid="true"] { border: 2px solid #b42318; }
+    .aide, .erreur { margin: 6px 0 0; font-size: .9rem; }
+    .erreur { color: #b42318; }
+    .erreur:empty { display: none; }
+    button {
+      width: 100%;
+      padding: 12px 20px;
+      border: 0;
+      border-radius: 6px;
+      background: #1849b5;
+      color: white;
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    button:hover { background: #12398d; }
+    #statut { margin-bottom: 0; }
+    #statut:empty { display: none; }
+    #statut.succes { color: #166534; }
+    #statut.echec { color: #b42318; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Créer un compte</h1>
+    <p class="introduction">Tous les champs sont obligatoires.</p>
+
+    <form id="inscription" method="post" novalidate>
+      <div class="champ">
+        <label for="nom">Nom complet</label>
+        <input id="nom" name="nom" type="text" autocomplete="name"
+               required aria-describedby="nom-erreur">
+        <p id="nom-erreur" class="erreur" aria-live="polite"></p>
+      </div>
+
+      <div class="champ">
+        <label for="email">Adresse e-mail</label>
+        <!-- type="text" préserve la saisie et accepte les adresses internationales. -->
+        <input id="email" name="email" type="text" inputmode="email"
+               autocomplete="email" autocapitalize="none" spellcheck="false"
+               required aria-describedby="email-aide email-erreur">
+        <p id="email-aide" class="aide">
+          Les caractères internationaux sont acceptés, par exemple josé@société.fr.
+        </p>
+        <p id="email-erreur" class="erreur" aria-live="polite"></p>
+      </div>
+
+      <div class="champ">
+        <label for="site">Site web</label>
+        <input id="site" name="site" type="text" inputmode="url"
+               autocomplete="url" autocapitalize="none" spellcheck="false"
+               required aria-describedby="site-aide site-erreur">
+        <p id="site-aide" class="aide">
+          Adresse complète commençant par https:// ou http://.
+        </p>
+        <p id="site-erreur" class="erreur" aria-live="polite"></p>
+      </div>
+
+      <div class="champ">
+        <label for="motdepasse">Mot de passe</label>
+        <input id="motdepasse" name="motdepasse" type="password"
+               autocomplete="new-password" required
+               aria-describedby="motdepasse-aide motdepasse-erreur">
+        <p id="motdepasse-aide" class="aide">
+          Au moins 12 caractères. Privilégiez une phrase de passe unique.
+        </p>
+        <p id="motdepasse-erreur" class="erreur" aria-live="polite"></p>
+      </div>
+
+      <button type="submit">S’inscrire</button>
+      <p id="statut" role="status" aria-live="polite"></p>
+    </form>
+
+    <noscript>
+      <p>Activez JavaScript pour valider ce formulaire. Aucun compte ne sera créé sans validation.</p>
+      <style>#inscription { display: none; }</style>
+    </noscript>
+  </main>
+
+  <script>
+    "use strict";
+
+    const formulaire = document.getElementById("inscription");
+    const statut = document.getElementById("statut");
+    const champs = ["nom", "email", "site", "motdepasse"].map(
+      id => document.getElementById(id)
+    );
+    const controles = /[\p{Cc}\p{Cf}]/u;
+
+    /*
+     * Le parseur URL du navigateur effectue la conversion IDNA / UTS #46.
+     * Cette fonction ne modifie jamais la valeur affichée dans le champ.
+     * La vérification est syntaxique : elle ne prouve pas l'existence du domaine.
+     */
+    function domaineASCII(domaine) {
+      if (!domaine || /[\s/@\\:?#%\[\]\p{Cc}]/u.test(domaine)) {
+        throw new Error("Domaine invalide");
+      }
+
+      const adresse = new URL("https://" + domaine + "/");
+      const ascii = adresse.hostname.toLowerCase();
+      const etiquettes = ascii.split(".");
+
+      if (
+        ascii.length > 253 ||
+        etiquettes.length < 2 ||
+        etiquettes.some(etiquette =>
+          etiquette.length < 1 ||
+          etiquette.length > 63 ||
+          !/^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i.test(etiquette)
+        )
+      ) {
+        throw new Error("Domaine invalide");
+      }
+
+      const extension = etiquettes[etiquettes.length - 1];
+      if (!/^(?:[a-z]{2,}|xn--[a-z0-9-]+)$/i.test(extension)) {
+        throw new Error("Extension invalide");
+      }
+
+      return ascii;
+    }
+
+    function verifierEmail(valeur) {
+      // Vérification volontairement minimale, compatible avec RFC 6531.
+      if (!/^[^\s@\p{Cc}]+@[^\s@\p{Cc}]+$/u.test(valeur)) {
+        throw new Error("Adresse e-mail invalide");
+      }
+
+      const [partieLocale, domaine] = valeur.split("@");
+      return partieLocale + "@" + domaineASCII(domaine);
+    }
+
+    function verifierSite(valeur) {
+      if (
+        !/^https?:\/\//i.test(valeur) ||
+        /[\s\\\p{Cc}]/u.test(valeur)
+      ) {
+        throw new Error("URL invalide");
+      }
+
+      const adresse = new URL(valeur);
+      if (
+        !["http:", "https:"].includes(adresse.protocol) ||
+        !adresse.hostname ||
+        adresse.username ||
+        adresse.password
+      ) {
+        throw new Error("URL invalide");
+      }
+
+      const hote = adresse.hostname;
+      const estIPv4 = /^(?:\d{1,3}\.){3}\d{1,3}$/.test(hote);
+      const estIPv6 = hote.startsWith("[") && hote.endsWith("]");
+
+      // Les adresses IP sont déjà contrôlées par le parseur URL.
+      if (!estIPv4 && !estIPv6) {
+        adresse.hostname = domaineASCII(hote);
+      }
+
+      return adresse.href;
+    }
+
+    function messageErreur(champ) {
+      const valeur = champ.value;
+
+      switch (champ.id) {
+        case "nom":
+          if (!valeur.trim()) return "Indiquez votre nom complet.";
+          if (controles.test(valeur)) {
+            return "Le nom ne doit pas contenir de caractères de contrôle.";
+          }
+          return "";
+
+        case "email":
+          if (!valeur) return "Indiquez votre adresse e-mail.";
+          try {
+            verifierEmail(valeur);
+            return "";
+          } catch {
+            return "Saisissez une adresse sans espaces, avec un seul @ et un domaine valide, par exemple 用户@例子.中国.";
+          }
+
+        case "site":
+          if (!valeur) return "Indiquez l’adresse de votre site web.";
+          try {
+            verifierSite(valeur);
+            return "";
+          } catch {
+            return "Saisissez une URL HTTP ou HTTPS valide, sans espaces ni identifiants, par exemple https://société.fr.";
+          }
+
+        case "motdepasse":
+          if (!valeur) return "Choisissez un mot de passe.";
+          if (Array.from(valeur).length < 12) {
+            return "Le mot de passe doit contenir au moins 12 caractères.";
+          }
+          if (!valeur.trim()) {
+            return "Le mot de passe ne peut pas contenir uniquement des espaces.";
+          }
+          return "";
+      }
+    }
+
+    function valider(champ) {
+      const erreur = messageErreur(champ);
+      document.getElementById(champ.id + "-erreur").textContent = erreur;
+      champ.setAttribute("aria-invalid", erreur ? "true" : "false");
+      return !erreur;
+    }
+
+    for (const champ of champs) {
+      champ.addEventListener("blur", () => valider(champ));
+      champ.addEventListener("input", () => {
+        statut.textContent = "";
+        statut.className = "";
+        if (champ.hasAttribute("aria-invalid")) valider(champ);
+      });
+    }
+
+    formulaire.addEventListener("submit", evenement => {
+      evenement.preventDefault();
+
+      let premierInvalide = null;
+      for (const champ of champs) {
+        if (!valider(champ) && !premierInvalide) premierInvalide = champ;
+      }
+
+      if (premierInvalide) {
+        statut.className = "echec";
+        statut.textContent = "Corrigez les champs signalés avant de continuer.";
+        premierInvalide.focus();
+        return;
+      }
+
+      /*
+       * Point d'intégration d'un envoi HTTPS vers un serveur.
+       * Conserver la saisie d'origine avec les formes normalisées.
+       * Le serveur doit refaire les validations et hacher le mot de passe.
+       * Ne pas journaliser ni stocker le mot de passe dans le navigateur.
+       */
+      const donnees = {
+        nom: formulaire.elements.nom.value,
+        email: {
+          original: formulaire.elements.email.value,
+          normalise: verifierEmail(formulaire.elements.email.value)
+        },
+        site: {
+          original: formulaire.elements.site.value,
+          normalise: verifierSite(formulaire.elements.site.value)
+        }
+      };
+
+      // Page autonome : aucun envoi réseau et aucune création de compte.
+      statut.className = "succes";
+      statut.textContent =
+        "Tous les champs sont valides. Cette démonstration n’envoie aucune donnée et ne crée pas de compte.";
+    });
+  </script>
+</body>
+</html>

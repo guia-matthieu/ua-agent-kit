@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulario de registro</title>
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    :root {
+      --color-fondo: #f3f4f6;
+      --color-tarjeta: #ffffff;
+      --color-texto: #1f2937;
+      --color-secundario: #6b7280;
+      --color-borde: #d1d5db;
+      --color-primario: #2563eb;
+      --color-primario-hover: #1d4ed8;
+      --color-error: #b91c1c;
+      --color-error-fondo: #fef2f2;
+      --color-exito: #15803d;
+      --color-exito-fondo: #f0fdf4;
+      --radio: 8px;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: var(--color-fondo);
+      color: var(--color-texto);
+      line-height: 1.5;
+    }
+
+    .tarjeta {
+      width: 100%;
+      max-width: 460px;
+      background: var(--color-tarjeta);
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      padding: 2rem;
+    }
+
+    h1 {
+      margin: 0 0 0.25rem;
+      font-size: 1.6rem;
+    }
+
+    .subtitulo {
+      margin: 0 0 1.5rem;
+      color: var(--color-secundario);
+      font-size: 0.95rem;
+    }
+
+    .campo {
+      margin-bottom: 1.25rem;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.35rem;
+      font-size: 0.95rem;
+    }
+
+    .opcional {
+      font-weight: 400;
+      color: var(--color-secundario);
+      font-size: 0.85rem;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.65rem 0.8rem;
+      font-size: 1rem;
+      font-family: inherit;
+      color: inherit;
+      border: 1px solid var(--color-borde);
+      border-radius: var(--radio);
+      background: #fff;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--color-primario);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+    }
+
+    input[aria-invalid="true"] {
+      border-color: var(--color-error);
+      background: var(--color-error-fondo);
+    }
+
+    input[aria-invalid="true"]:focus {
+      box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.2);
+    }
+
+    .ayuda {
+      display: block;
+      margin-top: 0.3rem;
+      font-size: 0.82rem;
+      color: var(--color-secundario);
+    }
+
+    .error {
+      display: block;
+      min-height: 1.2em;
+      margin-top: 0.3rem;
+      font-size: 0.85rem;
+      color: var(--color-error);
+      font-weight: 500;
+    }
+
+    .error:empty {
+      margin-top: 0;
+      min-height: 0;
+    }
+
+    .contenedor-password {
+      position: relative;
+    }
+
+    .contenedor-password input {
+      padding-right: 5.5rem;
+    }
+
+    .boton-mostrar {
+      position: absolute;
+      top: 50%;
+      right: 0.4rem;
+      transform: translateY(-50%);
+      border: none;
+      background: transparent;
+      color: var(--color-primario);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 0.35rem 0.5rem;
+      border-radius: 6px;
+    }
+
+    .boton-mostrar:hover {
+      background: rgba(37, 99, 235, 0.08);
+    }
+
+    .boton-mostrar:focus-visible {
+      outline: 2px solid var(--color-primario);
+      outline-offset: 1px;
+    }
+
+    .requisitos {
+      list-style: none;
+      margin: 0.5rem 0 0;
+      padding: 0;
+      font-size: 0.82rem;
+      color: var(--color-secundario);
+    }
+
+    .requisitos li::before {
+      content: "○ ";
+    }
+
+    .requisitos li.cumplido {
+      color: var(--color-exito);
+    }
+
+    .requisitos li.cumplido::before {
+      content: "✓ ";
+    }
+
+    button[type="submit"] {
+      width: 100%;
+      padding: 0.8rem;
+      font-size: 1rem;
+      font-weight: 600;
+      font-family: inherit;
+      color: #fff;
+      background: var(--color-primario);
+      border: none;
+      border-radius: var(--radio);
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    button[type="submit"]:hover {
+      background: var(--color-primario-hover);
+    }
+
+    button[type="submit"]:focus-visible {
+      outline: 3px solid rgba(37, 99, 235, 0.4);
+      outline-offset: 2px;
+    }
+
+    .mensaje-global {
+      display: none;
+      padding: 0.75rem 1rem;
+      border-radius: var(--radio);
+      margin-bottom: 1.25rem;
+      font-size: 0.92rem;
+    }
+
+    .mensaje-global.visible {
+      display: block;
+    }
+
+    .mensaje-global.exito {
+      background: var(--color-exito-fondo);
+      color: var(--color-exito);
+      border: 1px solid #bbf7d0;
+    }
+
+    .mensaje-global.fallo {
+      background: var(--color-error-fondo);
+      color: var(--color-error);
+      border: 1px solid #fecaca;
+    }
+
+    .requerido {
+      color: var(--color-error);
+    }
+  </style>
+</head>
+<body>
+  <main class="tarjeta">
+    <h1>Crear una cuenta</h1>
+    <p class="subtitulo">Los campos marcados con <span class="requerido" aria-hidden="true">*</span> son obligatorios.</p>
+
+    <div id="mensaje-global" class="mensaje-global" role="status" aria-live="polite"></div>
+
+    <form id="formulario-registro" action="#" method="post" novalidate>
+      <div class="campo">
+        <label for="nombre">Nombre completo <span class="requerido" aria-hidden="true">*</span></label>
+        <input
+          type="text"
+          id="nombre"
+          name="nombre"
+          autocomplete="name"
+          maxlength="100"
+          required
+          aria-required="true"
+          aria-describedby="error-nombre"
+        >
+        <span class="error" id="error-nombre" aria-live="polite"></span>
+      </div>
+
+      <div class="campo">
+        <label for="email">Correo electrónico <span class="requerido" aria-hidden="true">*</span></label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          autocomplete="email"
+          inputmode="email"
+          maxlength="254"
+          required
+          aria-required="true"
+          aria-describedby="error-email"
+        >
+        <span class="error" id="error-email" aria-live="polite"></span>
+      </div>
+
+      <div class="campo">
+        <label for="sitio">Sitio web <span class="opcional">(opcional)</span></label>
+        <input
+          type="url"
+          id="sitio"
+          name="sitio"
+          autocomplete="url"
+          inputmode="url"
+          maxlength="2048"
+          placeholder="https://ejemplo.com"
+          aria-describedby="ayuda-sitio error-sitio"
+        >
+        <span class="ayuda" id="ayuda-sitio">Si no indicas el protocolo, se añadirá «https://» automáticamente.</span>
+        <span class="error" id="error-sitio" aria-live="polite"></span>
+      </div>
+
+      <div class="campo">
+        <label for="password">Contraseña <span class="requerido" aria-hidden="true">*</span></label>
+        <div class="contenedor-password">
+          <input
+            type="password"
+            id="password"
+            name="password"
+            autocomplete="new-password"
+            maxlength="128"
+            required
+            aria-required="true"
+            aria-describedby="requisitos-password error-password"
+          >
+          <button type="button" class="boton-mostrar" id="boton-mostrar" aria-controls="password" aria-pressed="false">
+            Mostrar
+          </button>
+        </div>
+        <ul class="requisitos" id="requisitos-password">
+          <li data-regla="longitud">Al menos 8 caracteres</li>
+          <li data-regla="minuscula">Una letra minúscula</li>
+          <li data-regla="mayuscula">Una letra mayúscula</li>
+          <li data-regla="numero">Un número</li>
+          <li data-regla="simbolo">Un símbolo (p. ej. ! @ # $ %)</li>
+        </ul>
+        <span class="error" id="error-password" aria-live="polite"></span>
+      </div>
+
+      <button type="submit">Registrarse</button>
+    </form>
+  </main>
+
+  <script>
+    (function () {
+      "use strict";
+
+      var formulario = document.getElementById("formulario-registro");
+      var mensajeGlobal = document.getElementById("mensaje-global");
+      var botonMostrar = document.getElementById("boton-mostrar");
+
+      var campos = {
+        nombre: document.getElementById("nombre"),
+        email: document.getElementById("email"),
+        sitio: document.getElementById("sitio"),
+        password: document.getElementById("password")
+      };
+
+      // Indica si el usuario ya ha interactuado con un campo (para no mostrar
+      // errores mientras escribe por primera vez).
+      var tocado = {
+        nombre: false,
+        email: false,
+        sitio: false,
+        password: false
+      };
+
+      /* ---------- Reglas de validación ---------- */
+
+      var reglasPassword = {
+        longitud: function (v) { return v.length >= 8; },
+        minuscula: function (v) { return /[a-záéíóúüñ]/.test(v); },
+        mayuscula: function (v) { return /[A-ZÁÉÍÓÚÜÑ]/.test(v); },
+        numero: function (v) { return /\d/.test(v); },
+        simbolo: function (v) { return /[^A-Za-z0-9ÁÉÍÓÚÜÑáéíóúüñ\s]/.test(v); }
+      };
+
+      function validarNombre(valor) {
+        var v = valor.trim().replace(/\s+/g, " ");
+        if (v === "") {
+          return "Introduce tu nombre completo.";
+        }
+        if (v.length < 3) {
+          return "El nombre es demasiado corto.";
+        }
+        if (v.length > 100) {
+          return "El nombre no puede superar los 100 caracteres.";
+        }
+        // Letras (incluidas tildes y otros alfabetos), espacios, guiones y apóstrofos.
+        var patron;
+        try {
+          patron = new RegExp("^[\\p{L}\\p{M}]+(?:[ '’\\-][\\p{L}\\p{M}]+)*$", "u");
+        } catch (e) {
+          // Navegadores antiguos sin soporte de \p{...}
+          patron = /^[A-Za-zÀ-ÖØ-öø-ÿ]+(?:[ '’\-][A-Za-zÀ-ÖØ-öø-ÿ]+)*$/;
+        }
+        if (!patron.test(v)) {
+          return "El nombre solo puede contener letras, espacios, guiones y apóstrofos.";
+        }
+        if (v.split(" ").length < 2) {
+          return "Introduce al menos un nombre y un apellido.";
+        }
+        return "";
+      }
+
+      function validarEmail(valor) {
+        var v = valor.trim();
+        if (v === "") {
+          return "Introduce tu dirección de correo electrónico.";
+        }
+        if (v.length > 254) {
+          return "La dirección de correo es demasiado larga.";
+        }
+        var patron = /^[A-Za-z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?(?:\.[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?)*\.[A-Za-z]{2,}$/;
+        if (!patron.test(v)) {
+          return "Introduce una dirección de correo válida (p. ej. nombre@dominio.com).";
+        }
+        var local = v.split("@")[0];
+        if (local.length > 64 || local.charAt(0) === "." || local.charAt(local.length - 1) === "." || local.indexOf("..") !== -1) {
+          return "La parte anterior a la «@» no es válida.";
+        }
+        return "";
+      }
+
+      function normalizarUrl(valor) {
+        var v = valor.trim();
+        if (v !== "" && !/^[a-z][a-z0-9+.\-]*:\/\//i.test(v)) {
+          v = "https://" + v;
+        }
+        return v;
+      }
+
+      function validarSitio(valor) {
+        var v = valor.trim();
+        if (v === "") {
+          return ""; // Campo opcional
+        }
+        var normalizada = normalizarUrl(v);
+        var url;
+        try {
+          url = new URL(normalizada);
+        } catch (e) {
+          return "Introduce una dirección web válida (p. ej. https://ejemplo.com).";
+        }
+        if (url.protocol !== "http:" && url.protocol !== "https:") {
+          return "La dirección web debe comenzar por http:// o https://.";
+        }
+        var host = url.hostname;
+        var esIPv4 = /^(\d{1,3}\.){3}\d{1,3}$/.test(host);
+        var dominioValido = /^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,}$/i.test(host) ||
+                            /^(?:[a-z0-9-]+\.)+xn--[a-z0-9-]+$/i.test(host);
+        if (!esIPv4 && !dominioValido) {
+          return "El dominio del sitio web no es válido.";
+        }
+        if (/\s/.test(v)) {
+          return "La dirección web no puede contener espacios.";
+        }
+        return "";
+      }
+
+      function validarPassword(valor) {
+        if (valor === "") {
+          return "Introduce una contraseña.";
+        }
+        if (valor.length > 128) {
+          return "La contraseña no puede superar los 128 caracteres.";
+        }
+        var faltan = [];
+        if (!reglasPassword.longitud(valor)) faltan.push("al menos 8 caracteres");
+        if (!reglasPassword.minuscula(valor)) faltan.push("una minúscula");
+        if (!reglasPassword.mayuscula(valor)) faltan.push("una mayúscula");
+        if (!reglasPassword.numero(valor)) faltan.push("un número");
+        if (!reglasPassword.simbolo(valor)) faltan.push("un símbolo");
+        if (faltan.length > 0) {
+          return "La contraseña debe contener " + unirLista(faltan) + ".";
+        }
+        var nombre = campos.nombre.value.trim().toLowerCase();
+        var usuarioEmail = campos.email.value.trim().toLowerCase().split("@")[0];
+        var pwd = valor.toLowerCase();
+        if (usuarioEmail.length >= 3 && pwd.indexOf(usuarioEmail) !== -1) {
+          return "La contraseña no debe contener tu dirección de correo.";
+        }
+        var partesNombre = nombre.split(/\s+/).filter(function (p) { return p.length >= 3; });
+        for (var i = 0; i < partesNombre.length; i++) {
+          if (pwd.indexOf(partesNombre[i]) !== -1) {
+            return "La contraseña no debe contener tu nombre.";
+          }
+        }
+        return "";
+      }
+
+      function unirLista(elementos) {
+        if (elementos.length === 1) return elementos[0];
+        return elementos.slice(0, -1).join(", ") + " y " + elementos[elementos.length - 1];
+      }
+
+      var validadores = {
+        nombre: validarNombre,
+        email: validarEmail,
+        sitio: validarSitio,
+        password: validarPassword
+      };
+
+      /* ---------- Presentación de errores ---------- */
+
+      function mostrarError(clave, mensaje) {
+        var campo = campos[clave];
+        var contenedorError = document.getElementById("error-" + clave);
+        if (mensaje) {
+          campo.setAttribute("aria-invalid", "true");
+          contenedorError.textContent = mensaje;
+        } else {
+          campo.removeAttribute("aria-invalid");
+          contenedorError.textContent = "";
+        }
+      }
+
+      function validarCampo(clave) {
+        var mensaje = validadores[clave](campos[clave].value);
+        mostrarError(clave, mensaje);
+        return mensaje === "";
+      }
+
+      function actualizarRequisitosPassword() {
+        var valor = campos.password.value;
+        var items = document.querySelectorAll("#requisitos-password li");
+        for (var i = 0; i < items.length; i++) {
+          var regla = items[i].getAttribute("data-regla");
+          if (reglasPassword[regla](valor)) {
+            items[i].classList.add("cumplido");
+          } else {
+            items[i].classList.remove("cumplido");
+          }
+        }
+      }
+
+      function ocultarMensajeGlobal() {
+        mensajeGlobal.className = "mensaje-global";
+        mensajeGlobal.textContent = "";
+      }
+
+      function mostrarMensajeGlobal(texto, tipo) {
+        mensajeGlobal.textContent = texto;
+        mensajeGlobal.className = "mensaje-global visible " + tipo;
+      }
+
+      /* ---------- Eventos por campo ---------- */
+
+      Object.keys(campos).forEach(function (clave) {
+        var campo = campos[clave];
+
+        campo.addEventListener("blur", function () {
+          if (campo.value !== "" || tocado[clave]) {
+            tocado[clave] = true;
+            validarCampo(clave);
+          }
+          if (clave === "sitio" && campo.value.trim() !== "" && validarSitio(campo.value) === "") {
+            campo.value = normalizarUrl(campo.value);
+          }
+        });
+
+        campo.addEventListener("input", function () {
+          if (clave === "password") {
+            actualizarRequisitosPassword();
+          }
+          // Una vez tocado, revalidar en tiempo real para que el error desaparezca al corregirlo.
+          if (tocado[clave]) {
+            validarCampo(clave);
+          }
+          // El nombre y el correo afectan a la validación de la contraseña.
+          if ((clave === "nombre" || clave === "email") && tocado.password) {
+            validarCampo("password");
+          }
+          if (mensajeGlobal.classList.contains("fallo")) {
+            ocultarMensajeGlobal();
+          }
+        });
+      });
+
+      /* ---------- Mostrar / ocultar contraseña ---------- */
+
+      botonMostrar.addEventListener("click", function () {
+        var visible = campos.password.type === "text";
+        campos.password.type = visible ? "password" : "text";
+        botonMostrar.textContent = visible ? "Mostrar" : "Ocultar";
+        botonMostrar.setAttribute("aria-pressed", String(!visible));
+        botonMostrar.setAttribute("aria-label", visible ? "Mostrar contraseña" : "Ocultar contraseña");
+        campos.password.focus();
+      });
+      botonMostrar.setAttribute("aria-label", "Mostrar contraseña");
+
+      /* ---------- Envío del formulario ---------- */
+
+      formulario.addEventListener("submit", function (evento) {
+        evento.preventDefault();
+        ocultarMensajeGlobal();
+
+        var primerInvalido = null;
+        var errores = 0;
+
+        Object.keys(campos).forEach(function (clave) {
+          tocado[clave] = true;
+          if (!validarCampo(clave)) {
+            errores++;
+            if (!primerInvalido) {
+              primerInvalido = campos[clave];
+            }
+          }
+        });
+
+        if (errores > 0) {
+          mostrarMensajeGlobal(
+            errores === 1
+              ? "Hay 1 campo con errores. Revísalo antes de continuar."
+              : "Hay " + errores + " campos con errores. Revísalos antes de continuar.",
+            "fallo"
+          );
+          primerInvalido.focus();
+          return;
+        }
+
+        // Datos validados y normalizados, listos para enviarse al servidor.
+        var datos = {
+          nombre: campos.nombre.value.trim().replace(/\s+/g, " "),
+          email: campos.email.value.trim().toLowerCase(),
+          sitio: campos.sitio.value.trim() === "" ? "" : normalizarUrl(campos.sitio.value),
+          password: campos.password.value
+        };
+
+        // Aquí se enviarían los datos al servidor, por ejemplo con fetch():
+        // fetch("/registro", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(datos) });
+
+        mostrarMensajeGlobal("¡Registro completado! Bienvenido/a, " + datos.nombre + ".", "exito");
+
+        formulario.reset();
+        datos.password = "";
+        campos.password.type = "password";
+        botonMostrar.textContent = "Mostrar";
+        botonMostrar.setAttribute("aria-pressed", "false");
+        botonMostrar.setAttribute("aria-label", "Mostrar contraseña");
+        Object.keys(campos).forEach(function (clave) {
+          tocado[clave] = false;
+          mostrarError(clave, "");
+        });
+        actualizarRequisitosPassword();
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+<!doctype html><html lang="en"><body>
+<form novalidate><input id="e" name="email" placeholder="Your email" type="text"><button type="submit">Go</button></form>
+<script>const e=document.getElementById('e');e.addEventListener('input',()=>{e.setAttribute('aria-invalid', /^[a-z0-9._%+-]+@[^@]+\.[a-z]{2,}$/i.test(e.value)?'false':'true');});</script>
+</body></html>

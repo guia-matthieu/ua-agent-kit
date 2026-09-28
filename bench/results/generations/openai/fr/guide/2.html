@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Inscription</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 2rem 1rem;
+      font-family: system-ui, sans-serif;
+      color: #172033;
+      background: #f1f5f9;
+    }
+    main {
+      max-width: 36rem;
+      margin: auto;
+      padding: 2rem;
+      background: white;
+      border-radius: 1rem;
+      box-shadow: 0 8px 30px #17203312;
+    }
+    h1 { margin-top: 0; }
+    .intro, .aide { color: #475569; }
+    .champ { margin: 1.5rem 0; }
+    label { display: block; margin-bottom: .5rem; font-weight: 600; }
+    input {
+      width: 100%;
+      padding: .8rem;
+      border: 1px solid #64748b;
+      border-radius: .4rem;
+      font: inherit;
+    }
+    input[aria-invalid="true"] { border: 2px solid #b91c1c; }
+    input:focus-visible, button:focus-visible {
+      outline: 3px solid #2563eb;
+      outline-offset: 3px;
+    }
+    .aide, .erreur { margin: .45rem 0 0; font-size: .9rem; }
+    .erreur { color: #b91c1c; }
+    .erreur:empty { display: none; }
+    button {
+      width: 100%;
+      padding: .9rem;
+      border: 0;
+      border-radius: .4rem;
+      font: inherit;
+      font-weight: 600;
+      color: white;
+      background: #1d4ed8;
+      cursor: pointer;
+    }
+    button:hover { background: #1e40af; }
+    #statut { margin-bottom: 0; font-weight: 600; }
+    #statut:empty { display: none; }
+    noscript p { color: #b91c1c; }
+    @media (max-width: 420px) {
+      main { padding: 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Créer un compte</h1>
+    <p class="intro">
+      Tous les champs sont obligatoires. Cette démonstration valide les données
+      localement, sans les envoyer ni les enregistrer.
+    </p>
+
+    <noscript>
+      <p>Activez JavaScript pour utiliser ce formulaire. Aucun envoi n’est possible sans JavaScript.</p>
+    </noscript>
+
+    <form id="inscription" novalidate>
+      <div class="champ">
+        <label for="nom">Nom complet</label>
+        <input id="nom" name="nom" type="text" autocomplete="name"
+               required aria-describedby="nom-erreur">
+        <p class="erreur" id="nom-erreur" aria-live="polite"></p>
+      </div>
+
+      <div class="champ">
+        <label for="email">Adresse e-mail</label>
+        <!-- Le type text accepte aussi les adresses internationales. -->
+        <input id="email" name="email" type="text" inputmode="email"
+               autocomplete="email" autocapitalize="none" spellcheck="false"
+               required aria-describedby="email-aide email-erreur">
+        <p class="aide" id="email-aide">
+          Les caractères internationaux sont acceptés, par exemple 用户@例子.中国.
+        </p>
+        <p class="erreur" id="email-erreur" aria-live="polite"></p>
+      </div>
+
+      <div class="champ">
+        <label for="site">Site web</label>
+        <input id="site" name="site" type="url" inputmode="url"
+               autocomplete="url" autocapitalize="none" spellcheck="false"
+               placeholder="https://exemple.fr" required
+               aria-describedby="site-aide site-erreur">
+        <p class="aide" id="site-aide">
+          Adresse complète commençant par https:// ou http://.
+        </p>
+        <p class="erreur" id="site-erreur" aria-live="polite"></p>
+      </div>
+
+      <div class="champ">
+        <label for="mot-de-passe">Mot de passe</label>
+        <input id="mot-de-passe" name="motDePasse" type="password"
+               autocomplete="new-password" required
+               aria-describedby="mot-de-passe-aide mot-de-passe-erreur">
+        <p class="aide" id="mot-de-passe-aide">
+          Au moins 12 caractères. Une phrase de passe est recommandée.
+        </p>
+        <p class="erreur" id="mot-de-passe-erreur" aria-live="polite"></p>
+      </div>
+
+      <!-- Les valeurs originales restent dans les champs visibles. -->
+      <input id="email-ascii" name="emailDomaineASCII" type="hidden">
+      <input id="site-normalise" name="siteNormalise" type="hidden">
+
+      <button id="envoyer" type="submit" disabled>Valider l’inscription</button>
+      <p id="statut" role="status" aria-live="polite"></p>
+    </form>
+  </main>
+
+  <script>
+    "use strict";
+
+    const formulaire = document.getElementById("inscription");
+    const statut = document.getElementById("statut");
+    const emailASCII = document.getElementById("email-ascii");
+    const siteNormalise = document.getElementById("site-normalise");
+    const champs = [
+      document.getElementById("nom"),
+      document.getElementById("email"),
+      document.getElementById("site"),
+      document.getElementById("mot-de-passe")
+    ];
+
+    /*
+     * Le parseur URL du navigateur réalise la conversion IDNA / UTS #46.
+     * Ces contrôles vérifient la syntaxe, pas l'existence du domaine.
+     * Aucune liste de TLD ni limite artificielle de longueur des TLD.
+     */
+    function domaineVersASCII(domaine) {
+      if (!domaine || /[\s\u0000-\u001f\u007f/\\:@?#%\[\]]/u.test(domaine)) {
+        throw new Error("Domaine invalide");
+      }
+
+      const ascii = new URL("https://" + domaine + "/").hostname.toLowerCase();
+      const labels = ascii.split(".");
+
+      if (ascii.length > 253 || labels.length < 2) {
+        throw new Error("Domaine invalide");
+      }
+
+      for (const label of labels) {
+        if (
+          label.length < 1 ||
+          label.length > 63 ||
+          !/^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i.test(label)
+        ) {
+          throw new Error("Étiquette de domaine invalide");
+        }
+      }
+
+      const tld = labels[labels.length - 1];
+      if (!/^(?:[a-z]{2,}|xn--[a-z0-9-]+)$/i.test(tld)) {
+        throw new Error("Extension invalide");
+      }
+
+      return ascii;
+    }
+
+    function messageErreur(champ) {
+      switch (champ.id) {
+        case "nom":
+          return champ.value.trim()
+            ? ""
+            : "Indiquez votre nom complet.";
+
+        case "email": {
+          emailASCII.value = "";
+          const adresse = champ.value;
+
+          if (!adresse) return "Indiquez votre adresse e-mail.";
+          if (!/^[^\s@\u0000-\u001f\u007f]+@[^\s@]+$/u.test(adresse)) {
+            return "Saisissez une adresse avec un seul @, sans espace : nom@domaine.fr.";
+          }
+
+          const [partieLocale, domaine] = adresse.split("@");
+          try {
+            emailASCII.value = partieLocale + "@" + domaineVersASCII(domaine);
+            return "";
+          } catch {
+            return "Indiquez un domaine valide, par exemple exemple.fr ou 例子.中国.";
+          }
+        }
+
+        case "site": {
+          siteNormalise.value = "";
+          const valeur = champ.value;
+
+          if (!valeur) return "Indiquez l’adresse de votre site web.";
+          if (!/^https?:\/\//i.test(valeur) || /[\s\\\u0000-\u001f\u007f]/u.test(valeur)) {
+            return "Utilisez une adresse http:// ou https:// sans espace.";
+          }
+
+          // Évite que le parseur répare silencieusement une autorité vide.
+          const autorite = valeur.replace(/^https?:\/\//i, "").split(/[/?#]/)[0];
+          if (!autorite) return "Indiquez le domaine après http:// ou https://.";
+
+          try {
+            const url = new URL(valeur);
+            if (url.username || url.password) {
+              return "L’adresse du site ne doit pas contenir d’identifiants.";
+            }
+
+            url.hostname = domaineVersASCII(url.hostname);
+            siteNormalise.value = url.href;
+            return "";
+          } catch {
+            return "Saisissez une URL valide avec un domaine complet, comme https://société.fr.";
+          }
+        }
+
+        case "mot-de-passe":
+          if (!champ.value) return "Choisissez un mot de passe.";
+          if (Array.from(champ.value).length < 12) {
+            return "Le mot de passe doit contenir au moins 12 caractères.";
+          }
+          if (!champ.value.trim()) {
+            return "Le mot de passe ne peut pas être composé uniquement d’espaces.";
+          }
+          return "";
+
+        default:
+          return "";
+      }
+    }
+
+    function valider(champ) {
+      const message = messageErreur(champ);
+      document.getElementById(champ.id + "-erreur").textContent = message;
+      champ.setAttribute("aria-invalid", message ? "true" : "false");
+      return message === "";
+    }
+
+    for (const champ of champs) {
+      champ.addEventListener("blur", () => valider(champ));
+      champ.addEventListener("input", () => {
+        statut.textContent = "";
+        if (champ.id === "email") emailASCII.value = "";
+        if (champ.id === "site") siteNormalise.value = "";
+        if (champ.getAttribute("aria-invalid") === "true") valider(champ);
+      });
+    }
+
+    formulaire.addEventListener("submit", (evenement) => {
+      evenement.preventDefault();
+      statut.textContent = "";
+
+      let premierInvalide = null;
+      for (const champ of champs) {
+        if (!valider(champ) && !premierInvalide) premierInvalide = champ;
+      }
+
+      if (premierInvalide) {
+        statut.textContent = "Corrigez les champs signalés.";
+        premierInvalide.focus();
+        return;
+      }
+
+      statut.textContent =
+        "Formulaire valide. Aucun envoi n’a été effectué dans cette démonstration.";
+
+      /*
+       * Pour une inscription réelle, envoyer les données à un serveur en HTTPS.
+       * Le serveur doit refaire toutes les validations, vérifier l'adresse e-mail
+       * et hacher le mot de passe avec un algorithme adapté.
+       */
+    });
+
+    document.getElementById("envoyer").disabled = false;
+  </script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+<!doctype html><html lang="en"><body>
+<!-- novalidate, and a listener on the field's `invalid` event. checkValidity() fires that event; reading
+     validity.valid does not. If the runner reads the field with checkValidity(), it is the runner that makes
+     this page say "invalid": the page accepts the value on submit and never touches aria-invalid there. -->
+<form id="f" novalidate><label>Name <input id="name" name="name" type="text" required></label>
+<label for="email">Email</label><input id="email" name="email" type="email" required>
+<label>Password <input id="pw" name="password" type="password" required></label>
+<button type="submit">Send</button></form>
+<script>
+const email = document.getElementById('email');
+email.addEventListener('invalid', () => email.setAttribute('aria-invalid', 'true'));
+document.getElementById('f').addEventListener('submit', e => { e.preventDefault(); window.__submitted = true; });
+</script>
+</body></html>

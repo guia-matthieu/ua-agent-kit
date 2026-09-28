@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Crear una cuenta</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 32px 16px;
+      font-family: system-ui, sans-serif;
+      background: #f3f5f9;
+      color: #182235;
+    }
+    main {
+      max-width: 480px;
+      margin: auto;
+      padding: 28px;
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 8px 32px #18223514;
+    }
+    h1 { margin-top: 0; font-size: 1.8rem; }
+    .intro, .ayuda { color: #526077; }
+    .campo { margin-top: 22px; }
+    label { display: block; margin-bottom: 7px; font-weight: 600; }
+    input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #8894a6;
+      border-radius: 6px;
+      font: inherit;
+    }
+    input:focus-visible, button:focus-visible {
+      outline: 3px solid #8bb6ff;
+      outline-offset: 3px;
+    }
+    input[aria-invalid="true"] { border: 2px solid #b42318; }
+    .ayuda, .error { margin: 6px 0 0; font-size: .9rem; }
+    .error { color: #b42318; }
+    .error:empty { display: none; }
+    button {
+      width: 100%;
+      margin-top: 24px;
+      padding: 13px;
+      border: 0;
+      border-radius: 6px;
+      background: #2155cd;
+      color: #fff;
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    button:hover { background: #1943a5; }
+    #resultado { margin-bottom: 0; color: #17613b; }
+    #resultado:empty { display: none; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Crear una cuenta</h1>
+    <p class="intro">Todos los campos son obligatorios.</p>
+
+    <noscript>
+      <p>Activa JavaScript para validar este formulario. Esta demostración no envía datos.</p>
+    </noscript>
+
+    <form id="registro" novalidate>
+      <div class="campo">
+        <label for="nombre">Nombre completo</label>
+        <input id="nombre" name="nombre" type="text" autocomplete="name"
+               required aria-describedby="error-nombre">
+        <p id="error-nombre" class="error" aria-live="polite"></p>
+      </div>
+
+      <div class="campo">
+        <label for="correo">Dirección de correo electrónico</label>
+        <input id="correo" name="correo" type="text" inputmode="email"
+               autocomplete="email" autocapitalize="none" spellcheck="false"
+               required aria-describedby="ayuda-correo error-correo">
+        <p id="ayuda-correo" class="ayuda">
+          Se admiten direcciones internacionales, como josé@例子.中国.
+        </p>
+        <p id="error-correo" class="error" aria-live="polite"></p>
+      </div>
+
+      <div class="campo">
+        <label for="sitio">Sitio web</label>
+        <input id="sitio" name="sitio" type="url" autocomplete="url"
+               autocapitalize="none" spellcheck="false" required
+               placeholder="https://ejemplo.technology"
+               aria-describedby="ayuda-sitio error-sitio">
+        <p id="ayuda-sitio" class="ayuda">
+          Incluye http:// o https://. Se admiten dominios internacionales.
+        </p>
+        <p id="error-sitio" class="error" aria-live="polite"></p>
+      </div>
+
+      <div class="campo">
+        <label for="contrasena">Contraseña</label>
+        <input id="contrasena" name="contrasena" type="password"
+               autocomplete="new-password" required
+               aria-describedby="ayuda-contrasena error-contrasena">
+        <p id="ayuda-contrasena" class="ayuda">Usa al menos 8 caracteres.</p>
+        <p id="error-contrasena" class="error" aria-live="polite"></p>
+      </div>
+
+      <button type="submit">Registrarse</button>
+      <p id="resultado" role="status" aria-live="polite"></p>
+    </form>
+  </main>
+
+  <script>
+    "use strict";
+
+    const formulario = document.getElementById("registro");
+    const resultado = document.getElementById("resultado");
+    const campos = {
+      nombre: document.getElementById("nombre"),
+      correo: document.getElementById("correo"),
+      sitio: document.getElementById("sitio"),
+      contrasena: document.getElementById("contrasena")
+    };
+    const comprobados = new Set();
+
+    function dominioASCII(original) {
+      // Impide que el analizador interprete partes del dominio como una URL.
+      if (!original || /[\s\u0000-\u001f\u007f/@\\:?#%\[\]]/u.test(original)) {
+        throw new Error("Dominio no válido");
+      }
+
+      // URL aplica el procesamiento IDNA/UTS #46 del navegador.
+      // La comprobación ASCII se realiza únicamente después de la conversión.
+      const ascii = new URL("https://" + original + "/").hostname.toLowerCase();
+      const etiquetas = ascii.split(".");
+
+      if (ascii.length > 253 || etiquetas.length < 2) {
+        throw new Error("Longitud de dominio no válida");
+      }
+
+      for (const etiqueta of etiquetas) {
+        if (
+          etiqueta.length < 1 ||
+          etiqueta.length > 63 ||
+          !/^[a-z0-9-]+$/i.test(etiqueta) ||
+          etiqueta.startsWith("-") ||
+          etiqueta.endsWith("-")
+        ) {
+          throw new Error("Etiqueta de dominio no válida");
+        }
+      }
+
+      const tld = etiquetas[etiquetas.length - 1];
+      if (!/^(?:[a-z]{2,}|xn--[a-z0-9-]+)$/i.test(tld)) {
+        throw new Error("Terminación de dominio no válida");
+      }
+
+      // Solo valida sintaxis: no presupone que el dominio exista.
+      return ascii;
+    }
+
+    function analizarCorreo(original) {
+      const partes = original.split("@");
+
+      if (
+        partes.length !== 2 ||
+        !partes[0] ||
+        /[\s\u0000-\u001f\u007f]/u.test(partes[0])
+      ) {
+        throw new Error("Correo no válido");
+      }
+
+      return {
+        original,
+        normalizado: partes[0] + "@" + dominioASCII(partes[1])
+      };
+    }
+
+    function analizarSitio(original) {
+      if (
+        !/^https?:\/\//i.test(original) ||
+        /[\u0000-\u0020\u007f\\]/u.test(original)
+      ) {
+        throw new Error("URL no válida");
+      }
+
+      const url = new URL(original);
+
+      if (
+        !["http:", "https:"].includes(url.protocol) ||
+        url.username ||
+        url.password
+      ) {
+        throw new Error("URL no válida");
+      }
+
+      url.hostname = dominioASCII(url.hostname);
+
+      return {
+        original,
+        normalizado: url.href
+      };
+    }
+
+    function mensajeError(id) {
+      const valor = campos[id].value;
+
+      switch (id) {
+        case "nombre":
+          if (!valor.trim()) return "Introduce tu nombre completo.";
+          if (/[\u0000-\u001f\u007f]/u.test(valor)) {
+            return "El nombre no puede contener caracteres de control.";
+          }
+          return "";
+
+        case "correo":
+          if (!valor) return "Introduce tu dirección de correo electrónico.";
+          try {
+            analizarCorreo(valor);
+            return "";
+          } catch {
+            return "Introduce un correo sin espacios, con un solo @ y un dominio válido, como usuario@ejemplo.com.";
+          }
+
+        case "sitio":
+          if (!valor) return "Introduce la dirección de tu sitio web.";
+          try {
+            analizarSitio(valor);
+            return "";
+          } catch {
+            return "Introduce una URL http:// o https:// con un dominio válido, sin espacios ni credenciales.";
+          }
+
+        case "contrasena":
+          if (!valor) return "Introduce una contraseña.";
+          if (Array.from(valor).length < 8) {
+            return "La contraseña debe tener al menos 8 caracteres.";
+          }
+          if (!valor.trim()) {
+            return "La contraseña no puede contener únicamente espacios.";
+          }
+          return "";
+      }
+    }
+
+    function validarCampo(id) {
+      const mensaje = mensajeError(id);
+      document.getElementById("error-" + id).textContent = mensaje;
+      campos[id].setAttribute("aria-invalid", mensaje ? "true" : "false");
+      comprobados.add(id);
+      return !mensaje;
+    }
+
+    for (const [id, campo] of Object.entries(campos)) {
+      campo.addEventListener("blur", () => validarCampo(id));
+      campo.addEventListener("input", () => {
+        resultado.textContent = "";
+        if (comprobados.has(id)) validarCampo(id);
+      });
+    }
+
+    formulario.addEventListener("submit", (evento) => {
+      evento.preventDefault();
+      resultado.textContent = "";
+
+      let primerError = null;
+      for (const id of Object.keys(campos)) {
+        if (!validarCampo(id) && !primerError) primerError = campos[id];
+      }
+
+      if (primerError) {
+        primerError.focus();
+        return;
+      }
+
+      // Conserva lo escrito junto a las representaciones normalizadas,
+      // sin modificar los campos ni guardar la contraseña.
+      const datos = {
+        nombre: campos.nombre.value,
+        correo: analizarCorreo(campos.correo.value),
+        sitio: analizarSitio(campos.sitio.value)
+      };
+
+      // Integración real: enviar mediante HTTPS a un servidor y repetir allí
+      // la validación. El servicio de correo debe admitir SMTPUTF8 para EAI.
+      // Esta página autónoma no transmite ni almacena datos.
+      resultado.textContent =
+        "Formulario válido. Esta demostración no envía datos ni crea una cuenta.";
+    });
+  </script>
+</body>
+</html>

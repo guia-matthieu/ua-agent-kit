@@ -1,0 +1,10 @@
+<!doctype html><html lang="en"><body>
+<!-- No <form>, and a page that says what it thinks of the value as it is typed. Nothing enforces the field's
+     own validity; what the page shows is still read. -->
+<label>Email <input id="email" type="email"></label>
+<button id="send" type="button">Send</button>
+<script>
+const email = document.getElementById('email');
+email.addEventListener('input', () => email.setAttribute('aria-invalid', email.value.includes('@') ? 'false' : 'true'));
+</script>
+</body></html>

@@ -1,0 +1,19 @@
+<!doctype html><html lang="en"><body>
+<!-- Bench of 25/09: the 54 generated forms all carry novalidate. This one keeps native field types and has a
+     check of its own that never reads the field's validity: the browser blocks nothing, the script decides. -->
+<form id="f" novalidate><label>Name <input id="name" name="name" type="text" required></label>
+<label for="email">Email</label><input id="email" name="email" type="email" required aria-invalid="false">
+<label for="site">Website</label><input id="site" name="website" type="url" aria-invalid="false">
+<label>Password <input id="pw" name="password" type="password" required></label>
+<button type="submit">Send</button></form>
+<script>
+// one @, no space, a dot in the domain: a Unicode local part passes, and so does `user@example..com`
+const ok = v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/u.test(v);
+document.getElementById('f').addEventListener('submit', e => {
+  e.preventDefault();
+  const email = document.getElementById('email');
+  email.setAttribute('aria-invalid', ok(email.value) ? 'false' : 'true');
+  if (ok(email.value)) window.__filed = (window.__filed ?? 0) + 1;
+});
+</script>
+</body></html>

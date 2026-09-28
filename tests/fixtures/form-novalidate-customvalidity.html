@@ -1,0 +1,22 @@
+<!doctype html><html lang="en"><body>
+<!-- novalidate form whose own script signals a refusal purely through setCustomValidity(), with no
+     aria-invalid, no error class and no error text: the native constraint-validation API knows the field
+     is invalid (checkValidity() === false, validationMessage set), but the page never touches the DOM in a
+     way readState()'s ariaInvalid/classes/errorTexts checks can see. novalidate lets requestSubmit() fire the
+     submit event unconditionally regardless of validity, so the value is neither natively blocked (noValidate
+     suppresses that) nor caught by the elseif branch (nothing to grep). -->
+<form id="f" novalidate>
+  <label>Email <input id="email" name="email" type="email"></label>
+  <button type="submit">Send</button>
+</form>
+<script>
+const email = document.getElementById('email');
+function validate() {
+  // Deliberately permissive UA-friendly rule the page WANTS enforced: reject only a value with no '@' at all.
+  if (!email.value.includes('@')) email.setCustomValidity('missing @'); else email.setCustomValidity('');
+}
+email.addEventListener('input', validate);
+email.addEventListener('blur', validate);
+document.getElementById('f').addEventListener('submit', e => { validate(); if (!email.checkValidity()) e.preventDefault(); });
+</script>
+</body></html>

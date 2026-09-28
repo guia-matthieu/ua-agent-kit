@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Folio — Membership Application</title>
+<style>
+  :root{
+    --paper:#F6F1E6;
+    --ink:#211D15;
+    --soft:#57503F;
+    --muted:#8B8271;
+    --hair:#D9D0BB;
+    --red:#B23A20;
+    --green:#2E5E45;
+    --green-soft:#8FAF9C;
+    --serif:Georgia,'Iowan Old Style','Times New Roman',Times,serif;
+    --mono:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:var(--serif);font-size:16px;line-height:1.5;
+    min-height:100vh;overflow-x:clip;
+  }
+  /* paper grain */
+  body::before{
+    content:"";position:fixed;inset:0;z-index:60;pointer-events:none;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='260' height='260' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity:.055;mix-blend-mode:multiply;
+  }
+  ::selection{background:var(--red);color:var(--paper)}
+
+  .sheet{max-width:1120px;margin:0 auto;padding:0 clamp(1.25rem,5vw,4rem);position:relative}
+  /* ledger margin rule */
+  @media (min-width:820px){
+    .sheet::before{
+      content:"";position:absolute;top:0;bottom:0;left:clamp(.4rem,2vw,2rem);width:4px;
+      border-left:1px solid rgba(178,58,32,.38);border-right:1px solid rgba(178,58,32,.38);
+    }
+  }
+
+  /* ——— top bar ——— */
+  .topbar{
+    display:flex;align-items:baseline;justify-content:space-between;gap:1.5rem;
+    padding:1.45rem 0 1.05rem;position:relative;border-bottom:1px solid var(--ink);
+  }
+  .topbar::after{content:"";position:absolute;left:0;right:0;bottom:4px;border-top:3px solid var(--ink)}
+  .brand{font-size:1.05rem;letter-spacing:.3em;text-transform:uppercase;font-weight:700}
+  .top-meta{font-family:var(--mono);font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  @media (max-width:600px){.top-meta.right{display:none}}
+  @media (max-width:480px){.topbar{gap:.8rem}.top-meta{font-size:.58rem;letter-spacing:.1em}}
+
+  /* ——— head ——— */
+  main{padding-top:clamp(2.4rem,5vw,4.2rem)}
+  .overline{
+    font-family:var(--mono);font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--soft);margin:0 0 1.2rem;
+  }
+  .overline::before{content:"";display:inline-block;width:2.4rem;height:1px;background:var(--ink);vertical-align:middle;margin-right:.85rem}
+  h1{font-size:clamp(2.7rem,7vw,4.9rem);line-height:.98;margin:0;font-weight:400;letter-spacing:-.015em;text-wrap:balance}
+  h1 em{color:var(--red)}
+  .stand{font-style:italic;font-size:1.08rem;color:var(--soft);max-width:46ch;margin:1.35rem 0 0}
+  .head{margin-bottom:clamp(2.6rem,6vw,4.2rem)}
+
+  /* ——— columns ——— */
+  .cols{display:grid;grid-template-columns:1fr;gap:3.2rem}
+  @media (min-width:920px){
+    .cols{grid-template-columns:minmax(230px,300px) 1fr;gap:5rem;align-items:start}
+    .side{grid-column:1;grid-row:1;position:sticky;top:2.2rem}
+    .form-col{grid-column:2;grid-row:1}
+  }
+
+  /* ——— aside ——— */
+  .side{max-width:36ch}
+  .lede{font-size:.95rem;color:var(--soft);line-height:1.7;margin:0 0 1rem}
+  .lede:first-of-type::first-letter{font-size:3.1em;float:left;line-height:.8;padding:.02em .14em 0 0}
+  .rules{border-top:1px solid var(--ink);margin-top:1.9rem;padding-top:1.05rem}
+  .rules-title{font-family:var(--mono);font-size:.66rem;font-weight:400;letter-spacing:.18em;text-transform:uppercase;color:var(--soft);margin:0 0 .75rem;transition:color .3s}
+  .rules-title.good{color:var(--green)}
+  .rules ul{list-style:none;margin:0;padding:0}
+  .rules li{display:flex;align-items:center;gap:.7rem;font-size:.88rem;color:var(--muted);padding:.34rem 0;transition:color .25s}
+  .rules li.ok{color:var(--ink)}
+  .mark{width:15px;height:15px;border:1px solid var(--hair);border-radius:3px;flex:none;display:grid;place-items:center;color:var(--green);transition:border-color .25s,background-color .25s}
+  li.ok .mark{border-color:var(--green);background:rgba(46,94,69,.07)}
+  .mark svg path{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset .3s ease .05s}
+  li.ok .mark svg path{stroke-dashoffset:0}
+  .req-note{font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:.95rem 0 0}
+  .sig{font-style:italic;color:var(--muted);font-size:.92rem;margin:1.7rem 0 0}
+
+  /* ——— form ——— */
+  .form-col{position:relative;--sin:1.18;--srot:-12deg}
+  @media (min-width:640px){.form-col{--sin:2.25;--srot:-15deg}}
+  form{margin:0}
+  .field{border-top:1px solid var(--hair);transition:opacity .5s}
+  .row{display:grid;grid-template-columns:2.8rem 7.5rem 1fr;column-gap:1.25rem;align-items:end;padding:1.2rem 0 .45rem}
+  .num{font-family:var(--mono);font-size:.7rem;color:var(--muted);display:flex;align-items:center;padding-bottom:.78rem;white-space:nowrap;transition:color .25s}
+  label{font-family:var(--mono);font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:var(--soft);padding-bottom:.82rem;transition:color .25s}
+  .field:focus-within label{color:var(--ink)}
+  .field.invalid .num,.field.invalid label{color:var(--red)}
+  .done{width:11px;height:11px;flex:none;margin-left:.4rem;color:var(--green);opacity:0;transform:scale(.4);transition:.25s}
+  .field.valid .done{opacity:1;transform:scale(1)}
+  .control{position:relative}
+  input{
+    width:100%;border:0;border-bottom:1px solid var(--hair);background:transparent;border-radius:0;
+    font-family:var(--serif);font-size:1.18rem;color:var(--ink);padding:.3rem 0 .55rem;
+    transition:border-color .25s;caret-color:var(--red);
+  }
+  input::placeholder{color:#B5AB94;font-style:italic}
+  input:hover{border-bottom-color:#BCB097}
+  input:focus{outline:none;border-bottom-color:var(--ink)}
+  input:focus-visible{outline:1px dashed var(--muted);outline-offset:6px}
+  input:-webkit-autofill{-webkit-box-shadow:0 0 0 60rem var(--paper) inset;-webkit-text-fill-color:var(--ink)}
+  .field.invalid input{border-bottom-color:var(--red)}
+  .field.valid input{border-bottom-color:var(--green-soft)}
+  #password{padding-right:4.4rem}
+  .peek{
+    position:absolute;right:0;bottom:.6rem;border:0;background:none;padding:.15rem 0;cursor:pointer;
+    font-family:var(--mono);font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+    border-bottom:1px solid transparent;transition:color .2s,border-color .2s;
+  }
+  .peek:hover{color:var(--ink);border-bottom-color:var(--ink)}
+
+  /* ——— errors ——— */
+  .err-wrap{display:grid;grid-template-rows:0fr;transition:grid-template-rows .3s cubic-bezier(.5,0,.2,1)}
+  .err-wrap>div{overflow:hidden}
+  .err{
+    margin:0 0 .7rem;padding:.5rem 0 .95rem calc(2.8rem + 1.25rem);
+    display:flex;align-items:baseline;gap:.5rem;
+    font-style:italic;font-size:.9rem;color:var(--red);
+    opacity:0;transform:translateY(-3px);transition:opacity .25s .06s,transform .25s .06s;
+  }
+  .field.invalid .err-wrap{grid-template-rows:1fr}
+  .field.invalid .err{opacity:1;transform:none}
+  .err .x{width:9px;height:9px;flex:none;transform:translateY(1px)}
+  @keyframes nudge{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}45%{transform:translateX(4px)}70%{transform:translateX(-2px)}}
+  .field.nudge .row{animation:nudge .32s ease}
+
+  /* ——— actions ——— */
+  .actions{border-top:1px solid var(--ink);position:relative;margin-top:.5rem;padding-top:1.6rem}
+  .actions::before{content:"";position:absolute;left:0;right:0;top:4px;border-top:3px solid var(--ink)}
+  .actions-row{display:flex;align-items:center;gap:1.8rem;flex-wrap:wrap}
+  .submit{
+    font-family:var(--mono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;
+    background:var(--ink);color:var(--paper);border:0;padding:1.05rem 1.75rem;cursor:pointer;
+    display:inline-flex;align-items:center;gap:.95rem;transition:background .25s,transform .12s;
+  }
+  .submit .arr{display:inline-block;transition:transform .25s}
+  .submit:hover{background:#3A3223}
+  .submit:hover .arr{transform:translateX(5px)}
+  .submit:active{transform:translateY(1px)}
+  .submit[disabled]{background:var(--hair);color:var(--soft);cursor:default}
+  .submit[disabled] .arr{display:none}
+  .submit:focus-visible,.peek:focus-visible,.reset:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+  .fineprint{font-size:.8rem;font-style:italic;color:var(--muted);line-height:1.55;max-width:34ch;margin:0;transition:opacity .5s}
+  .status{font-family:var(--mono);font-size:.72rem;letter-spacing:.05em;line-height:1.6;min-height:1.2em;margin:1.15rem 0 0}
+  .status.bad{color:var(--red)}
+  .status.good{color:var(--green)}
+  .reset{
+    display:inline-block;margin:.9rem 0 0;border:0;background:none;padding:0;cursor:pointer;
+    font-family:var(--mono);font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--soft);text-decoration:underline;text-underline-offset:3px;
+  }
+  .reset[hidden]{display:none}
+  .reset:hover{color:var(--ink)}
+
+  /* ——— filed state & stamp ——— */
+  #signup.filed .field{opacity:.32;pointer-events:none}
+  #signup.filed .fineprint{opacity:.45}
+  .stamp{
+    position:absolute;left:50%;top:37%;z-index:5;
+    transform:translate(-50%,-50%) rotate(-8deg);
+    border:3px solid var(--green);color:var(--green);text-align:center;
+    padding:1.15rem 2.6rem 1.3rem;width:max-content;max-width:94%;
+    mix-blend-mode:multiply;opacity:0;visibility:hidden;pointer-events:none;
+    filter:url(#roughen);
+  }
+  .stamp::before{content:"";position:absolute;inset:5px;border:1.5px solid var(--green)}
+  .stamp .s1{display:block;font-family:var(--mono);font-size:.62rem;letter-spacing:.36em;text-transform:uppercase;margin-bottom:.5rem}
+  .stamp .s2{display:block;font-size:clamp(2.1rem,6vw,3.5rem);font-weight:700;letter-spacing:.12em;text-transform:uppercase;line-height:1;white-space:nowrap}
+  .stamp .s3{display:block;font-family:var(--mono);font-size:.66rem;letter-spacing:.3em;text-transform:uppercase;margin-top:.6rem}
+  .stamp.on{visibility:visible;animation:stampIn .55s cubic-bezier(.16,1.3,.3,1) forwards}
+  @keyframes stampIn{
+    0%{opacity:0;transform:translate(-50%,-44%) rotate(var(--srot)) scale(var(--sin))}
+    60%{opacity:.95;transform:translate(-50%,-50%) rotate(-7.5deg) scale(.95)}
+    78%{transform:translate(-50%,-50%) rotate(-8deg) scale(1.03)}
+    100%{opacity:.9;transform:translate(-50%,-50%) rotate(-8deg) scale(1)}
+  }
+  @keyframes thud{0%,100%{transform:translateY(0)}35%{transform:translateY(4px)}68%{transform:translateY(-1px)}}
+  .sheet.thud{animation:thud .3s ease-out}
+
+  footer{
+    margin-top:clamp(3rem,7vw,5rem);border-top:1px solid var(--hair);
+    padding:1.25rem 0 1.9rem;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;
+    font-family:var(--mono);font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+  }
+
+  @media (max-width:640px){
+    .row{grid-template-columns:2.4rem 1fr}
+    .control{grid-column:1/-1}
+    .err{padding-left:calc(2.4rem + 1.25rem)}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important}
+  }
+</style>
+</head>
+<body>
+
+<!-- SVG filter that gives the rubber stamp its rough, inked edges -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <filter id="roughen" x="-10%" y="-10%" width="120%" height="120%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="3" seed="7" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="3.5"/>
+  </filter>
+</svg>
+
+<div class="sheet" id="sheet">
+  <header class="topbar">
+    <span class="brand">Folio</span>
+    <span class="top-meta">Form № 001 — Membership</span>
+    <span class="top-meta right" id="today"></span>
+  </header>
+
+  <main>
+    <div class="head">
+      <p class="overline">Open intake · Autumn session</p>
+      <h1>Join the <em>fold</em>.</h1>
+      <p class="stand">Four fields, about a minute — and a human reads every word before we reply.</p>
+    </div>
+
+    <div class="cols">
+      <section class="form-col">
+        <form id="signup" novalidate>
+          <div class="field">
+            <div class="row">
+              <span class="num">01<svg class="done" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6.6 4.7 9.2 10.2 3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <label for="name">Full name</label>
+              <div class="control">
+                <input id="name" name="name" type="text" autocomplete="name" placeholder="Ada Lovelace" aria-describedby="name-err">
+              </div>
+            </div>
+            <div class="err-wrap"><div>
+              <p class="err" id="name-err"><svg class="x" viewBox="0 0 10 10" aria-hidden="true"><path d="M1.5 1.5l7 7M8.5 1.5l-7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span class="txt"></span></p>
+            </div></div>
+          </div>
+
+          <div class="field">
+            <div class="row">
+              <span class="num">02<svg class="done" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6.6 4.7 9.2 10.2 3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <label for="email">Email address</label>
+              <div class="control">
+                <input id="email" name="email" type="email" autocomplete="email" inputmode="email" spellcheck="false" placeholder="ada@lovelace.dev" aria-describedby="email-err">
+              </div>
+            </div>
+            <div class="err-wrap"><div>
+              <p class="err" id="email-err"><svg class="x" viewBox="0 0 10 10" aria-hidden="true"><path d="M1.5 1.5l7 7M8.5 1.5l-7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span class="txt"></span></p>
+            </div></div>
+          </div>
+
+          <div class="field">
+            <div class="row">
+              <span class="num">03<svg class="done" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6.6 4.7 9.2 10.2 3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <label for="website">Website</label>
+              <div class="control">
+                <input id="website" name="website" type="url" autocomplete="url" inputmode="url" spellcheck="false" placeholder="studio.example.com" aria-describedby="website-err">
+              </div>
+            </div>
+            <div class="err-wrap"><div>
+              <p class="err" id="website-err"><svg class="x" viewBox="0 0 10 10" aria-hidden="true"><path d="M1.5 1.5l7 7M8.5 1.5l-7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span class="txt"></span></p>
+            </div></div>
+          </div>
+
+          <div class="field">
+            <div class="row">
+              <span class="num">04<svg class="done" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6.6 4.7 9.2 10.2 3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <label for="password">Password</label>
+              <div class="control">
+                <input id="password" name="password" type="password" autocomplete="new-password" placeholder="Something memorable, something strong" aria-describedby="password-err">
+                <button type="button" class="peek" id="peek">Show</button>
+              </div>
+            </div>
+            <div class="err-wrap"><div>
+              <p class="err" id="password-err"><svg class="x" viewBox="0 0 10 10" aria-hidden="true"><path d="M1.5 1.5l7 7M8.5 1.5l-7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span class="txt"></span></p>
+            </div></div>
+          </div>
+
+          <div class="actions">
+            <div class="actions-row">
+              <button type="submit" class="submit" id="submitBtn"><span id="btnTxt">Submit application</span><span class="arr">→</span></button>
+              <p class="fineprint">By submitting you agree to our code of conduct. We write back to everyone, usually within seven days.</p>
+            </div>
+            <p class="status" id="status" role="status" aria-live="polite"></p>
+            <button type="button" class="reset" id="resetBtn" hidden>Start over</button>
+          </div>
+        </form>
+
+        <div class="stamp" id="stamp" aria-hidden="true">
+          <span class="s1">Folio · Membership</span>
+          <span class="s2">Received</span>
+          <span class="s3" id="stampDate"></span>
+        </div>
+      </section>
+
+      <aside class="side">
+        <p class="lede">Folio is a small society of designers, editors and engineers who still believe in the well-made page. Members receive the quarterly dispatch, the full archive, and a standing invitation to our print days.</p>
+        <p class="lede">We admit new members twice a year, by hand.</p>
+        <div class="rules">
+          <h2 class="rules-title" id="rulesTitle">Password must include</h2>
+          <ul>
+            <li data-rule="len"><span class="mark"><svg viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"><path d="M2 6.6 4.7 9.2 10.2 3" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></svg></span>Eight characters or more</li>
+            <li data-rule="case"><span class="mark"><svg viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"><path d="M2 6.6 4.7 9.2 10.2 3" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></svg></span>Upper &amp; lowercase letters</li>
+            <li data-rule="num"><span class="mark"><svg viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"><path d="M2 6.6 4.7 9.2 10.2 3" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></svg></span>At least one number</li>
+            <li data-rule="sym"><span class="mark"><svg viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"><path d="M2 6.6 4.7 9.2 10.2 3" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></svg></span>At least one symbol, e.g. ! ? #</li>
+          </ul>
+          <p class="req-note">All four fields are required.</p>
+        </div>
+        <p class="sig">— The Editors</p>
+      </aside>
+    </div>
+  </main>
+
+  <footer>
+    <span>© Folio Society — set in Georgia &amp; system mono</span>
+    <span>Questions — editors@folio.example</span>
+  </footer>
+</div>
+
+<script>
+(function(){
+  'use strict';
+
+  const form = document.getElementById('signup');
+  const fields = ['name','email','website','password'];
+  const els = {}, state = {};
+  fields.forEach(f => { els[f] = form.elements[f]; state[f] = { touched:false }; });
+
+  const NUMWORD = ['','One','Two','Three','Four'];
+  const submitBtn = document.getElementById('submitBtn');
+  const btnTxt = document.getElementById('btnTxt');
+  const statusEl = document.getElementById('status');
+  const resetBtn = document.getElementById('resetBtn');
+  const stamp = document.getElementById('stamp');
+  const sheet = document.getElementById('sheet');
+  const peek = document.getElementById('peek');
+  const rulesTitle = document.getElementById('rulesTitle');
+
+  /* If no scheme was typed, assume https:// before testing. */
+  function normalizeUrl(v){
+    let s = (v || '').trim();
+    if(!s) return s;
+    if(!/^[a-z][a-z0-9+.-]*:\/\//i.test(s)) s = 'https://' + s;
+    return s;
+  }
+
+  const validators = {
+    name(v){
+      const s = v.trim();
+      if(!s) return 'Please enter your full name.';
+      const words = s.split(/\s+/);
+      if(words.length < 2) return 'Please include both a first and a last name.';
+      for(const w of words){
+        if(!/^[\p{L}\p{M}'’-]+$/u.test(w)) return 'Letters, spaces, hyphens and apostrophes only, please.';
+      }
+      return '';
+    },
+    email(v){
+      const s = v.trim();
+      if(!s) return 'We need an email address to reply to.';
+      if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(s)) return 'That address looks incomplete — check it for typos.';
+      return '';
+    },
+    website(v){
+      const s = normalizeUrl(v);
+      if(!s) return 'A link to your site or profile, please.';
+      let u;
+      try{ u = new URL(s); }catch(e){ return 'That doesn’t look like a web address.'; }
+      if(!/^[a-z0-9-]+(\.[a-z0-9-]+)+$/i.test(u.hostname))
+        return 'That doesn’t look like a web address — e.g. “studio.example.com”.';
+      return '';
+    },
+    password(v){
+      if(!v) return 'Please choose a password.';
+      if(v.length < 8) return 'At least 8 characters — ' + (8 - v.length) + ' more to go.';
+      if(!/[A-Z]/.test(v)) return 'Include at least one capital letter.';
+      if(!/[a-z]/.test(v)) return 'Include at least one lowercase letter.';
+      if(!/\d/.test(v)) return 'Include at least one number.';
+      if(!/[^A-Za-z0-9]/.test(v)) return 'Include at least one symbol, e.g. ! ? #';
+      return '';
+    }
+  };
+
+  /* ——— live checklist in the margin ——— */
+  const RULES = {
+    len:  v => v.length >= 8,
+    case: v => /[a-z]/.test(v) && /[A-Z]/.test(v),
+    num:  v => /\d/.test(v),
+    sym:  v => /[^A-Za-z0-9]/.test(v)
+  };
+  const ruleEls = {};
+  document.querySelectorAll('.rules li').forEach(li => { ruleEls[li.dataset.rule] = li; });
+
+  function updateRules(v){
+    let all = true;
+    for(const k in RULES){
+      const ok = RULES[k](v);
+      if(!ok) all = false;
+      ruleEls[k].classList.toggle('ok', ok);
+    }
+    rulesTitle.textContent = all ? 'Password — requirements met' : 'Password must include';
+    rulesTitle.classList.toggle('good', all);
+  }
+
+  /* ——— per-field rendering ——— */
+  function render(name){
+    const input = els[name];
+    const wrap = input.closest('.field');
+    const txt = wrap.querySelector('.err .txt');
+    const msg = state[name].touched ? validators[name](input.value) : '';
+    wrap.classList.toggle('invalid', !!msg);
+    wrap.classList.toggle('valid', state[name].touched && !msg && input.value.trim() !== '');
+    input.setAttribute('aria-invalid', msg ? 'true' : 'false');
+    txt.textContent = msg;
+  }
+
+  function setStatus(msg, kind){
+    statusEl.textContent = msg;
+    statusEl.className = 'status' + (kind ? ' ' + kind : '');
+  }
+
+  const attention = n =>
+    NUMWORD[n] + (n > 1 ? ' fields above need' : ' field above needs') + ' your attention.';
+
+  fields.forEach(name => {
+    const input = els[name];
+    input.addEventListener('blur', () => {
+      state[name].touched = true;
+      /* tidy bare domains into full URLs once the field is left */
+      if(name === 'website' && input.value.trim()){
+        const norm = normalizeUrl(input.value);
+        if(norm !== input.value.trim() && !validators.website(norm)) input.value = norm;
+      }
+      render(name);
+    });
+    input.addEventListener('input', () => {
+      if(state[name].touched || input.closest('.field').classList.contains('invalid')){
+        render(name);
+        /* keep the summary line honest while fixing things */
+        if(statusEl.classList.contains('bad')){
+          const n = fields.filter(f => validators[f](els[f].value)).length;
+          n ? setStatus(attention(n), 'bad') : setStatus('', '');
+        }
+      }
+      if(name === 'password') updateRules(input.value);
+    });
+  });
+
+  /* ——— show / hide password ——— */
+  peek.addEventListener('click', () => {
+    const showing = peek.textContent === 'Hide';
+    els.password.type = showing ? 'password' : 'text';
+    peek.textContent = showing ? 'Show' : 'Hide';
+    els.password.focus();
+  });
+
+  /* ——— submit ——— */
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    if(submitBtn.disabled) return;
+
+    fields.forEach(f => { state[f].touched = true; render(f); });
+    const invalid = fields.filter(f => validators[f](els[f].value));
+
+    if(invalid.length){
+      invalid.forEach(f => {
+        const wrap = els[f].closest('.field');
+        wrap.classList.remove('nudge');
+        void wrap.offsetWidth; /* restart the nudge */
+        wrap.classList.add('nudge');
+      });
+      els[invalid[0]].focus();
+      setStatus(attention(invalid.length), 'bad');
+      return;
+    }
+
+    /* all clear — file it */
+    submitBtn.disabled = true;
+    btnTxt.textContent = 'Filing…';
+    setStatus('', '');
+
+    setTimeout(() => {
+      document.getElementById('stampDate').textContent =
+        new Date().toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' }).toUpperCase();
+      stamp.classList.add('on');
+      setTimeout(() => {                       /* paper thud on impact */
+        sheet.classList.add('thud');
+        setTimeout(() => sheet.classList.remove('thud'), 350);
+      }, 300);
+
+      form.classList.add('filed');
+      fields.forEach(f => { els[f].disabled = true; });
+      btnTxt.textContent = 'Application filed';
+
+      const first = els.name.value.trim().split(/\s+/)[0];
+      const ref = (1000 + Math.floor(Math.random() * 9000)) + '–' + 'KQRV'[Math.floor(Math.random() * 4)];
+      setStatus('Filed under № ' + ref + '. Thank you, ' + first +
+        ' — a confirmation is on its way to ' + els.email.value.trim() + '.', 'good');
+      resetBtn.hidden = false;
+    }, 550);
+  });
+
+  /* ——— start over ——— */
+  resetBtn.addEventListener('click', () => {
+    form.reset();
+    fields.forEach(f => { state[f].touched = false; els[f].disabled = false; render(f); });
+    els.password.type = 'password';
+    peek.textContent = 'Show';
+    form.classList.remove('filed');
+    stamp.classList.remove('on');
+    submitBtn.disabled = false;
+    btnTxt.textContent = 'Submit application';
+    setStatus('', '');
+    resetBtn.hidden = true;
+    updateRules('');
+    els.name.focus();
+  });
+
+  updateRules('');
+  document.getElementById('today').textContent =
+    new Date().toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' }).toUpperCase();
+})();
+</script>
+</body>
+</html>

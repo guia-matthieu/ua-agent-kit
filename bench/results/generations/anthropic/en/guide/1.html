@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sign up</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: #f4f5f7;
+    color: #1d1f23;
+    line-height: 1.4;
+  }
+  main {
+    max-width: 30rem;
+    margin: 3rem auto;
+    padding: 2rem;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.1);
+  }
+  h1 { margin-top: 0; font-size: 1.5rem; }
+  .field { margin-bottom: 1.25rem; }
+  label { display: block; font-weight: 600; margin-bottom: .3rem; }
+  .hint { font-size: .85rem; color: #5a5f69; margin: .2rem 0 0; }
+  input {
+    width: 100%;
+    padding: .55rem .7rem;
+    font: inherit;
+    border: 1px solid #b8bcc4;
+    border-radius: 4px;
+  }
+  input:focus { outline: 2px solid #3b6fd8; outline-offset: 1px; border-color: #3b6fd8; }
+  input[aria-invalid="true"] { border-color: #c62828; background: #fff6f6; }
+  .error {
+    color: #c62828;
+    font-size: .875rem;
+    margin: .3rem 0 0;
+    min-height: 1em;
+  }
+  .error:empty { display: none; }
+  button {
+    width: 100%;
+    padding: .7rem;
+    font: inherit;
+    font-weight: 600;
+    color: #fff;
+    background: #3b6fd8;
+    border: 0;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  button:hover { background: #2f5cb8; }
+  #result {
+    margin-top: 1.25rem;
+    padding: .8rem;
+    border-radius: 4px;
+    background: #eaf6ec;
+    color: #1f5f2c;
+    font-size: .9rem;
+    word-break: break-all;
+  }
+  #result[hidden] { display: none; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Create your account</h1>
+
+  <form id="signup" novalidate>
+    <div class="field">
+      <label for="fullname">Full name</label>
+      <input id="fullname" name="fullname" type="text" autocomplete="name"
+             aria-describedby="fullname-error">
+      <p class="error" id="fullname-error" aria-live="polite"></p>
+    </div>
+
+    <div class="field">
+      <label for="email">Email address</label>
+      <!-- type="text" on purpose: browsers' type="email" rejects internationalized
+           addresses (e.g. josé.dupont@example.fr) and some rewrite the domain. -->
+      <input id="email" name="email" type="text" inputmode="email"
+             autocomplete="email" autocapitalize="off" spellcheck="false"
+             aria-describedby="email-hint email-error">
+      <p class="hint" id="email-hint">Addresses in any script are accepted, e.g. josé.dupont@société.fr</p>
+      <p class="error" id="email-error" aria-live="polite"></p>
+      <input type="hidden" name="email_ascii" id="email_ascii">
+    </div>
+
+    <div class="field">
+      <label for="website">Website <span style="font-weight:400">(optional)</span></label>
+      <input id="website" name="website" type="text" inputmode="url"
+             autocomplete="url" autocapitalize="off" spellcheck="false"
+             aria-describedby="website-hint website-error">
+      <p class="hint" id="website-hint">e.g. https://société.fr or example.corsica</p>
+      <p class="error" id="website-error" aria-live="polite"></p>
+      <input type="hidden" name="website_ascii" id="website_ascii">
+    </div>
+
+    <div class="field">
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password" autocomplete="new-password"
+             aria-describedby="password-hint password-error">
+      <p class="hint" id="password-hint">At least 8 characters.</p>
+      <p class="error" id="password-error" aria-live="polite"></p>
+    </div>
+
+    <button type="submit">Sign up</button>
+  </form>
+
+  <div id="result" role="status" hidden></div>
+</main>
+
+<script>
+(function () {
+  "use strict";
+
+  var form = document.getElementById("signup");
+  var fields = {
+    fullname: document.getElementById("fullname"),
+    email:    document.getElementById("email"),
+    website:  document.getElementById("website"),
+    password: document.getElementById("password")
+  };
+
+  /* ---------- Domain helpers (Universal Acceptance) ---------- */
+
+  // Characters that can never appear in a host name and would make the
+  // URL parser interpret the string as something else.
+  var FORBIDDEN_HOST_CHARS = /[\s\/\\?#:@\[\]%<>"'`^|{}]/u;
+
+  // One A-label (ASCII) label: 1–63 octets, letters/digits/hyphen,
+  // no leading or trailing hyphen. Case-insensitive.
+  var ASCII_LABEL = /^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/i;
+
+  // TLD: two or more letters (no upper limit), or an xn-- A-label.
+  var ASCII_TLD = /^(?:[a-z]{2,}|xn--[a-z0-9-]{1,59})$/i;
+
+  /**
+   * Convert a domain (U-labels or A-labels) to its A-label form using the
+   * browser's WHATWG URL parser, which implements UTS #46.
+   * Returns the ASCII form, or null if the domain is not acceptable.
+   */
+  function toAsciiDomain(domain) {
+    if (!domain || FORBIDDEN_HOST_CHARS.test(domain)) return null;
+    var host;
+    try {
+      host = new URL("http://" + domain + "/").hostname;
+    } catch (e) {
+      return null;
+    }
+    return isValidAsciiDomain(host) ? host : null;
+  }
+
+  function isValidAsciiDomain(host) {
+    if (!host) return false;
+    if (host.charAt(host.length - 1) === ".") host = host.slice(0, -1); // allow FQDN trailing dot
+    if (host.length > 253) return false;
+    var labels = host.split(".");
+    if (labels.length < 2) return false;
+    for (var i = 0; i < labels.length; i++) {
+      if (!ASCII_LABEL.test(labels[i])) return false;
+    }
+    return ASCII_TLD.test(labels[labels.length - 1]);
+  }
+
+  /* ---------- Field validators ---------- */
+  // Each returns an error string, or "" when valid.
+
+  function validateFullname(value) {
+    var v = value.trim();
+    if (!v) return "Please enter your full name.";
+    if (v.length > 200) return "Your name is too long (200 characters maximum).";
+    return "";
+  }
+
+  function validateEmail(value) {
+    var v = value.trim();
+    document.getElementById("email_ascii").value = "";
+    if (!v) return "Please enter your email address.";
+
+    var at = v.lastIndexOf("@");
+    if (at === -1 || v.indexOf("@") !== at) {
+      return "An email address must contain exactly one \u201C@\u201D.";
+    }
+    var local = v.slice(0, at);
+    var domain = v.slice(at + 1);
+
+    // Local part: non-empty, no whitespace or control characters.
+    // Unicode (RFC 6531) and symbols such as + and ' are allowed.
+    if (!local) return "Please enter the part before the \u201C@\u201D.";
+    if (/[\s\u0000-\u001F\u007F]/u.test(local)) {
+      return "The part before the \u201C@\u201D cannot contain spaces.";
+    }
+    if (new TextEncoder().encode(local).length > 64) {
+      return "The part before the \u201C@\u201D is too long.";
+    }
+
+    var asciiDomain = toAsciiDomain(domain);
+    if (!asciiDomain) {
+      return "Please enter a valid domain after the \u201C@\u201D, e.g. example.fr or société.fr.";
+    }
+    // Keep what the user typed (submitted as "email") and the A-label form.
+    document.getElementById("email_ascii").value = local + "@" + asciiDomain;
+    return "";
+  }
+
+  function validateWebsite(value) {
+    var v = value.trim();
+    document.getElementById("website_ascii").value = "";
+    if (!v) return ""; // optional
+
+    // Allow the user to omit the scheme.
+    var candidate = /^[a-z][a-z0-9+.-]*:/i.test(v) ? v : "https://" + v;
+    var url;
+    try {
+      url = new URL(candidate);
+    } catch (e) {
+      return "Please enter a valid web address, e.g. https://example.com.";
+    }
+    if (url.protocol !== "http:" && url.protocol !== "https:") {
+      return "The web address must start with http:// or https://.";
+    }
+    if (url.username || url.password) {
+      return "The web address should not contain a user name or password.";
+    }
+    // url.hostname is already the A-label form (UTS #46).
+    if (!isValidAsciiDomain(url.hostname)) {
+      return "Please enter a web address with a valid domain name, e.g. société.fr.";
+    }
+    document.getElementById("website_ascii").value = url.href;
+    return "";
+  }
+
+  function validatePassword(value) {
+    if (!value) return "Please choose a password.";
+    if (Array.from(value).length < 8) return "Your password must be at least 8 characters.";
+    return "";
+  }
+
+  var validators = {
+    fullname: validateFullname,
+    email: validateEmail,
+    website: validateWebsite,
+    password: validatePassword
+  };
+
+  /* ---------- UI wiring ---------- */
+
+  function check(name) {
+    var input = fields[name];
+    var message = validators[name](input.value);
+    document.getElementById(name + "-error").textContent = message;
+    if (message) {
+      input.setAttribute("aria-invalid", "true");
+    } else {
+      input.removeAttribute("aria-invalid");
+    }
+    return !message;
+  }
+
+  Object.keys(fields).forEach(function (name) {
+    var input = fields[name];
+    input.addEventListener("blur", function () {
+      if (input.value !== "" || input.hasAttribute("aria-invalid")) check(name);
+    });
+    input.addEventListener("input", function () {
+      if (input.hasAttribute("aria-invalid")) check(name);
+    });
+  });
+
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+    var result = document.getElementById("result");
+    result.hidden = true;
+
+    var firstInvalid = null;
+    Object.keys(fields).forEach(function (name) {
+      if (!check(name) && !firstInvalid) firstInvalid = fields[name];
+    });
+
+    if (firstInvalid) {
+      firstInvalid.focus();
+      return;
+    }
+
+    // Demo only: show what would be sent. Replace with form.submit() or fetch().
+    var data = new FormData(form);
+    result.textContent = "";
+    var lines = [
+      "Thanks, " + data.get("fullname").trim() + "! Your details are valid.",
+      "Email (as typed): " + data.get("email").trim(),
+      "Email (A-label domain): " + data.get("email_ascii")
+    ];
+    if (data.get("website").trim()) {
+      lines.push("Website (as typed): " + data.get("website").trim());
+      lines.push("Website (A-label form): " + data.get("website_ascii"));
+    }
+    lines.forEach(function (line) {
+      var p = document.createElement("div");
+      p.textContent = line;
+      result.appendChild(p);
+    });
+    result.hidden = false;
+  });
+})();
+</script>
+</body>
+</html>

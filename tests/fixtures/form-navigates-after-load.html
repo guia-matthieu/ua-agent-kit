@@ -1,0 +1,5 @@
+<!doctype html><html lang="en"><head><title>navigates after load</title>
+<script src="slow-legacy-validate.js"></script></head><body>
+<form><label for="e">Email</label><input id="e" name="email" type="email"><button type="submit">Send</button></form>
+<script>window.addEventListener('load', () => setTimeout(() => { location.href = '/leaked?v=secret'; }, 150));</script>
+</body></html>

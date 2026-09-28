@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Créer un compte</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 2.5rem 1rem;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.5;
+    background: #f2f4f7;
+    color: #1f2733;
+  }
+  main {
+    max-width: 34rem;
+    margin: 0 auto;
+    padding: 2rem;
+    background: #ffffff;
+    border: 1px solid #d9dfe7;
+    border-radius: 12px;
+  }
+  h1 { margin: 0 0 0.3rem; font-size: 1.45rem; }
+  .intro { margin: 0 0 1.6rem; color: #57636f; font-size: 0.95rem; }
+  .champ { margin-bottom: 1.15rem; }
+  label { display: block; margin-bottom: 0.3rem; font-weight: 600; font-size: 0.95rem; }
+  input {
+    display: block;
+    width: 100%;
+    padding: 0.55rem 0.7rem;
+    font: inherit;
+    color: inherit;
+    background: #ffffff;
+    border: 1px solid #aeb8c4;
+    border-radius: 8px;
+  }
+  input:focus-visible { outline: 2px solid #1f6feb; outline-offset: 1px; }
+  .champ.invalide input { border-color: #cf222e; }
+  .aide { margin: 0.3rem 0 0; font-size: 0.82rem; color: #57636f; }
+  .erreur { margin: 0.3rem 0 0; font-size: 0.85rem; font-weight: 500; color: #cf222e; }
+  .erreur:empty { display: none; }
+  button {
+    margin-top: 0.4rem;
+    padding: 0.65rem 1.3rem;
+    font: inherit;
+    font-weight: 600;
+    color: #ffffff;
+    background: #1f6feb;
+    border: 0;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  button:hover { background: #1a5fd0; }
+  #succes {
+    margin-top: 1.6rem;
+    padding: 1.1rem 1.25rem;
+    border: 1px solid #2da44e;
+    border-radius: 8px;
+    background: #f0fff4;
+  }
+  #succes h2 { margin: 0 0 0.4rem; font-size: 1.05rem; color: #1a7f37; }
+  #succes > p { margin: 0 0 0.7rem; font-size: 0.9rem; color: #374151; }
+  .recap { display: grid; grid-template-columns: max-content 1fr; gap: 0.3rem 1rem; margin: 0; font-size: 0.9rem; }
+  .recap dt { font-weight: 600; color: #374151; }
+  .recap dd { margin: 0; overflow-wrap: anywhere; }
+  noscript p { margin: 1rem 0 0; color: #cf222e; font-weight: 500; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Créer un compte</h1>
+  <p class="intro">
+    Tous les champs sont obligatoires. Les adresses e-mail internationalisées (EAI)
+    et les noms de domaine Unicode (IDN) sont acceptés, avec ou sans forme « xn--… ».
+  </p>
+
+  <!-- novalidate : la validation est faite en JavaScript, à l'identique dans tous
+       les navigateurs (les contrôles natifs divergent sur les saisies Unicode). -->
+  <form id="inscription" novalidate>
+
+    <div class="champ">
+      <label for="nom">Nom complet</label>
+      <input type="text" id="nom" name="nom" autocomplete="name" required
+             aria-describedby="aide-nom err-nom">
+      <p class="aide" id="aide-nom">Toutes les écritures sont admises : Marie Dupont, 王小明, José García…</p>
+      <p class="erreur" id="err-nom" aria-live="polite"></p>
+    </div>
+
+    <div class="champ">
+      <label for="courriel">Adresse e-mail</label>
+      <!-- type="text" et non type="email" : les navigateurs divergent sur
+           <input type="email"> — l'un réécrit le domaine Unicode en A-label avant
+           que le script ne voie la valeur, un autre refuse les domaines Unicode,
+           et tous rejettent les parties locales non ASCII. La validation EAI
+           (RFC 6531) est donc faite ici entièrement en JavaScript. -->
+      <input type="text" id="courriel" name="courriel" inputmode="email"
+             autocomplete="email" spellcheck="false" autocapitalize="none"
+             required aria-describedby="aide-courriel err-courriel">
+      <p class="aide" id="aide-courriel">
+        Exemples valides : josé.dupont@société.fr, 用户@例子.中国, jean@exemple.technology.
+      </p>
+      <p class="erreur" id="err-courriel" aria-live="polite"></p>
+    </div>
+
+    <div class="champ">
+      <label for="site">Site web</label>
+      <!-- type="url" conserve la saisie Unicode telle quelle dans les moteurs
+           actuels ; novalidate neutralise les contrôles natifs divergents. -->
+      <input type="url" id="site" name="site" autocomplete="url" spellcheck="false"
+             required aria-describedby="aide-site err-site">
+      <p class="aide" id="aide-site">Le « https:// » est facultatif. Exemples : www.exemple.fr, https://例子.中国.</p>
+      <p class="erreur" id="err-site" aria-live="polite"></p>
+    </div>
+
+    <div class="champ">
+      <label for="motdepasse">Mot de passe</label>
+      <input type="password" id="motdepasse" name="motdepasse" autocomplete="new-password"
+             minlength="8" required aria-describedby="aide-motdepasse err-motdepasse">
+      <p class="aide" id="aide-motdepasse">8 caractères minimum ; tous les caractères sont admis (accents, espaces, emoji…).</p>
+      <p class="erreur" id="err-motdepasse" aria-live="polite"></p>
+    </div>
+
+    <button type="submit">Créer mon compte</button>
+  </form>
+
+  <div id="succes" role="status" hidden>
+    <h2 id="titre-succes" tabindex="-1">Formulaire valide — envoi simulé</h2>
+    <p>
+      Aucune donnée n'est transmise. La saisie d'origine est conservée ; les formes
+      converties en A-label (prêtes pour une résolution DNS ou une clé de stockage)
+      sont indiquées à titre indicatif.
+    </p>
+    <dl class="recap">
+      <dt>Nom</dt><dd id="recap-nom"></dd>
+      <dt>E-mail saisi</dt><dd id="recap-courriel"></dd>
+      <dt>E-mail, domaine en A-label</dt><dd id="recap-courriel-ascii"></dd>
+      <dt>Site saisi</dt><dd id="recap-site"></dd>
+      <dt>Site normalisé</dt><dd id="recap-site-normalise"></dd>
+      <dt>Mot de passe</dt><dd id="recap-motdepasse"></dd>
+    </dl>
+  </div>
+
+  <noscript><p>La validation de ce formulaire nécessite JavaScript.</p></noscript>
+</main>
+
+<script>
+(function () {
+  "use strict";
+
+  /* Validation conforme « Universal Acceptance » :
+     - aucun plafond de longueur sur le TLD (.corsica, .technology,
+       .international, .xn--p1ai… sont des TLD délégués) ;
+     - domaines et parties locales Unicode admis (IDNA2008 / UTS #46,
+       RFC 6531), y compris A-labels « xn--… » et casse quelconque
+       (XN--P1AI = xn--p1ai) ;
+     - conversion U-label → A-label via l'analyseur d'URL du navigateur
+       (équivalent de url.domainToASCII sous Node) ; la saisie d'origine
+       est conservée à côté de la forme convertie ;
+     - bornes DNS vérifiées sur la forme convertie : 63 octets par
+       étiquette, 253 octets pour le nom complet ;
+     - l'existence réelle du TLD n'est pas contrôlée côté client (la liste
+       racine IANA doit être consultée côté serveur, jamais codée en dur). */
+
+  // Étiquette de domaine telle que saisie : U-label ou A-label.
+  // Lettres et chiffres de tout script, tirets intérieurs uniquement.
+  const RE_ETIQUETTE = /^[\p{L}\p{N}](?:[\p{L}\p{N}-]*[\p{L}\p{N}])?$/u;
+
+  // TLD : au moins deux lettres, AUCUNE longueur maximale.
+  const RE_TLD = /^[\p{L}]{2,}$/u;
+
+  // A-label (« xn--… »), insensible à la casse.
+  const RE_ALABEL = /^xn--/i;
+
+  const RE_CONTROLE = /[\u0000-\u001F\u007F]/;
+
+  const encodeur = new TextEncoder();
+  const octetsUtf8 = (s) => encodeur.encode(s).length;
+
+  // UTS #46 assimile ces « points » CJK à des séparateurs d'étiquettes.
+  const POINTS = /[\u3002\uFF0E\uFF61]/g;
+
+  // Convertit un domaine (U-label ou A-label, casse quelconque) en A-label
+  // minuscule grâce à l'analyseur d'URL (IDNA2008 / UTS #46).
+  // Renvoie null si la conversion est impossible.
+  function versALabel(domaine) {
+    try {
+      return new URL("http://" + domaine).hostname;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function tldValide(tld) {
+    return RE_ALABEL.test(tld) || RE_TLD.test(tld);
+  }
+
+  // Contrôle une forme déjà convertie en A-labels ASCII : étiquettes de
+  // 1 à 63 octets, nom complet de 253 octets au plus.
+  function aLabelsValides(ascii) {
+    for (const e of ascii.split(".")) {
+      if (!RE_ETIQUETTE.test(e) || e.length > 63) return false;
+    }
+    return ascii.length <= 253;
+  }
+
+  function validerNom(valeur) {
+    const v = valeur.trim();
+    if (v === "") return { ok: false, message: "Veuillez saisir votre nom complet." };
+    const n = [...v].length; // points de code, pas unités UTF-16
+    if (n < 2) return { ok: false, message: "Le nom doit comporter au moins 2 caractères." };
+    if (n > 100) return { ok: false, message: "Le nom ne peut pas dépasser 100 caractères." };
+    if (RE_CONTROLE.test(v)) return { ok: false, message: "Le nom contient un caractère de contrôle." };
+    if (!/\p{L}/u.test(v)) return { ok: false, message: "Le nom doit contenir au moins une lettre." };
+    return { ok: true, valeur: v };
+  }
+
+  function validerCourriel(valeur) {
+    const v = valeur.trim();
+    if (v === "") return { ok: false, message: "Veuillez saisir une adresse e-mail." };
+
+    const morceaux = v.split("@");
+    if (morceaux.length !== 2) {
+      return { ok: false, message: "L'adresse doit contenir exactement un « @ »." };
+    }
+    const locale = morceaux[0];
+    const domaine = morceaux[1];
+
+    // Partie locale : non vide, sans espace, sans caractère de contrôle.
+    // Unicode (RFC 6531), « + », « ' » et autres symboles ASCII : admis.
+    if (locale === "") return { ok: false, message: "La partie locale (avant le @) est vide." };
+    if (/\s/.test(locale)) return { ok: false, message: "La partie locale (avant le @) ne doit pas contenir d'espace." };
+    if (RE_CONTROLE.test(locale)) return { ok: false, message: "La partie locale contient un caractère de contrôle." };
+    if (octetsUtf8(locale) > 64) return { ok: false, message: "La partie locale dépasse 64 octets en UTF-8." };
+    if (domaine === "") return { ok: false, message: "Le domaine (après le @) est absent." };
+
+    const d = domaine.replace(POINTS, ".");
+    const etiquettes = d.split(".");
+    if (etiquettes.length < 2) {
+      return { ok: false, message: "Le domaine doit comporter au moins deux étiquettes séparées par un point (ex. exemple.fr)." };
+    }
+    for (const e of etiquettes) {
+      if (!RE_ETIQUETTE.test(e)) {
+        return { ok: false, message: "Étiquette de domaine invalide : « " + e + " » (lettres et chiffres de tout script admis, tirets intérieurs uniquement)." };
+      }
+    }
+    if (!tldValide(etiquettes[etiquettes.length - 1])) {
+      return { ok: false, message: "Le TLD doit compter au moins deux lettres ou être un A-label « xn--… »." };
+    }
+
+    // Conversion IDNA : valide le domaine et fournit la forme A-label
+    // (clé de stockage / DNS), sans modifier la saisie de l'utilisateur.
+    const ascii = versALabel(d);
+    if (ascii === null || !aLabelsValides(ascii)) {
+      return { ok: false, message: "Ce domaine n'a pas de forme A-label IDNA valide (caractère interdit, ou étiquette de plus de 63 octets)." };
+    }
+    return { ok: true, normalise: locale + "@" + ascii };
+  }
+
+  function validerSite(valeur) {
+    const v = valeur.trim();
+    if (v === "") return { ok: false, message: "Veuillez saisir l'adresse de votre site web." };
+    if (RE_CONTROLE.test(v)) return { ok: false, message: "L'adresse contient un caractère de contrôle." };
+
+    // Sans schéma, on ajoute « https:// ». Si un « : » apparaît avant tout
+    // point, c'est un schéma explicite (http:, ftp:, mailto:…) ; sinon c'est
+    // un « hôte:port » (ex. exemple.com:8080), pas un schéma.
+    let candidate = v;
+    const dp = v.indexOf(":");
+    if (dp === -1 || v.slice(0, dp).includes(".")) {
+      candidate = "https://" + v;
+    }
+
+    let u;
+    try {
+      u = new URL(candidate);
+    } catch (e) {
+      return { ok: false, message: "Cette adresse n'est pas une URL valide." };
+    }
+
+    if (u.protocol !== "http:" && u.protocol !== "https:") {
+      return { ok: false, message: "L'adresse doit commencer par http:// ou https://." };
+    }
+    if (u.username !== "" || u.password !== "") {
+      return { ok: false, message: "L'adresse ne doit pas contenir d'identifiants (« utilisateur@ »)." };
+    }
+
+    // u.hostname est déjà en A-labels minuscules : l'analyseur d'URL a
+    // appliqué IDNA (UTS #46), y compris aux domaines Unicode.
+    const hote = u.hostname;
+    if (hote === "") return { ok: false, message: "L'adresse ne contient pas de nom d'hôte." };
+    if (hote.includes(":") || /^(\d{1,3}\.){3}\d{1,3}$/.test(hote)) {
+      return { ok: false, message: "Indiquez un nom de domaine : les adresses IP ne sont pas acceptées ici." };
+    }
+
+    const etiquettes = hote.split(".");
+    if (etiquettes.length < 2 ||
+        !tldValide(etiquettes[etiquettes.length - 1]) ||
+        !aLabelsValides(hote)) {
+      return { ok: false, message: "Nom de domaine invalide : au moins deux étiquettes (ex. exemple.fr), un TLD d'au moins deux lettres ou de la forme « xn--… », et 63 octets maximum par étiquette." };
+    }
+    return { ok: true, saisi: v, normalise: u.href };
+  }
+
+  function validerMotDePasse(valeur) {
+    if (valeur === "") return { ok: false, message: "Veuillez saisir un mot de passe." };
+    if (/^\s+$/.test(valeur)) return { ok: false, message: "Le mot de passe ne peut pas être composé uniquement d'espaces." };
+    const n = [...valeur].length; // les emoji comptent pour un caractère
+    if (n < 8) return { ok: false, message: "Le mot de passe doit contenir au moins 8 caractères." };
+    if (n > 128) return { ok: false, message: "Le mot de passe ne peut pas dépasser 128 caractères." };
+    if (RE_CONTROLE.test(valeur)) return { ok: false, message: "Le mot de passe ne doit pas contenir de caractères de contrôle." };
+    return { ok: true };
+  }
+
+  /* ---- Liaison au formulaire ---------------------------------------- */
+
+  const form = document.getElementById("inscription");
+
+  const champs = [
+    { id: "nom", valider: validerNom },
+    { id: "courriel", valider: validerCourriel },
+    { id: "site", valider: validerSite },
+    { id: "motdepasse", valider: validerMotDePasse }
+  ].map((d) => ({
+    input: document.getElementById(d.id),
+    erreur: document.getElementById("err-" + d.id),
+    valider: d.valider
+  }));
+
+  function validerChamp(champ) {
+    const r = champ.valider(champ.input.value);
+    if (r.ok) {
+      champ.erreur.textContent = "";
+      champ.input.removeAttribute("aria-invalid");
+      champ.input.closest(".champ").classList.remove("invalide");
+    } else {
+      champ.erreur.textContent = r.message;
+      champ.input.setAttribute("aria-invalid", "true");
+      champ.input.closest(".champ").classList.add("invalide");
+    }
+    return r;
+  }
+
+  // Validation d'un champ quand on le quitte (s'il a été renseigné),
+  // puis à chaque frappe tant qu'il est en erreur.
+  for (const c of champs) {
+    c.input.addEventListener("blur", () => {
+      if (c.input.value.trim() !== "") validerChamp(c);
+    });
+    c.input.addEventListener("input", () => {
+      if (c.erreur.textContent !== "") validerChamp(c);
+    });
+  }
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault(); // démonstration : aucun envoi réseau
+
+    const resultats = champs.map((c) => validerChamp(c));
+    const panneau = document.getElementById("succes");
+    const i = resultats.findIndex((r) => !r.ok);
+
+    if (i !== -1) {
+      panneau.hidden = true;
+      champs[i].input.focus();
+      return;
+    }
+
+    const [rNom, rCourriel, rSite] = resultats;
+    const $ = (id) => document.getElementById(id);
+    $("recap-nom").textContent = rNom.valeur;
+    $("recap-courriel").textContent = form.elements.courriel.value.trim();
+    $("recap-courriel-ascii").textContent = rCourriel.normalise;
+    $("recap-site").textContent = rSite.saisi;
+    $("recap-site-normalise").textContent = rSite.normalise;
+    $("recap-motdepasse").textContent =
+      "•••••••• (" + [...form.elements.motdepasse.value].length + " caractères, non affiché)";
+
+    panneau.hidden = false;
+    document.getElementById("titre-succes").focus();
+  });
+})();
+</script>
+</body>
+</html>

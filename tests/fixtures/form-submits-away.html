@@ -1,0 +1,12 @@
+<!doctype html><html lang="en"><body>
+<!-- A "valid" submit that leaves the page two ways: form.submit() (GET, values in the query string) and a redirect. -->
+<form id="f" method="get" action="thanks.html"><label>Email <input id="email" name="email" type="email"></label>
+<label>Website <input id="site" name="website" type="url"></label><button type="submit">Send</button></form>
+<script>
+document.getElementById('f').addEventListener('submit', e => {
+  e.preventDefault();
+  window.__submitted = true;
+  if (document.getElementById('email').value.includes('@')) { e.target.submit(); location.href = 'thanks.html?redirect=1'; }
+});
+</script>
+</body></html>

@@ -1,0 +1,29 @@
+<!-- generated from GUIDE.md by scripts/build-adapters.mjs — do not edit. Licence: CC BY 4.0, https://github.com/guia-matthieu/ua-agent-kit -->
+## Universal Acceptance (email, domain and URL validation)
+
+## What is valid
+
+- Top-level domains are **not limited to 2–4 letters** — like any label, a TLD is at most 63 octets (RFC 1035 §2.3.4). `.corsica`, `.technology`, `.international` are delegated. A TLD may also be an A-label starting with `xn--` (`.xn--p1ai` is `.рф`).
+- Domain labels may be **U-labels** (Unicode, e.g. `société.fr`, `例子.中国`) or **A-labels** (`xn--socit-esab.fr`). Both forms are the same name. Labels are 1–63 octets in A-label form; a full name is at most 253 octets.
+- Email **local parts may contain Unicode** (`josé.dupont@example.fr`, `用户@example.com`) — RFC 6531. They may also contain `+`, `'` and other ASCII symbols.
+- Domain names are **case-insensitive**, including A-labels (`XN--P1AI` = `xn--p1ai`).
+
+## Do
+
+1. Check syntax minimally: one `@`, a non-empty local part without spaces, a domain of dot-separated labels with a TLD of two or more letters or an `xn--` A-label.
+2. Convert U-labels to A-labels with **IDNA2008 / UTS #46** (`url.domainToASCII` in Node, the `idna` package in Python, `java.net.IDN` with `USE_STD3_ASCII_RULES` off) before DNS lookups or storage keys. **Keep what the user typed** alongside the converted form.
+3. If you need to know that a TLD **exists**, compare against a copy of the IANA root list (`https://data.iana.org/TLD/tlds-alpha-by-domain.txt`) that your build refreshes. Never hard-code a list.
+4. Know what `<input type="email">` does, and that browsers disagree (measured 2026-09-21 on the same input `marie.dupont@société.fr`): Chromium 145 accepts it and **rewrites** it to `marie.dupont@xn--socit-esab.fr` before your script sees the value; Firefox 146 accepts it as typed; WebKit 26 **rejects** it. All three reject a Unicode local part (`josé.dupont@example.fr`). `<input type="url">` accepted `https://société.fr` as typed in all three. If internationalized email addresses must be accepted, use `type="text"` with your own check, or state the limitation.
+5. Run the battery: `npx ua-agent-kit score --kind email --regex '<your regex>'` or `npx ua-agent-kit check <page.html>`.
+
+## Don't
+
+- `\.[a-z]{2,4}$` or any TLD length cap.
+- ASCII-only character classes such as `[a-zA-Z0-9._%+-]+` for the local part or `[a-zA-Z0-9.-]+` for the domain.
+- The "official RFC 5322" regexes copied from forums: they are ASCII-only and reject every internationalized address.
+- Hard-coded TLD allow-lists.
+- Rejecting labels that start with `xn--`.
+
+## References
+
+RFC 5890, RFC 5891 (IDNA2008) · Unicode UTS #46 · RFC 6530, RFC 6531 (EAI) · WHATWG HTML, "valid e-mail address" · UASG-004 (2021), method reference for UA test cases.

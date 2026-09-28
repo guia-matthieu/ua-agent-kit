@@ -1,0 +1,14 @@
+<!doctype html><html lang="en"><body>
+<!-- No <form> anywhere on the page: a JS-only "form" built from a bare input + button, no native submission
+     mechanism exists at all. The email field's native constraint validation (type=email) is still computed
+     by the browser even though nothing can ever act on it (there is no form to block or to submit). -->
+<label>Email <input id="email" type="email"></label>
+<button id="send" type="button">Send</button>
+<script>
+document.getElementById('send').addEventListener('click', () => {
+  const v = document.getElementById('email').value;
+  // The page's OWN validation: accepts anything with an '@' in it (deliberately permissive, UA-friendly).
+  document.getElementById('email').setAttribute('aria-invalid', v.includes('@') ? 'false' : 'true');
+});
+</script>
+</body></html>

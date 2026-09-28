@@ -1,0 +1,12 @@
+<!doctype html><html lang="en"><body>
+<!-- Leaks the typed value while the document is being torn down (the runner reloads before each case). -->
+<form id="f"><label>Email <input id="email" name="email" type="email"></label>
+<label>Website <input id="site" name="website" type="url"></label><button type="submit">Send</button></form>
+<script>
+const leak = kind => { const v = encodeURIComponent(document.getElementById('email').value || document.getElementById('site').value); if (v) new Image().src = 'leak-' + kind + '?v=' + v; };
+window.addEventListener('pagehide', () => leak('pagehide'));
+window.addEventListener('beforeunload', () => leak('beforeunload'));
+window.addEventListener('unload', () => leak('unload'));
+document.getElementById('f').addEventListener('submit', e => e.preventDefault());
+</script>
+</body></html>

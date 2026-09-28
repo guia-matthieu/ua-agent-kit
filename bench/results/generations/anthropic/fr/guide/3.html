@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Inscription</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: #f3f4f6;
+      color: #1f2937;
+      padding: 1rem;
+    }
+    main {
+      width: 100%;
+      max-width: 30rem;
+      background: #fff;
+      border-radius: 0.75rem;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+      padding: 2rem;
+    }
+    h1 { margin: 0 0 1.5rem; font-size: 1.5rem; }
+    .field { margin-bottom: 1.25rem; }
+    label { display: block; font-weight: 600; margin-bottom: 0.35rem; }
+    .optional { font-weight: 400; color: #6b7280; font-size: 0.875rem; }
+    input {
+      width: 100%;
+      padding: 0.6rem 0.75rem;
+      font: inherit;
+      border: 1px solid #d1d5db;
+      border-radius: 0.5rem;
+      background: #fff;
+    }
+    input:focus { outline: 2px solid #2563eb; outline-offset: 1px; border-color: #2563eb; }
+    input[aria-invalid="true"] { border-color: #dc2626; background: #fef2f2; }
+    .hint { font-size: 0.8rem; color: #6b7280; margin-top: 0.3rem; }
+    .error {
+      font-size: 0.875rem;
+      color: #b91c1c;
+      margin-top: 0.3rem;
+      min-height: 1.1em;
+    }
+    .error:empty { display: none; }
+    button {
+      width: 100%;
+      padding: 0.75rem;
+      font: inherit;
+      font-weight: 600;
+      color: #fff;
+      background: #2563eb;
+      border: 0;
+      border-radius: 0.5rem;
+      cursor: pointer;
+    }
+    button:hover { background: #1d4ed8; }
+    button:focus-visible { outline: 2px solid #1e3a8a; outline-offset: 2px; }
+    #success {
+      margin-top: 1.25rem;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      background: #ecfdf5;
+      color: #065f46;
+      font-size: 0.9rem;
+      word-break: break-word;
+    }
+    #success[hidden] { display: none; }
+    #success dl { margin: 0.5rem 0 0; }
+    #success dt { font-weight: 600; margin-top: 0.4rem; }
+    #success dd { margin: 0; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Créer un compte</h1>
+
+  <!--
+    novalidate : la validation est faite en JavaScript.
+    Le champ e-mail est en type="text" car <input type="email"> se comporte
+    différemment selon les navigateurs : Chromium réécrit un domaine Unicode
+    en A-label, WebKit le rejette, et tous rejettent une partie locale Unicode
+    (ex. josé.dupont@example.fr), pourtant valide (RFC 6531).
+  -->
+  <form id="signup" novalidate>
+    <div class="field">
+      <label for="fullname">Nom complet</label>
+      <input id="fullname" name="fullname" type="text"
+             autocomplete="name" required
+             aria-describedby="fullname-error">
+      <div id="fullname-error" class="error" aria-live="polite"></div>
+    </div>
+
+    <div class="field">
+      <label for="email">Adresse e-mail</label>
+      <input id="email" name="email" type="text"
+             inputmode="email" autocomplete="email"
+             autocapitalize="off" spellcheck="false" required
+             aria-describedby="email-hint email-error">
+      <div id="email-hint" class="hint">Les adresses internationalisées sont acceptées (ex. josé@société.fr).</div>
+      <div id="email-error" class="error" aria-live="polite"></div>
+    </div>
+
+    <div class="field">
+      <label for="website">Site web <span class="optional">(facultatif)</span></label>
+      <input id="website" name="website" type="text"
+             inputmode="url" autocomplete="url"
+             autocapitalize="off" spellcheck="false"
+             aria-describedby="website-hint website-error">
+      <div id="website-hint" class="hint">Ex. https://société.fr ou exemple.corsica</div>
+      <div id="website-error" class="error" aria-live="polite"></div>
+    </div>
+
+    <div class="field">
+      <label for="password">Mot de passe</label>
+      <input id="password" name="password" type="password"
+             autocomplete="new-password" required
+             aria-describedby="password-hint password-error">
+      <div id="password-hint" class="hint">Au moins 8 caractères.</div>
+      <div id="password-error" class="error" aria-live="polite"></div>
+    </div>
+
+    <!-- Formes ASCII (A-label) calculées, envoyées en plus de la saisie d'origine -->
+    <input type="hidden" name="email_ascii" id="email_ascii">
+    <input type="hidden" name="website_ascii" id="website_ascii">
+
+    <button type="submit">S'inscrire</button>
+  </form>
+
+  <div id="success" role="status" hidden></div>
+</main>
+
+<script>
+(function () {
+  "use strict";
+
+  var form = document.getElementById("signup");
+  var fields = {
+    fullname: document.getElementById("fullname"),
+    email: document.getElementById("email"),
+    website: document.getElementById("website"),
+    password: document.getElementById("password")
+  };
+  var successBox = document.getElementById("success");
+  var submittedOnce = false;
+
+  /* ---------- Utilitaires ---------- */
+
+  // Longueur en octets UTF-8
+  function utf8Length(str) {
+    return new TextEncoder().encode(str).length;
+  }
+
+  // Nombre de caractères réels (points de code), pas d'unités UTF-16
+  function charCount(str) {
+    return Array.from(str).length;
+  }
+
+  /*
+    Convertit un nom de domaine (U-labels ou A-labels) en forme ASCII
+    via l'analyseur d'URL du navigateur, qui applique UTS #46.
+    Renvoie null si la conversion échoue.
+  */
+  function toAsciiDomain(domain) {
+    if (!domain) return null;
+    // Caractères qui changeraient le sens de l'URL ou sont interdits dans un nom d'hôte
+    if (/[\s\/\\?#:@\[\]%<>"^`{|}]/u.test(domain)) return null;
+    var host;
+    try {
+      host = new URL("http://" + domain + "/").hostname;
+    } catch (e) {
+      return null;
+    }
+    if (!host || host.charAt(0) === "[") return null; // IPv6 : pas un nom de domaine
+    return host.toLowerCase();
+  }
+
+  /*
+    Vérifie un nom d'hôte déjà en forme ASCII :
+    - 253 octets au plus, au moins deux labels ;
+    - chaque label : 1 à 63 caractères, lettres/chiffres/tirets, sans tiret en bordure ;
+    - TLD : deux lettres ou plus (aucune limite haute) ou un A-label « xn-- ».
+  */
+  function isValidAsciiHostname(host) {
+    if (!host || host.length > 253) return false;
+    var labels = host.split(".");
+    if (labels.length < 2) return false;
+    for (var i = 0; i < labels.length; i++) {
+      var label = labels[i];
+      if (label.length < 1 || label.length > 63) return false;
+      if (!/^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i.test(label)) return false;
+    }
+    var tld = labels[labels.length - 1];
+    return /^(?:[a-z]{2,}|xn--[a-z0-9-]+)$/i.test(tld);
+  }
+
+  /* ---------- Validateurs ---------- */
+  // Chaque validateur renvoie { error: "..." } ou { ok: true, ... }
+
+  function validateFullname(value) {
+    var v = value.trim();
+    if (!v) return { error: "Veuillez indiquer votre nom complet." };
+    if (charCount(v) > 100) return { error: "Le nom ne doit pas dépasser 100 caractères." };
+    if (/[\u0000-\u001F\u007F]/.test(v)) return { error: "Le nom contient des caractères non autorisés." };
+    // Aucune restriction de script : Zoë, Nguyễn, 王小明, O'Brien… sont valides.
+    return { ok: true };
+  }
+
+  function validateEmail(value) {
+    var v = value.trim();
+    if (!v) return { error: "Veuillez indiquer votre adresse e-mail." };
+
+    var parts = v.split("@");
+    if (parts.length !== 2) {
+      return { error: "L'adresse doit contenir un seul « @ » (ex. nom@exemple.fr)." };
+    }
+    var local = parts[0];
+    var domain = parts[1];
+
+    // Partie locale : non vide, sans espace ni caractère de contrôle. Unicode autorisé (RFC 6531).
+    if (!local) return { error: "Il manque la partie avant le « @ »." };
+    if (/\s/u.test(local) || /[\u0000-\u001F\u007F]/.test(local)) {
+      return { error: "La partie avant le « @ » ne doit pas contenir d'espace." };
+    }
+    if (utf8Length(local) > 64) {
+      return { error: "La partie avant le « @ » est trop longue." };
+    }
+
+    if (!domain) return { error: "Il manque le nom de domaine après le « @ »." };
+    var asciiDomain = toAsciiDomain(domain);
+    if (!asciiDomain || !isValidAsciiHostname(asciiDomain)) {
+      return { error: "Le nom de domaine après le « @ » n'est pas valide." };
+    }
+
+    return {
+      ok: true,
+      typed: v,
+      // La partie locale ne se convertit pas : seul le domaine passe en A-label.
+      ascii: local.normalize("NFC") + "@" + asciiDomain
+    };
+  }
+
+  function validateWebsite(value) {
+    var v = value.trim();
+    if (!v) return { ok: true, typed: "", ascii: "" }; // champ facultatif
+
+    // Ajoute https:// si l'utilisateur a saisi seulement un domaine
+    var candidate = /^[a-z][a-z0-9+.-]*:/i.test(v) ? v : "https://" + v;
+
+    var url;
+    try {
+      url = new URL(candidate);
+    } catch (e) {
+      return { error: "L'adresse du site n'est pas valide." };
+    }
+    if (url.protocol !== "http:" && url.protocol !== "https:") {
+      return { error: "L'adresse du site doit commencer par http:// ou https://." };
+    }
+    if (url.username || url.password) {
+      return { error: "L'adresse du site ne doit pas contenir d'identifiants." };
+    }
+    // url.hostname est déjà en A-label (UTS #46)
+    if (!isValidAsciiHostname(url.hostname)) {
+      return { error: "Le nom de domaine du site n'est pas valide." };
+    }
+    return { ok: true, typed: v, ascii: url.href };
+  }
+
+  function validatePassword(value) {
+    if (!value) return { error: "Veuillez choisir un mot de passe." };
+    var n = charCount(value);
+    if (n < 8) return { error: "Le mot de passe doit contenir au moins 8 caractères." };
+    if (n > 128) return { error: "Le mot de passe ne doit pas dépasser 128 caractères." };
+    return { ok: true };
+  }
+
+  var validators = {
+    fullname: validateFullname,
+    email: validateEmail,
+    website: validateWebsite,
+    password: validatePassword
+  };
+
+  /* ---------- Affichage ---------- */
+
+  function showResult(name, result) {
+    var input = fields[name];
+    var errorEl = document.getElementById(name + "-error");
+    if (result.error) {
+      input.setAttribute("aria-invalid", "true");
+      errorEl.textContent = result.error;
+    } else {
+      input.removeAttribute("aria-invalid");
+      errorEl.textContent = "";
+    }
+  }
+
+  function validateField(name) {
+    var result = validators[name](fields[name].value);
+    showResult(name, result);
+    return result;
+  }
+
+  // Revalidation en direct après la première tentative d'envoi, ou en quittant un champ rempli
+  Object.keys(fields).forEach(function (name) {
+    fields[name].addEventListener("input", function () {
+      if (submittedOnce || fields[name].hasAttribute("aria-invalid")) validateField(name);
+    });
+    fields[name].addEventListener("blur", function () {
+      if (fields[name].value !== "") validateField(name);
+    });
+  });
+
+  function escapeHtml(s) {
+    return s.replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+    submittedOnce = true;
+    successBox.hidden = true;
+
+    var results = {};
+    var firstInvalid = null;
+    Object.keys(fields).forEach(function (name) {
+      results[name] = validateField(name);
+      if (results[name].error && !firstInvalid) firstInvalid = fields[name];
+    });
+
+    if (firstInvalid) {
+      firstInvalid.focus();
+      return;
+    }
+
+    // On conserve la saisie d'origine (champs visibles) ET la forme ASCII (champs cachés).
+    document.getElementById("email_ascii").value = results.email.ascii;
+    document.getElementById("website_ascii").value = results.website.ascii;
+
+    // En production : remplacer l'affichage ci-dessous par form.submit() ou un fetch().
+    var html = "<strong>Formulaire valide.</strong><dl>" +
+      "<dt>Nom</dt><dd>" + escapeHtml(fields.fullname.value.trim()) + "</dd>" +
+      "<dt>E-mail (saisi)</dt><dd>" + escapeHtml(results.email.typed) + "</dd>" +
+      "<dt>E-mail (domaine en ASCII)</dt><dd>" + escapeHtml(results.email.ascii) + "</dd>";
+    if (results.website.typed) {
+      html += "<dt>Site web (saisi)</dt><dd>" + escapeHtml(results.website.typed) + "</dd>" +
+              "<dt>Site web (ASCII)</dt><dd>" + escapeHtml(results.website.ascii) + "</dd>";
+    }
+    html += "</dl>";
+    successBox.innerHTML = html;
+    successBox.hidden = false;
+  });
+})();
+</script>
+</body>
+</html>

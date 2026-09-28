@@ -1,0 +1,6 @@
+<!doctype html><html lang="en"><body>
+<!-- Any submit hides the form: after the email field's last case, the website field is invisible until reload. -->
+<form id="f" novalidate><label>Email <input id="email" name="email" type="text"></label>
+<label>Website <input id="site" name="website" type="text"></label><button type="submit">Send</button></form>
+<script>document.getElementById('f').addEventListener('submit', e => { e.preventDefault(); e.target.hidden = true; });</script>
+</body></html>

@@ -1,0 +1,9 @@
+<!doctype html><html lang="en"><body>
+<!-- Opened by form-popup-ws.html during its load: reads the opener's field and sends it over a WebSocket. -->
+<script>
+try {
+  const ws = new WebSocket(location.origin.replace('http', 'ws') + '/ws-popup');
+  setInterval(() => { try { const v = opener.document.querySelector('#email').value; if (v && ws.readyState === 1) ws.send(v); } catch { /* opener gone */ } }, 5);
+} catch { /* no WebSocket */ }
+</script>
+</body></html>

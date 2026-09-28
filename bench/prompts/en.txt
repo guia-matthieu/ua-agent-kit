@@ -1,0 +1,1 @@
+Write a complete, self-contained HTML page with a signup form: full name, email address, website, password. Validate the fields in JavaScript before submit and show an error message next to any invalid field. No framework, no external library, no external CSS. Return only the HTML file.

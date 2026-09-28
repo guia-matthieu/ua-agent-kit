@@ -1,0 +1,1283 @@
+{
+  "model": "anthropic",
+  "model_version": "anthropic/claude-opus-5.5",
+  "lang": "es",
+  "condition": "guide",
+  "repeat": 2,
+  "usage": {
+    "prompt_tokens": 1327,
+    "completion_tokens": 6344,
+    "total_tokens": 7671,
+    "cost": 0.132188,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost_details": {
+      "upstream_inference_cost": 0.132188,
+      "upstream_inference_prompt_cost": 0.005308,
+      "upstream_inference_completions_cost": 0.12688
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 1293,
+      "image_tokens": 0,
+      "audio_tokens": 0
+    }
+  },
+  "finish_reason": "stop",
+  "date": "2026-09-25T11:26:39.066Z",
+  "battery": "1.0.0",
+  "fields": {
+    "email": {
+      "status": "tested",
+      "selector": "[data-ua-kit-field=\"email\"]",
+      "kind": "email",
+      "submitExercised": true,
+      "results": [
+        {
+          "id": "email-control-01",
+          "class": "control",
+          "expect": "accept",
+          "typed": "marie.dupont@example.com",
+          "observed": "marie.dupont@example.com",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "email-control-02",
+          "class": "control",
+          "expect": "accept",
+          "typed": "Marie.Dupont@Example.COM",
+          "observed": "Marie.Dupont@Example.COM",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "email-control-03",
+          "class": "control",
+          "expect": "accept",
+          "typed": "marie+newsletter@example.org",
+          "observed": "marie+newsletter@example.org",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "email-control-04",
+          "class": "control",
+          "expect": "accept",
+          "typed": "o'neill@example.ie",
+          "observed": "o'neill@example.ie",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "email-control-05",
+          "class": "control",
+          "expect": "accept",
+          "typed": "prenom.nom@sub.example.co.uk",
+          "observed": "prenom.nom@sub.example.co.uk",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "email-control-06",
+          "class": "control",
+          "expect": "accept",
+          "typed": "contact@2cv.example.com",
+          "observed": "contact@2cv.example.com",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "email-ascii-tld-short-01",
+          "class": "ascii-tld-short",
+          "expect": "accept",
+          "typed": "contact@mairie.bzh",
+          "observed": "contact@mairie.bzh",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "email-ascii-tld-short-02",
+          "class": "ascii-tld-short",
+          "expect": "accept",
+          "typed": "info@example.eus",
+          "observed": "info@example.eus",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "email-ascii-tld-short-03",
+          "class": "ascii-tld-short",
+          "expect": "accept",
+          "typed": "hola@example.cat",
+          "observed": "hola@example.cat",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "email-ascii-tld-long-01",
+          "class": "ascii-tld-long",
+          "expect": "accept",
+          "typed": "contact@boutique.corsica",
+          "observed": "contact@boutique.corsica",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "email-ascii-tld-long-02",
+          "class": "ascii-tld-long",
+          "expect": "accept",
+          "typed": "hello@example.technology",
+          "observed": "hello@example.technology",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "email-ascii-tld-long-03",
+          "class": "ascii-tld-long",
+          "expect": "accept",
+          "typed": "info@example.international",
+          "observed": "info@example.international",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "email-ascii-tld-long-04",
+          "class": "ascii-tld-long",
+          "expect": "accept",
+          "typed": "studio@example.photography",
+          "observed": "studio@example.photography",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "email-idn-tld-alabel-01",
+          "class": "idn-tld-alabel",
+          "expect": "accept",
+          "typed": "info@example.xn--p1ai",
+          "observed": "info@example.xn--p1ai",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "email-idn-sld-alabel-01",
+          "class": "idn-sld-alabel",
+          "expect": "accept",
+          "typed": "contact@xn--socit-esab.fr",
+          "observed": "contact@xn--socit-esab.fr",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "email-idn-domain-01",
+          "class": "email-idn-domain",
+          "expect": "accept",
+          "typed": "contact@société.fr",
+          "observed": "contact@société.fr",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "email-idn-domain-02",
+          "class": "email-idn-domain",
+          "expect": "accept",
+          "typed": "info@пример.рф",
+          "observed": "info@пример.рф",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "email-idn-domain-03",
+          "class": "email-idn-domain",
+          "expect": "accept",
+          "typed": "info@例え.jp",
+          "observed": "info@例え.jp",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "email-idn-domain-04",
+          "class": "email-idn-domain",
+          "expect": "accept",
+          "typed": "info@παράδειγμα.ελ",
+          "observed": "info@παράδειγμα.ελ",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "email-eai-local-01",
+          "class": "eai-local",
+          "expect": "accept",
+          "typed": "josé.dupont@example.fr",
+          "observed": "josé.dupont@example.fr",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "email-eai-local-02",
+          "class": "eai-local",
+          "expect": "accept",
+          "typed": "用户@example.com",
+          "observed": "用户@example.com",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "email-eai-local-03",
+          "class": "eai-local",
+          "expect": "accept",
+          "typed": "пользователь@example.com",
+          "observed": "пользователь@example.com",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "email-eai-full-01",
+          "class": "eai-full",
+          "expect": "accept",
+          "typed": "用户@例子.中国",
+          "observed": "用户@例子.中国",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "email-eai-full-02",
+          "class": "eai-full",
+          "expect": "accept",
+          "typed": "مستخدم@مثال.مصر",
+          "observed": "مستخدم@مثال.مصر",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "email-eai-full-03",
+          "class": "eai-full",
+          "expect": "accept",
+          "typed": "उपयोगकर्ता@उदाहरण.भारत",
+          "observed": "उपयोगकर्ता@उदाहरण.भारत",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "email-boundary-local64-01",
+          "class": "boundary",
+          "expect": "accept",
+          "typed": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@example.com",
+          "observed": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@example.com",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "email-guard-01",
+          "class": "guard",
+          "expect": "reject",
+          "typed": "a@@b.com",
+          "observed": "a@@b.com",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [
+            "aria-invalid"
+          ],
+          "verdict": "rejected-script",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "email-guard-02",
+          "class": "guard",
+          "expect": "reject",
+          "typed": "user@",
+          "observed": "user@",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [
+            "aria-invalid"
+          ],
+          "verdict": "rejected-script",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "email-guard-03",
+          "class": "guard",
+          "expect": "reject",
+          "typed": "@example.com",
+          "observed": "@example.com",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [
+            "aria-invalid"
+          ],
+          "verdict": "rejected-script",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "email-guard-04",
+          "class": "guard",
+          "expect": "reject",
+          "typed": "user@example..com",
+          "observed": "user@example..com",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [
+            "aria-invalid"
+          ],
+          "verdict": "rejected-script",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "email-guard-05",
+          "class": "guard",
+          "expect": "reject",
+          "typed": "us er@example.com",
+          "observed": "us er@example.com",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [
+            "aria-invalid"
+          ],
+          "verdict": "rejected-script",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "email-guard-06",
+          "class": "guard",
+          "expect": "reject",
+          "typed": "user@exa mple.com",
+          "observed": "user@exa mple.com",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [
+            "aria-invalid"
+          ],
+          "verdict": "rejected-script",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "email-guard-07",
+          "class": "guard",
+          "expect": "reject",
+          "typed": "plainaddress",
+          "observed": "plainaddress",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [
+            "aria-invalid"
+          ],
+          "verdict": "rejected-script",
+          "rewritten": false,
+          "outcome": "pass"
+        }
+      ],
+      "counts": {
+        "pass": 33,
+        "fail": 0,
+        "rewritten": 0,
+        "notObserved": 0,
+        "notTestable": 0,
+        "notSubmitted": 0,
+        "byClass": {
+          "control": {
+            "total": 6,
+            "pass": 6
+          },
+          "ascii-tld-short": {
+            "total": 3,
+            "pass": 3
+          },
+          "ascii-tld-long": {
+            "total": 4,
+            "pass": 4
+          },
+          "idn-tld-alabel": {
+            "total": 1,
+            "pass": 1
+          },
+          "idn-sld-alabel": {
+            "total": 1,
+            "pass": 1
+          },
+          "email-idn-domain": {
+            "total": 4,
+            "pass": 4
+          },
+          "eai-local": {
+            "total": 3,
+            "pass": 3
+          },
+          "eai-full": {
+            "total": 3,
+            "pass": 3
+          },
+          "boundary": {
+            "total": 1,
+            "pass": 1
+          },
+          "guard": {
+            "total": 7,
+            "pass": 7
+          }
+        }
+      }
+    },
+    "website": {
+      "status": "tested",
+      "selector": "[data-ua-kit-field=\"website\"]",
+      "kind": "domain",
+      "submitExercised": true,
+      "results": [
+        {
+          "id": "domain-control-01",
+          "class": "control",
+          "expect": "accept",
+          "typed": "example.com",
+          "observed": "example.com",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "domain-control-02",
+          "class": "control",
+          "expect": "accept",
+          "typed": "Example.COM",
+          "observed": "Example.COM",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "domain-control-03",
+          "class": "control",
+          "expect": "accept",
+          "typed": "sub.example.co.uk",
+          "observed": "sub.example.co.uk",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "domain-control-04",
+          "class": "control",
+          "expect": "accept",
+          "typed": "a.example.com",
+          "observed": "a.example.com",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "domain-ascii-tld-short-01",
+          "class": "ascii-tld-short",
+          "expect": "accept",
+          "typed": "mairie.bzh",
+          "observed": "mairie.bzh",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "domain-ascii-tld-short-02",
+          "class": "ascii-tld-short",
+          "expect": "accept",
+          "typed": "example.eus",
+          "observed": "example.eus",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "domain-ascii-tld-short-03",
+          "class": "ascii-tld-short",
+          "expect": "accept",
+          "typed": "example.wien",
+          "observed": "example.wien",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "domain-ascii-tld-long-01",
+          "class": "ascii-tld-long",
+          "expect": "accept",
+          "typed": "boutique.corsica",
+          "observed": "boutique.corsica",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "domain-ascii-tld-long-02",
+          "class": "ascii-tld-long",
+          "expect": "accept",
+          "typed": "shop.example.technology",
+          "observed": "shop.example.technology",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "domain-ascii-tld-long-03",
+          "class": "ascii-tld-long",
+          "expect": "accept",
+          "typed": "example.international",
+          "observed": "example.international",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "domain-ascii-tld-long-04",
+          "class": "ascii-tld-long",
+          "expect": "accept",
+          "typed": "example.barcelona",
+          "observed": "example.barcelona",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "domain-idn-tld-alabel-01",
+          "class": "idn-tld-alabel",
+          "expect": "accept",
+          "typed": "example.xn--p1ai",
+          "observed": "example.xn--p1ai",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "domain-idn-tld-alabel-02",
+          "class": "idn-tld-alabel",
+          "expect": "accept",
+          "typed": "xn--e1afmkfd.xn--p1ai",
+          "observed": "xn--e1afmkfd.xn--p1ai",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "domain-idn-tld-alabel-upper-01",
+          "class": "idn-tld-alabel",
+          "expect": "accept",
+          "typed": "example.XN--P1AI",
+          "observed": "example.XN--P1AI",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "domain-idn-sld-alabel-01",
+          "class": "idn-sld-alabel",
+          "expect": "accept",
+          "typed": "xn--socit-esab.fr",
+          "observed": "xn--socit-esab.fr",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "domain-idn-sld-alabel-02",
+          "class": "idn-sld-alabel",
+          "expect": "accept",
+          "typed": "xn--r8jz45g.jp",
+          "observed": "xn--r8jz45g.jp",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "domain-idn-ulabel-latin-01",
+          "class": "idn-ulabel",
+          "expect": "accept",
+          "typed": "société.fr",
+          "observed": "société.fr",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "domain-idn-ulabel-cyrillic-01",
+          "class": "idn-ulabel",
+          "expect": "accept",
+          "typed": "пример.рф",
+          "observed": "пример.рф",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "domain-idn-ulabel-arabic-01",
+          "class": "idn-ulabel",
+          "expect": "accept",
+          "typed": "مثال.مصر",
+          "observed": "مثال.مصر",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "domain-idn-ulabel-cjk-01",
+          "class": "idn-ulabel",
+          "expect": "accept",
+          "typed": "例子.中国",
+          "observed": "例子.中国",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "domain-idn-ulabel-devanagari-01",
+          "class": "idn-ulabel",
+          "expect": "accept",
+          "typed": "उदाहरण.भारत",
+          "observed": "उदाहरण.भारत",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "domain-idn-ulabel-greek-01",
+          "class": "idn-ulabel",
+          "expect": "accept",
+          "typed": "παράδειγμα.ελ",
+          "observed": "παράδειγμα.ελ",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "domain-idn-ulabel-thai-01",
+          "class": "idn-ulabel",
+          "expect": "accept",
+          "typed": "ตัวอย่าง.ไทย",
+          "observed": "ตัวอย่าง.ไทย",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "domain-idn-ulabel-hangul-01",
+          "class": "idn-ulabel",
+          "expect": "accept",
+          "typed": "예시.한국",
+          "observed": "예시.한국",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "domain-boundary-label63-01",
+          "class": "boundary",
+          "expect": "accept",
+          "typed": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.com",
+          "observed": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.com",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "domain-boundary-label64-01",
+          "class": "boundary",
+          "expect": "reject",
+          "typed": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.com",
+          "observed": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.com",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [
+            "aria-invalid"
+          ],
+          "verdict": "rejected-script",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "domain-boundary-total253-01",
+          "class": "boundary",
+          "expect": "accept",
+          "typed": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb.ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc.ddddddddddddddddddddddddddddddddddddddddddddddddddddddddd.com",
+          "observed": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb.ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc.ddddddddddddddddddddddddddddddddddddddddddddddddddddddddd.com",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "domain-guard-01",
+          "class": "guard",
+          "expect": "reject",
+          "typed": "-bad-.com",
+          "observed": "-bad-.com",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [
+            "aria-invalid"
+          ],
+          "verdict": "rejected-script",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "domain-guard-02",
+          "class": "guard",
+          "expect": "reject",
+          "typed": "bad..dots.com",
+          "observed": "bad..dots.com",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [
+            "aria-invalid"
+          ],
+          "verdict": "rejected-script",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "domain-guard-03",
+          "class": "guard",
+          "expect": "reject",
+          "typed": "exa mple.com",
+          "observed": "exa mple.com",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [
+            "aria-invalid"
+          ],
+          "verdict": "rejected-script",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "domain-guard-04",
+          "class": "guard",
+          "expect": "reject",
+          "typed": ".example.com",
+          "observed": ".example.com",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [
+            "aria-invalid"
+          ],
+          "verdict": "rejected-script",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "url-control-01",
+          "class": "control",
+          "expect": "accept",
+          "typed": "https://example.com",
+          "observed": "https://example.com",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "url-control-02",
+          "class": "control",
+          "expect": "accept",
+          "typed": "http://example.technology",
+          "observed": "http://example.technology",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "url-control-03",
+          "class": "control",
+          "expect": "accept",
+          "typed": "https://example.com/café",
+          "observed": "https://example.com/café",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "url-ascii-tld-short-01",
+          "class": "ascii-tld-short",
+          "expect": "accept",
+          "typed": "https://mairie.bzh/",
+          "observed": "https://mairie.bzh/",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "url-ascii-tld-long-01",
+          "class": "ascii-tld-long",
+          "expect": "accept",
+          "typed": "https://boutique.corsica",
+          "observed": "https://boutique.corsica",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "url-ascii-tld-long-02",
+          "class": "ascii-tld-long",
+          "expect": "accept",
+          "typed": "https://example.corsica/contact?lang=fr",
+          "observed": "https://example.corsica/contact?lang=fr",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "url-ascii-tld-long-03",
+          "class": "ascii-tld-long",
+          "expect": "accept",
+          "typed": "https://sub.example.international:8443/x",
+          "observed": "https://sub.example.international:8443/x",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "url-idn-sld-alabel-01",
+          "class": "idn-sld-alabel",
+          "expect": "accept",
+          "typed": "https://xn--socit-esab.fr",
+          "observed": "https://xn--socit-esab.fr",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "url-idn-ulabel-latin-01",
+          "class": "idn-ulabel",
+          "expect": "accept",
+          "typed": "https://société.fr/contact",
+          "observed": "https://société.fr/contact",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "url-idn-ulabel-cyrillic-01",
+          "class": "idn-ulabel",
+          "expect": "accept",
+          "typed": "https://пример.рф",
+          "observed": "https://пример.рф",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "url-idn-ulabel-cjk-01",
+          "class": "idn-ulabel",
+          "expect": "accept",
+          "typed": "https://例子.中国/path",
+          "observed": "https://例子.中国/path",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "url-guard-01",
+          "class": "guard",
+          "expect": "reject",
+          "typed": "https://",
+          "observed": "https://",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [
+            "aria-invalid"
+          ],
+          "verdict": "rejected-script",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "url-guard-02",
+          "class": "guard",
+          "expect": "reject",
+          "typed": "http//example.com",
+          "observed": "http//example.com",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [
+            "aria-invalid"
+          ],
+          "verdict": "rejected-script",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "url-guard-03",
+          "class": "guard",
+          "expect": "reject",
+          "typed": "https://exa mple.com",
+          "observed": "https://exa mple.com",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [
+            "aria-invalid"
+          ],
+          "verdict": "rejected-script",
+          "rewritten": false,
+          "outcome": "pass"
+        },
+        {
+          "id": "url-guard-04",
+          "class": "guard",
+          "expect": "reject",
+          "typed": "://example.com",
+          "observed": "://example.com",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [
+            "aria-invalid"
+          ],
+          "verdict": "rejected-script",
+          "rewritten": false,
+          "outcome": "pass"
+        }
+      ],
+      "counts": {
+        "pass": 46,
+        "fail": 0,
+        "rewritten": 0,
+        "notObserved": 0,
+        "notTestable": 0,
+        "notSubmitted": 0,
+        "byClass": {
+          "control": {
+            "total": 7,
+            "pass": 7
+          },
+          "ascii-tld-short": {
+            "total": 4,
+            "pass": 4
+          },
+          "ascii-tld-long": {
+            "total": 7,
+            "pass": 7
+          },
+          "idn-tld-alabel": {
+            "total": 3,
+            "pass": 3
+          },
+          "idn-sld-alabel": {
+            "total": 3,
+            "pass": 3
+          },
+          "idn-ulabel": {
+            "total": 11,
+            "pass": 11
+          },
+          "boundary": {
+            "total": 3,
+            "pass": 3
+          },
+          "guard": {
+            "total": 8,
+            "pass": 8
+          }
+        }
+      }
+    }
+  },
+  "runner_error": null,
+  "rescore_id": "2026-09-27T21:40:24.286Z"
+}

@@ -1,0 +1,1 @@
+Écris une page HTML complète et autonome avec un formulaire d'inscription : nom complet, adresse e-mail, site web, mot de passe. Valide les champs en JavaScript avant l'envoi et affiche un message d'erreur à côté de tout champ invalide. Pas de framework, pas de bibliothèque externe, pas de CSS externe. Renvoie uniquement le fichier HTML.

@@ -1,0 +1,31 @@
+{
+  "models": [
+    {
+      "key": "anthropic",
+      "slug": "anthropic/<model>",
+      "provider": null
+    },
+    {
+      "key": "openai",
+      "slug": "openai/<model>",
+      "provider": null
+    },
+    {
+      "key": "open-weight",
+      "slug": "z-ai/glm-5.3",
+      "provider": null
+    }
+  ],
+  "languages": [
+    "en",
+    "fr",
+    "es"
+  ],
+  "conditions": [
+    "no-guide",
+    "guide"
+  ],
+  "repeats": 3,
+  "temperature": null,
+  "max_tokens": 16000
+}

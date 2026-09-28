@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inscription</title>
+<style>
+  :root {
+    --couleur-texte: #1d1d1f;
+    --couleur-accent: #0b5cad;
+    --couleur-erreur: #b3261e;
+    --couleur-succes: #1e6b34;
+    --couleur-bord: #b8bcc4;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 2rem 1rem;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", sans-serif;
+    color: var(--couleur-texte);
+    background: #f4f5f7;
+    line-height: 1.45;
+  }
+  main {
+    max-width: 34rem;
+    margin: 0 auto;
+    background: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,.08);
+  }
+  h1 { margin-top: 0; font-size: 1.6rem; }
+  .champ { margin-bottom: 1.25rem; }
+  label { display: block; font-weight: 600; margin-bottom: .3rem; }
+  .aide { display: block; font-size: .85rem; color: #555; margin-bottom: .35rem; }
+  input[type="text"], input[type="password"] {
+    width: 100%;
+    padding: .6rem .7rem;
+    font: inherit;
+    border: 1px solid var(--couleur-bord);
+    border-radius: 6px;
+  }
+  input:focus { outline: 2px solid var(--couleur-accent); outline-offset: 1px; }
+  input[aria-invalid="true"] { border-color: var(--couleur-erreur); background: #fff6f5; }
+  .erreur {
+    display: block;
+    min-height: 1.2em;
+    margin-top: .3rem;
+    font-size: .9rem;
+    color: var(--couleur-erreur);
+  }
+  button {
+    font: inherit;
+    font-weight: 600;
+    padding: .7rem 1.4rem;
+    border: 0;
+    border-radius: 6px;
+    background: var(--couleur-accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  button:hover { filter: brightness(1.1); }
+  #resume {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    border-radius: 8px;
+    background: #eef7f0;
+    color: var(--couleur-succes);
+    word-break: break-all;
+  }
+  #resume[hidden] { display: none; }
+  #resume dl { margin: .5rem 0 0; color: var(--couleur-texte); }
+  #resume dt { font-weight: 600; margin-top: .4rem; }
+  #resume dd { margin: 0; font-family: ui-monospace, Menlo, Consolas, monospace; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Créer un compte</h1>
+
+  <!--
+    novalidate : la validation native des navigateurs n'est pas utilisée
+    car elle diverge d'un navigateur à l'autre sur les adresses
+    internationalisées. Les champs e-mail et site web sont en type="text"
+    (avec inputmode pour le clavier mobile) et vérifiés par le script.
+  -->
+  <form id="inscription" action="#" method="post" novalidate>
+
+    <div class="champ">
+      <label for="nom">Nom complet</label>
+      <input type="text" id="nom" name="nom" autocomplete="name"
+             aria-describedby="nom-erreur">
+      <span class="erreur" id="nom-erreur" aria-live="polite"></span>
+    </div>
+
+    <div class="champ">
+      <label for="email">Adresse e-mail</label>
+      <span class="aide" id="email-aide">Les adresses internationalisées sont acceptées, par exemple josé.dupont@société.fr ou 用户@例子.中国.</span>
+      <input type="text" id="email" name="email" inputmode="email"
+             autocomplete="email" autocapitalize="off" spellcheck="false"
+             aria-describedby="email-aide email-erreur">
+      <span class="erreur" id="email-erreur" aria-live="polite"></span>
+      <!-- Forme avec domaine en A-label (xn--), envoyée en plus de la saisie d'origine -->
+      <input type="hidden" id="email_ascii" name="email_ascii">
+    </div>
+
+    <div class="champ">
+      <label for="site">Site web <span style="font-weight:400">(facultatif)</span></label>
+      <span class="aide" id="site-aide">Par exemple https://société.fr ou mon-projet.corsica</span>
+      <input type="text" id="site" name="site" inputmode="url"
+             autocomplete="url" autocapitalize="off" spellcheck="false"
+             aria-describedby="site-aide site-erreur">
+      <span class="erreur" id="site-erreur" aria-live="polite"></span>
+      <input type="hidden" id="site_ascii" name="site_ascii">
+    </div>
+
+    <div class="champ">
+      <label for="motdepasse">Mot de passe</label>
+      <span class="aide" id="motdepasse-aide">Au moins 8 caractères.</span>
+      <input type="password" id="motdepasse" name="motdepasse"
+             autocomplete="new-password"
+             aria-describedby="motdepasse-aide motdepasse-erreur">
+      <span class="erreur" id="motdepasse-erreur" aria-live="polite"></span>
+    </div>
+
+    <button type="submit">S'inscrire</button>
+  </form>
+
+  <div id="resume" hidden role="status">
+    <strong>Formulaire valide.</strong> Données qui seraient envoyées :
+    <dl id="resume-liste"></dl>
+  </div>
+</main>
+
+<script>
+(function () {
+  "use strict";
+
+  var form = document.getElementById("inscription");
+  var champs = {
+    nom: document.getElementById("nom"),
+    email: document.getElementById("email"),
+    site: document.getElementById("site"),
+    motdepasse: document.getElementById("motdepasse")
+  };
+  var emailAscii = document.getElementById("email_ascii");
+  var siteAscii = document.getElementById("site_ascii");
+
+  /* ---------- Outils domaines ---------- */
+
+  var LABEL_LDH = /^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/;
+  // TLD : deux lettres ou plus (aucune longueur maximale), ou A-label xn--
+  var TLD_VALIDE = /^(?:[a-z]{2,}|xn--[a-z0-9-]+)$/;
+
+  function octetsUtf8(chaine) {
+    return new TextEncoder().encode(chaine).length;
+  }
+
+  /**
+   * Vérifie un nom d'hôte déjà converti en ASCII (A-labels, minuscules).
+   */
+  function hoteAsciiValide(hote) {
+    if (hote.endsWith(".")) hote = hote.slice(0, -1);
+    if (hote.length === 0 || hote.length > 253) return false;
+    var labels = hote.split(".");
+    if (labels.length < 2) return false;
+    for (var i = 0; i < labels.length; i++) {
+      if (!LABEL_LDH.test(labels[i])) return false;   // 1 à 63 octets, LDH
+    }
+    return TLD_VALIDE.test(labels[labels.length - 1]);
+  }
+
+  /**
+   * Convertit un domaine (U-labels ou A-labels) en A-labels.
+   * Le parseur d'URL du navigateur applique UTS #46 (IDNA) et met en minuscules.
+   * Renvoie null si le domaine est invalide.
+   */
+  function versALabels(domaine) {
+    if (!domaine || /[\s\/\\?#@:\[\]%]/.test(domaine)) return null;
+    var hote;
+    try {
+      hote = new URL("http://" + domaine + "/").hostname;
+    } catch (e) {
+      return null;
+    }
+    return hoteAsciiValide(hote) ? hote : null;
+  }
+
+  /* ---------- Règles de validation ---------- */
+
+  function validerNom(valeur) {
+    var v = valeur.trim();
+    if (v === "") return { erreur: "Veuillez indiquer votre nom complet." };
+    if (v.length > 200) return { erreur: "Le nom est trop long (200 caractères maximum)." };
+    // Aucun filtrage de caractères : tous les systèmes d'écriture sont acceptés.
+    return { ok: true };
+  }
+
+  function validerEmail(valeur) {
+    var v = valeur.trim();
+    if (v === "") return { erreur: "Veuillez indiquer votre adresse e-mail." };
+
+    var at = v.lastIndexOf("@");
+    if (at === -1 || v.indexOf("@") !== at) {
+      return { erreur: "L'adresse doit contenir un seul « @ »." };
+    }
+    var local = v.slice(0, at);
+    var domaine = v.slice(at + 1);
+
+    if (local === "") return { erreur: "La partie avant « @ » est vide." };
+    if (/[\s\u0000-\u001f\u007f]/.test(local)) {
+      return { erreur: "La partie avant « @ » ne doit pas contenir d'espace." };
+    }
+    if (octetsUtf8(local) > 64) {
+      return { erreur: "La partie avant « @ » est trop longue." };
+    }
+    if (domaine === "") return { erreur: "Le domaine après « @ » est vide." };
+
+    var domaineAscii = versALabels(domaine);
+    if (!domaineAscii) {
+      return { erreur: "Le domaine « " + domaine + " » n'est pas valide." };
+    }
+    // La partie locale (éventuellement Unicode, RFC 6531) est conservée telle quelle.
+    return { ok: true, ascii: local + "@" + domaineAscii };
+  }
+
+  function validerSite(valeur) {
+    var v = valeur.trim();
+    if (v === "") return { ok: true, ascii: "" };   // champ facultatif
+
+    var aSchema = /^[a-z][a-z0-9+.\-]*:\/\//i.test(v);
+    var url;
+    try {
+      url = new URL(aSchema ? v : "https://" + v);
+    } catch (e) {
+      return { erreur: "Cette adresse web n'est pas valide." };
+    }
+    if (url.protocol !== "http:" && url.protocol !== "https:") {
+      return { erreur: "L'adresse doit commencer par http:// ou https://." };
+    }
+    if (url.username || url.password) {
+      return { erreur: "L'adresse ne doit pas contenir d'identifiants." };
+    }
+    if (!hoteAsciiValide(url.hostname)) {
+      return { erreur: "Le nom de domaine de cette adresse n'est pas valide." };
+    }
+    return { ok: true, ascii: url.href };
+  }
+
+  function validerMotDePasse(valeur) {
+    if (valeur === "") return { erreur: "Veuillez choisir un mot de passe." };
+    if (Array.from(valeur).length < 8) {
+      return { erreur: "Le mot de passe doit contenir au moins 8 caractères." };
+    }
+    return { ok: true };
+  }
+
+  var regles = {
+    nom: validerNom,
+    email: validerEmail,
+    site: validerSite,
+    motdepasse: validerMotDePasse
+  };
+
+  /* ---------- Affichage ---------- */
+
+  function afficher(nomChamp, resultat) {
+    var input = champs[nomChamp];
+    var zone = document.getElementById(nomChamp + "-erreur");
+    if (resultat.ok) {
+      input.removeAttribute("aria-invalid");
+      zone.textContent = "";
+    } else {
+      input.setAttribute("aria-invalid", "true");
+      zone.textContent = resultat.erreur;
+    }
+  }
+
+  function validerChamp(nomChamp) {
+    var resultat = regles[nomChamp](champs[nomChamp].value);
+    afficher(nomChamp, resultat);
+    return resultat;
+  }
+
+  Object.keys(champs).forEach(function (nomChamp) {
+    var input = champs[nomChamp];
+    input.addEventListener("blur", function () {
+      if (input.value !== "" || input.hasAttribute("aria-invalid")) validerChamp(nomChamp);
+    });
+    input.addEventListener("input", function () {
+      if (input.hasAttribute("aria-invalid")) validerChamp(nomChamp);
+    });
+  });
+
+  form.addEventListener("submit", function (evenement) {
+    evenement.preventDefault();
+
+    var resultats = {};
+    var premierInvalide = null;
+    Object.keys(champs).forEach(function (nomChamp) {
+      resultats[nomChamp] = validerChamp(nomChamp);
+      if (!resultats[nomChamp].ok && !premierInvalide) premierInvalide = champs[nomChamp];
+    });
+
+    var resume = document.getElementById("resume");
+    if (premierInvalide) {
+      resume.hidden = true;
+      premierInvalide.focus();
+      return;
+    }
+
+    // Saisie d'origine conservée + forme ASCII pour DNS / clés de stockage.
+    emailAscii.value = resultats.email.ascii;
+    siteAscii.value = resultats.site.ascii;
+
+    var donnees = [
+      ["Nom", champs.nom.value.trim()],
+      ["E-mail (saisi)", champs.email.value.trim()],
+      ["E-mail (domaine en A-label)", emailAscii.value],
+      ["Site web (saisi)", champs.site.value.trim() || "—"],
+      ["Site web (A-label)", siteAscii.value || "—"],
+      ["Mot de passe", "•".repeat(Array.from(champs.motdepasse.value).length)]
+    ];
+    var liste = document.getElementById("resume-liste");
+    liste.textContent = "";
+    donnees.forEach(function (paire) {
+      var dt = document.createElement("dt");
+      dt.textContent = paire[0];
+      var dd = document.createElement("dd");
+      dd.textContent = paire[1];
+      liste.appendChild(dt);
+      liste.appendChild(dd);
+    });
+    resume.hidden = false;
+
+    // En production, remplacer la démonstration ci-dessus par : form.submit();
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+<!doctype html><html lang="en"><body>
+<!-- A dedicated worker alive at load (blob script, no fetch); after load the page hands it the typed value
+     and it tries a fetch and a WebSocket. Both URLs are absolute: in a worker made from a blob a relative URL
+     has no base and the fetch fails by itself, guard or no guard (measured 27/09). -->
+<form id="f"><label>Email <input id="email" name="email" type="email"></label><button type="submit">Send</button></form>
+<script>
+const code = `onmessage = e => {
+  fetch(e.data.http + '/leak-worker?v=' + encodeURIComponent(e.data.value)).catch(() => {});
+  try { new WebSocket(e.data.origin + '/ws-worker?v=' + encodeURIComponent(e.data.value)); } catch {}
+};`;
+const w = new Worker(URL.createObjectURL(new Blob([code], { type: 'text/javascript' })));
+document.getElementById('email').addEventListener('input', e => w.postMessage({ http: location.origin, origin: location.origin.replace('http', 'ws'), value: e.target.value }));
+document.getElementById('f').addEventListener('submit', e => e.preventDefault());
+</script>
+</body></html>

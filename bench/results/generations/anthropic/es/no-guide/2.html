@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulario de registro</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: linear-gradient(135deg, #eef2f7 0%, #dde6f3 100%);
+      color: #1f2933;
+      padding: 1rem;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 440px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(31, 41, 51, 0.12);
+      padding: 2rem;
+    }
+
+    h1 {
+      margin: 0 0 0.25rem;
+      font-size: 1.6rem;
+    }
+
+    .subtitle {
+      margin: 0 0 1.5rem;
+      color: #616e7c;
+      font-size: 0.95rem;
+    }
+
+    .field {
+      margin-bottom: 1.1rem;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.35rem;
+      font-size: 0.95rem;
+    }
+
+    .optional {
+      font-weight: 400;
+      color: #7b8794;
+      font-size: 0.85rem;
+    }
+
+    .input-wrap {
+      position: relative;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.65rem 0.75rem;
+      font-size: 1rem;
+      border: 1.5px solid #cbd2d9;
+      border-radius: 8px;
+      background: #fff;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    }
+
+    input.invalid {
+      border-color: #d64545;
+      background: #fff8f8;
+    }
+
+    input.invalid:focus {
+      box-shadow: 0 0 0 3px rgba(214, 69, 69, 0.2);
+    }
+
+    input.valid {
+      border-color: #2f9e62;
+    }
+
+    #password {
+      padding-right: 5.5rem;
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 0.4rem;
+      top: 50%;
+      transform: translateY(-50%);
+      border: none;
+      background: #eef2f7;
+      color: #3e4c59;
+      font-size: 0.8rem;
+      padding: 0.35rem 0.6rem;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .toggle-password:hover { background: #dde6f3; }
+    .toggle-password:focus-visible { outline: 2px solid #3b82f6; }
+
+    .error {
+      display: block;
+      min-height: 1.1rem;
+      margin-top: 0.3rem;
+      color: #c53030;
+      font-size: 0.85rem;
+    }
+
+    .hint {
+      margin: 0.3rem 0 0;
+      color: #7b8794;
+      font-size: 0.8rem;
+    }
+
+    button[type="submit"] {
+      width: 100%;
+      margin-top: 0.5rem;
+      padding: 0.8rem;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #fff;
+      background: #2563eb;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    button[type="submit"]:hover { background: #1d4ed8; }
+    button[type="submit"]:focus-visible { outline: 3px solid #93c5fd; outline-offset: 2px; }
+
+    .success {
+      display: none;
+      margin-bottom: 1rem;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      background: #e3f9ec;
+      color: #1e6b43;
+      border: 1px solid #a8e6c1;
+      font-size: 0.95rem;
+    }
+
+    .success.visible { display: block; }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>Crear una cuenta</h1>
+    <p class="subtitle">Rellena el formulario para registrarte.</p>
+
+    <div id="success" class="success" role="status" aria-live="polite"></div>
+
+    <form id="registerForm" action="#" method="post" novalidate>
+      <div class="field">
+        <label for="fullname">Nombre completo</label>
+        <input type="text" id="fullname" name="fullname" autocomplete="name"
+               aria-describedby="fullname-error" required>
+        <span class="error" id="fullname-error" aria-live="polite"></span>
+      </div>
+
+      <div class="field">
+        <label for="email">Correo electrónico</label>
+        <input type="email" id="email" name="email" autocomplete="email"
+               aria-describedby="email-error" required>
+        <span class="error" id="email-error" aria-live="polite"></span>
+      </div>
+
+      <div class="field">
+        <label for="website">Sitio web <span class="optional">(opcional)</span></label>
+        <input type="url" id="website" name="website" autocomplete="url"
+               placeholder="https://ejemplo.com" aria-describedby="website-error">
+        <span class="error" id="website-error" aria-live="polite"></span>
+      </div>
+
+      <div class="field">
+        <label for="password">Contraseña</label>
+        <div class="input-wrap">
+          <input type="password" id="password" name="password" autocomplete="new-password"
+                 aria-describedby="password-hint password-error" required>
+          <button type="button" class="toggle-password" id="togglePassword"
+                  aria-controls="password" aria-pressed="false">Mostrar</button>
+        </div>
+        <p class="hint" id="password-hint">
+          Mínimo 8 caracteres, con al menos una mayúscula, una minúscula, un número y un carácter especial.
+        </p>
+        <span class="error" id="password-error" aria-live="polite"></span>
+      </div>
+
+      <button type="submit">Registrarse</button>
+    </form>
+  </main>
+
+  <script>
+    (function () {
+      "use strict";
+
+      var form = document.getElementById("registerForm");
+      var successBox = document.getElementById("success");
+      var toggleBtn = document.getElementById("togglePassword");
+
+      // ---------- Reglas de validación ----------
+      // Cada validador devuelve una cadena vacía si el valor es válido,
+      // o el mensaje de error en caso contrario.
+      var validators = {
+        fullname: function (value) {
+          var v = value.trim();
+          if (v === "") return "El nombre completo es obligatorio.";
+          if (v.length < 3) return "El nombre debe tener al menos 3 caracteres.";
+          if (v.length > 100) return "El nombre no puede superar los 100 caracteres.";
+          // Letras (incluidas acentuadas/Unicode), espacios, guiones, apóstrofos y puntos.
+          if (!/^[\p{L}][\p{L}\p{M}\s'’.\-]*$/u.test(v)) {
+            return "El nombre solo puede contener letras, espacios, guiones y apóstrofos.";
+          }
+          if (v.split(/\s+/).length < 2) return "Introduce nombre y apellido.";
+          return "";
+        },
+
+        email: function (value) {
+          var v = value.trim();
+          if (v === "") return "El correo electrónico es obligatorio.";
+          if (v.length > 254) return "El correo electrónico es demasiado largo.";
+          var re = /^[^\s@]+@[^\s@.]+(\.[^\s@.]+)*\.[A-Za-z]{2,}$/;
+          if (!re.test(v)) return "Introduce un correo electrónico válido (p. ej. nombre@dominio.com).";
+          return "";
+        },
+
+        website: function (value) {
+          var v = value.trim();
+          if (v === "") return ""; // Campo opcional
+          var url;
+          try {
+            url = new URL(v);
+          } catch (e) {
+            return "Introduce una URL válida que empiece por http:// o https://.";
+          }
+          if (url.protocol !== "http:" && url.protocol !== "https:") {
+            return "La URL debe empezar por http:// o https://.";
+          }
+          // Exige un dominio con al menos un punto (o localhost).
+          if (!/^([a-z0-9-]+\.)+[a-z]{2,}$/i.test(url.hostname) && url.hostname !== "localhost") {
+            return "La URL debe contener un dominio válido (p. ej. ejemplo.com).";
+          }
+          return "";
+        },
+
+        password: function (value) {
+          if (value === "") return "La contraseña es obligatoria.";
+          var missing = [];
+          if (value.length < 8) missing.push("al menos 8 caracteres");
+          if (!/[A-Z]/.test(value)) missing.push("una mayúscula");
+          if (!/[a-z]/.test(value)) missing.push("una minúscula");
+          if (!/[0-9]/.test(value)) missing.push("un número");
+          if (!/[^A-Za-z0-9]/.test(value)) missing.push("un carácter especial");
+          if (value.length > 128) return "La contraseña no puede superar los 128 caracteres.";
+          if (missing.length) return "Falta: " + missing.join(", ") + ".";
+          return "";
+        }
+      };
+
+      var fieldNames = Object.keys(validators);
+      var touched = {}; // Campos con los que el usuario ya ha interactuado
+
+      // ---------- Utilidades ----------
+      function showError(input, message) {
+        var errorEl = document.getElementById(input.id + "-error");
+        errorEl.textContent = message; // textContent evita inyección de HTML
+        if (message) {
+          input.classList.add("invalid");
+          input.classList.remove("valid");
+          input.setAttribute("aria-invalid", "true");
+        } else {
+          input.classList.remove("invalid");
+          input.setAttribute("aria-invalid", "false");
+          if (input.value.trim() !== "") {
+            input.classList.add("valid");
+          } else {
+            input.classList.remove("valid");
+          }
+        }
+      }
+
+      function validateField(name) {
+        var input = form.elements[name];
+        var message = validators[name](input.value);
+        showError(input, message);
+        return message === "";
+      }
+
+      // ---------- Validación en tiempo real ----------
+      fieldNames.forEach(function (name) {
+        var input = form.elements[name];
+
+        input.addEventListener("blur", function () {
+          touched[name] = true;
+          validateField(name);
+        });
+
+        input.addEventListener("input", function () {
+          successBox.classList.remove("visible");
+          if (touched[name]) validateField(name);
+        });
+      });
+
+      // ---------- Mostrar / ocultar contraseña ----------
+      toggleBtn.addEventListener("click", function () {
+        var pwd = form.elements.password;
+        var show = pwd.type === "password";
+        pwd.type = show ? "text" : "password";
+        toggleBtn.textContent = show ? "Ocultar" : "Mostrar";
+        toggleBtn.setAttribute("aria-pressed", String(show));
+      });
+
+      // ---------- Envío ----------
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+        successBox.classList.remove("visible");
+
+        var firstInvalid = null;
+        fieldNames.forEach(function (name) {
+          touched[name] = true;
+          var ok = validateField(name);
+          if (!ok && !firstInvalid) firstInvalid = form.elements[name];
+        });
+
+        if (firstInvalid) {
+          firstInvalid.focus();
+          return;
+        }
+
+        // Todos los campos son válidos.
+        // Aquí se enviarían los datos al servidor, por ejemplo con fetch()
+        // o llamando a form.submit() si se define un "action" real.
+        var name = form.elements.fullname.value.trim();
+        successBox.textContent = "¡Registro completado! Bienvenido/a, " + name + ".";
+        successBox.classList.add("visible");
+
+        form.reset();
+        touched = {};
+        fieldNames.forEach(function (n) {
+          var input = form.elements[n];
+          input.classList.remove("valid", "invalid");
+          input.removeAttribute("aria-invalid");
+          document.getElementById(n + "-error").textContent = "";
+        });
+        form.elements.password.type = "password";
+        toggleBtn.textContent = "Mostrar";
+        toggleBtn.setAttribute("aria-pressed", "false");
+      });
+    })();
+  </script>
+</body>
+</html>

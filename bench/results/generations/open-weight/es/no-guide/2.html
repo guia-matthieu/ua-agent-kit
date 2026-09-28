@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ficha de registro — Alta de cuenta</title>
+<style>
+  /* ============ Sistema base: papel, tinta y bermellón ============ */
+  :root{
+    --desk:#e6dcc6;            /* mesa bajo la hoja */
+    --paper:#f7f2e5;           /* papel de la ficha */
+    --ink:#211d15;             /* tinta principal */
+    --ink-soft:#6f6653;        /* tinta atenuada */
+    --line:#cfc3a8;            /* reglas finas */
+    --line-strong:#b3a687;     /* reglas de campo */
+    --accent:#b23a26;          /* bermellón de anotación / sello */
+    --ok:#3f6b4d;              /* verde tinta de conformidad */
+    --mono:ui-monospace,"SF Mono","Cascadia Mono",Menlo,Consolas,"Liberation Mono",monospace;
+    --serif:"Iowan Old Style",Georgia,"Times New Roman",Times,serif;
+  }
+  *{ box-sizing:border-box }
+  [hidden]{ display:none !important }
+  html{ scroll-behavior:smooth }
+  body{
+    margin:0;
+    min-height:100vh;
+    background:var(--desk);
+    color:var(--ink);
+    font-family:var(--mono);
+    padding:clamp(1.2rem,4vw,3.5rem) clamp(.8rem,4vw,2rem);
+  }
+  /* Grano de papel: motas negras generadas con ruido SVG, sin recursos externos */
+  body::before{
+    content:"";
+    position:fixed; inset:0; z-index:60; pointer-events:none; opacity:.85;
+    background-image:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.4 0 0 0 -0.14'/></filter><rect width='260' height='260' filter='url(%23g)'/></svg>");
+  }
+  ::selection{ background:var(--ink); color:var(--paper) }
+  :focus-visible{ outline:2px solid var(--accent); outline-offset:3px }
+  input:focus-visible{ outline:none }
+  .sr-only{
+    position:absolute; width:1px; height:1px; overflow:hidden;
+    clip-path:inset(50%); white-space:nowrap;
+  }
+
+  /* ============ La hoja ============ */
+  .sheet{
+    position:relative;
+    max-width:760px;
+    margin:0 auto;
+    background:var(--paper);
+    border:1px solid #2b2519;
+    padding:clamp(1.6rem,5vw,3.4rem);
+    box-shadow:0 1px 0 rgba(38,32,20,.25), 0 26px 52px -26px rgba(38,32,20,.45);
+  }
+  /* marco doble interior, como documento certificado */
+  .sheet::after{
+    content:"";
+    position:absolute; inset:8px;
+    border:1px solid rgba(33,29,21,.35);
+    pointer-events:none;
+  }
+  @keyframes rise{ from{ opacity:0; transform:translateY(10px) } to{ opacity:1; transform:none } }
+  @keyframes joltK{
+    0%{ transform:none }
+    20%{ transform:translate(1px,2px) rotate(.25deg) }
+    45%{ transform:translate(-1px,-1px) rotate(-.2deg) }
+    70%{ transform:translate(1px,0) }
+    100%{ transform:none }
+  }
+  .sheet.jolt{ animation:joltK .32s ease-out }
+
+  /* ============ Cabecera editorial ============ */
+  .masthead{ animation:rise .55s ease-out .05s backwards }
+  .meta-row{
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:.4rem 1.2rem;
+    font-size:.68rem; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--ink-soft);
+    padding-bottom:.7rem; border-bottom:1px solid var(--ink);
+  }
+  h1{
+    font-family:var(--serif);
+    font-weight:500;
+    font-size:clamp(2.4rem,7vw,3.7rem);
+    line-height:1.03;
+    letter-spacing:-.01em;
+    margin:2rem 0 .9rem;
+  }
+  h1 em{ font-style:italic; color:var(--accent) }
+  .lede{
+    margin:0;
+    font-size:.78rem; line-height:1.75; color:var(--ink-soft);
+    max-width:52ch;
+  }
+  .rule-double{
+    margin-top:1.8rem; height:6px;
+    border-top:1px solid var(--ink);
+    border-bottom:1px solid var(--ink);
+  }
+
+  /* ============ Campos ============ */
+  form{ margin-top:2.3rem }
+  .field{ margin-bottom:1.9rem; animation:rise .5s ease-out backwards }
+  #wrap-name{ animation-delay:.12s }
+  #wrap-email{ animation-delay:.18s }
+  #wrap-site{ animation-delay:.24s }
+  #wrap-pass{ animation-delay:.30s }
+  .form-foot{ animation:rise .5s ease-out .38s backwards }
+
+  .field-head{ display:flex; align-items:center; gap:.7rem; margin-bottom:.1rem }
+  .field-num{
+    font-size:.68rem; letter-spacing:.12em; color:var(--ink-soft);
+    transition:color .2s;
+  }
+  .field-num::after{ content:"—"; margin-left:.7rem; color:var(--line-strong) }
+  .field-head label{
+    flex:1;
+    font-size:.7rem; font-weight:600;
+    text-transform:uppercase; letter-spacing:.16em;
+  }
+  .req{ color:var(--accent) }
+  .opt{ color:var(--ink-soft); font-weight:400; text-transform:none; letter-spacing:.05em }
+
+  input{
+    width:100%;
+    background:transparent;
+    border:0; border-bottom:1px solid var(--line-strong);
+    border-radius:0;
+    font-family:var(--mono); font-size:1.02rem; line-height:1.5;
+    color:var(--ink);
+    padding:.55rem 0 .45rem;
+    caret-color:var(--accent);
+    transition:border-color .2s;
+  }
+  input::placeholder{ color:#a99e86 }
+  input:focus{ border-bottom-color:var(--accent); box-shadow:0 1px 0 var(--accent) }
+  form.locked input{ opacity:.55 }
+
+  /* marca de conformidad (se dibuja al validarse) */
+  .tick{ width:15px; height:15px; flex:none; color:var(--ok); opacity:0; transition:opacity .2s }
+  .tick path{
+    fill:none; stroke:currentColor; stroke-width:2.1;
+    stroke-linecap:round; stroke-linejoin:round;
+    stroke-dasharray:22; stroke-dashoffset:22;
+    transition:stroke-dashoffset .35s ease .05s;
+  }
+  .field.valid .tick{ opacity:1 }
+  .field.valid .tick path{ stroke-dashoffset:0 }
+  .field.valid .field-num{ color:var(--ok) }
+
+  /* anotación en bermellón junto al campo */
+  .error{
+    margin:0;
+    font-size:.72rem; line-height:1.6;
+    color:var(--accent);
+    max-height:0; opacity:0; overflow:hidden;
+    transition:max-height .25s ease, opacity .25s ease, margin .25s ease;
+  }
+  .error::before{ content:"→ " }
+  .field.invalid .error{ max-height:4.5em; opacity:1; margin-top:.5rem }
+  .field.invalid input{ border-bottom-color:var(--accent); box-shadow:0 1px 0 var(--accent) }
+  .field.invalid .field-num{ color:var(--accent) }
+
+  /* ============ Contraseña: ayudas en vivo ============ */
+  .input-wrap{ position:relative }
+  .input-wrap input{ padding-right:2.7rem }
+  .eye{
+    position:absolute; right:0; bottom:.3rem;
+    width:34px; height:34px;
+    display:grid; place-items:center;
+    background:none; border:0; padding:0;
+    color:var(--ink-soft); cursor:pointer;
+    transition:color .2s;
+  }
+  .eye:hover{ color:var(--ink) }
+  .eye .eye-hide{ display:none }
+  .eye.revealed .eye-show{ display:none }
+  .eye.revealed .eye-hide{ display:block }
+
+  .pass-aux{ opacity:.55; transition:opacity .25s }
+  .field-pass:focus-within .pass-aux{ opacity:1 }
+  form.locked .pass-aux{ opacity:.35 }
+
+  .pass-rules{
+    list-style:none; margin:.85rem 0 0; padding:0;
+    display:grid; grid-template-columns:1fr 1fr; gap:.4rem 1rem;
+  }
+  .pass-rules li{ display:flex; align-items:center; gap:.55rem; font-size:.72rem; color:var(--ink-soft) }
+  .pass-rules i{
+    width:8px; height:8px; flex:none;
+    border:1px solid currentColor;
+    transition:background .2s, border-color .2s;
+  }
+  .pass-rules li.done i{ background:var(--ink); border-color:var(--ink) }
+  .pass-rules .txt{ position:relative; transition:color .25s }
+  .pass-rules .txt::after{
+    content:""; position:absolute; left:-2px; top:54%;
+    height:1px; width:0; background:var(--ink);
+    transition:width .3s ease;
+  }
+  .pass-rules li.done .txt{ color:var(--ink-soft) }
+  .pass-rules li.done .txt::after{ width:calc(100% + 4px) }
+
+  .meter-row{
+    display:flex; align-items:center; gap:.7rem; flex-wrap:wrap;
+    margin-top:.95rem;
+    font-size:.68rem; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--ink-soft);
+  }
+  .meter{ display:flex; gap:4px }
+  .meter span{ width:26px; height:5px; border:1px solid var(--ink); transition:background .25s }
+  .meter span.on{ background:var(--ink) }
+  .meter-word{ min-width:7rem; color:var(--ink) }
+
+  /* ============ Pie del formulario ============ */
+  .form-foot{
+    display:flex; align-items:center; justify-content:space-between;
+    flex-wrap:wrap; gap:1rem;
+    margin-top:.3rem; padding-top:1.5rem;
+    border-top:1px solid var(--line);
+  }
+  .alert{
+    margin:0; flex:1 1 240px;
+    font-size:.72rem; line-height:1.6; color:var(--accent);
+  }
+  .submit{
+    display:inline-flex; align-items:center; gap:.8rem;
+    background:var(--ink); color:var(--paper);
+    border:1px solid var(--ink);
+    padding:.95rem 1.7rem;
+    font-family:var(--mono); font-size:.78rem;
+    text-transform:uppercase; letter-spacing:.18em;
+    cursor:pointer;
+    transition:background .2s, border-color .2s, transform .06s;
+  }
+  .submit:hover{ background:var(--accent); border-color:var(--accent) }
+  .submit:active{ transform:translateY(1px) }
+  .submit .arrow{ transition:transform .25s }
+  .submit:hover .arrow{ transform:translateX(5px) }
+  .submit:disabled{ opacity:.55; cursor:default }
+
+  .sheet-foot{
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:.4rem 1.5rem;
+    margin-top:2.4rem; padding-top:1rem;
+    border-top:1px solid var(--line);
+    font-size:.65rem; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-soft);
+    animation:rise .5s ease-out .45s backwards;
+  }
+
+  /* ============ El sello ============ */
+  .stamp{
+    position:absolute; left:50%; top:46%; z-index:5;
+    width:clamp(170px,32vw,240px); height:auto;
+    pointer-events:none;
+    mix-blend-mode:multiply;
+    opacity:0;
+    transform:translate(-50%,-50%) rotate(-8deg) scale(2.2);
+  }
+  .sheet.stamped .stamp{ animation:stampIn .45s cubic-bezier(.2,1.1,.3,1) .06s forwards }
+  @keyframes stampIn{
+    0%   { opacity:0;  transform:translate(-50%,-50%) rotate(-2deg)  scale(2.3) }
+    55%  { opacity:1;  transform:translate(-50%,-50%) rotate(-9deg)  scale(.94) }
+    100% { opacity:.94;transform:translate(-50%,-50%) rotate(-8deg)  scale(1) }
+  }
+
+  /* ============ Acuse de recibo ============ */
+  .receipt{
+    position:relative;
+    max-width:760px; margin:1.3rem auto 0;
+    background:var(--paper);
+    border:1px solid #2b2519;
+    padding:clamp(1.4rem,4vw,2.2rem);
+    box-shadow:0 1px 0 rgba(38,32,20,.25), 0 16px 36px -20px rgba(38,32,20,.4);
+    transform:rotate(-.5deg);
+  }
+  .receipt.in{ animation:receiptIn .5s cubic-bezier(.2,.9,.25,1) }
+  @keyframes receiptIn{
+    from{ opacity:0; transform:translateY(16px) rotate(-.5deg) }
+    to  { opacity:1; transform:translateY(0)   rotate(-.5deg) }
+  }
+  .receipt-head{
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:.3rem 1rem;
+    font-size:.65rem; letter-spacing:.18em; text-transform:uppercase; color:var(--ink-soft);
+    padding-bottom:.8rem; border-bottom:1px dashed var(--line-strong);
+  }
+  .receipt h2{
+    font-family:var(--serif); font-weight:500; font-size:1.9rem;
+    margin:.9rem 0 1.1rem;
+  }
+  .receipt-list{ margin:0 }
+  .receipt-list .row{
+    display:flex; align-items:baseline; gap:.75rem;
+    padding:.42rem 0; font-size:.82rem;
+  }
+  .receipt-list dt{
+    min-width:6.6rem;
+    font-size:.68rem; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--ink-soft);
+  }
+  .leader{ flex:1; border-bottom:1px dotted #b0a58c; transform:translateY(-3px) }
+  .receipt-list dd{ margin:0; overflow-wrap:anywhere; text-align:right }
+  .receipt-note{ margin:1.1rem 0 0; font-size:.72rem; line-height:1.7; color:var(--ink-soft) }
+  .btn-ghost{
+    margin-top:1.4rem;
+    background:transparent; border:1px solid var(--ink); color:var(--ink);
+    padding:.7rem 1.3rem;
+    font-family:var(--mono); font-size:.72rem;
+    text-transform:uppercase; letter-spacing:.16em;
+    cursor:pointer;
+    transition:background .2s, color .2s;
+  }
+  .btn-ghost:hover{ background:var(--ink); color:var(--paper) }
+
+  /* ============ Ajustes ============ */
+  @media (max-width:600px){
+    .pass-rules{ grid-template-columns:1fr }
+    .form-foot{ flex-direction:column; align-items:stretch }
+    .submit{ justify-content:center }
+    .sheet::after{ inset:5px }
+    .stamp{ width:min(64vw,240px) }
+  }
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{ animation:none !important; transition:none !important }
+    .stamp{ opacity:.94; transform:translate(-50%,-50%) rotate(-8deg) }
+  }
+</style>
+</head>
+<body>
+
+  <main class="sheet" id="sheet">
+
+    <header class="masthead">
+      <div class="meta-row">
+        <span>Expediente Nº 0001-A</span>
+        <span>Sección de altas</span>
+        <time id="today"></time>
+      </div>
+      <h1>Ficha de <em>registro</em></h1>
+      <p class="lede">
+        Mecanografíe sus datos con claridad. La ficha se valida antes de presentarse:
+        toda anotación en bermellón señala una corrección pendiente. Los campos marcados
+        con <span style="color:var(--accent)">*</span> son obligatorios.
+      </p>
+      <div class="rule-double" aria-hidden="true"></div>
+    </header>
+
+    <form id="regForm" novalidate>
+
+      <div class="field" id="wrap-name">
+        <div class="field-head">
+          <span class="field-num" aria-hidden="true">01</span>
+          <label for="fName">Nombre completo <span class="req" aria-hidden="true">*</span></label>
+          <svg class="tick" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 8.6l3.6 3.4 7.2-8.2"/></svg>
+        </div>
+        <input id="fName" name="name" type="text" autocomplete="name"
+               placeholder="p. ej. Marina Torres Salas" aria-describedby="err-name">
+        <p class="error" id="err-name" aria-live="polite"></p>
+      </div>
+
+      <div class="field" id="wrap-email">
+        <div class="field-head">
+          <span class="field-num" aria-hidden="true">02</span>
+          <label for="fEmail">Correo electrónico <span class="req" aria-hidden="true">*</span></label>
+          <svg class="tick" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 8.6l3.6 3.4 7.2-8.2"/></svg>
+        </div>
+        <input id="fEmail" name="email" type="email" autocomplete="email" spellcheck="false"
+               placeholder="p. ej. marina@correspondencia.es" aria-describedby="err-email">
+        <p class="error" id="err-email" aria-live="polite"></p>
+      </div>
+
+      <div class="field" id="wrap-site">
+        <div class="field-head">
+          <span class="field-num" aria-hidden="true">03</span>
+          <label for="fSite">Sitio web <span class="opt">(opcional)</span></label>
+          <svg class="tick" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 8.6l3.6 3.4 7.2-8.2"/></svg>
+        </div>
+        <input id="fSite" name="website" type="text" autocomplete="url" spellcheck="false"
+               placeholder="p. ej. https://estudiotorres.com" aria-describedby="err-site">
+        <p class="error" id="err-site" aria-live="polite"></p>
+      </div>
+
+      <div class="field field-pass" id="wrap-pass">
+        <div class="field-head">
+          <span class="field-num" aria-hidden="true">04</span>
+          <label for="fPass">Contraseña <span class="req" aria-hidden="true">*</span></label>
+          <svg class="tick" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 8.6l3.6 3.4 7.2-8.2"/></svg>
+        </div>
+        <div class="input-wrap">
+          <input id="fPass" name="password" type="password" autocomplete="new-password"
+                 placeholder="Mínimo 8 caracteres" aria-describedby="err-pass">
+          <button type="button" class="eye" id="eyeBtn" aria-label="Mostrar contraseña" aria-pressed="false">
+            <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor"
+                 stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <g class="eye-show">
+                <path d="M2 12s3.8-6.5 10-6.5S22 12 22 12s-3.8 6.5-10 6.5S2 12 2 12z"/>
+                <circle cx="12" cy="12" r="2.8"/>
+              </g>
+              <g class="eye-hide">
+                <path d="M2 12s3.8-6.5 10-6.5S22 12 22 12s-3.8 6.5-10 6.5S2 12 2 12z"/>
+                <path d="M4.5 4.5l15 15"/>
+              </g>
+            </svg>
+          </button>
+        </div>
+        <div class="pass-aux">
+          <ul class="pass-rules">
+            <li id="reqLen"><i aria-hidden="true"></i><span class="txt">Mínimo 8 caracteres</span></li>
+            <li id="reqCase"><i aria-hidden="true"></i><span class="txt">Mayúsculas y minúsculas</span></li>
+            <li id="reqNum"><i aria-hidden="true"></i><span class="txt">Al menos un número</span></li>
+            <li id="reqSym"><i aria-hidden="true"></i><span class="txt">Al menos un símbolo ( # @ - … )</span></li>
+          </ul>
+          <div class="meter-row">
+            <span>Seguridad</span>
+            <div class="meter" id="meter" aria-hidden="true">
+              <span></span><span></span><span></span><span></span><span></span>
+            </div>
+            <span class="meter-word" id="meterWord">—</span>
+          </div>
+        </div>
+        <p class="error" id="err-pass" aria-live="polite"></p>
+      </div>
+
+      <div class="form-foot">
+        <p class="alert" id="alertBox" role="alert" hidden></p>
+        <button type="submit" class="submit" id="submitBtn">
+          <span class="submit-label">Presentar solicitud</span>
+          <span class="arrow" aria-hidden="true">→</span>
+        </button>
+      </div>
+
+    </form>
+
+    <!-- Sello de tinta: se estampa al presentar una ficha válida -->
+    <svg class="stamp" viewBox="0 0 220 220" aria-hidden="true">
+      <defs>
+        <path id="stampArc" d="M36 110 a74 74 0 1 1 148 0 a74 74 0 1 1 -148 0"/>
+        <filter id="inkRough">
+          <feTurbulence type="fractalNoise" baseFrequency="0.55" numOctaves="2" seed="7" result="n"/>
+          <feDisplacementMap in="SourceGraphic" in2="n" scale="3.5"/>
+        </filter>
+      </defs>
+      <g filter="url(#inkRough)">
+        <circle cx="110" cy="110" r="102" fill="none" stroke="#b23a26" stroke-width="4.5"/>
+        <circle cx="110" cy="110" r="92"  fill="none" stroke="#b23a26" stroke-width="1.5"/>
+        <text fill="#b23a26" font-family="ui-monospace, Menlo, Consolas, monospace"
+              font-size="13.5" letter-spacing="3">
+          <textPath href="#stampArc" textLength="460" lengthAdjust="spacingAndGlyphs">ALTA CONFIRMADA · DOCUMENTO VÁLIDO ·</textPath>
+        </text>
+        <text x="110" y="105" text-anchor="middle" fill="#b23a26"
+              font-family="ui-monospace, Menlo, Consolas, monospace"
+              font-size="22" font-weight="700" letter-spacing="2">REGISTRADO</text>
+        <text x="110" y="130" text-anchor="middle" fill="#b23a26"
+              font-family="ui-monospace, Menlo, Consolas, monospace"
+              font-size="11" letter-spacing="2" id="stampDate"></text>
+        <text x="46" y="115" text-anchor="middle" fill="#b23a26" font-size="11">◆</text>
+        <text x="174" y="115" text-anchor="middle" fill="#b23a26" font-size="11">◆</text>
+      </g>
+    </svg>
+
+    <footer class="sheet-foot">
+      <span>Registro civil de usuarios</span>
+      <span>Ningún dato sale de su navegador: todo se procesa localmente</span>
+      <span>Pág. 1/1</span>
+    </footer>
+
+  </main>
+
+  <!-- Acuse de recibo: segunda hoja, aparece tras el sellado -->
+  <section class="receipt" id="receipt" aria-labelledby="rTitle" hidden>
+    <p class="receipt-head"><span>Acuse de recibo</span><span>Copia del solicitante</span></p>
+    <h2 id="rTitle">Registro completado</h2>
+    <dl class="receipt-list">
+      <div class="row"><dt>Nombre</dt><span class="leader" aria-hidden="true"></span><dd id="rName"></dd></div>
+      <div class="row"><dt>Correo</dt><span class="leader" aria-hidden="true"></span><dd id="rEmail"></dd></div>
+      <div class="row"><dt>Sitio web</dt><span class="leader" aria-hidden="true"></span><dd id="rSite"></dd></div>
+      <div class="row"><dt>Contraseña</dt><span class="leader" aria-hidden="true"></span><dd id="rPass"></dd></div>
+    </dl>
+    <p class="receipt-note">Conserve esta copia. La solicitud queda registrada en el expediente Nº 0001-A.</p>
+    <button type="button" class="btn-ghost" id="resetBtn">Registrar otra persona</button>
+  </section>
+
+  <p class="sr-only" id="ariaStatus" role="status" aria-live="polite"></p>
+
+<script>
+(function(){
+  'use strict';
+
+  var sheet     = document.getElementById('sheet');
+  var form      = document.getElementById('regForm');
+  var alertBox  = document.getElementById('alertBox');
+  var submitBtn = document.getElementById('submitBtn');
+  var ariaStatus= document.getElementById('ariaStatus');
+  var receipt   = document.getElementById('receipt');
+  var eyeBtn    = document.getElementById('eyeBtn');
+
+  /* Fecha de la cabecera */
+  document.getElementById('today').textContent =
+    new Intl.DateTimeFormat('es-ES',{day:'2-digit',month:'long',year:'numeric'}).format(new Date());
+
+  /* ---------- Reglas de validación ---------- */
+  var nameRe = /^[A-Za-zÁÉÍÓÚÜÑáéíóúüñÀÈÌÒÙàèìòùÇç'’.\- ]+$/;
+
+  function vName(v){
+    var t = v.trim().replace(/\s+/g,' ');
+    if(!t)            return 'El nombre completo es obligatorio.';
+    if(!nameRe.test(t)) return 'Solo se admiten letras, espacios, guiones y apóstrofos.';
+    if(t.indexOf(' ') === -1) return 'Falta el apellido: escriba nombre y apellido.';
+    return '';
+  }
+
+  function vEmail(v){
+    var t = v.trim();
+    if(!t) return 'El correo electrónico es obligatorio.';
+    if(/\s/.test(t)) return 'El correo no puede contener espacios.';
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(t))
+      return 'Introduzca un correo válido, p. ej. nombre@dominio.com';
+    return '';
+  }
+
+  function normalizeSite(v){
+    var t = v.trim();
+    if(!t) return '';
+    return /^[a-z][a-z0-9+.-]*:\/\//i.test(t) ? t : 'https://' + t;
+  }
+
+  function vSite(v){
+    var t = v.trim();
+    if(!t) return ''; /* campo opcional */
+    try{
+      var u = new URL(normalizeSite(t));
+      if(!/^([a-z0-9-]+\.)+[a-z]{2,}$/i.test(u.hostname)) throw 0;
+    }catch(_){
+      return 'Introduzca una URL válida, p. ej. https://ejemplo.com';
+    }
+    return '';
+  }
+
+  var passRules = [
+    { id:'reqLen',  test:function(v){ return v.length >= 8; } },
+    { id:'reqCase', test:function(v){ return /[a-z]/.test(v) && /[A-Z]/.test(v); } },
+    { id:'reqNum',  test:function(v){ return /\d/.test(v); } },
+    { id:'reqSym',  test:function(v){ return /[^A-Za-z0-9]/.test(v); } }
+  ];
+
+  function vPass(v){
+    if(!v) return 'La contraseña es obligatoria.';
+    var missing = passRules.filter(function(r){ return !r.test(v); });
+    if(missing.length) return 'La contraseña no cumple todos los requisitos señalados abajo.';
+    return '';
+  }
+
+  /* ---------- Estado de los campos ---------- */
+  var F = {
+    name:  { el:document.getElementById('fName'),  wrap:document.getElementById('wrap-name'),  err:document.getElementById('err-name'),  fn:vName  },
+    email: { el:document.getElementById('fEmail'), wrap:document.getElementById('wrap-email'), err:document.getElementById('err-email'), fn:vEmail },
+    site:  { el:document.getElementById('fSite'),  wrap:document.getElementById('wrap-site'),  err:document.getElementById('err-site'),  fn:vSite  },
+    pass:  { el:document.getElementById('fPass'),  wrap:document.getElementById('wrap-pass'),  err:document.getElementById('err-pass'),  fn:vPass  }
+  };
+  var touched = { name:false, email:false, site:false, pass:false };
+
+  function validate(k){
+    var f = F[k], msg = f.fn(f.el.value);
+    f.wrap.classList.toggle('invalid', !!msg);
+    f.wrap.classList.toggle('valid', !msg && f.el.value.trim() !== '');
+    f.err.textContent = msg;
+    f.el.setAttribute('aria-invalid', msg ? 'true' : 'false');
+    return msg;
+  }
+
+  /* ---------- Ayudas en vivo de la contraseña ---------- */
+  var meterCells = Array.prototype.slice.call(document.querySelectorAll('#meter span'));
+  var meterWord  = document.getElementById('meterWord');
+  var words = ['muy débil','débil','aceptable','fuerte','muy fuerte','excepcional'];
+
+  function passLive(){
+    var v = F.pass.el.value, done = 0;
+    passRules.forEach(function(r){
+      var ok = r.test(v);
+      document.getElementById(r.id).classList.toggle('done', ok);
+      if(ok) done++;
+    });
+    var score = v ? Math.min(done + (v.length >= 12 ? 1 : 0), 5) : 0;
+    meterCells.forEach(function(c,i){ c.classList.toggle('on', i < score); });
+    meterWord.textContent = v ? words[score] : '—';
+  }
+  passLive();
+
+  /* ---------- Eventos por campo ---------- */
+  Object.keys(F).forEach(function(k){
+    var el = F[k].el;
+    el.addEventListener('blur', function(){
+      touched[k] = true;
+      /* el sitio web se normaliza (https://) al salir del campo */
+      if(k === 'site' && el.value.trim()) el.value = normalizeSite(el.value);
+      validate(k);
+    });
+    el.addEventListener('input', function(){
+      if(k === 'pass') passLive();
+      /* revalida en vivo solo si el campo ya mostró algún error */
+      if(touched[k]) validate(k);
+    });
+  });
+
+  /* Mostrar / ocultar contraseña */
+  eyeBtn.addEventListener('mousedown', function(e){ e.preventDefault(); }); /* no roba el foco */
+  eyeBtn.addEventListener('click', function(){
+    var hiddenNow = F.pass.el.type === 'password';
+    F.pass.el.type = hiddenNow ? 'text' : 'password';
+    eyeBtn.classList.toggle('revealed', hiddenNow);
+    eyeBtn.setAttribute('aria-pressed', String(hiddenNow));
+    eyeBtn.setAttribute('aria-label', hiddenNow ? 'Ocultar contraseña' : 'Mostrar contraseña');
+    F.pass.el.focus();
+  });
+
+  /* Sacudida de la hoja (impacto del sello o error de envío) */
+  function jolt(){
+    sheet.classList.remove('jolt');
+    void sheet.offsetWidth;
+    sheet.classList.add('jolt');
+  }
+  sheet.addEventListener('animationend', function(e){
+    if(e.animationName === 'joltK') sheet.classList.remove('jolt');
+  });
+
+  /* ---------- Envío ---------- */
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+
+    var order = ['name','email','site','pass'];
+    var first = null, n = 0;
+    order.forEach(function(k){
+      touched[k] = true;
+      if(validate(k)){ n++; if(!first) first = k; }
+    });
+
+    if(n){
+      alertBox.hidden = false;
+      alertBox.textContent = (n === 1)
+        ? 'Hay 1 campo con errores. Revise la anotación en bermellón.'
+        : 'Hay ' + n + ' campos con errores. Revise las anotaciones en bermellón.';
+      ariaStatus.textContent = 'Formulario con errores; no se ha enviado.';
+      jolt();
+      F[first].el.focus();
+      return;
+    }
+
+    alertBox.hidden = true;
+
+    /* Fecha del sello */
+    var d = new Date(), pad = function(x){ return String(x).padStart(2,'0'); };
+    document.getElementById('stampDate').textContent =
+      pad(d.getDate()) + '·' + pad(d.getMonth()+1) + '·' + d.getFullYear();
+
+    /* Congelar la ficha */
+    form.querySelectorAll('input,button').forEach(function(x){ x.disabled = true; });
+    form.classList.add('locked');
+    submitBtn.querySelector('.submit-label').textContent = 'Solicitud presentada';
+
+    /* Estampar */
+    sheet.classList.add('stamped');
+    setTimeout(jolt, 320);
+
+    /* Rellenar y mostrar el acuse de recibo */
+    document.getElementById('rName').textContent  = F.name.el.value.trim().replace(/\s+/g,' ');
+    document.getElementById('rEmail').textContent = F.email.el.value.trim();
+    document.getElementById('rSite').textContent  = F.site.el.value.trim() || '—';
+    document.getElementById('rPass').textContent  = '••••••••';
+
+    setTimeout(function(){
+      receipt.hidden = false;
+      receipt.classList.add('in');
+      ariaStatus.textContent = 'Registro completado correctamente.';
+      receipt.scrollIntoView({behavior:'smooth', block:'nearest'});
+    }, 650);
+  });
+
+  /* ---------- Reiniciar ---------- */
+  document.getElementById('resetBtn').addEventListener('click', function(){
+    form.reset();
+    Object.keys(touched).forEach(function(k){ touched[k] = false; });
+    Object.keys(F).forEach(function(k){
+      F[k].wrap.classList.remove('invalid','valid');
+      F[k].err.textContent = '';
+      F[k].el.setAttribute('aria-invalid','false');
+    });
+    F.pass.el.type = 'password';
+    eyeBtn.classList.remove('revealed');
+    eyeBtn.setAttribute('aria-pressed','false');
+    eyeBtn.setAttribute('aria-label','Mostrar contraseña');
+    form.querySelectorAll('input,button').forEach(function(x){ x.disabled = false; });
+    form.classList.remove('locked');
+    submitBtn.querySelector('.submit-label').textContent = 'Presentar solicitud';
+    alertBox.hidden = true;
+    sheet.classList.remove('stamped');
+    receipt.hidden = true;
+    receipt.classList.remove('in');
+    ariaStatus.textContent = '';
+    passLive();
+    F.name.el.focus();
+  });
+
+})();
+</script>
+</body>
+</html>

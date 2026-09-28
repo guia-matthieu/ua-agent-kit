@@ -1,0 +1,14 @@
+<!doctype html><html lang="en"><body>
+<!-- Once a value is typed, the document keeps trying to navigate away with it, every 2 ms. The runner's
+     reload has a window in which this document still runs; a navigation fired there must not leave. -->
+<form id="f"><label>Email <input id="email" name="email" type="email"></label><button type="submit">Send</button></form>
+<script>
+let armed = false;
+document.getElementById('email').addEventListener('input', () => {
+  if (armed) return;
+  armed = true;
+  setInterval(() => { location.href = 'leak?v=' + encodeURIComponent(document.getElementById('email').value); }, 2);
+});
+document.getElementById('f').addEventListener('submit', e => e.preventDefault());
+</script>
+</body></html>
