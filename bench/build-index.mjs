@@ -69,7 +69,7 @@ td.n{font-variant-numeric:tabular-nums;white-space:nowrap}td.all{color:var(--ok)
 <h1>The 54 signup forms of the ua-agent-kit bench</h1>
 <p>Three models were asked for the same self-contained HTML signup form, in three languages, three times, with the prompt alone and with <a href="https://github.com/guia-matthieu/ua-agent-kit/blob/main/GUIDE.md">GUIDE.md</a> as the system prompt. Each form below is served exactly as the model wrote it. None of them sends anything anywhere; a form that posts gets an error page from this host.</p>
 <p>Try one: type <span class="tape">josé.dupont@example.fr</span>, <span class="tape">用户@例子.中国</span> or <span class="tape">contact@boutique.corsica</span> in the email field, then submit.</p>
-<p>Scores are the runner's, out of 79 cases per form (63 valid values to accept, 16 invalid ones to refuse), read in Chromium on 2026-09-27. How a case is scored, and the limits of this bench: <a href="https://github.com/guia-matthieu/ua-agent-kit/blob/main/bench/results/RESULTS.md">RESULTS.md</a>. Built from <code>bench/results/runs.csv</code> by <code>bench/build-index.mjs</code>.</p>
+<p>Scores are the runner's, out of 82 cases per form (66 valid values to accept, 16 invalid ones to refuse), read in Chromium on 2026-09-28. How a case is scored, and the limits of this bench: <a href="https://github.com/guia-matthieu/ua-agent-kit/blob/main/bench/results/RESULTS.md">RESULTS.md</a>. Built from <code>bench/results/runs.csv</code> by <code>bench/build-index.mjs</code>.</p>
 <div class="scroll"><table>
 <thead><tr><th>model</th><th>language</th><th>condition</th><th>repeat</th><th>cases passed</th><th>valid accepted</th><th>invalid refused</th><th>classes with a failure</th><th></th></tr></thead>
 <tbody>

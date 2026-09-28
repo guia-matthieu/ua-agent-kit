@@ -1,7 +1,7 @@
 // Review of PR #21 (Sonnet, reproduced): --rescore overwrote runs.csv with the header before scoring, and a
 // missing .html crashed the loop after 47 of 54 pages, leaving 3 635 of 4 267 rows and no warning.
 // These tests run the real CLI on a copy of three real cells (one per model) in a temporary directory.
-// Scoring a real page takes ~14 s (79 cases, a reload per case): the file runs three passes, no more.
+// Scoring a real page takes ~14 s (82 cases, a reload per case): the file runs three passes, no more.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
