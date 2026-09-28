@@ -73,14 +73,14 @@ ua-kit check signup.html            # a local file
 ua-kit check https://example.org/signup --lang fr --out report/
 ```
 
-The checker opens the page in a headless browser, finds the email and website fields, types every battery case of the matching kind, and reads what the page shows. The email field is an `<input type="email">`, or else a text input whose name, id, placeholder or label matches *e-mail*, *courriel* or *correo*; the website field is `type="url"`, or else matches *website*, *url*, *site web*, *sitio*. The first visible match is used; with no match the field is reported `not-testable: no-field`. Email cases go to the email field; domain and URL cases to the website field (a bare domain gets `https://` in front when the field is `type="url"`). Options: `--engine chromium|firefox|webkit`, `--lang en|fr|es` (the browser locale), `--json`, `--out dir` (writes `report.json` and `report.md`).
+The checker opens the page in a headless browser, finds the email and website fields, types every battery case of the matching kind, and reads what the page shows. The email field is an `<input type="email">`, or else a text input whose name, id, placeholder, label or `aria-label` matches *e-mail*, *courriel* or *correo*; the website field is `type="url"`, or else matches *website*, *url*, *site web*, *page web*, *sitio*. The first visible match is used; with no match the field is reported `not-testable: no-field`. Email cases go to the email field; domain and URL cases to the website field (a bare domain gets `https://` in front when the field is `type="url"`). Options: `--engine chromium|firefox|webkit`, `--lang en|fr|es` (the browser locale), `--json`, `--out dir` (writes `report.json` and `report.md`).
 
 **What leaves the page depends on the target.**
 
 - **A local file**: the submit event is dispatched after each case with its default action cancelled, and once the page has loaded no request of any kind leaves it (navigations, fetches, images, sockets and popups are blocked; the tests in `tests/guards.test.mjs` try each). Before load, only `GET` and `HEAD` pass.
 - **A URL**: the form is never submitted and every request other than `GET` or `HEAD` is blocked. `GET` requests and WebSocket connections that the page's own scripts open while values are typed (analytics, autocomplete) are **not** blocked and may carry a typed value, so check only pages whose owner agrees. A value the page did not visibly refuse is reported as `no-rejection-observed`, never as `accepted`.
 
-How to read a verdict: `accepted` (the submit went through and the page showed no refusal), `rejected-script` (the page showed a refusal it did not show for an ordinary value: `aria-invalid`, an error class, an error text, a custom validity), `rejected-native` (the browser refused the value and something enforced it), `no-rejection-observed` (URL mode: nothing refused, and nothing submitted). A case *passes* when a valid value is accepted or an invalid one refused. `rewritten` counts cases where the field held something other than what was typed; `not-testable` means the field was missing or could not be typed into.
+How to read a verdict: `accepted` (the submit went through and the page showed no refusal), `rejected-script` (the page showed a refusal it did not show for an ordinary value: `aria-invalid`, an error class, an error text, a custom validity), `rejected-native` (the browser refused the value and something enforced it), `no-rejection-observed` (nothing refused, and the submit never fired: always the case on a URL; on a local file it happens when the field has no `<form>` or when native validation blocks the submit, for example a required field the runner could not fill). A case *passes* when a valid value is accepted or an invalid one refused. `rewritten` counts cases where the field held something other than what was typed; `not-testable` means the field was missing or could not be typed into, or the runner's own reload between two cases failed or brought back a page with different fields.
 
 An excerpt of the report for a page that uses a common email regex:
 
@@ -179,7 +179,7 @@ The test cases are written for this kit. Each one names the standard it rests on
 ## What this does not measure
 
 - Framework forms (React, Vue, Svelte): the bench asks for plain HTML + JavaScript; the form runner tests whatever a page serves, but the bench does not measure framework output.
-- Server-side validation always, and on a URL validation that runs only on submit: a URL is never submitted, so the absence of a rejection is reported as `no-rejection-observed`, never as `accepted`.
+- Server-side validation always, and on a URL validation that runs only on submit: a URL is never submitted, so the absence of a rejection is reported as `no-rejection-observed`, never as `accepted` (the same verdict a local file gets when its submit could not fire).
 - Storage, processing, display, email delivery (MX/EAI): the kit measures acceptance and validation only.
 - App surfaces (claude.ai, ChatGPT, Cursor's own harness): the bench uses the raw API surface only.
 - Any certification or compliance claim.
