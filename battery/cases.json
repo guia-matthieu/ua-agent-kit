@@ -59,6 +59,15 @@
       "ref": "RFC 1123 §2.1"
     },
     {
+      "id": "email-control-07",
+      "kind": "email",
+      "class": "control",
+      "value": "contact@example.fr",
+      "expect": "accept",
+      "note": "plain ASCII ccTLD",
+      "ref": "RFC 5322 §3.4.1"
+    },
+    {
       "id": "email-ascii-tld-short-01",
       "kind": "email",
       "class": "ascii-tld-short",
@@ -338,6 +347,15 @@
       "ref": "RFC 1035 §2.3.1"
     },
     {
+      "id": "domain-control-05",
+      "kind": "domain",
+      "class": "control",
+      "value": "example.fr",
+      "expect": "accept",
+      "note": "plain ASCII ccTLD",
+      "ref": "RFC 1035 §2.3.1"
+    },
+    {
       "id": "domain-ascii-tld-short-01",
       "kind": "domain",
       "class": "ascii-tld-short",
@@ -606,6 +624,15 @@
       "expect": "accept",
       "note": "Unicode in the path under an ASCII host",
       "ref": "RFC 3987 §2.2; WHATWG URL"
+    },
+    {
+      "id": "url-control-04",
+      "kind": "url",
+      "class": "control",
+      "value": "https://example.fr",
+      "expect": "accept",
+      "note": "plain ASCII ccTLD",
+      "ref": "WHATWG URL"
     },
     {
       "id": "url-ascii-tld-short-01",

@@ -122,6 +122,20 @@
           "outcome": "pass"
         },
         {
+          "id": "email-control-07",
+          "class": "control",
+          "expect": "accept",
+          "typed": "contact@example.fr",
+          "observed": "",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": true,
+          "outcome": "pass"
+        },
+        {
           "id": "email-ascii-tld-short-01",
           "class": "ascii-tld-short",
           "expect": "accept",
@@ -540,16 +554,16 @@
         }
       ],
       "counts": {
-        "pass": 27,
+        "pass": 28,
         "fail": 6,
-        "rewritten": 22,
+        "rewritten": 23,
         "notObserved": 0,
         "notTestable": 0,
         "notSubmitted": 0,
         "byClass": {
           "control": {
-            "total": 6,
-            "pass": 6
+            "total": 7,
+            "pass": 7
           },
           "ascii-tld-short": {
             "total": 3,
@@ -643,6 +657,20 @@
           "class": "control",
           "expect": "accept",
           "typed": "https://a.example.com",
+          "observed": "",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": true,
+          "outcome": "pass"
+        },
+        {
+          "id": "domain-control-05",
+          "class": "control",
+          "expect": "accept",
+          "typed": "https://example.fr",
           "observed": "",
           "submitted": true,
           "mismatch": false,
@@ -1112,6 +1140,20 @@
           "outcome": "pass"
         },
         {
+          "id": "url-control-04",
+          "class": "control",
+          "expect": "accept",
+          "typed": "https://example.fr",
+          "observed": "",
+          "submitted": true,
+          "mismatch": false,
+          "enforced": false,
+          "signals": [],
+          "verdict": "accepted",
+          "rewritten": true,
+          "outcome": "pass"
+        },
+        {
           "id": "url-ascii-tld-short-01",
           "class": "ascii-tld-short",
           "expect": "accept",
@@ -1299,16 +1341,16 @@
         }
       ],
       "counts": {
-        "pass": 32,
+        "pass": 34,
         "fail": 14,
-        "rewritten": 27,
+        "rewritten": 29,
         "notObserved": 0,
         "notTestable": 0,
         "notSubmitted": 0,
         "byClass": {
           "control": {
-            "total": 7,
-            "pass": 7
+            "total": 9,
+            "pass": 9
           },
           "ascii-tld-short": {
             "total": 4,
@@ -1343,5 +1385,5 @@
     }
   },
   "runner_error": null,
-  "rescore_id": "2026-09-27T21:40:24.286Z"
+  "rescore_id": "2026-09-28T21:18:39.719Z"
 }
