@@ -18,8 +18,8 @@ Assumed, to be corrected on review: English for everything public; repository un
 
 ## 3. Facts the design rests on
 
-- ICANN tested three AI coding tools on the five UA functions and found them "not inherently UA-ready", better with explicit requirements, test data and "dedicated UA compliance agents and skills". It names no tool, publishes no dataset, no prompt, no skill. Source: `ua-observatory/refs/icann-2026-09/idn-ua-report-2026.pdf`, §2.2.2.1, p. 16 (sha256 `a680981e…3735`).
-- ICANN's public-comment summary of 12 May 2026 records the ISPCP asking to "engage AI code generation tool providers", "fix email validator libraries" and "develop a UA benchmark test suite for AI systems" (`ua-ewg-public-comment-summary-12may26.txt`, l. 776-786).
+- ICANN tested three AI coding tools on the five UA functions and found them "not inherently UA-ready", better with explicit requirements, test data and "dedicated UA compliance agents and skills". It names no tool, publishes no dataset, no prompt, no skill. Source: https://www.icann.org/en/system/files/files/idn-implementation-ua-adoption-report-2026-01sep26-en.pdf, §2.2.2.1, p. 16 (sha256 `a680981e…3735`).
+- ICANN's public-comment summary of 12 May 2026 records the ISPCP asking to "engage AI code generation tool providers", "fix email validator libraries" and "develop a UA benchmark test suite for AI systems" (https://itp.cdn.icann.org/en/files/ua-ewg/summary-report-draft-guidelines-advancing-ua-adoption-12-05-2026-en.pdf, p. 14-15).
 - ICANN publishes UA code on GitHub (`icann/ua-code-samples`, `icann/uniaccept-*`, `icann/eai-survey-tool`) but nothing addressed to AI coding agents. Bound: GitHub code search across `org:icann` for `skill`, `coding agent`, `cursorrules` returned 0; `prompt` and `LLM` returned only unrelated files. Five queries, 24/09/2026.
 - UASG-004 (82 use cases, 2021) carries no licence statement (0 matches for licence/copyright terms in its 801 extracted lines). The kit therefore writes its own cases and cites UASG-004 as method.
 - The observatory's earlier 14-cell run used about ten valid inputs and four guards, not the 82 UASG-004 cases. The battery is new work.
