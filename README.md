@@ -2,7 +2,9 @@
 
 Universal Acceptance for AI coding agents. A public test battery of 79 email addresses, domain names and URLs, a one-page guide an agent can load before it writes validation code, and a form checker that types every case into a real page and reports what the page did. It also ships a measured before/after: the same models, asked for the same signup form, with and without the guide.
 
-Everything here can be re-run without the author: the battery, the scores, and the 54 generated pages of the bench with their scoring.
+It measures whether a form *accepts or refuses* a value on the client side. It is not an end-to-end Universal Acceptance assessment: storage, display, server-side checks and email delivery are out of scope (see *What this does not measure*).
+
+Source: https://github.com/guia-matthieu/ua-agent-kit · the battery: [`battery/cases.json`](battery/cases.json) · the guide: [`GUIDE.md`](GUIDE.md) · the bench: [`bench/results/RESULTS.md`](bench/results/RESULTS.md). The battery, the scores and the 54 generated pages of the bench can be re-scored without the author.
 
 ## Install
 
@@ -11,11 +13,19 @@ npm i -g ua-agent-kit
 npx playwright install chromium   # only needed for `ua-kit check`
 ```
 
-Node.js 22 or later.
+Node.js 22 or later. `--engine firefox` or `webkit` needs `npx playwright install firefox webkit` as well.
+
+From a clone (to run the tests, rebuild the adapters, re-score the bench or contribute):
+
+```sh
+git clone https://github.com/guia-matthieu/ua-agent-kit && cd ua-agent-kit
+npm ci && npx playwright install chromium
+npm test
+```
 
 ## Score a validator: `ua-kit score`
 
-Give it a regex and the kind of value it validates. It runs the battery cases of that kind and reports per class.
+Give it a regex and the kind of value it validates: `email`, `domain` or `url`. It runs the battery cases of that kind and reports per class.
 
 ```sh
 ua-kit score --kind email --regex '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$'
@@ -36,9 +46,9 @@ verdict: ua-fail  (battery 1.0.0, 33 email cases)
   failing: email-control-04, email-ascii-tld-long-01, …
 ```
 
-Verdicts: `ua-pass` (every case as expected), `ua-fail`, and `accept-all` for a validator that accepts every invalid guard value too: it cannot fail a valid case, and it validates nothing. `--json` gives the full result. The regex compiles without the `u` flag unless you pass `--flags u`.
+Verdicts: `ua-pass` (every case as expected), `ua-fail`, and `accept-all` when the validator accepts every `guard` case of the battery: it refused none of the malformed values, so its passes on valid cases say nothing. `--json` gives the full result. The regex compiles without the `u` flag unless you pass `--flags u`.
 
-From code, in JavaScript:
+From code, in JavaScript (with `ua-agent-kit` installed in the project, `npm i ua-agent-kit`, in an ES module):
 
 ```js
 import { score, regexValidator } from 'ua-agent-kit/runners/js/score.mjs';
@@ -46,12 +56,15 @@ import { loadBattery } from 'ua-agent-kit/src/battery.mjs';
 const result = score(value => myValidator(value), loadBattery(), { kind: 'domain' });
 ```
 
-In Python, `runners/py/ua_score.py` is a single file with no dependency; run it from a clone, or copy it and pass the path of `battery/cases.json` to `load_battery(path)`:
+In Python (3.10 or later), `runners/py/ua_score.py` is a single file with no required dependency (`idna` is optional, see below). From the root of a clone:
 
 ```python
+import sys; sys.path.insert(0, "runners/py")
 import ua_score
 result = ua_score.score(my_validator, ua_score.load_battery(), kind="email")
 ```
+
+If you copy the file elsewhere, copy `battery/cases.json` too and pass its path: `ua_score.load_battery("path/to/cases.json")`.
 
 ## Check a page: `ua-kit check`
 
@@ -60,9 +73,14 @@ ua-kit check signup.html            # a local file
 ua-kit check https://example.org/signup --lang fr --out report/
 ```
 
-The checker opens the page in a headless browser, finds the email and website fields, types every battery case of the matching kind, and reads what the page shows. Options: `--engine chromium|firefox|webkit`, `--lang en|fr|es` (the browser locale), `--json`, `--out dir` (writes `report.json` and `report.md`).
+The checker opens the page in a headless browser, finds the email and website fields, types every battery case of the matching kind, and reads what the page shows. The email field is an `<input type="email">`, or else a text input whose name, id, placeholder or label matches *e-mail*, *courriel* or *correo*; the website field is `type="url"`, or else matches *website*, *url*, *site web*, *sitio*. The first visible match is used; with no match the field is reported `not-testable: no-field`. Email cases go to the email field; domain and URL cases to the website field (a bare domain gets `https://` in front when the field is `type="url"`). Options: `--engine chromium|firefox|webkit`, `--lang en|fr|es` (the browser locale), `--json`, `--out dir` (writes `report.json` and `report.md`).
 
-**Nothing leaves the page.** On a local file the submit event is dispatched after each case with its default action cancelled, and every request after load that is not `GET` or `HEAD` is blocked. A URL is never submitted: a value it did not visibly refuse is reported as `no-rejection-observed`, never as `accepted`.
+**What leaves the page depends on the target.**
+
+- **A local file**: the submit event is dispatched after each case with its default action cancelled, and once the page has loaded no request of any kind leaves it (navigations, fetches, images, sockets and popups are blocked; the tests in `tests/guards.test.mjs` try each). Before load, only `GET` and `HEAD` pass.
+- **A URL**: the form is never submitted and every request other than `GET` or `HEAD` is blocked. `GET` requests and WebSocket connections that the page's own scripts open while values are typed (analytics, autocomplete) are **not** blocked and may carry a typed value, so check only pages whose owner agrees. A value the page did not visibly refuse is reported as `no-rejection-observed`, never as `accepted`.
+
+How to read a verdict: `accepted` (the submit went through and the page showed no refusal), `rejected-script` (the page showed a refusal it did not show for an ordinary value: `aria-invalid`, an error class, an error text, a custom validity), `rejected-native` (the browser refused the value and something enforced it), `no-rejection-observed` (URL mode: nothing refused, and nothing submitted). A case *passes* when a valid value is accepted or an invalid one refused. `rewritten` counts cases where the field held something other than what was typed; `not-testable` means the field was missing or could not be typed into.
 
 An excerpt of the report for a page that uses a common email regex:
 
@@ -71,16 +89,24 @@ An excerpt of the report for a page that uses a common email regex:
 
 passed 16 · failed 17 · rewritten 0 · not-observed 0 · not-testable 0
 
+(per-class table omitted)
+
 | failing case | typed | observed | verdict |
 |---|---|---|---|
+| … | | | |
 | email-ascii-tld-long-01 | ` contact@boutique.corsica ` | ` contact@boutique.corsica ` | rejected-script |
+| … | | | |
 | email-idn-domain-02 | ` info@пример.рф ` | ` info@пример.рф ` | rejected-script |
+| … | | | |
 | email-eai-local-01 | ` josé.dupont@example.fr ` | ` josé.dupont@example.fr ` | rejected-script |
+| … | | | |
 
 ### Known patterns found in page scripts
 
-- inline#0: matches the pattern published at https://www.regular-expressions.info/email.html (regular-expressions.info 'simple' email regex (ASCII only, letters-only TLD))
-- inline#0: matches the known pattern family "TLD capped at 2-4 letters"
+- inline\#0: matches the pattern published at https://www.regular-expressions.info/email.html (regular-expressions.info 'simple' email regex (ASCII only, letters-only TLD))
+- inline\#0: matches the known pattern family "TLD capped at 2-4 letters"
+
+(… the website field section and the not-tested block follow)
 ```
 
 The last section comes from the pattern catalogue (`patterns/catalogue.json`): known faulty rules, each with the address where it is published. The report says a script *matches the pattern published at* that address. It does not say where the page's author took it from.
@@ -91,23 +117,23 @@ The last section comes from the pattern catalogue (`patterns/catalogue.json`): k
 
 | class | what it holds | expected |
 |---|---|---|
-| `control` | plain ASCII `.com`/`.fr`/`.org`, mixed case | accept |
-| `ascii-tld-short` | 3–4 letter new gTLDs: `.bzh`, `.eus`, `.cat`, `.wien` | accept |
+| `control` | plain ASCII `.com`, `.org`, `.ie`, `.co.uk`, mixed case | accept |
+| `ascii-tld-short` | 3–4 letter TLDs: `.bzh`, `.eus`, `.cat`, `.wien` | accept |
 | `ascii-tld-long` | `.corsica`, `.technology`, `.international`, `.photography`, `.barcelona` | accept |
 | `idn-tld-alabel` | ASCII labels under an A-label TLD: `example.xn--p1ai` | accept |
 | `idn-sld-alabel` | A-label second level under an ASCII TLD: `xn--socit-esab.fr` | accept |
-| `idn-ulabel` | U-labels in six scripts on real IDN TLDs: Latin with diacritics, Cyrillic, Arabic, CJK, Devanagari, Greek | accept |
+| `idn-ulabel` | U-labels in eight scripts on real IDN TLDs: Latin with diacritics, Cyrillic, Arabic, CJK, Devanagari, Greek, Thai, Hangul | accept |
 | `eai-local` | Unicode local part, ASCII domain | accept |
 | `email-idn-domain` | ASCII local part, U-label domain | accept |
 | `eai-full` | Unicode local part and U-label domain | accept |
 | `boundary` | 63-octet label, 253-octet name, 64-octet email local part (accept); 64-octet label (reject) | both |
 | `guard` | unambiguous syntax failures: `a@@b.com`, `user@`, `user@example..com`, `bad..dots.com`, `http//example.com` | reject |
 
-The battery tests syntax, not existence: a validator that accepts `boutique.corsica` is right even if that exact name is not registered. Every TLD used is delegated (checked in CI against a pinned copy of the IANA list, `battery/iana-tlds.txt`); every second-level name is a placeholder. URL cases use the same classes, in `https://` form, with and without path and query. A domain with a trailing dot (`example.com.`) is valid DNS syntax but is left out of the battery on purpose, and the reference validators reject it.
+The battery tests syntax, not existence: a validator that accepts `boutique.corsica` is right even if that exact name is not registered. Every TLD used by a valid case is in the IANA root zone list pinned in `battery/iana-tlds.txt` (version 2026092400), checked in CI; the pinned list is not refreshed automatically; every second-level name is a placeholder. URL cases use the same classes, in `https://` form, with and without path and query. A domain with a trailing dot (`example.com.`) is valid DNS syntax but is left out of the battery on purpose, and the reference validators reject it.
 
 CI checks that the file matches its schema, that every U-label round-trips to its A-label, and that the reference validators (`runners/js/reference.mjs`, `runners/py/ua_score.py`) accept every valid case and refuse every invalid one. Choices those reference validators make, stated plainly:
 
-- Emoji and other pictographic labels are accepted by the JavaScript validator, because UTS #46 mapping does not enforce the IDNA2008 category rules. The Python validator with the `idna` package installed rejects them (IDNA2008). This was the only divergence between the two on 24 probes (24/09/2026). Without `idna`, Python falls back to the standard library's IDNA2003 codec.
+- Emoji and other pictographic labels are accepted by the JavaScript validator, because UTS #46 mapping does not enforce the IDNA2008 category rules. The Python validator with the `idna` package installed rejects them (IDNA2008): `😀.com` is valid for the first and invalid for the second (checked with `idna` 3.4). The battery holds no such label. Without `idna`, Python falls back to the standard library's IDNA2003 codec, so its results on U-labels can differ.
 - `isValidUrl` rejects IP-literal hosts, single-label hosts (`https://localhost`) and schemes other than `http` and `https`, by design.
 - The WHATWG URL parser strips leading and trailing whitespace from a URL.
 
@@ -120,19 +146,23 @@ CI checks that the file matches its schema, that every U-label round-trips to it
 | Claude Code | copy `adapters/claude-code/` to `.claude/skills/ua-ready-validation/` |
 | Cursor | copy `adapters/cursor/ua-ready-validation.mdc` to `.cursor/rules/` |
 | `AGENTS.md` (Codex and others) | paste the section from `adapters/AGENTS.md` into your `AGENTS.md` |
-| GitHub Copilot | copy `adapters/copilot-instructions.md` to `.github/copilot-instructions.md` |
+| GitHub Copilot | add the content of `adapters/copilot-instructions.md` to `.github/copilot-instructions.md` |
 
 ## The bench
 
 Three models (`anthropic/claude-opus-5.5`, `openai/gpt-6-astra`, `z-ai/glm-5.3`) were asked for a self-contained HTML signup form in English, French and Spanish, three times each, once with the prompt alone and once with `GUIDE.md` as the system prompt: 54 pages, 4 266 scored cases, generated on 25/09/2026 and scored in Chromium 153.
 
-| model | pass rate without the guide | with the guide |
-|---|---|---|
-| anthropic | 85.9 % | 99.7 % |
-| openai | 85.4 % | 94.7 % |
-| open-weight | 88.0 % | 98.6 % |
+A case passes when a valid value is accepted or an invalid one refused (see *How to read a verdict* above). Share of the 711 cases per model and condition (9 pages × 79) that passed:
 
-Nine pages per row, three per language: this is enough to see where forms fail, not to rank models. What the numbers say and what they do not, the two scoring rules and why they were set, per-class tables, cost and every limitation are in [`bench/results/RESULTS.md`](bench/results/RESULTS.md). Every generated page is in `bench/results/generations/`; `node bench/run-bench.mjs --rescore` scores them again, byte for byte, with no API call.
+| model | prompt alone | prompt + `GUIDE.md` |
+|---|---|---|
+| Claude Opus 5.5 | 85.9 % (611/711) | 99.7 % (709/711) |
+| GPT-6 Astra | 85.4 % (607/711) | 94.7 % (673/711) |
+| GLM 5.3 | 88.0 % (626/711) | 98.6 % (701/711) |
+
+Two scoring rules were set after the pages had been looked at: a bare domain typed into a `type="url"` field gets `https://` in front, and on a form with `novalidate` a refusal is what the page shows, not the browser's internal validity flag. Their effect on every count is in `RESULTS.md`.
+
+Nine pages per model and condition, three per language: this is enough to see where forms fail, not to rank models. What the numbers say and what they do not, the two scoring rules and why they were set, per-class tables, cost and every limitation are in [`bench/results/RESULTS.md`](bench/results/RESULTS.md). Every generated page is in `bench/results/generations/`; `node bench/run-bench.mjs --rescore` scores them again, byte for byte, with no API call.
 
 No model judges any result: every verdict is read from the page by the runner.
 
@@ -143,6 +173,7 @@ No model judges any result: every verdict is read from the page by the runner.
 - Storage, processing, display, email delivery (MX/EAI): the kit measures acceptance and validation only.
 - App surfaces (claude.ai, ChatGPT, Cursor's own harness): the bench uses the raw API surface only.
 - Any certification or compliance claim.
+- A hosted checker: a later project, with its own design.
 
 One measured limit of the checker: it reads each field 60 ms after an event (`SETTLE_MS` in `src/form-runner.mjs`). A validator that is debounced or asynchronous beyond that delay is read before it answers, and the value is reported as not refused.
 

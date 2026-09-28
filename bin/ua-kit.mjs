@@ -27,8 +27,8 @@ if (command === 'score') {
     if (r.failures.length) console.log(`  failing: ${r.failures.join(', ')}`);
   }
 } else if (command === 'check') {
-  const mod = await import('../src/check-command.mjs').catch(() => null);
-  if (!mod) { console.error('check is not available yet (Task 6)'); process.exit(2); }
+  const mod = await import('../src/check-command.mjs').catch(err => { console.error(`ua-kit check could not start: ${err.message}`); return null; });
+  if (!mod) process.exit(2);
   await mod.run(rest);
 } else if (command === 'build-adapters') {
   const mod = await import('../scripts/build-adapters.mjs').catch(() => null);
