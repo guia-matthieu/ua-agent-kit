@@ -180,10 +180,11 @@ No model judges any result: every verdict is read from the page by the runner.
 
 This bench is a first measurement, not a verdict on a model or a tool. Its limits are listed in `RESULTS.md` (*Limitations*) and under *What this does not measure* below: nine pages per model and condition, one prompt family, one browser engine, the client side only, one-shot generation through an API, and two scoring rules set after the pages had been looked at.
 
-Next, with the same battery, prompts and runner:
+Next, with the same battery and runner, without dates:
 
-- more models, among them more open-weight models from Chinese labs;
+- more models, Google and Mistral first, then more open-weight models from Chinese labs, run in waves so that the published numbers change once per wave;
 - a second run with the scoring rules frozen before generation, new cases, and a third condition that gets a one-line reminder instead of the whole guide;
+- a framework and library arm: the same form written with React or with a validation library (zod, yup, validator.js), loaded from a pinned CDN build so that each page stays one self-contained file. The current prompt rules these out, so the bench does not yet say whether a model that reaches for one of them does better or worse;
 - agents at work in a project rather than one-shot generation.
 
 The bench can already be run on another model: add it to `bench/models.json` under a key of its own, set `OPENROUTER_API_KEY` and run `node bench/run-bench.mjs`. Cells that already have their pages are skipped; the new pages and their rows are written next to the others, and `--rescore` scores every page again. Runs on other models are welcome as pull requests that include the generated pages. How runs made at different dates, with different model versions, are brought together into one comparable base is not settled yet.
