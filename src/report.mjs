@@ -43,7 +43,7 @@ function fieldSection(name, f) {
 export function renderMarkdown(report) {
   const head = [`# ua-kit check — ${text(report.target)}`, '',
     `- final URL: ${report.finalUrl ? text(report.finalUrl) : '—'}`, `- title: ${report.title ? text(report.title) : '—'}`,
-    `- engine: ${report.engine} ${report.engineVersion}`, `- date: ${report.date}`, `- battery: ${report.battery}`, ''];
+    `- engine: ${report.engine} ${report.engineVersion}`, `- date: ${report.date}`, `- battery: ${report.battery}${report.batteryFile ? ` — ${text(report.batteryFile)}, not the standard battery` : ''}`, ''];
   const body = [fieldSection('Email field', report.fields.email), fieldSection('Website field', report.fields.website)];
   const cat = report.catalogue.length
     ? ['### Known patterns found in page scripts', '', ...report.catalogue.map(m => m.source_url
