@@ -1,0 +1,15 @@
+<!doctype html><html lang="fr"><body>
+<!-- Label, field and message are siblings in the form, with no wrapper around each field. The message follows its field. -->
+<form id="f" novalidate>
+<label for="nom">Nom complet</label><input type="text" id="nom" name="nom"><span id="nomMsg"></span>
+<label for="email">Adresse e-mail</label><input type="text" id="email" name="email"><span id="emailMsg"></span>
+<label for="mdp">Mot de passe</label><input type="password" id="mdp" name="mdp"><span id="mdpMsg"></span>
+<button type="submit">S'inscrire</button></form>
+<script>
+document.getElementById('f').addEventListener('submit', e => {
+  e.preventDefault();
+  const ok = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(document.getElementById('email').value);
+  document.getElementById('emailMsg').textContent = ok ? '' : 'Veuillez saisir une adresse e-mail valide';
+});
+</script>
+</body></html>

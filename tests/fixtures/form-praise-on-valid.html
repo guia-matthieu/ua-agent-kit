@@ -1,0 +1,15 @@
+<!doctype html><html lang="en"><body>
+<!-- The page writes under the field for a valid value too. "Looks good" is already there after the baseline
+     value, so it says nothing about the next one; "Use a real address" is what a refusal adds. -->
+<form id="f" novalidate>
+<div><label for="name">Full name</label><input type="text" id="name" name="name"></div>
+<div><label for="email">Email address</label><input type="text" id="email" name="email"><span id="emailMsg"></span></div>
+<button type="submit">Sign up</button></form>
+<script>
+document.getElementById('f').addEventListener('submit', e => {
+  e.preventDefault();
+  const ok = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(document.getElementById('email').value);
+  document.getElementById('emailMsg').textContent = ok ? 'Looks good' : 'Use a real address';
+});
+</script>
+</body></html>

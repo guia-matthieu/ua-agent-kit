@@ -11,6 +11,11 @@ export function signalsOf(before, after) {
   if (after.ariaInvalid === 'true') signals.push('aria-invalid');
   if (ERR_CLASS.test(after.classes) && !ERR_CLASS.test(before.classes)) signals.push('error-class');
   if (after.errorTexts.some(t => !before.errorTexts.includes(t))) signals.push('error-text');
+  // A text of the field itself needs no word list: whatever the page writes there for this value and did not
+  // write for the baseline value is its refusal (run of 2026-10-06: "Enter a valid email address." holds none
+  // of the words above and read as accepted, docs/qc/2026-10-06_refusal-wording/).
+  const shown = before.fieldTexts ?? [];
+  if ((after.fieldTexts ?? []).some(t => !shown.includes(t))) signals.push('field-text');
   if (after.customError && after.validationMessage !== before.validationMessage) signals.push('custom-validity');
   return signals;
 }
@@ -60,6 +65,27 @@ export function readState(sel) {
     .filter(n => n.children.length === 0 && visible(n) && !n.hidden)
     .map(n => n.textContent.trim()).filter(t => t && errRe.test(t));
   const label = el.labels && el.labels[0];
+  // The texts of the field itself, by place: inside its block (the largest ancestor that holds no other control),
+  // inside what it names with aria-describedby or aria-errormessage, or after it and before the next control
+  // (label, field and message laid out as siblings). Text nodes, so that a message cut by a <b> is read whole
+  // enough to differ. A text elsewhere in the form, a message of success below the button for one, is not the
+  // field's: it stays under the word list above.
+  const controls = [...form.querySelectorAll('input:not([type=hidden]), select, textarea, button')];
+  let block = el;
+  while (block.parentElement && block.parentElement !== form && form.contains(block.parentElement)
+    && !controls.some(c => c !== el && block.parentElement.contains(c))) block = block.parentElement;
+  const named = ['aria-describedby', 'aria-errormessage'].flatMap(a => (el.getAttribute(a) || '').split(/\s+/))
+    .filter(Boolean).map(id => document.getElementById(id)).filter(Boolean);
+  const before = n => { let last = null; for (const c of controls) if (c.compareDocumentPosition(n) & c.DOCUMENT_POSITION_FOLLOWING) last = c; return last; };
+  const fieldTexts = [];
+  for (const root of new Set([form, ...named])) {
+    const walker = document.createTreeWalker(root, 4);   // 4: NodeFilter.SHOW_TEXT
+    for (let n = walker.nextNode(); n; n = walker.nextNode()) {
+      const t = n.textContent.trim(), host = n.parentElement;
+      if (!t || !host || host.closest('script, style, option') || !visible(host) || host.hidden) continue;
+      if ((block.contains(n) || named.some(d => d.contains(n)) || before(n) === el) && !fieldTexts.includes(t)) fieldTexts.push(t);
+    }
+  }
   return {
     value: el.value, valid: el.validity.valid,
     typeMismatch: el.validity.typeMismatch, patternMismatch: el.validity.patternMismatch,
@@ -68,6 +94,7 @@ export function readState(sel) {
     noValidate: Boolean(!el.form || el.form.noValidate),
     ariaInvalid: el.getAttribute('aria-invalid'),
     classes: [el.className, el.parentElement ? el.parentElement.className : '', label ? label.className : ''].join(' '),
-    errorTexts: texts
+    errorTexts: texts,
+    fieldTexts
   };
 }
