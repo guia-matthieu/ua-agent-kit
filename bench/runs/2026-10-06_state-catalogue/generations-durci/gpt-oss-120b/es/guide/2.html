@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Formulario de registro</title>
+<style>
+  body {font-family:Arial,Helvetica,sans-serif; max-width:600px; margin:2rem auto; padding:0 1rem;}
+  form {display:flex; flex-direction:column; gap:1rem;}
+  label {font-weight:bold;}
+  input {padding:0.4rem; font-size:1rem;}
+  .error {color:#c00; font-size:0.9rem; margin-top:0.2rem;}
+  .field {display:flex; flex-direction:column;}
+</style>
+</head>
+<body>
+
+<h1>Registro</h1>
+
+<form id="registerForm" novalidate>
+  <div class="field">
+    <label for="fullName">Nombre completo</label>
+    <input type="text" id="fullName" name="fullName" required>
+    <span class="error" id="fullNameError"></span>
+  </div>
+
+  <div class="field">
+    <label for="email">Correo electrónico</label>
+    <input type="text" id="email" name="email" required>
+    <span class="error" id="emailError"></span>
+  </div>
+
+  <div class="field">
+    <label for="website">Sitio web</label>
+    <input type="text" id="website" name="website" placeholder="https://ejemplo.com">
+    <span class="error" id="websiteError"></span>
+  </div>
+
+  <div class="field">
+    <label for="password">Contraseña</label>
+    <input type="password" id="password" name="password" required>
+    <span class="error" id="passwordError"></span>
+  </div>
+
+  <button type="submit">Registrarse</button>
+</form>
+
+<script>
+(() => {
+  const form = document.getElementById('registerForm');
+  const $ = (id) => document.getElementById(id);
+
+  const clearErrors = () => {
+    ['fullName','email','website','password'].forEach(id => $(id + 'Error').textContent = '');
+  };
+
+  // -----------------------------------------------------------------
+  // Helpers
+  const isNonEmpty = (s) => s.trim().length > 0;
+
+  // Validate each domain label (ASCII after punycode conversion)
+  const isValidDomainLabel = (label) => {
+    // length 1‑63, only alphanum or hyphen, not start/end with hyphen
+    if (label.length === 0 || label.length > 63) return false;
+    if (!/^[A-Za-z0-9-]+$/.test(label)) return false;
+    if (/^-|-$/.test(label)) return false;
+    return true;
+  };
+
+  // Email validator (EAI‑compatible, minimal but strict)
+  const validateEmail = (addr) => {
+    // Exactly one @
+    const parts = addr.split('@');
+    if (parts.length !== 2) return false;
+    const [local, domain] = parts;
+
+    // Local part: non‑empty, no spaces, no control chars
+    if (!isNonEmpty(local) || /\s/.test(local)) return false;
+
+    // Domain part: must not contain consecutive dots or leading/trailing dot
+    if (domain.startsWith('.') || domain.endsWith('.') || domain.includes('..')) return false;
+
+    // Convert possible Unicode domain to ASCII (punycode) using URL constructor
+    let asciiHost;
+    try {
+      const dummy = new URL('http://' + domain);
+      asciiHost = dummy.hostname; // already punycode when needed
+    } catch (e) {
+      return false; // malformed domain
+    }
+
+    const labels = asciiHost.split('.');
+    // Every label must be valid
+    if (!labels.every(isValidDomainLabel)) return false;
+
+    // TLD check: at least two letters OR an xn-- punycode label
+    const tld = labels[labels.length - 1];
+    const tldOk = /^[A-Za-z]{2,}$/u.test(tld) || /^xn--[A-Za-z0-9-]+$/i.test(tld);
+    return tldOk;
+  };
+
+  // URL validator (requires scheme, rejects spaces and empty labels)
+  const validateURL = (txt) => {
+    if (txt.trim() === '') return true; // optional field
+    try {
+      const url = new URL(txt);
+      // Host must be present
+      if (!url.hostname) return false;
+
+      // No spaces in the hostname (URL constructor would have thrown, but double‑check)
+      if (/\s/.test(url.hostname)) return false;
+
+      // No leading/trailing dot or consecutive dots
+      const host = url.hostname;
+      if (host.startsWith('.') || host.endsWith('.') || host.includes('..')) return false;
+
+      const labels = host.split('.');
+      if (!labels.every(isValidDomainLabel)) return false;
+
+      return true;
+    } catch (e) {
+      return false;
+    }
+  };
+
+  const validatePassword = (pw) => {
+    // Minimum 8 characters, at least one letter and one number
+    return pw.length >= 8 && /[A-Za-z]/.test(pw) && /[0-9]/.test(pw);
+  };
+  // -----------------------------------------------------------------
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    clearErrors();
+
+    let ok = true;
+
+    // Nombre completo
+    const nameVal = $('fullName').value;
+    if (!isNonEmpty(nameVal)) {
+      $('fullNameError').textContent = 'El nombre no puede estar vacío.';
+      ok = false;
+    }
+
+    // Email
+    const emailVal = $('email').value;
+    if (!validateEmail(emailVal)) {
+      $('emailError').textContent = 'Dirección de correo no válida.';
+      ok = false;
+    }
+
+    // Sitio web
+    const websiteVal = $('website').value;
+    if (!validateURL(websiteVal)) {
+      $('websiteError').textContent = 'URL no válida (debe incluir http:// o https:// y no contener espacios ni puntos dobles).';
+      ok = false;
+    }
+
+    // Contraseña
+    const passVal = $('password').value;
+    if (!validatePassword(passVal)) {
+      $('passwordError').textContent = 'Mínimo 8 caracteres, al menos una letra y un número.';
+      ok = false;
+    }
+
+    if (ok) {
+      alert('¡Registro completado con éxito!');
+      form.reset();
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

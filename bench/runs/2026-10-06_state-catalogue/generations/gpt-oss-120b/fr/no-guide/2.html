@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulaire d'inscription</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 2rem;
+            line-height: 1.5;
+        }
+        form {
+            max-width: 400px;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+            position: relative;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.3rem;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 0.4rem;
+            box-sizing: border-box;
+        }
+        .error {
+            color: #c00;
+            font-size: 0.85rem;
+            position: absolute;
+            right: 0;
+            top: 0;
+        }
+        button {
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Inscription</h1>
+
+<form id="signupForm" novalidate>
+    <div class="form-group">
+        <label for="fullName">Nom complet</label>
+        <input type="text" id="fullName" name="fullName" required>
+        <span class="error" id="fullNameError"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="email">Adresse e‑mail</label>
+        <input type="email" id="email" name="email" required>
+        <span class="error" id="emailError"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="website">Site web</label>
+        <input type="url" id="website" name="website" placeholder="https://exemple.com">
+        <span class="error" id="websiteError"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="password">Mot de passe</label>
+        <input type="password" id="password" name="password" required minlength="6">
+        <span class="error" id="passwordError"></span>
+    </div>
+
+    <button type="submit">S'inscrire</button>
+</form>
+
+<script>
+(function() {
+    const form = document.getElementById('signupForm');
+
+    const fields = {
+        fullName: {
+            element: document.getElementById('fullName'),
+            errorEl: document.getElementById('fullNameError'),
+            validate: function() {
+                if (this.element.value.trim() === '') {
+                    this.errorEl.textContent = 'Le nom complet est requis.';
+                    return false;
+                }
+                this.errorEl.textContent = '';
+                return true;
+            }
+        },
+        email: {
+            element: document.getElementById('email'),
+            errorEl: document.getElementById('emailError'),
+            validate: function() {
+                const val = this.element.value.trim();
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (val === '') {
+                    this.errorEl.textContent = 'L\'adresse e‑mail est requise.';
+                    return false;
+                }
+                if (!emailRegex.test(val)) {
+                    this.errorEl.textContent = 'Adresse e‑mail invalide.';
+                    return false;
+                }
+                this.errorEl.textContent = '';
+                return true;
+            }
+        },
+        website: {
+            element: document.getElementById('website'),
+            errorEl: document.getElementById('websiteError'),
+            validate: function() {
+                const val = this.element.value.trim();
+                if (val === '') {
+                    this.errorEl.textContent = '';
+                    return true; // champ optionnel
+                }
+                try {
+                    new URL(val);
+                    this.errorEl.textContent = '';
+                    return true;
+                } catch (_) {
+                    this.errorEl.textContent = 'URL du site web invalide.';
+                    return false;
+                }
+            }
+        },
+        password: {
+            element: document.getElementById('password'),
+            errorEl: document.getElementById('passwordError'),
+            validate: function() {
+                const val = this.element.value;
+                if (val.length < 6) {
+                    this.errorEl.textContent = 'Le mot de passe doit contenir au moins 6 caractères.';
+                    return false;
+                }
+                this.errorEl.textContent = '';
+                return true;
+            }
+        }
+    };
+
+    // Vérification en temps réel (optionnelle)
+    Object.values(fields).forEach(field => {
+        field.element.addEventListener('input', () => field.validate());
+    });
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault(); // empêcher l’envoi réel
+
+        let allValid = true;
+        Object.values(fields).forEach(field => {
+            if (!field.validate()) {
+                allValid = false;
+            }
+        });
+
+        if (allValid) {
+            // Vous pouvez ici envoyer les données via fetch/AJAX ou simplement afficher un message.
+            alert('Formulaire correctement rempli ! (envoi simulé)');
+            form.reset();
+        } else {
+            // Faire défiler vers le premier champ invalide
+            const firstError = form.querySelector('.error:not(:empty)');
+            if (firstError) {
+                firstError.previousElementSibling.focus();
+            }
+        }
+    });
+})();
+</script>
+
+</body>
+</html>

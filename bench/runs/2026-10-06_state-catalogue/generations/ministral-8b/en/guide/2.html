@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="url"],
+        input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .error {
+            color: red;
+            font-size: 0.8em;
+            margin-top: 5px;
+            display: none;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .success-message {
+            color: green;
+            margin-top: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Signup Form</h1>
+    <form id="signupForm">
+        <div class="form-group">
+            <label for="fullName">Full Name</label>
+            <input type="text" id="fullName" name="fullName" required>
+            <div id="fullNameError" class="error">Please enter a valid full name (at least 2 characters)</div>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" required>
+            <div id="emailError" class="error">Please enter a valid email address</div>
+        </div>
+
+        <div class="form-group">
+            <label for="website">Website (optional)</label>
+            <input type="url" id="website" name="website">
+            <div id="websiteError" class="error">Please enter a valid URL (include http:// or https://)</div>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+            <div id="passwordError" class="error">Password must be at least 8 characters long</div>
+        </div>
+
+        <button type="submit">Sign Up</button>
+    </form>
+
+    <div id="successMessage" class="success-message">
+        Form submitted successfully!
+    </div>
+
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Reset error messages
+            document.querySelectorAll('.error').forEach(el => el.style.display = 'none');
+
+            // Validate form
+            let isValid = true;
+
+            // Validate full name
+            const fullName = document.getElementById('fullName').value.trim();
+            if (fullName.length < 2) {
+                document.getElementById('fullNameError').style.display = 'block';
+                isValid = false;
+            }
+
+            // Validate email
+            const email = document.getElementById('email').value.trim();
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!emailRegex.test(email)) {
+                document.getElementById('emailError').style.display = 'block';
+                isValid = false;
+            }
+
+            // Validate website if provided
+            const website = document.getElementById('website').value.trim();
+            if (website) {
+                const websiteRegex = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
+                if (!websiteRegex.test(website)) {
+                    document.getElementById('websiteError').style.display = 'block';
+                    isValid = false;
+                }
+            }
+
+            // Validate password
+            const password = document.getElementById('password').value;
+            if (password.length < 8) {
+                document.getElementById('passwordError').style.display = 'block';
+                isValid = false;
+            }
+
+            // If form is valid, show success message
+            if (isValid) {
+                document.getElementById('successMessage').style.display = 'block';
+                // In a real application, you would submit the form to the server here
+                // this.submit();
+            }
+        });
+
+        // Add real-time validation for better UX
+        document.getElementById('fullName').addEventListener('input', function() {
+            const fullName = this.value.trim();
+            if (fullName.length >= 2) {
+                document.getElementById('fullNameError').style.display = 'none';
+            }
+        });
+
+        document.getElementById('email').addEventListener('input', function() {
+            const email = this.value.trim();
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (emailRegex.test(email)) {
+                document.getElementById('emailError').style.display = 'none';
+            }
+        });
+
+        document.getElementById('website').addEventListener('input', function() {
+            const website = this.value.trim();
+            if (!website) {
+                document.getElementById('websiteError').style.display = 'none';
+                return;
+            }
+            const websiteRegex = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
+            if (websiteRegex.test(website)) {
+                document.getElementById('websiteError').style.display = 'none';
+            }
+        });
+
+        document.getElementById('password').addEventListener('input', function() {
+            const password = this.value;
+            if (password.length >= 8) {
+                document.getElementById('passwordError').style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+{
+  "model": "deepseek-v4-flash",
+  "model_version": "deepseek/deepseek-v4-flash",
+  "lang": "es",
+  "condition": "guide",
+  "repeat": 1,
+  "slug": "deepseek/deepseek-v4-flash",
+  "usage": {
+    "prompt_tokens": 1020,
+    "completion_tokens": 16000,
+    "total_tokens": 17020,
+    "cost": 0.022530244,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 1010,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost_details": {
+      "upstream_inference_cost": 0.022530244,
+      "upstream_inference_prompt_cost": 0.000002244,
+      "upstream_inference_completions_cost": 0.022528
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 16000,
+      "image_tokens": 0,
+      "audio_tokens": 0
+    }
+  },
+  "finish_reason": "length",
+  "date": "2026-10-06T08:18:40.071Z",
+  "kit_commit": "8a7e65e",
+  "battery": "1.0.0",
+  "pack_fr": "0.1.0",
+  "runner_error": null,
+  "standard": {
+    "email": {
+      "status": "not-testable",
+      "reason": "truncated"
+    },
+    "website": {
+      "status": "not-testable",
+      "reason": "truncated"
+    }
+  },
+  "fr": {
+    "email": {
+      "status": "not-testable",
+      "reason": "truncated"
+    },
+    "website": {
+      "status": "not-testable",
+      "reason": "truncated"
+    }
+  },
+  "rescore_id": "2026-10-06T08:21:04.255Z"
+}

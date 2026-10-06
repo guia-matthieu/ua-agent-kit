@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sign-up</title>
+<style>
+  body{font-family:sans-serif;margin:2rem}
+  label{display:block;margin-bottom:.25rem}
+  input{padding:.25rem;margin-bottom:1rem;width:24rem;max-width:100%}
+  .error{color:red;font-size:.8rem;margin-top:-.75rem;margin-bottom:.75rem}
+  button{padding:.5rem 1rem}
+</style>
+</head>
+<body>
+<h1>Sign up</h1>
+<form id="signup">
+  <div>
+    <label for="name">Full name</label>
+    <input id="name" name="name" required>
+    <div id="nameErr" class="error"></div>
+  </div>
+
+  <div>
+    <label for="email">Email address</label>
+    <input id="email" name="email" type="text" required>
+    <div id="emailErr" class="error"></div>
+  </div>
+
+  <div>
+    <label for="website">Website</label>
+    <input id="website" name="website" type="text">
+    <div id="websiteErr" class="error"></div>
+  </div>
+
+  <div>
+    <label for="password">Password</label>
+    <input id="password" name="password" type="password" required minlength="8">
+    <div id="passwordErr" class="error"></div>
+  </div>
+
+  <button type="submit">Create account</button>
+</form>
+
+<script>
+(function () {
+  'use strict';
+
+  const form = document.getElementById('signup');
+
+  const validators = {
+    name:  val => val.trim().length >= 1,
+    email: val => {
+      const at = val.lastIndexOf('@');
+      if (at === -1 || at === 0 || at === val.length - 1) return false;
+      const local = val.slice(0, at);
+      if (local.indexOf(' ') !== -1 || local.length === 0) return false;
+
+      const domain = val.slice(at + 1);
+      if (!domain || domain.startsWith('-') || domain.endsWith('-') || domain.startsWith('.') || domain.endsWith('.')) return false;
+
+      const labels = domain.split('.');
+      if (labels.length < 2) return false;
+      return labels.every(l => l.length >= 1 && l.length <= 63 && !l.startsWith('-') && !l.endsWith('-'));
+    },
+    website: val => {
+      if (!val) return true;
+      try {
+        const url = new URL(val.startsWith('http') ? val : 'https://' + val);
+        if (!url.hostname) return false;
+        if (url.hostname.indexOf(' ') !== -1) return false;
+        const labels = url.hostname.split('.');
+        if (labels.length < 2) return false;
+        return labels.every(l => l.length >= 1 && l.length <= 63 && !l.startsWith('-') && !l.endsWith('-'));
+      } catch {
+        return false;
+      }
+    },
+    password: val => val.length >= 8
+  };
+
+  function showError(field, msg) {
+    const errEl = document.getElementById(field.id + 'Err');
+    errEl.textContent = msg;
+  }
+
+  function clearError(field) {
+    const errEl = document.getElementById(field.id + 'Err');
+    errEl.textContent = '';
+  }
+
+  function validateField(field) {
+    const validator = validators[field.id];
+    if (!validator) return true;
+    const value = field.value;
+    const ok = validator(value);
+    if (!ok) {
+      showError(field, 'Please enter a valid ' + field.id);
+      return false;
+    }
+    clearError(field);
+    return true;
+  }
+
+  ['name', 'email', 'website', 'password'].forEach(id => {
+    const field = document.getElementById(id);
+    field.addEventListener('blur', () => validateField(field));
+  });
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    let valid = true;
+    ['name', 'email', 'website', 'password'].forEach(id => {
+      const field = document.getElementById(id);
+      if (!validateField(field)) valid = false;
+    });
+    if (valid) {
+      alert('Form is valid and would be submitted.');
+    }
+  });
+})();
+</script>
+</body>
+</html>

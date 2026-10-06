@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Signup</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f4f7f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .form-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 1.5rem;
+        }
+        .form-group {
+            margin-bottom: 1.2rem;
+            position: relative;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #666;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+        input:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+        .error-message {
+            color: #dc3545;
+            font-size: 0.8rem;
+            margin-top: 4px;
+            height: 1rem;
+            display: block;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .success-banner {
+            display: none;
+            background-color: #d4edda;
+            color: #155724;
+            padding: 10px;
+            border-radius: 4px;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <div id="successMsg" class="success-banner">Account created successfully!</div>
+        <h2>Create Account</h2>
+        <form id="signupForm" novalidate>
+            <div class="form-group">
+                <label for="fullName">Full Name</label>
+                <input type="text" id="fullName" placeholder="John Doe">
+                <span id="fullNameError" class="error-message"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" placeholder="john@example.com">
+                <span id="emailError" class="error-message"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="website">Website</label>
+                <input type="url" id="website" placeholder="https://example.com">
+                <span id="websiteError" class="error-message"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Min 8 characters">
+                <span id="passwordError" class="error-message"></span>
+            </div>
+
+            <button type="submit">Sign Up</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Reset errors
+            const errors = document.querySelectorAll('.error-message');
+            errors.forEach(el => el.innerText = '');
+            document.getElementById('successMsg').style.display = 'none';
+
+            let isValid = true;
+
+            // Full Name Validation
+            const fullName = document.getElementById('fullName').value.trim();
+            if (fullName === '') {
+                document.getElementById('fullNameError').innerText = 'Full name is required';
+                isValid = false;
+            }
+
+            // Email Validation
+            const email = document.getElementById('email').value.trim();
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (email === '') {
+                document.getElementById('emailError').innerText = 'Email is required';
+                isValid = false;
+            } else if (!emailRegex.test(email)) {
+                document.getElementById('emailError').innerText = 'Please enter a valid email address';
+                isValid = false;
+            }
+
+            // Website Validation
+            const website = document.getElementById('website').value.trim();
+            const urlRegex = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
+            if (website === '') {
+                document.getElementById('websiteError').innerText = 'Website is required';
+                isValid = false;
+            } else if (!urlRegex.test(website)) {
+                document.getElementById('websiteError').innerText = 'Please enter a valid URL (e.g., https://google.com)';
+                isValid = false;
+            }
+
+            // Password Validation
+            const password = document.getElementById('password').value;
+            if (password === '') {
+                document.getElementById('passwordError').innerText = 'Password is required';
+                isValid = false;
+            } else if (password.length < 8) {
+                document.getElementById('passwordError').innerText = 'Password must be at least 8 characters long';
+                isValid = false;
+            }
+
+            if (isValid) {
+                document.getElementById('successMsg').style.display = 'block';
+                this.reset();
+            }
+        });
+    </script>
+</body>
+</html>

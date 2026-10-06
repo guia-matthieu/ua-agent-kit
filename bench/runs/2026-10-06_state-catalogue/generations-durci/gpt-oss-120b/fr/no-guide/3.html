@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulaire d'inscription</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 2rem;
+            max-width: 500px;
+        }
+        .field {
+            margin-bottom: 1rem;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="url"],
+        input[type="password"] {
+            width: 100%;
+            padding: 0.4rem;
+            box-sizing: border-box;
+        }
+        .error {
+            color: #c00;
+            font-size: 0.9rem;
+            margin-top: 0.2rem;
+            display: block;
+            min-height: 1em;
+        }
+        button {
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>Inscription</h1>
+    <form id="signupForm" novalidate>
+        <div class="field">
+            <label for="fullname">Nom complet *</label>
+            <input type="text" id="fullname" name="fullname" required>
+            <span class="error" id="fullnameError"></span>
+        </div>
+
+        <div class="field">
+            <label for="email">Adresse e‑mail *</label>
+            <input type="email" id="email" name="email" required>
+            <span class="error" id="emailError"></span>
+        </div>
+
+        <div class="field">
+            <label for="website">Site web *</label>
+            <input type="url" id="website" name="website" required placeholder="https://exemple.com">
+            <span class="error" id="websiteError"></span>
+        </div>
+
+        <div class="field">
+            <label for="password">Mot de passe *</label>
+            <input type="password" id="password" name="password" required minlength="6">
+            <span class="error" id="passwordError"></span>
+        </div>
+
+        <button type="submit">S'inscrire</button>
+    </form>
+
+    <script>
+        (function () {
+            const form = document.getElementById('signupForm');
+
+            const setError = (id, msg) => document.getElementById(id).textContent = msg;
+            const clearErrors = () => ['fullnameError', 'emailError', 'websiteError', 'passwordError']
+                .forEach(id => setError(id, ''));
+
+            // ---------- Validation ----------
+            function validateFullName(v) {
+                if (!v.trim()) return "Ce champ est obligatoire.";
+                if (!/\S+\s+\S+/.test(v.trim())) return "Veuillez entrer prénom et nom.";
+                return "";
+            }
+
+            function validateEmail(v) {
+                if (!v.trim()) return "Ce champ est obligatoire.";
+                // Interdit deux points consécutifs
+                if (v.includes('..')) return "L’adresse e‑mail ne doit pas contenir de '..'.";
+                // Regex stricte, accepte les caractères standards et impose un TLD d'au moins 2 caractères
+                const re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*\.[A-Za-z]{2,}$/;
+                return re.test(v) ? "" : "Adresse e‑mail invalide.";
+            }
+
+            function validateWebsite(v) {
+                if (!v.trim()) return "Ce champ est obligatoire.";
+                try {
+                    const url = new URL(v);
+                    if (!['http:', 'https:'].includes(url.protocol)) {
+                        return "Le protocole doit être http ou https.";
+                    }
+                    // Interdit des points consécutifs dans le hostname
+                    if (url.hostname.includes('..')) {
+                        return "L’URL ne doit pas contenir de '..' dans le nom de domaine.";
+                    }
+                    // Aucun espace dans l'URL (URL constructor aurait déjà échoué, mais on double‑vérifie)
+                    if (/\s/.test(v)) return "L’URL ne doit pas contenir d'espaces.";
+                    return "";
+                } catch (_) {
+                    return "URL invalide.";
+                }
+            }
+
+            function validatePassword(v) {
+                if (!v) return "Ce champ est obligatoire.";
+                if (v.length < 6) return "Le mot de passe doit contenir au moins 6 caractères.";
+                return "";
+            }
+            // ---------- Fin validation ----------
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                clearErrors();
+
+                const fullname = form.fullname.value;
+                const email = form.email.value;
+                const website = form.website.value;
+                const password = form.password.value;
+
+                let hasError = false;
+
+                const errFullName = validateFullName(fullname);
+                if (errFullName) { setError('fullnameError', errFullName); hasError = true; }
+
+                const errEmail = validateEmail(email);
+                if (errEmail) { setError('emailError', errEmail); hasError = true; }
+
+                const errWebsite = validateWebsite(website);
+                if (errWebsite) { setError('websiteError', errWebsite); hasError = true; }
+
+                const errPassword = validatePassword(password);
+                if (errPassword) { setError('passwordError', errPassword); hasError = true; }
+
+                if (!hasError) {
+                    // Soumission réelle (décommenter la ligne suivante pour envoyer réellement)
+                    // form.submit();
+
+                    // Ici on montre simplement un message de succès
+                    alert('Formulaire soumis avec succès ! (simulation)');
+                }
+            });
+        })();
+    </script>
+</body>
+</html>

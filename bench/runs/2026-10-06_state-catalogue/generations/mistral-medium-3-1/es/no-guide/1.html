@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Registro</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="url"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .error {
+            color: red;
+            font-size: 0.8em;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Registro</h1>
+    <form id="registroForm" onsubmit="return validarFormulario()">
+        <div class="form-group">
+            <label for="nombre">Nombre Completo:</label>
+            <input type="text" id="nombre" name="nombre" required>
+            <div id="errorNombre" class="error"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Correo Electrónico:</label>
+            <input type="email" id="email" name="email" required>
+            <div id="errorEmail" class="error"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="sitioWeb">Sitio Web:</label>
+            <input type="url" id="sitioWeb" name="sitioWeb">
+            <div id="errorSitioWeb" class="error"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Contraseña:</label>
+            <input type="password" id="password" name="password" required minlength="8">
+            <div id="errorPassword" class="error"></div>
+        </div>
+
+        <button type="submit">Registrarse</button>
+    </form>
+
+    <script>
+        function validarFormulario() {
+            let esValido = true;
+
+            // Validar nombre completo (solo letras y espacios)
+            const nombre = document.getElementById('nombre').value.trim();
+            const errorNombre = document.getElementById('errorNombre');
+            if (nombre === '') {
+                errorNombre.textContent = 'El nombre es obligatorio';
+                esValido = false;
+            } else if (!/^[a-zA-Z\s]+$/.test(nombre)) {
+                errorNombre.textContent = 'El nombre solo debe contener letras y espacios';
+                esValido = false;
+            } else {
+                errorNombre.textContent = '';
+            }
+
+            // Validar correo electrónico
+            const email = document.getElementById('email').value.trim();
+            const errorEmail = document.getElementById('errorEmail');
+            const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (email === '') {
+                errorEmail.textContent = 'El correo electrónico es obligatorio';
+                esValido = false;
+            } else if (!regexEmail.test(email)) {
+                errorEmail.textContent = 'Por favor, introduce un correo electrónico válido';
+                esValido = false;
+            } else {
+                errorEmail.textContent = '';
+            }
+
+            // Validar sitio web (opcional, pero si se proporciona debe ser válido)
+            const sitioWeb = document.getElementById('sitioWeb').value.trim();
+            const errorSitioWeb = document.getElementById('errorSitioWeb');
+            if (sitioWeb !== '' && !/^https?:\/\/.+\..+/.test(sitioWeb)) {
+                errorSitioWeb.textContent = 'Por favor, introduce una URL válida (ej: https://ejemplo.com)';
+                esValido = false;
+            } else {
+                errorSitioWeb.textContent = '';
+            }
+
+            // Validar contraseña (mínimo 8 caracteres)
+            const password = document.getElementById('password').value;
+            const errorPassword = document.getElementById('errorPassword');
+            if (password === '') {
+                errorPassword.textContent = 'La contraseña es obligatoria';
+                esValido = false;
+            } else if (password.length < 8) {
+                errorPassword.textContent = 'La contraseña debe tener al menos 8 caracteres';
+                esValido = false;
+            } else {
+                errorPassword.textContent = '';
+            }
+
+            return esValido;
+        }
+    </script>
+</body>
+</html>

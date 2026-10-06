@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universal Acceptance Signup</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .error {
+            color: #d32f2f;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        .submit-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .submit-btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Signup Form</h1>
+    <form id="signupForm">
+        <div class="form-group">
+            <label for="fullName">Full Name</label>
+            <input type="text" id="fullName" name="fullName" required>
+            <div id="fullNameError" class="error"></div>
+        </div>
+        
+        <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="text" id="email" name="email" required>
+            <div id="emailError" class="error"></div>
+        </div>
+        
+        <div class="form-group">
+            <label for="website">Website</label>
+            <input type="text" id="website" name="website">
+            <div id="websiteError" class="error"></div>
+        </div>
+        
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+            <div id="passwordError" class="error"></div>
+        </div>
+        
+        <button type="submit" class="submit-btn">Sign Up</button>
+    </form>
+
+    <script>
+        // Email validation function
+        function validateEmail(email) {
+            // Check if email contains exactly one @ symbol
+            const atCount = (email.match(/@/g) || []).length;
+            if (atCount !== 1) {
+                return "Email must contain exactly one @ symbol";
+            }
+
+            // Split into local part and domain
+            const parts = email.split('@');
+            const localPart = parts[0];
+            const domain = parts[1];
+
+            // Validate local part
+            if (!localPart) {
+                return "Email local part cannot be empty";
+            }
+
+            if (localPart.includes(' ')) {
+                return "Email local part cannot contain spaces";
+            }
+
+            // Validate domain
+            if (!domain || domain.length < 2) {
+                return "Email domain must contain at least 2 characters";
+            }
+
+            // Check domain format
+            const domainRegex = /^[a-zA-Z0-9.-]+$/;
+            if (!domainRegex.test(domain)) {
+                return "Email domain contains invalid characters";
+            }
+
+            // Validate TLD
+            const domainParts = domain.split('.');
+            const tld = domainParts[domainParts.length - 1];
+            if (tld.length < 2 && !tld.startsWith('xn--')) {
+                return "Email TLD must be at least 2 characters or start with 'xn--'";
+            }
+
+            // Unicode validation (U-labels)
+            try {
+                // Check domain labels
+                for (let i = 0; i < domainParts.length; i++) {
+                    const label = domainParts[i];
+                    if (label.indexOf('xn--') === 0 && label.length < 5) {
+                        return "Internationalized domain label too short";
+                    }
+                }
+            } catch (e) {
+                return "Email domain contains invalid Unicode";
+            }
+
+            return null;
+        }
+
+        // URL validation function
+        function validateURL(url) {
+            if (!url) return null;
+            
+            // Basic check for protocol
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                return "Website must start with http:// or https://";
+            }
+            
+            try {
+                // Use URL constructor for validation
+                new URL(url);
+                return null;
+            } catch (e) {
+                return "Website URL is invalid";
+            }
+        }
+
+        // Password validation function
+        function validatePassword(password) {
+            if (password.length < 8) {
+                return "Password must be at least 8 characters long";
+            }
+            
+            if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(password)) {
+                return "Password must contain at least one uppercase letter, one lowercase letter, and one digit";
+            }
+            
+            return null;
+        }
+
+        // Full name validation function
+        function validateFullName(name) {
+            if (!name.trim()) {
+                return "Full name is required";
+            }
+            
+            if (name.trim().length < 2) {
+                return "Full name must be at least 2 characters long";
+            }
+            
+            if (name.trim().length > 100) {
+                return "Full name must be less than 100 characters long";
+            }
+            
+            return null;
+        }
+
+        // Universal Acceptance helper: Convert U-labels to A-labels
+        function toASCII(input) {
+            // The standard IDNA conversion logic would normally go here
+            // In this simplified version, we just validate the basic domains
+            return input;
+        }
+
+        // Form submission handler
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Reset previous errors
+            document.querySelectorAll('.error').forEach(el => el.textContent = '');
+            
+            // Get form values
+            const fullName = document.getElementById('fullName').value;
+            const email = document.getElementById('email').value;
+            const website = document.getElementById('website').value;
+            const password = document.getElementById('password').value;
+            
+            // Validate each field
+            const fullNameError = validateFullName(fullName);
+            const emailError = validateEmail(email);
+            const websiteError = validateURL(website);
+            const passwordError = validatePassword(password);
+            
+            // Display errors
+            if (fullNameError) {
+                document.getElementById('fullNameError').textContent = fullNameError;
+            }
+            
+            if (emailError) {
+                document.getElementById('emailError').textContent = emailError;
+            }
+            
+            if (websiteError) {
+                document.getElementById('websiteError').textContent = websiteError;
+            }
+            
+            if (passwordError) {
+                document.getElementById('passwordError').textContent = passwordError;
+            }
+            
+            // If all validations pass, submit the form
+            if (!fullNameError && !emailError && !websiteError && !passwordError) {
+                alert('Form submitted successfully!');
+                // Here you would typically send the data to a server
+                // For this example, we just show an alert
+            }
+        });
+
+        // Real-time validation (optional)
+        document.getElementById('fullName').addEventListener('blur', function() {
+            const error = validateFullName(this.value);
+            document.getElementById('fullNameError').textContent = error || '';
+        });
+        
+        document.getElementById('email').addEventListener('blur', function() {
+            const error = validateEmail(this.value);
+            document.getElementById('emailError').textContent = error || '';
+        });
+        
+        document.getElementById('website').addEventListener('blur', function() {
+            const error = validateURL(this.value);
+            document.getElementById('websiteError').textContent = error || '';
+        });
+        
+        document.getElementById('password').addEventListener('blur', function() {
+            const error = validatePassword(this.value);
+            document.getElementById('passwordError').textContent = error || '';
+        });
+    </script>
+</body>
+</html>

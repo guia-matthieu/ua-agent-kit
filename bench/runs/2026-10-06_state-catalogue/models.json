@@ -1,0 +1,17 @@
+{
+  "pinned": "2026-10-06 — Albert API catalogue as read on 2026-10-06 at ia.numerique.gouv.fr/outils-ia/albert-api/modèles/: 4 chat and code models in open access, the partner model of L'Assistant, 2 candidates under test. Called through OpenRouter (Albert API is reserved for the French State): same announced weights, another host. Original provider pinned for Mistral Medium 3.1 and Ministral 8B (for Mistral Small 3.2, OpenRouter dropped the mistral/eu endpoint on 2026-10-06, hence default routing); default OpenRouter routing for the open weights.",
+  "models": [
+    {"key": "qwen3-coder-30b", "slug": "qwen/qwen3-coder-30b-a3b-instruct", "provider": null, "albert": "Qwen/Qwen3-Coder-30B-A3B-Instruct (openweight-code)"},
+    {"key": "gpt-oss-120b", "slug": "openai/gpt-oss-120b", "provider": null, "albert": "openai/gpt-oss-120b (openweight-large)"},
+    {"key": "mistral-small-3-2", "slug": "mistralai/mistral-small-3.2-24b-instruct", "provider": null, "albert": "mistralai/Mistral-Small-3.2-24B-Instruct-2506 (openweight-medium)"},
+    {"key": "ministral-8b", "slug": "mistralai/ministral-8b-2512", "provider": "mistral", "albert": "mistralai/Ministral-3-8B-Instruct-2512 (openweight-small)"},
+    {"key": "mistral-medium-3-1", "slug": "mistralai/mistral-medium-3.1", "provider": "mistral", "albert": "Mistral Medium 3.1 (partners; the model of L'Assistant)"},
+    {"key": "deepseek-v4-flash", "slug": "deepseek/deepseek-v4-flash", "provider": null, "albert": "deepseek-ai/DeepSeek-V4-Flash (under test, code candidate)"},
+    {"key": "gemma-4-31b", "slug": "google/gemma-4-31b-it", "provider": null, "albert": "google/gemma-4-31B-it (under test, medium candidate)"}
+  ],
+  "languages": ["fr", "en", "es"],
+  "conditions": ["no-guide", "guide"],
+  "repeats": 3,
+  "temperature": null,
+  "max_tokens": 16000
+}

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            display: flex;
+            justify-content: center;
+            padding: 2rem;
+            background-color: #f4f4f9;
+        }
+        .form-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        .field-group {
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        input {
+            padding: 0.6rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        input.invalid {
+            border-color: #d32f2f;
+            background-color: #fff8f8;
+        }
+        .error-msg {
+            color: #d32f2f;
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+            height: 1rem;
+            visibility: hidden;
+        }
+        .error-msg.visible {
+            visibility: visible;
+        }
+        button {
+            width: 100%;
+            padding: 0.8rem;
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #1d4ed8;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="form-card">
+        <h2>Create Account</h2>
+        <form id="signupForm" novalidate>
+            <div class="field-group">
+                <label for="fullName">Full Name</label>
+                <input type="text" id="fullName" name="fullName" placeholder="Jane Doe">
+                <div class="error-msg" id="fullName-error">Name is required</div>
+            </div>
+
+            <div class="field-group">
+                <label for="email">Email Address</label>
+                <input type="text" id="email" name="email" placeholder="user@example.com">
+                <div class="error-msg" id="email-error">Please enter a valid email address</div>
+            </div>
+
+            <div class="field-group">
+                <label for="website">Website</label>
+                <input type="text" id="website" name="website" placeholder="https://example.com">
+                <div class="error-msg" id="website-error">Please enter a valid URL</div>
+            </div>
+
+            <div class="field-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Minimum 8 characters">
+                <div class="error-msg" id="password-error">Password must be at least 8 characters</div>
+            </div>
+
+            <button type="submit">Sign Up</button>
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById('signupForm');
+
+        /**
+         * Universal Acceptance Email Validation
+         * Validates according to UA guidelines while preventing invalid syntax like double dots.
+         */
+        function isValidEmail(email) {
+            if (!email || email.includes(' ')) return false;
+            
+            const parts = email.split('@');
+            if (parts.length !== 2) return false;
+
+            const [local, domain] = parts;
+            if (!local || !domain) return false;
+
+            // Domain validation: labels separated by dots
+            const labels = domain.split('.');
+            if (labels.length < 2) return false;
+
+            // Ensure no empty labels (prevents "example..com" or ".example.com")
+            for (const label of labels) {
+                if (label.length === 0) return false;
+            }
+
+            const tld = labels[labels.length - 1];
+            const isAlabelTLD = tld.startsWith('xn--');
+            if (tld.length < 2 && !isAlabelTLD) return false;
+
+            return true;
+        }
+
+        /**
+         * URL Validation
+         * Uses URL API but explicitly rejects spaces which the API might encode
+         */
+        function isValidUrl(url) {
+            if (!url || url.includes(' ')) return false;
+            try {
+                const parsed = new URL(url);
+                // Ensure protocol is web-based
+                return ['http:', 'https:'].includes(parsed.protocol);
+            } catch {
+                return false;
+            }
+        }
+
+        function setError(id, isValid) {
+            const input = document.getElementById(id);
+            const error = document.getElementById(`${id}-error`);
+            if (isValid) {
+                input.classList.remove('invalid');
+                error.classList.remove('visible');
+            } else {
+                input.classList.add('invalid');
+                error.classList.add('visible');
+            }
+        }
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const data = {
+                fullName: document.getElementById('fullName').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                website: document.getElementById('website').value.trim(),
+                password: document.getElementById('password').value
+            };
+
+            const validations = {
+                fullName: data.fullName.length > 0,
+                email: isValidEmail(data.email),
+                website: data.website === '' || isValidUrl(data.website),
+                password: data.password.length >= 8
+            };
+
+            let formIsValid = true;
+            for (const [id, isValid] of Object.entries(validations)) {
+                setError(id, isValid);
+                if (!isValid) formIsValid = false;
+            }
+
+            if (formIsValid) {
+                alert('Form submitted successfully!');
+                form.reset();
+                ['fullName', 'email', 'website', 'password'].forEach(id => setError(id, true));
+            }
+        });
+    </script>
+</body>
+</html>

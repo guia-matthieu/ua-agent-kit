@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="url"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        .error-input {
+            border-color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>Sign Up</h1>
+    <form id="signupForm" onsubmit="return validateForm()">
+        <div class="form-group">
+            <label for="fullName">Full Name:</label>
+            <input type="text" id="fullName" name="fullName" required>
+            <div id="fullNameError" class="error"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email Address:</label>
+            <input type="email" id="email" name="email" required>
+            <div id="emailError" class="error"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="website">Website:</label>
+            <input type="url" id="website" name="website">
+            <div id="websiteError" class="error"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required minlength="8">
+            <div id="passwordError" class="error"></div>
+        </div>
+
+        <button type="submit">Sign Up</button>
+    </form>
+
+    <script>
+        function validateForm() {
+            // Reset previous errors
+            clearErrors();
+
+            let isValid = true;
+
+            // Validate Full Name
+            const fullName = document.getElementById('fullName').value.trim();
+            if (fullName === '') {
+                showError('fullNameError', 'Full name is required');
+                markError('fullName');
+                isValid = false;
+            } else if (fullName.length < 2) {
+                showError('fullNameError', 'Name must be at least 2 characters');
+                markError('fullName');
+                isValid = false;
+            }
+
+            // Validate Email
+            const email = document.getElementById('email').value.trim();
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (email === '') {
+                showError('emailError', 'Email is required');
+                markError('email');
+                isValid = false;
+            } else if (!emailRegex.test(email)) {
+                showError('emailError', 'Please enter a valid email address');
+                markError('email');
+                isValid = false;
+            }
+
+            // Validate Website (optional)
+            const website = document.getElementById('website').value.trim();
+            if (website !== '') {
+                const urlRegex = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
+                if (!urlRegex.test(website)) {
+                    showError('websiteError', 'Please enter a valid URL (include http:// or https://)');
+                    markError('website');
+                    isValid = false;
+                }
+            }
+
+            // Validate Password
+            const password = document.getElementById('password').value;
+            if (password === '') {
+                showError('passwordError', 'Password is required');
+                markError('password');
+                isValid = false;
+            } else if (password.length < 8) {
+                showError('passwordError', 'Password must be at least 8 characters');
+                markError('password');
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        function showError(elementId, message) {
+            const errorElement = document.getElementById(elementId);
+            errorElement.textContent = message;
+        }
+
+        function markError(inputId) {
+            const inputElement = document.getElementById(inputId);
+            inputElement.classList.add('error-input');
+        }
+
+        function clearErrors() {
+            // Clear all error messages
+            const errorElements = document.querySelectorAll('.error');
+            errorElements.forEach(element => {
+                element.textContent = '';
+            });
+
+            // Remove error styling from inputs
+            const inputElements = document.querySelectorAll('input');
+            inputElements.forEach(input => {
+                input.classList.remove('error-input');
+            });
+        }
+    </script>
+</body>
+</html>

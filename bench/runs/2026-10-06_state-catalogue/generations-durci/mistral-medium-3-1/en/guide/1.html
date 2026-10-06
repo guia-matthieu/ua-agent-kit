@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Universal-Acceptance Signup</title>
+<style>
+  body{font-family:sans-serif;margin:2rem}
+  label{display:block;margin-top:1rem}
+  input{width:24rem;padding:.4rem;margin-top:.2rem}
+  .error{color:red;font-size:.8rem;margin-top:.2rem}
+  button{margin-top:1rem;padding:.6rem 1.2rem}
+</style>
+</head>
+<body>
+<h1>Sign up</h1>
+<form id="signup">
+  <label>Full name*
+    <input type="text" id="name" required>
+    <span id="nameErr" class="error"></span>
+  </label>
+
+  <label>Email address*
+    <input type="text" id="email" required>
+    <span id="emailErr" class="error"></span>
+  </label>
+
+  <label>Website
+    <input type="text" id="website">
+    <span id="websiteErr" class="error"></span>
+  </label>
+
+  <label>Password*
+    <input type="password" id="password" required>
+    <span id="passwordErr" class="error"></span>
+  </label>
+
+  <button type="submit">Create account</button>
+</form>
+
+<script>
+/* ---------- Validation helpers ---------- */
+
+// UA-compliant email check
+function isValidEmail(str){
+  if(!str) return false;
+  const s = str.trim();
+  const at = s.indexOf('@');
+  if(at < 1 || at === s.length-1) return false;
+  const local = s.slice(0,at);
+  if(!local) return false;
+  const domain = s.slice(at+1);
+  if(!domain) return false;
+  // Domain must not start or end with dot or have consecutive dots
+  if(domain.startsWith('.') || domain.endsWith('.') || domain.includes('..')) return false;
+  const labels = domain.split('.');
+  if(labels.length < 2) return false;
+  for(const lbl of labels){
+    if(!lbl || lbl.length > 63) return false;
+    if(!/^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/i.test(lbl) &&
+       !/^xn--[a-z0-9-]{0,59}$/i.test(lbl)) return false;
+  }
+  return true;
+}
+
+// UA-compliant URL check
+function isValidWebsite(str){
+  if(!str) return true;
+  const s = str.trim();
+  try{
+    const url = s.startsWith('http://') || s.startsWith('https://')
+                 ? new URL(s)
+                 : new URL('https://'+s);
+    const host = url.hostname;
+    if(!host) return false;
+    if(host.startsWith('.') || host.endsWith('.') || host.includes('..')) return false;
+    const labels = host.split('.');
+    if(labels.length < 2) return false;
+    for(const lbl of labels){
+      if(!lbl || lbl.length > 63) return false;
+      if(!/^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/i.test(lbl) &&
+         !/^xn--[a-z0-9-]{0,59}$/i.test(lbl)) return false;
+    }
+    return true;
+  }catch(_){
+    return false;
+  }
+}
+
+/* ---------- Form handling ---------- */
+
+const form = document.getElementById('signup');
+const fields = {
+  name:   { el: document.getElementById('name'),   err: document.getElementById('nameErr')   },
+  email:  { el: document.getElementById('email'),  err: document.getElementById('emailErr')  },
+  website:{ el: document.getElementById('website'),err: document.getElementById('websiteErr')},
+  password:{el:document.getElementById('password'),err:document.getElementById('passwordErr')}
+};
+
+function showError(field, msg){
+  fields[field].err.textContent = msg;
+}
+function clearError(field){
+  fields[field].err.textContent = '';
+}
+
+function validate(){
+  let ok = true;
+  if(fields.name.el.value.trim().length < 2){
+    showError('name','Full name must be at least 2 characters');
+    ok = false;
+  }else clearError('name');
+
+  if(!isValidEmail(fields.email.el.value)){
+    showError('email','Please enter a valid email address');
+    ok = false;
+  }else clearError('email');
+
+  if(fields.website.el.value && !isValidWebsite(fields.website.el.value)){
+    showError('website','Please enter a valid website URL');
+    ok = false;
+  }else clearError('website');
+
+  if(fields.password.el.value.length < 8){
+    showError('password','Password must be at least 8 characters');
+    ok = false;
+  }else clearError('password');
+
+  return ok;
+}
+
+form.addEventListener('submit', e=>{
+  e.preventDefault();
+  if(validate()){
+    alert('Form is valid and would be submitted.');
+  }
+});
+</script>
+</body>
+</html>

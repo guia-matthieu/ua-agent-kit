@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f6f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .form-container {
+            background: #fff;
+            padding: 2rem 2.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 1.2rem;
+            position: relative;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+            color: #444;
+        }
+        input {
+            width: 100%;
+            padding: 0.7rem 0.8rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+        input:focus {
+            outline: none;
+            border-color: #4a90d9;
+            box-shadow: 0 0 0 2px rgba(74,144,217,0.2);
+        }
+        input.error {
+            border-color: #e74c3c;
+        }
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.85rem;
+            margin-top: 0.3rem;
+            display: none;
+        }
+        .error-message.visible {
+            display: block;
+        }
+        .submit-btn {
+            width: 100%;
+            padding: 0.8rem;
+            background: #4a90d9;
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 0.5rem;
+        }
+        .submit-btn:hover {
+            background: #357abd;
+        }
+        .submit-btn:disabled {
+            background: #aaa;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Créer un compte</h1>
+        <form id="signup-form" novalidate>
+            <div class="form-group">
+                <label for="fullname">Nom complet</label>
+                <input type="text" id="fullname" name="fullname" placeholder="Votre nom" autocomplete="name" required>
+                <span class="error-message" id="fullname-error"></span>
+            </div>
+            <div class="form-group">
+                <label for="email">Adresse e-mail</label>
+                <input type="text" id="email" name="email" placeholder="exemple@domaine.fr" autocomplete="email" required>
+                <span class="error-message" id="email-error"></span>
+            </div>
+            <div class="form-group">
+                <label for="website">Site web</label>
+                <input type="text" id="website" name="website" placeholder="https://exemple.fr" autocomplete="url">
+                <span class="error-message" id="website-error"></span>
+            </div>
+            <div class="form-group">
+                <label for="password">Mot de passe</label>
+                <input type="password" id="password" name="password" placeholder="8 caractères minimum" autocomplete="new-password" required>
+                <span class="error-message" id="password-error"></span>
+            </div>
+            <button type="submit" class="submit-btn">S'inscrire</button>
+        </form>
+    </div>
+
+    <script>
+        (function() {
+            const form = document.getElementById('signup-form');
+            const fields = {
+                fullname: { el: document.getElementById('fullname'), error: document.getElementById('fullname-error') },
+                email: { el: document.getElementById('email'), error: document.getElementById('email-error') },
+                website: { el: document.getElementById('website'), error: document.getElementById('website-error') },
+                password: { el: document.getElementById('password'), error: document.getElementById('password-error') }
+            };
+
+            // Utility to show/hide error
+            function setError(fieldId, message) {
+                const field = fields[fieldId];
+                field.error.textContent = message;
+                field.error.classList.toggle('visible', message !== '');
+                field.el.classList.toggle('error', message !== '');
+            }
+
+            function clearAllErrors() {
+                Object.keys(fields).forEach(key => setError(key, ''));
+            }
+
+            // --- Validation functions ---
+
+            // 1. Full name: non-empty after trimming
+            function validateFullName(name) {
+                const trimmed = name.trim();
+                if (!trimmed) {
+                    return 'Le nom complet est obligatoire.';
+                }
+                return '';
+            }
+
+            // 2. Email: basic UA‑friendly validation
+            //    - exactly one '@'
+            //    - non‑empty local part without spaces
+            //    - domain with at least one dot
+            //    - each label 1-63 characters (in ASCII form; we check length roughly)
+            //    - TLD must be at least 2 characters and not purely numeric (accept xn--)
+            //    - allow Unicode characters in local and domain
+            function validateEmail(email) {
+                const trimmed = email.trim();
+                if (!trimmed) {
+                    return 'L\'adresse e-mail est obligatoire.';
+                }
+
+                // Check exactly one '@'
+                const atIndex = trimmed.indexOf('@');
+                if (atIndex === -1 || trimmed.lastIndexOf('@') !== atIndex) {
+                    return 'L\'adresse e-mail doit contenir un seul @.';
+                }
+
+                const localPart = trimmed.slice(0, atIndex);
+                const domainPart = trimmed.slice(atIndex + 1);
+
+                // Local part must not be empty and must not contain spaces
+                if (!localPart) {
+                    return 'La partie locale ne peut pas être vide.';
+                }
+                if (/\s/.test(localPart)) {
+                    return 'La partie locale ne doit pas contenir d\'espaces.';
+                }
+
+                // Domain part must not be empty
+                if (!domainPart) {
+                    return 'Le domaine ne peut pas être vide.';
+                }
+
+                // Split domain by dots
+                const labels = domainPart.split('.');
+                if (labels.length < 2) {
+                    return 'Le domaine doit comporter au moins deux parties (exemple : domaine.tld).';
+                }
+
+                // Check each label
+                for (let i = 0; i < labels.length; i++) {
+                    const label = labels[i];
+                    if (!label) {
+                        return 'Le domaine contient un label vide.';
+                    }
+                    // In IDNA2008, each label is 1-63 octets in ASCII form.
+                    // We can't easily measure octets, but a rough char limit is reasonable.
+                    if (label.length > 63) {
+                        return 'Un label du domaine est trop long (max 63 caractères).';
+                    }
+                    // A‑labels must start with xn-- (case‑insensitive) – not required but allowed
+                }
+
+                // TLD (last label) must be at least 2 characters, not purely numeric,
+                // but can be an A‑label (xn--...)
+                const tld = labels[labels.length - 1];
+                if (tld.length < 2) {
+                    return 'Le domaine de premier niveau (TLD) doit comporter au moins 2 caractères.';
+                }
+                // Allow numeric TLD only if it's an A‑label (xn-- followed by digits?)
+                // In practice, numeric TLDs like .123 are not delegated; we forbid pure digits.
+                if (/^\d+$/.test(tld) && !tld.toLowerCase().startsWith('xn--')) {
+                    return 'Le TLD ne peut pas être composé uniquement de chiffres.';
+                }
+
+                return '';
+            }
+
+            // 3. Website: must be a valid URL with http:// or https:// protocol
+            function validateWebsite(url) {
+                const trimmed = url.trim();
+                if (!trimmed) {
+                    // Website is optional
+                    return '';
+                }
+
+                // Must start with http:// or https://
+                if (!/^https?:\/\//i.test(trimmed)) {
+                    return 'L\'URL doit commencer par http:// ou https://.';
+                }
+
+                // Use URL constructor to check validity (handles IDN, punycode, etc.)
+                try {
+                    const parsed = new URL(trimmed);
+                    // Protocol must be http: or https:
+                    if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
+                        return 'Seuls les protocoles http et https sont acceptés.';
+                    }
+                    // Hostname must not be empty (should be covered by URL constructor)
+                    if (!parsed.hostname) {
+                        return 'L\'URL doit contenir un nom de domaine valide.';
+                    }
+                } catch (e) {
+                    return 'L\'URL saisie n\'est pas valide.';
+                }
+                return '';
+            }
+
+            // 4. Password: non‑empty and at least 8 characters
+            function validatePassword(password) {
+                if (!password) {
+                    return 'Le mot de passe est obligatoire.';
+                }
+                if (password.length < 8) {
+                    return 'Le mot de passe doit contenir au moins 8 caractères.';
+                }
+                return '';
+            }
+
+            // --- Submit handler ---
+            form.addEventListener('submit', function(event) {
+                event.preventDefault(); // We handle validation ourselves
+                clearAllErrors();
+
+                const nameValue = fields.fullname.el.value;
+                const emailValue = fields.email.el.value;
+                const websiteValue = fields.website.el.value;
+                const passwordValue = fields.password.el.value;
+
+                let hasError = false;
+
+                // Validate full name
+                const nameErr = validateFullName(nameValue);
+                if (nameErr) {
+                    setError('fullname', nameErr);
+                    hasError = true;
+                }
+
+                // Validate email
+                const emailErr = validateEmail(emailValue);
+                if (emailErr) {
+                    setError('email', emailErr);
+                    hasError = true;
+                }
+
+                // Validate website
+                const websiteErr = validateWebsite(websiteValue);
+                if (websiteErr) {
+                    setError('website', websiteErr);
+                    hasError = true;
+                }
+
+                // Validate password
+                const passwordErr = validatePassword(passwordValue);
+                if (passwordErr) {
+                    setError('password', passwordErr);
+                    hasError = true;
+                }
+
+                // If no error, we could submit the form (e.g. via AJAX or allow native submission)
+                if (!hasError) {
+                    // For demonstration, show a success message (or actually submit)
+                    alert('Inscription réussie (simulation).');
+                    // If you want to actually submit, you could use form.submit()
+                    // but since we used preventDefault and there's no action, we just stop.
+                } else {
+                    // Focus on the first field with an error
+                    const firstErrorField = document.querySelector('input.error');
+                    if (firstErrorField) {
+                        firstErrorField.focus();
+                    }
+                }
+            });
+
+            // Optional: real‑time validation on blur for better UX
+            // (not required by the exercise, but helpful)
+            function addBlurValidation(fieldId, validator) {
+                const field = fields[fieldId];
+                field.el.addEventListener('blur', function() {
+                    const err = validator(this.value);
+                    if (err) {
+                        setError(fieldId, err);
+                    } else {
+                        setError(fieldId, '');
+                    }
+                });
+            }
+
+            addBlurValidation('fullname', validateFullName);
+            addBlurValidation('email', validateEmail);
+            addBlurValidation('website', validateWebsite);
+            addBlurValidation('password', validatePassword);
+
+            // Also clear error when user starts typing (on input)
+            Object.keys(fields).forEach(key => {
+                fields[key].el.addEventListener('input', function() {
+                    // Only clear if currently showing an error
+                    if (fields[key].error.classList.contains('visible')) {
+                        // Optionally revalidate, but simpler: clear error
+                        setError(key, '');
+                        fields[key].el.classList.remove('error');
+                    }
+                });
+            });
+        })();
+    </script>
+</body>
+</html>

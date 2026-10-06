@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Formulaire d'inscription</title>
+<style>
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 1rem;
+  }
+  h1 {
+    text-align: center;
+  }
+  form div {
+    margin-bottom: 1rem;
+  }
+  label {
+    display: block;
+    margin-bottom: .3rem;
+    font-weight: bold;
+  }
+  input {
+    width: 100%;
+    padding: .4rem;
+    box-sizing: border-box;
+    font-size: 1rem;
+  }
+  .error {
+    color: #d00;
+    font-size: .9rem;
+    margin-top: .2rem;
+    display: block;
+  }
+  button {
+    padding: .6rem 1.2rem;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+<h1>Inscription</h1>
+<form id="registerForm" novalidate>
+  <div>
+    <label for="fullName">Nom complet</label>
+    <input type="text" id="fullName" name="fullName" required>
+    <span class="error" id="fullNameError"></span>
+  </div>
+
+  <div>
+    <label for="email">Adresse e‑mail</label>
+    <!-- type="text" to accept Unicode local parts (EAI) -->
+    <input type="text" id="email" name="email" required>
+    <span class="error" id="emailError"></span>
+  </div>
+
+  <div>
+    <label for="website">Site web (URL complète)</label>
+    <!-- type="text" – we validate the URL ourselves to accept IDN -->
+    <input type="text" id="website" name="website" required placeholder="https://exemple.com">
+    <span class="error" id="websiteError"></span>
+  </div>
+
+  <div>
+    <label for="password">Mot de passe</label>
+    <input type="password" id="password" name="password" required>
+    <span class="error" id="passwordError"></span>
+  </div>
+
+  <button type="submit">S'inscrire</button>
+</form>
+
+<script>
+(function () {
+  const form = document.getElementById('registerForm');
+
+  const errorElems = {
+    fullName: document.getElementById('fullNameError'),
+    email: document.getElementById('emailError'),
+    website: document.getElementById('websiteError'),
+    password: document.getElementById('passwordError')
+  };
+
+  function clearErrors() {
+    for (const key in errorElems) {
+      errorElems[key].textContent = '';
+    }
+  }
+
+  function setError(field, msg) {
+    errorElems[field].textContent = msg;
+  }
+
+  // ----- Validation functions -----
+  function validateFullName(value) {
+    if (!value.trim()) return 'Le nom complet est requis.';
+    return '';
+  }
+
+  function validateEmail(value) {
+    // 1. Exactly one "@"
+    const parts = value.split('@');
+    if (parts.length !== 2) return 'L’adresse e‑mail doit contenir un seul « @ ».';
+    const [local, domain] = parts;
+
+    // 2. Local part checks (Unicode allowed)
+    if (!local) return 'La partie locale de l’e‑mail ne peut être vide.';
+    if (/\s/.test(local)) return 'La partie locale ne doit pas contenir d’espaces.';
+    if (local.startsWith('.') || local.endsWith('.')) return 'La partie locale ne doit pas commencer ou finir par un point.';
+    if (local.includes('..')) return 'La partie locale ne doit pas contenir de points consécutifs.';
+
+    // 3. Domain validation – let the browser do IDNA conversion via URL
+    try {
+      const url = new URL('http://' + domain);
+      // Must contain at least one dot (i.e. a TLD)
+      if (!url.hostname.includes('.')) return 'Le domaine doit contenir au moins un point.';
+    } catch (e) {
+      return 'Le domaine de l’e‑mail est invalide.';
+    }
+
+    return '';
+  }
+
+  function validateWebsite(value) {
+    try {
+      const url = new URL(value);
+      if (!url.protocol.startsWith('http')) return 'L’URL doit commencer par http:// ou https://.';
+      // Domain part validation (IDN handled by URL)
+      if (!url.hostname) return 'L’URL doit contenir un nom d’hôte.';
+    } catch (e) {
+      return 'L’URL du site web est invalide.';
+    }
+    return '';
+  }
+
+  function validatePassword(value) {
+    if (value.length < 8) return 'Le mot de passe doit contenir au moins 8 caractères.';
+    if (!/[A-Za-z]/.test(value) || !/[0-9]/.test(value)) {
+      return 'Le mot de passe doit contenir au moins une lettre et un chiffre.';
+    }
+    return '';
+  }
+
+  // ----- Submit handler -----
+  form.addEventListener('submit', function (e) {
+    clearErrors();
+    let hasError = false;
+
+    const fullName = form.fullName.value;
+    const email = form.email.value;
+    const website = form.website.value;
+    const password = form.password.value;
+
+    const fnErr = validateFullName(fullName);
+    if (fnErr) { setError('fullName', fnErr); hasError = true; }
+
+    const emailErr = validateEmail(email);
+    if (emailErr) { setError('email', emailErr); hasError = true; }
+
+    const siteErr = validateWebsite(website);
+    if (siteErr) { setError('website', siteErr); hasError = true; }
+
+    const pwdErr = validatePassword(password);
+    if (pwdErr) { setError('password', pwdErr); hasError = true; }
+
+    if (hasError) {
+      e.preventDefault(); // stop submission
+    }
+  });
+})();
+</script>
+</body>
+</html>

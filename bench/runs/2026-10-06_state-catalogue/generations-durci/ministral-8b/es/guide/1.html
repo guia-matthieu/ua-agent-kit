@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Registro</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="url"],
+        input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        .success {
+            color: green;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Formulario de Registro</h1>
+    <form id="registroForm">
+        <div class="form-group">
+            <label for="nombreCompleto">Nombre completo:</label>
+            <input type="text" id="nombreCompleto" name="nombreCompleto" required>
+            <div id="errorNombreCompleto" class="error"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="correoElectronico">Dirección de correo electrónico:</label>
+            <input type="email" id="correoElectronico" name="correoElectronico" required>
+            <div id="errorCorreoElectronico" class="error"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="sitioWeb">Sitio web (opcional):</label>
+            <input type="url" id="sitioWeb" name="sitioWeb">
+            <div id="errorSitioWeb" class="error"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="contraseña">Contraseña:</label>
+            <input type="password" id="contraseña" name="contraseña" required>
+            <div id="errorContraseña" class="error"></div>
+        </div>
+
+        <button type="submit">Registrarse</button>
+    </form>
+
+    <div id="mensajeExito" class="success"></div>
+
+    <script>
+        document.getElementById('registroForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Limpiar mensajes de error previos
+            document.querySelectorAll('.error').forEach(el => el.textContent = '');
+            document.getElementById('mensajeExito').textContent = '';
+
+            // Obtener valores de los campos
+            const nombreCompleto = document.getElementById('nombreCompleto').value.trim();
+            const correoElectronico = document.getElementById('correoElectronico').value.trim();
+            const sitioWeb = document.getElementById('sitioWeb').value.trim();
+            const contraseña = document.getElementById('contraseña').value;
+
+            let esValido = true;
+
+            // Validar nombre completo
+            if (nombreCompleto === '') {
+                document.getElementById('errorNombreCompleto').textContent = 'El nombre completo es obligatorio.';
+                esValido = false;
+            } else if (!/^[a-zA-ZÀ-ÖØ-öø-ÿ\s'-]+$/.test(nombreCompleto)) {
+                document.getElementById('errorNombreCompleto').textContent = 'El nombre completo solo puede contener letras, espacios, apóstrofes y guiones.';
+                esValido = false;
+            } else if (nombreCompleto.length < 3) {
+                document.getElementById('errorNombreCompleto').textContent = 'El nombre completo debe tener al menos 3 caracteres.';
+                esValido = false;
+            }
+
+            // Validación mejorada para correo electrónico
+            const regexEmail = /^(?:[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])$/;
+            if (correoElectronico === '') {
+                document.getElementById('errorCorreoElectronico').textContent = 'El correo electrónico es obligatorio.';
+                esValido = false;
+            } else if (!regexEmail.test(correoElectronico)) {
+                document.getElementById('errorCorreoElectronico').textContent = 'Por favor, ingrese un correo electrónico válido.';
+                esValido = false;
+            }
+
+            // Validación mejorada para sitio web
+            if (sitioWeb !== '') {
+                const regexUrl = /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}([\/\?\&\=\-\+\.\:\@\%\#\~]*)*[\/\.\@]?$/;
+                if (!regexUrl.test(sitioWeb)) {
+                    document.getElementById('errorSitioWeb').textContent = 'Por favor, ingrese una URL válida (ejemplo: https://ejemplo.com).';
+                    esValido = false;
+                }
+            }
+
+            // Validar contraseña
+            if (contraseña === '') {
+                document.getElementById('errorContraseña').textContent = 'La contraseña es obligatoria.';
+                esValido = false;
+            } else if (contraseña.length < 8) {
+                document.getElementById('errorContraseña').textContent = 'La contraseña debe tener al menos 8 caracteres.';
+                esValido = false;
+            } else if (!/[A-Z]/.test(contraseña)) {
+                document.getElementById('errorContraseña').textContent = 'La contraseña debe contener al menos una mayúscula.';
+                esValido = false;
+            } else if (!/[a-z]/.test(contraseña)) {
+                document.getElementById('errorContraseña').textContent = 'La contraseña debe contener al menos una minúscula.';
+                esValido = false;
+            } else if (!/[0-9]/.test(contraseña)) {
+                document.getElementById('errorContraseña').textContent = 'La contraseña debe contener al menos un número.';
+                esValido = false;
+            }
+
+            // Si todo es válido, mostrar mensaje de éxito
+            if (esValido) {
+                document.getElementById('mensajeExito').textContent = '¡Registro exitoso! Los datos se enviarían al servidor.';
+                // Aquí podrías agregar el código para enviar los datos al servidor
+            }
+        });
+
+        // Validación en tiempo real para campos opcionales
+        document.getElementById('sitioWeb').addEventListener('input', function() {
+            const sitioWeb = this.value.trim();
+            if (sitioWeb === '') {
+                document.getElementById('errorSitioWeb').textContent = '';
+                return;
+            }
+
+            const regexUrl = /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}([\/\?\&\=\-\+\.\:\@\%\#\~]*)*[\/\.\@]?$/;
+            if (!regexUrl.test(sitioWeb)) {
+                document.getElementById('errorSitioWeb').textContent = 'Por favor, ingrese una URL válida (ejemplo: https://ejemplo.com).';
+            } else {
+                document.getElementById('errorSitioWeb').textContent = '';
+            }
+        });
+    </script>
+</body>
+</html>

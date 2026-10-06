@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Registro de usuario</title>
+<style>
+    body {font-family: Arial, sans-serif; max-width: 600px; margin: 2rem auto;}
+    .field {margin-bottom: 1rem;}
+    label {display: block; margin-bottom: .25rem;}
+    input {width: 100%; padding: .4rem; box-sizing: border-box;}
+    .error {color:#d00; font-size:.875rem; margin-top:.25rem; display:block;}
+    .success {color:#090; font-size:1rem; margin-top:1rem;}
+</style>
+</head>
+<body>
+
+<h1>Registro</h1>
+
+<form id="registerForm" novalidate>
+    <div class="field">
+        <label for="fullName">Nombre completo</label>
+        <input type="text" id="fullName" name="fullName" required>
+        <span class="error" aria-live="polite"></span>
+    </div>
+
+    <div class="field">
+        <label for="email">Correo electrónico</label>
+        <input type="email" id="email" name="email" required>
+        <span class="error" aria-live="polite"></span>
+    </div>
+
+    <div class="field">
+        <label for="website">Sitio web</label>
+        <input type="url" id="website" name="website" required placeholder="https://ejemplo.com">
+        <span class="error" aria-live="polite"></span>
+    </div>
+
+    <div class="field">
+        <label for="password">Contraseña</label>
+        <input type="password" id="password" name="password" required>
+        <span class="error" aria-live="polite"></span>
+    </div>
+
+    <button type="submit">Registrarse</button>
+    <div id="result" class="success" aria-live="polite"></div>
+</form>
+
+<script>
+(function () {
+    const form = document.getElementById('registerForm');
+    const result = document.getElementById('result');
+
+    /** Convert a domain (Unicode or punycode) to its ASCII representation
+     *  using the URL constructor (which follows IDNA2008/UTS‑46). */
+    function toASCII(domain) {
+        try {
+            // Adding a dummy scheme allows the URL constructor to parse the host.
+            const tmp = new URL('http://' + domain);
+            return tmp.hostname; // already ASCII (punycode) if needed
+        } catch (_) {
+            return null;
+        }
+    }
+
+    /** Return true if the given ASCII hostname conforms to the DNS label rules:
+     *  - No empty labels (no consecutive dots, no leading/trailing dot)
+     *  - Labels 1‑63 chars, only alphanum or hyphen
+     *  - Labels do not start or end with hyphen
+     *  - At least one dot (so a TLD exists) and TLD >= 2 chars
+     */
+    function isValidHostname(host) {
+        if (!host) return false;
+        // Reject spaces, control chars, etc.
+        if (/\s/.test(host)) return false;
+        // No leading or trailing dot, no consecutive dots
+        if (host.startsWith('.') || host.endsWith('.') || host.includes('..')) return false;
+
+        const labels = host.split('.');
+        if (labels.length < 2) return false; // need at least one subdomain + TLD
+
+        for (let i = 0; i < labels.length; i++) {
+            const label = labels[i];
+            if (label.length < 1 || label.length > 63) return false;
+            if (!/^[A-Za-z0-9-]+$/.test(label)) return false;
+            if (label.startsWith('-') || label.endsWith('-')) return false;
+        }
+
+        const tld = labels[labels.length - 1];
+        if (tld.length < 2) return false; // TLD must be at least 2 characters
+
+        return true;
+    }
+
+    const validators = {
+        fullName(value) {
+            if (!value.trim()) return 'El nombre completo no puede estar vacío.';
+            return '';
+        },
+
+        email(value) {
+            if (!value) return 'El correo electrónico es obligatorio.';
+            if (/\s/.test(value)) return 'El correo electrónico no puede contener espacios.';
+
+            const parts = value.split('@');
+            if (parts.length !== 2) return 'El correo electrónico debe contener un solo "@"';
+            const [local, domain] = parts;
+            if (!local) return 'La parte local del correo no puede estar vacía.';
+            if (!domain) return 'El dominio del correo no puede estar vacío.';
+
+            const asciiDomain = toASCII(domain);
+            if (!asciiDomain) return 'El dominio del correo no es válido.';
+
+            if (!isValidHostname(asciiDomain))
+                return 'El dominio del correo no es válido (etiquetas, puntos o TLD incorrectos).';
+
+            return '';
+        },
+
+        website(value) {
+            if (!value) return 'El sitio web es obligatorio.';
+            try {
+                const url = new URL(value);
+                if (!['http:', 'https:'].includes(url.protocol))
+                    return 'Solo se permiten URLs HTTP/HTTPS.';
+
+                const asciiHost = toASCII(url.hostname);
+                if (!asciiHost) return 'El dominio del sitio web no es válido.';
+
+                if (!isValidHostname(asciiHost))
+                    return 'El dominio del sitio web no es válido (etiquetas, puntos o TLD incorrectos).';
+            } catch (_) {
+                return 'La URL del sitio web no es válida.';
+            }
+            return '';
+        },
+
+        password(value) {
+            if (!value) return 'La contraseña es obligatoria.';
+            if (value.length < 8) return 'La contraseña debe tener al menos 8 caracteres.';
+            if (!/[A-Za-z]/.test(value) || !/[0-9]/.test(value))
+                return 'La contraseña debe contener letras y números.';
+            return '';
+        }
+    };
+
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        result.textContent = '';
+        let hasError = false;
+
+        // Clear previous errors
+        form.querySelectorAll('.error').forEach(span => span.textContent = '');
+
+        // Validate each field
+        for (const [name, validator] of Object.entries(validators)) {
+            const input = form.elements[name];
+            const message = validator(input.value);
+            if (message) {
+                const errorSpan = input.parentElement.querySelector('.error');
+                errorSpan.textContent = message;
+                hasError = true;
+            }
+        }
+
+        if (!hasError) {
+            result.textContent = '¡Registro completado con éxito!';
+            // Aquí podrías enviar los datos al servidor con fetch/AJAX.
+        }
+    });
+})();
+</script>
+
+</body>
+</html>

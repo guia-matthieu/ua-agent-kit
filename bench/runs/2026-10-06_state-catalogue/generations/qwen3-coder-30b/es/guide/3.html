@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Registro</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .form-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input.error {
+            border-color: #ff0000;
+        }
+        .error-message {
+            color: #ff0000;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        .submit-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+        .submit-btn:hover {
+            background-color: #45a049;
+        }
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Formulario de Registro</h2>
+        <form id="registrationForm">
+            <div class="form-group">
+                <label for="fullName">Nombre completo:</label>
+                <input type="text" id="fullName" name="fullName" required>
+                <div class="error-message" id="fullNameError"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Correo electrónico:</label>
+                <input type="email" id="email" name="email" required>
+                <div class="error-message" id="emailError"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="website">Sitio web:</label>
+                <input type="url" id="website" name="website">
+                <div class="error-message" id="websiteError"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Contraseña:</label>
+                <input type="password" id="password" name="password" required>
+                <div class="error-message" id="passwordError"></div>
+            </div>
+            
+            <button type="submit" class="submit-btn">Registrarse</button>
+        </form>
+        <div class="success-message" id="successMessage">
+            ¡Registro exitoso!
+        </div>
+    </div>
+
+    <script>
+        // Expresión regular para validar correos electrónicos con soporte Unicode
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        const urlRegex = /^(https?:\/\/)?([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}(\/[^\s]*)?$/i;
+
+        function validateEmail(email) {
+            // Validación básica
+            if (!emailRegex.test(email)) {
+                return false;
+            }
+            
+            // Validación de dominio por partes para manejar Unicode
+            const parts = email.split('@');
+            if (parts.length !== 2) {
+                return false;
+            }
+            
+            const domain = parts[1];
+            // Verificar que el dominio tiene al menos un punto
+            if (!domain.includes('.')) {
+                return false;
+            }
+            
+            // Verificar que no termine con punto
+            if (domain.endsWith('.')) {
+                return false;
+            }
+            
+            // Verificar que no tenga dos puntos seguidos
+            if (domain.includes('..')) {
+                return false;
+            }
+            
+            // Verificar longitud total del email
+            if (email.length > 254) {
+                return false;
+            }
+            
+            // Validar etiquetas de dominio
+            const labels = domain.split('.');
+            for (let i = 0; i < labels.length; i++) {
+                const label = labels[i];
+                // Verificar longitud de cada etiqueta (máximo 63 caracteres)
+                if (label.length > 63) {
+                    return false;
+                }
+                // Verificar que no comience ni termine con guion
+                if (label.startsWith('-') || label.endsWith('-')) {
+                    return false;
+                }
+                // Verificar que solo contenga caracteres permitidos
+                if (!/^[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?$/.test(label)) {
+                    return false;
+                }
+            }
+            
+            return true;
+        }
+
+        function validateUrl(url) {
+            if (!url) return true;
+            return urlRegex.test(url);
+        }
+
+        function validatePassword(password) {
+            return passwordRegex.test(password);
+        }
+
+        function showError(fieldId, message) {
+            const field = document.getElementById(fieldId);
+            const errorElement = document.getElementById(fieldId + 'Error');
+            
+            field.classList.add('error');
+            errorElement.textContent = message;
+        }
+
+        function clearError(fieldId) {
+            const field = document.getElementById(fieldId);
+            const errorElement = document.getElementById(fieldId + 'Error');
+            
+            field.classList.remove('error');
+            errorElement.textContent = '';
+        }
+
+        function validateForm() {
+            let isValid = true;
+            const fullName = document.getElementById('fullName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const website = document.getElementById('website').value.trim();
+            const password = document.getElementById('password').value;
+
+            // Validar nombre completo
+            if (fullName.length < 2) {
+                showError('fullName', 'El nombre completo debe tener al menos 2 caracteres');
+                isValid = false;
+            } else {
+                clearError('fullName');
+            }
+
+            // Validar correo electrónico
+            if (!email) {
+                showError('email', 'El correo electrónico es requerido');
+                isValid = false;
+            } else if (!validateEmail(email)) {
+                showError('email', 'Formato de correo electrónico inválido');
+                isValid = false;
+            } else {
+                clearError('email');
+            }
+
+            // Validar sitio web
+            if (website && !validateUrl(website)) {
+                showError('website', 'Formato de sitio web inválido');
+                isValid = false;
+            } else {
+                clearError('website');
+            }
+
+            // Validar contraseña
+            if (!password) {
+                showError('password', 'La contraseña es requerida');
+                isValid = false;
+            } else if (!validatePassword(password)) {
+                showError('password', 'La contraseña debe contener al menos 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial');
+                isValid = false;
+            } else {
+                clearError('password');
+            }
+
+            return isValid;
+        }
+
+        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (validateForm()) {
+                // Simular registro exitoso
+                document.getElementById('successMessage').style.display = 'block';
+                this.reset();
+                
+                // Ocultar mensaje de éxito después de 5 segundos
+                setTimeout(() => {
+                    document.getElementById('successMessage').style.display = 'none';
+                }, 5000);
+            }
+        });
+
+        // Validación en tiempo real mientras se escribe
+        document.getElementById('fullName').addEventListener('input', function() {
+            const value = this.value.trim();
+            if (value && value.length < 2) {
+                showError('fullName', 'El nombre completo debe tener al menos 2 caracteres');
+            } else {
+                clearError('fullName');
+            }
+        });
+
+        document.getElementById('email').addEventListener('input', function() {
+            const value = this.value.trim();
+            if (value && !validateEmail(value)) {
+                showError('email', 'Formato de correo electrónico inválido');
+            } else {
+                clearError('email');
+            }
+        });
+
+        document.getElementById('website').addEventListener('input', function() {
+            const value = this.value.trim();
+            if (value && !validateUrl(value)) {
+                showError('website', 'Formato de sitio web inválido');
+            } else {
+                clearError('website');
+            }
+        });
+
+        document.getElementById('password').addEventListener('input', function() {
+            const value = this.value;
+            if (value && !validatePassword(value)) {
+                showError('password', 'La contraseña debe contener al menos 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial');
+            } else {
+                clearError('password');
+            }
+        });
+    </script>
+</body>
+</html>

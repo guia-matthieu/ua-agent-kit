@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Signup Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 2rem;
+            background: #f9f9f9;
+        }
+        .container {
+            max-width: 500px;
+            padding: 1.5rem;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,.1);
+        }
+        h2 {
+            margin-top: 0;
+        }
+        label {
+            display: block;
+            margin-top: 1rem;
+        }
+        input[type=text],
+        input[type=email],
+        input[type=url],
+        input[type=password] {
+            width: 100%;
+            padding: .4rem;
+            margin-top: .3rem;
+            box-sizing: border-box;
+        }
+        .error {
+            color: #d00;
+            font-size: .85rem;
+            margin-left: .2rem;
+        }
+        .success {
+            color: #080;
+            font-size: .95rem;
+            margin-top: 1rem;
+        }
+        button {
+            margin-top: 1.5rem;
+            padding: .6rem 1.2rem;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Sign Up</h2>
+    <form id="signupForm" action="#" method="post" novalidate>
+        <label for="fullname">Full Name
+            <input type="text" id="fullname" name="fullname" placeholder="John Doe">
+            <span class="error" id="fullnameError"></span>
+        </label>
+
+        <label for="email">Email Address
+            <input type="email" id="email" name="email" placeholder="example@domain.com">
+            <span class="error" id="emailError"></span>
+        </label>
+
+        <label for="website">Website
+            <input type="url" id="website" name="website" placeholder="https://example.com">
+            <span class="error" id="websiteError"></span>
+        </label>
+
+        <label for="password">Password
+            <input type="password" id="password" name="password" placeholder="Minimum 8 characters">
+            <span class="error" id="passwordError"></span>
+        </label>
+
+        <button type="submit">Sign Up</button>
+
+        <div class="success" id="successMessage"></div>
+    </form>
+</div>
+
+<script>
+    (function () {
+        const form = document.getElementById('signupForm');
+
+        const fullnameEl   = document.getElementById('fullname');
+        const emailEl      = document.getElementById('email');
+        const websiteEl    = document.getElementById('website');
+        const passwordEl   = document.getElementById('password');
+
+        const fullnameError = document.getElementById('fullnameError');
+        const emailError    = document.getElementById('emailError');
+        const websiteError  = document.getElementById('websiteError');
+        const passwordError = document.getElementById('passwordError');
+        const successMsg    = document.getElementById('successMessage');
+
+        const clearErrors = () => {
+            fullnameError.textContent = '';
+            emailError.textContent    = '';
+            websiteError.textContent  = '';
+            passwordError.textContent = '';
+            successMsg.textContent    = '';
+        };
+
+        const validateFullName = (value) => {
+            if (!value) return 'Full name is required.';
+            // Require at least two words
+            const parts = value.trim().split(/\s+/);
+            if (parts.length < 2) return 'Please enter at least first and last name.';
+            return '';
+        };
+
+        const validateEmail = (value) => {
+            if (!value) return 'Email address is required.';
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailPattern.test(value) ? '' : 'Please enter a valid email address.';
+        };
+
+        const validateWebsite = (value) => {
+            if (!value) return 'Website URL is required.';
+            try {
+                const url = new URL(value);
+                if (!/^https?:$/.test(url.protocol)) {
+                    return 'Website must start with http:// or https://';
+                }
+                return '';
+            } catch (e) {
+                return 'Please enter a valid URL.';
+            }
+        };
+
+        const validatePassword = (value) => {
+            if (!value) return 'Password is required.';
+            if (value.length < 8) return 'Password must be at least 8 characters.';
+            const digitPattern = /\d/;
+            const letterPattern = /[a-zA-Z]/;
+            if (!digitPattern.test(value) || !letterPattern.test(value)) {
+                return 'Password must contain both letters and numbers.';
+            }
+            return '';
+        };
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();          // always stop default submission
+            clearErrors();
+
+            const fullNameVal = fullnameEl.value.trim();
+            const emailVal    = emailEl.value.trim();
+            const websiteVal  = websiteEl.value.trim();
+            const passwordVal = passwordEl.value;
+
+            let hasError = false;
+
+            const fnError = validateFullName(fullNameVal);
+            if (fnError) {
+                fullnameError.textContent = fnError;
+                hasError = true;
+            }
+
+            const emError = validateEmail(emailVal);
+            if (emError) {
+                emailError.textContent = emError;
+                hasError = true;
+            }
+
+            const wsError = validateWebsite(websiteVal);
+            if (wsError) {
+                websiteError.textContent = wsError;
+                hasError = true;
+            }
+
+            const pwError = validatePassword(passwordVal);
+            if (pwError) {
+                passwordError.textContent = pwError;
+                hasError = true;
+            }
+
+            if (!hasError) {
+                // All good – you could actually submit the form here.
+                // For demo purposes we just show a success message.
+                successMsg.textContent = 'Form submitted successfully!';
+                // Reset form fields (optional)
+                form.reset();
+            }
+        });
+    })();
+</script>
+</body>
+</html>

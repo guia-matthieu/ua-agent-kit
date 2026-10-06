@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Signup Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 2rem;
+            background: #f9f9f9;
+        }
+        .container {
+            max-width: 500px;
+            padding: 1.5rem;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,.1);
+        }
+        h2 {
+            margin-top: 0;
+        }
+        label {
+            display: block;
+            margin-top: 1rem;
+        }
+        input[type=text],
+        input[type=email],
+        input[type=url],
+        input[type=password] {
+            width: 100%;
+            padding: .4rem;
+            margin-top: .3rem;
+            box-sizing: border-box;
+        }
+        .error {
+            color: #d00;
+            font-size: .85rem;
+            margin-left: .2rem;
+            display: block;
+        }
+        .success {
+            color: #080;
+            font-size: .95rem;
+            margin-top: 1rem;
+        }
+        button {
+            margin-top: 1.5rem;
+            padding: .6rem 1.2rem;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Sign Up</h2>
+    <form id="signupForm" action="#" method="post" novalidate>
+        <label for="fullname">Full Name
+            <input type="text" id="fullname" name="fullname" placeholder="John Doe">
+            <span class="error" id="fullnameError"></span>
+        </label>
+
+        <label for="email">Email Address
+            <input type="email" id="email" name="email" placeholder="example@domain.com">
+            <span class="error" id="emailError"></span>
+        </label>
+
+        <label for="website">Website
+            <input type="url" id="website" name="website" placeholder="https://example.com">
+            <span class="error" id="websiteError"></span>
+        </label>
+
+        <label for="password">Password
+            <input type="password" id="password" name="password" placeholder="Minimum 8 characters">
+            <span class="error" id="passwordError"></span>
+        </label>
+
+        <button type="submit">Sign Up</button>
+
+        <div class="success" id="successMessage"></div>
+    </form>
+</div>
+
+<script>
+    (function () {
+        const form = document.getElementById('signupForm');
+
+        const fullnameEl   = document.getElementById('fullname');
+        const emailEl      = document.getElementById('email');
+        const websiteEl    = document.getElementById('website');
+        const passwordEl   = document.getElementById('password');
+
+        const fullnameError = document.getElementById('fullnameError');
+        const emailError    = document.getElementById('emailError');
+        const websiteError  = document.getElementById('websiteError');
+        const passwordError = document.getElementById('passwordError');
+        const successMsg    = document.getElementById('successMessage');
+
+        const clearErrors = () => {
+            fullnameError.textContent = '';
+            emailError.textContent    = '';
+            websiteError.textContent  = '';
+            passwordError.textContent = '';
+            successMsg.textContent    = '';
+        };
+
+        const validateFullName = (value) => {
+            if (!value) return 'Full name is required.';
+            const parts = value.trim().split(/\s+/);
+            if (parts.length < 2) return 'Please enter at least first and last name.';
+            return '';
+        };
+
+        const validateEmail = (value) => {
+            if (!value) return 'Email address is required.';
+            // Basic structure check
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+                return 'Please enter a valid email address.';
+            }
+            // Disallow consecutive dots
+            if (value.includes('..')) {
+                return 'Email address cannot contain consecutive dots.';
+            }
+            const [local, domain] = value.split('@');
+            // Domain must not start or end with a dot or hyphen
+            if (/^[.-]|[.-]$/.test(domain)) {
+                return 'Domain part of email is invalid.';
+            }
+            // Domain must not have consecutive dots
+            if (domain.includes('..')) {
+                return 'Domain part of email cannot contain consecutive dots.';
+            }
+            // Simple domain label validation
+            const domainParts = domain.split('.');
+            if (domainParts.some(label => !/^[A-Za-z0-9-]+$/.test(label) || label.startsWith('-') || label.endsWith('-'))) {
+                return 'Domain part of email contains invalid characters.';
+            }
+            return '';
+        };
+
+        const validateWebsite = (value) => {
+            if (!value) return 'Website URL is required.';
+            // No whitespace allowed
+            if (/\s/.test(value)) {
+                return 'Website URL cannot contain spaces.';
+            }
+            try {
+                const url = new URL(value);
+                if (!/^https?:$/.test(url.protocol)) {
+                    return 'Website must start with http:// or https://';
+                }
+                // Ensure hostname is a valid domain (no consecutive dots, no leading/trailing hyphens)
+                const host = url.hostname;
+                if (host.includes('..')) {
+                    return 'Hostname contains consecutive dots.';
+                }
+                if (/^[.-]|[.-]$/.test(host)) {
+                    return 'Hostname cannot start or end with a dot or hyphen.';
+                }
+                // Simple label validation
+                const labels = host.split('.');
+                if (labels.some(l => !/^[A-Za-z0-9-]+$/.test(l) || l.startsWith('-') || l.endsWith('-'))) {
+                    return 'Hostname contains invalid characters.';
+                }
+                return '';
+            } catch (e) {
+                return 'Please enter a valid URL.';
+            }
+        };
+
+        const validatePassword = (value) => {
+            if (!value) return 'Password is required.';
+            if (value.length < 8) return 'Password must be at least 8 characters.';
+            if (!/[a-zA-Z]/.test(value) || !/\d/.test(value)) {
+                return 'Password must contain both letters and numbers.';
+            }
+            return '';
+        };
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            clearErrors();
+
+            const fullNameVal = fullnameEl.value.trim();
+            const emailVal    = emailEl.value.trim();
+            const websiteVal  = websiteEl.value.trim();
+            const passwordVal = passwordEl.value;
+
+            let hasError = false;
+
+            const fnError = validateFullName(fullNameVal);
+            if (fnError) {
+                fullnameError.textContent = fnError;
+                hasError = true;
+            }
+
+            const emError = validateEmail(emailVal);
+            if (emError) {
+                emailError.textContent = emError;
+                hasError = true;
+            }
+
+            const wsError = validateWebsite(websiteVal);
+            if (wsError) {
+                websiteError.textContent = wsError;
+                hasError = true;
+            }
+
+            const pwError = validatePassword(passwordVal);
+            if (pwError) {
+                passwordError.textContent = pwError;
+                hasError = true;
+            }
+
+            if (!hasError) {
+                successMsg.textContent = 'Form submitted successfully!';
+                form.reset();
+            }
+        });
+    })();
+</script>
+</body>
+</html>

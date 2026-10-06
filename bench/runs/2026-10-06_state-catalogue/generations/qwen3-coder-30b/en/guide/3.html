@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universal Acceptance Signup</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        .submit-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+        .submit-btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Universal Acceptance Signup</h1>
+    <form id="signupForm">
+        <div class="form-group">
+            <label for="fullName">Full Name:</label>
+            <input type="text" id="fullName" name="fullName" required>
+            <div id="fullNameError" class="error"></div>
+        </div>
+        
+        <div class="form-group">
+            <label for="email">Email Address:</label>
+            <input type="text" id="email" name="email" required>
+            <div id="emailError" class="error"></div>
+        </div>
+        
+        <div class="form-group">
+            <label for="website">Website:</label>
+            <input type="text" id="website" name="website">
+            <div id="websiteError" class="error"></div>
+        </div>
+        
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <div id="passwordError" class="error"></div>
+        </div>
+        
+        <button type="submit" class="submit-btn">Sign Up</button>
+    </form>
+
+    <script>
+        // Email validation using Universal Acceptance principles
+        function validateEmail(email) {
+            if (!email || email.length > 254) return false;
+            
+            // Split into local part and domain
+            const parts = email.split('@');
+            if (parts.length !== 2) return false;
+            
+            const [localPart, domain] = parts;
+            
+            // Validate local part (1-64 characters, can contain Unicode)
+            if (!localPart || localPart.length > 64) return false;
+            
+            // Check for invalid characters in local part
+            if (localPart.startsWith('.') || localPart.endsWith('.')) return false;
+            if (localPart.includes('..')) return false;
+            
+            // Validate domain part
+            if (!domain || domain.length > 253) return false;
+            
+            // Check if domain contains at least one dot and valid labels
+            const domainParts = domain.split('.');
+            if (domainParts.length < 2) return false;
+            
+            // Validate each label
+            for (let part of domainParts) {
+                if (!part || part.length > 63) return false;
+                if (part.startsWith('-') || part.endsWith('-')) return false;
+            }
+            
+            // Check TLD (must be at least 2 characters or an IDNA prefix)
+            const tld = domainParts[domainParts.length - 1];
+            if (tld.length < 2 && (!tld.startsWith('xn--') || tld.length < 6)) return false;
+            
+            // Check valid domain characters
+            const domainRegex = /^[a-zA-Z0-9.-]+$/;
+            for (let part of domainParts) {
+                if (!domainRegex.test(part)) return false;
+            }
+            
+            // Check for valid A-labels and U-labels
+            for (let part of domainParts) {
+                if (part.startsWith('xn--')) {
+                    // Basic validation for A-labels
+                    if (!/^[a-zA-Z0-9-]+$/.test(part)) return false;
+                }
+            }
+            
+            return true;
+        }
+        
+        // Website validation (URL format)
+        function validateWebsite(url) {
+            if (!url) return true; // Optional field
+            
+            try {
+                // Create URL object to validate format
+                new URL(url);
+                return true;
+            } catch (e) {
+                return false;
+            }
+        }
+        
+        // Password validation (minimum 8 characters)
+        function validatePassword(password) {
+            return password && password.length >= 8;
+        }
+        
+        // Name validation (non-empty)
+        function validateName(name) {
+            return name && name.trim().length > 0;
+        }
+        
+        // Function to convert Unicode domain to ASCII using IDNA algorithm
+        function toASCII(domain) {
+            // Simple version for demonstration - real IDNA requires full algorithm implementation
+            // This implementation handles basic Unicode to ASCII conversion
+            if (!domain) return domain;
+            
+            // For this example, handle typical U-labels
+            const unicodeToAscii = {
+                'é': 'e',
+                'è': 'e',
+                'ê': 'e',
+                'ë': 'e',
+                'à': 'a',
+                'â': 'a',
+                'ä': 'a',
+                'å': 'a',
+                'ç': 'c',
+                'î': 'i',
+                'ï': 'i',
+                'ô': 'o',
+                'ö': 'o',
+                'ù': 'u',
+                'û': 'u',
+                'ü': 'u'
+            };
+            
+            // In a real implementation, use proper IDNA UTS #46
+            return domain.toLowerCase().replace(/[^\w.-]/g, (c) => unicodeToAscii[c] || c);
+        }
+        
+        // Validate and display errors
+        function validateForm() {
+            let isValid = true;
+            
+            // Validate full name
+            const fullNameInput = document.getElementById('fullName');
+            const fullNameError = document.getElementById('fullNameError');
+            if (!validateName(fullNameInput.value)) {
+                fullNameError.textContent = 'Full name is required';
+                isValid = false;
+            } else {
+                fullNameError.textContent = '';
+            }
+            
+            // Validate email
+            const emailInput = document.getElementById('email');
+            const emailError = document.getElementById('emailError');
+            if (!validateEmail(emailInput.value)) {
+                emailError.textContent = 'Please enter a valid email address';
+                isValid = false;
+            } else {
+                emailError.textContent = '';
+            }
+            
+            // Validate website
+            const websiteInput = document.getElementById('website');
+            const websiteError = document.getElementById('websiteError');
+            if (websiteInput.value && !validateWebsite(websiteInput.value)) {
+                websiteError.textContent = 'Please enter a valid URL';
+                isValid = false;
+            } else {
+                websiteError.textContent = '';
+            }
+            
+            // Validate password
+            const passwordInput = document.getElementById('password');
+            const passwordError = document.getElementById('passwordError');
+            if (!validatePassword(passwordInput.value)) {
+                passwordError.textContent = 'Password must be at least 8 characters';
+                isValid = false;
+            } else {
+                passwordError.textContent = '';
+            }
+            
+            return isValid;
+        }
+        
+        // Prevent form submission and validate
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (validateForm()) {
+                alert('Form submitted successfully!');
+                // In a real application, submit the form data to a server here
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Formulaire d'inscription</title>
+<style>
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 1rem;
+  }
+  h1 { text-align: center; }
+  form div { margin-bottom: 1rem; }
+  label { display: block; margin-bottom: .3rem; font-weight: bold; }
+  input { width: 100%; padding: .4rem; box-sizing: border-box; font-size: 1rem; }
+  .error { color: #d00; font-size: .9rem; margin-top: .2rem; display: block; }
+  button { padding: .6rem 1.2rem; font-size: 1rem; cursor: pointer; }
+</style>
+</head>
+<body>
+<h1>Inscription</h1>
+
+<form id="registerForm" novalidate>
+  <div>
+    <label for="fullName">Nom complet</label>
+    <input type="text" id="fullName" name="fullName" required>
+    <span class="error" id="fullNameError"></span>
+  </div>
+
+  <div>
+    <label for="email">Adresse e‑mail</label>
+    <!-- type="text" to accepter les adresses internationales (EAI) -->
+    <input type="text" id="email" name="email" required>
+    <span class="error" id="emailError"></span>
+  </div>
+
+  <div>
+    <label for="website">Site web (URL complète)</label>
+    <!-- type="text" – on valide nous‑mêmes afin de prendre en charge les IDN -->
+    <input type="text" id="website" name="website" required placeholder="https://exemple.com">
+    <span class="error" id="websiteError"></span>
+  </div>
+
+  <div>
+    <label for="password">Mot de passe</label>
+    <input type="password" id="password" name="password" required>
+    <span class="error" id="passwordError"></span>
+  </div>
+
+  <button type="submit">S'inscrire</button>
+</form>
+
+<script>
+(() => {
+  const form = document.getElementById('registerForm');
+
+  const errors = {
+    fullName: document.getElementById('fullNameError'),
+    email:    document.getElementById('emailError'),
+    website:  document.getElementById('websiteError'),
+    password: document.getElementById('passwordError')
+  };
+
+  const clearErrors = () => {
+    Object.values(errors).forEach(e => e.textContent = '');
+  };
+  const setError = (field, msg) => { errors[field].textContent = msg; };
+
+  // -------------------------------------------------
+  // Helpers – domain validation according to UASG‑004
+  // -------------------------------------------------
+  const labelPattern = /^[\p{L}\p{N}-]+$/u;    // Unicode letters, numbers, hyphen
+  const isValidDomain = (domain) => {
+    // 1. no spaces, no double dot, no leading/trailing dot
+    if (/\s/.test(domain) || domain.includes('..') || domain.startsWith('.') || domain.endsWith('.')) {
+      return false;
+    }
+    const labels = domain.split('.');
+    // 2. each label 1‑63 octets (approx. length check) and respects syntax
+    for (const lbl of labels) {
+      if (!lbl) return false;                     // empty label (e.g. "..")
+      if (lbl.startsWith('-') || lbl.endsWith('-')) return false;
+      if (!labelPattern.test(lbl)) return false; // allowed chars only
+      // length in bytes (UTF‑8) – simple approximation with code units
+      if (new TextEncoder().encode(lbl).length > 63) return false;
+    }
+    // 3. total length <= 253 octets (approx.)
+    const total = new TextEncoder().encode(domain).length;
+    if (total > 253) return false;
+    return true;
+  };
+
+  // ------------------------------
+  // Validation functions
+  // ------------------------------
+  const validateFullName = (value) => {
+    if (!value.trim()) return 'Le nom complet est requis.';
+    return '';
+  };
+
+  const validateEmail = (value) => {
+    // exactly one '@'
+    const parts = value.split('@');
+    if (parts.length !== 2) return 'L’adresse e‑mail doit contenir un seul « @ ».';
+    const [local, domain] = parts;
+
+    // local‑part checks (Unicode allowed)
+    if (!local) return 'La partie locale de l’e‑mail ne peut être vide.';
+    if (/\s/.test(local)) return 'La partie locale ne doit pas contenir d’espaces.';
+    if (local.startsWith('.') || local.endsWith('.')) return 'La partie locale ne doit pas commencer ou finir par un point.';
+    if (local.includes('..')) return 'La partie locale ne doit pas contenir de points consécutifs.';
+
+    // domain part
+    if (!isValidDomain(domain)) return 'Le domaine de l’e‑mail est invalide.';
+
+    return '';
+  };
+
+  const validateWebsite = (value) => {
+    let url;
+    try { url = new URL(value); }
+    catch { return 'L’URL du site web est invalide.'; }
+
+    if (!/^https?:$/i.test(url.protocol)) return 'L’URL doit commencer par http:// ou https://.';
+    if (!url.hostname) return 'L’URL doit contenir un nom d’hôte.';
+    if (!isValidDomain(url.hostname)) return 'Le nom d’hôte de l’URL est invalide.';
+
+    return '';
+  };
+
+  const validatePassword = (value) => {
+    if (value.length < 8) return 'Le mot de passe doit contenir au moins 8 caractères.';
+    if (!/[A-Za-z]/.test(value) || !/[0-9]/.test(value))
+      return 'Le mot de passe doit contenir au moins une lettre et un chiffre.';
+    return '';
+  };
+
+  // ------------------------------
+  // Submit handler
+  // ------------------------------
+  form.addEventListener('submit', (e) => {
+    clearErrors();
+    let hasError = false;
+
+    const fnErr = validateFullName(form.fullName.value);
+    if (fnErr) { setError('fullName', fnErr); hasError = true; }
+
+    const emailErr = validateEmail(form.email.value);
+    if (emailErr) { setError('email', emailErr); hasError = true; }
+
+    const siteErr = validateWebsite(form.website.value);
+    if (siteErr) { setError('website', siteErr); hasError = true; }
+
+    const pwdErr = validatePassword(form.password.value);
+    if (pwdErr) { setError('password', pwdErr); hasError = true; }
+
+    if (hasError) e.preventDefault();
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Signup Form</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+            background: #f0f2f5;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .form-container {
+            background: #fff;
+            padding: 40px 36px;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            width: 100%;
+            max-width: 460px;
+        }
+
+        h1 {
+            font-size: 26px;
+            font-weight: 600;
+            color: #1a1a2e;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: #6b7280;
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .field-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #1f2937;
+            margin-bottom: 6px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 15px;
+            border: 1.5px solid #d1d5db;
+            border-radius: 8px;
+            outline: none;
+            background: #fafafa;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        input:focus {
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+            background: #fff;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .error-message {
+            color: #dc2626;
+            font-size: 13px;
+            font-weight: 500;
+            margin-top: 6px;
+            min-height: 18px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .error-message::before {
+            content: "⚠";
+            font-size: 12px;
+        }
+
+        .input-error {
+            border-color: #dc2626 !important;
+            background-color: #fff5f5 !important;
+        }
+
+        .input-error:focus {
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15) !important;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 13px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+            background: #4f46e5;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            margin-top: 8px;
+        }
+
+        .submit-btn:hover {
+            background: #4338ca;
+        }
+
+        .submit-btn:active {
+            transform: scale(0.98);
+        }
+
+        .success-banner {
+            background: #ecfdf5;
+            color: #065f46;
+            padding: 14px 18px;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 15px;
+            text-align: center;
+            border: 1px solid #a7f3d0;
+            margin-top: 16px;
+            display: none;
+        }
+
+        .success-banner.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <h1>Create Account</h1>
+        <p class="subtitle">Fill in the details below to sign up.</p>
+
+        <form id="signupForm" novalidate>
+
+            <!-- Full Name -->
+            <div class="field-group">
+                <label for="fullname">Full Name</label>
+                <div class="input-wrapper">
+                    <input
+                    type="text"
+                    id="fullname"
+                    name="fullname"
+                    placeholder="e.g. Jane Doe"
+                    autocomplete="name"
+                    />
+                </div>
+                <div class="error-message" id="fullnameError"></div>
+            </div>
+
+            <!-- Email -->
+            <div class="field-group">
+                <label for="email">Email Address</label>
+                <div class="input-wrapper">
+                    <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="e.g. jane@example.com"
+                    autocomplete="email"
+                    />
+                </div>
+                <div class="error-message" id="emailError"></div>
+            </div>
+
+            <!-- Website -->
+            <div class="field-group">
+                <label for="website">Website</label>
+                <div class="input-wrapper">
+                    <input
+                    type="url"
+                    id="website"
+                    name="website"
+                    placeholder="e.g. https://janedoe.dev"
+                    autocomplete="url"
+                    />
+                </div>
+                <div class="error-message" id="websiteError"></div>
+            </div>
+
+            <!-- Password -->
+            <div class="field-group">
+                <label for="password">Password</label>
+                <div class="input-wrapper">
+                    <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Min. 8 chars, upper, lower &amp; number"
+                    autocomplete="new-password"
+                    />
+                </div>
+                <div class="error-message" id="passwordError"></div>
+            </div>
+
+            <button type="submit" class="submit-btn">Sign Up</button>
+
+            <div class="success-banner" id="successBanner">
+                ✓ Account created successfully!
+            </div>
+
+        </form>
+    </div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            const form = document.getElementById('signupForm');
+            const fullnameInput = document.getElementById('fullname');
+            const emailInput = document.getElementById('email');
+            const websiteInput = document.getElementById('website');
+            const passwordInput = document.getElementById('password');
+
+            const fullnameError = document.getElementById('fullnameError');
+            const emailError = document.getElementById('emailError');
+            const websiteError = document.getElementById('websiteError');
+            const passwordError = document.getElementById('passwordError');
+
+            const successBanner = document.getElementById('successBanner');
+
+            // ---------- helper functions ----------
+
+            function setError(el, message) {
+                el.textContent = message;
+            }
+
+            function clearError(el) {
+                el.textContent = '';
+            }
+
+            function addErrorClass(input) {
+                input.classList.add('input-error');
+            }
+
+            function removeErrorClass(input) {
+                input.classList.remove('input-error');
+            }
+
+            function resetFieldStyles() {
+                [fullnameInput, emailInput, websiteInput, passwordInput].forEach(function(inp) {
+                    removeErrorClass(inp);
+                });
+                [fullnameError, emailError, websiteError, passwordError].forEach(function(errEl) {
+                    clearError(errEl);
+                });
+                successBanner.classList.remove('show');
+            }
+
+            // ---------- domain regex (shared by email & website) ----------
+            // Allows subdomains, no consecutive dots, each label starts/ends alphanumeric, TLD >= 2 letters
+            const domainRegex = /^[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?)*\.[a-zA-Z]{2,}$/;
+
+            // ---------- individual validators ----------
+
+            function validateFullName() {
+                const val = fullnameInput.value.trim();
+                if (val === '') {
+                    setError(fullnameError, 'Full name is required.');
+                    addErrorClass(fullnameInput);
+                    return false;
+                }
+                if (val.length < 2) {
+                    setError(fullnameError, 'Full name must be at least 2 characters.');
+                    addErrorClass(fullnameInput);
+                    return false;
+                }
+                if (/^[^a-zA-Z]*$/.test(val)) {
+                    setError(fullnameError, 'Please enter a valid name with letters.');
+                    addErrorClass(fullnameInput);
+                    return false;
+                }
+                clearError(fullnameError);
+                removeErrorClass(fullnameInput);
+                return true;
+            }
+
+            function validateEmail() {
+                const val = emailInput.value.trim();
+                if (val === '') {
+                    setError(emailError, 'Email address is required.');
+                    addErrorClass(emailInput);
+                    return false;
+                }
+
+                // Robust email regex: no consecutive dots in domain, valid TLD, no spaces
+                const emailRegex = /^[a-zA-Z0-9._%+-]+@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$/;
+
+                if (!emailRegex.test(val)) {
+                    setError(emailError, 'Please enter a valid email address.');
+                    addErrorClass(emailInput);
+                    return false;
+                }
+
+                // Additional domain-level check for disallowed sequences like "example..com" or "example.com..au"
+                const domainPart = val.slice(val.indexOf('@') + 1);
+                if (!domainRegex.test(domainPart)) {
+                    setError(emailError, 'Please enter a valid email address.');
+                    addErrorClass(emailInput);
+                    return false;
+                }
+
+                clearError(emailError);
+                removeErrorClass(emailInput);
+                return true;
+            }
+
+            function validateWebsite() {
+                const val = websiteInput.value.trim();
+                if (val === '') {
+                    setError(websiteError, 'Website URL is required.');
+                    addErrorClass(websiteInput);
+                    return false;
+                }
+
+                if (val.includes(' ')) {
+                    setError(websiteError, 'Website URL cannot contain spaces.');
+                    addErrorClass(websiteInput);
+                    return false;
+                }
+
+                let url;
+                try {
+                    url = new URL(val);
+                } catch (_) {
+                    setError(websiteError, 'Enter a valid URL (e.g. https://example.com).');
+                    addErrorClass(websiteInput);
+                    return false;
+                }
+
+                if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+                    setError(websiteError, 'Website URL must start with http:// or https://.');
+                    addErrorClass(websiteInput);
+                    return false;
+                }
+
+                const hostname = url.hostname;
+                if (!hostname || !domainRegex.test(hostname)) {
+                    setError(websiteError, 'Enter a valid domain (e.g. https://example.com).');
+                    addErrorClass(websiteInput);
+                    return false;
+                }
+
+                clearError(websiteError);
+                removeErrorClass(websiteInput);
+                return true;
+            }
+
+            function validatePassword() {
+                const val = passwordInput.value;
+                if (val === '') {
+                    setError(passwordError, 'Password is required.');
+                    addErrorClass(passwordInput);
+                    return false;
+                }
+                if (val.length < 8) {
+                    setError(passwordError, 'Password must be at least 8 characters.');
+                    addErrorClass(passwordInput);
+                    return false;
+                }
+                if (!/[A-Z]/.test(val)) {
+                    setError(passwordError, 'Password must contain at least one uppercase letter.');
+                    addErrorClass(passwordInput);
+                    return false;
+                }
+                if (!/[a-z]/.test(val)) {
+                    setError(passwordError, 'Password must contain at least one lowercase letter.');
+                    addErrorClass(passwordInput);
+                    return false;
+                }
+                if (!/[0-9]/.test(val)) {
+                    setError(passwordError, 'Password must contain at least one digit.');
+                    addErrorClass(passwordInput);
+                    return false;
+                }
+                clearError(passwordError);
+                removeErrorClass(passwordInput);
+                return true;
+            }
+
+            // ---------- real-time validation on blur ----------
+
+            fullnameInput.addEventListener('blur', function() {
+                if (this.value.trim() !== '') validateFullName();
+            });
+            emailInput.addEventListener('blur', function() {
+                if (this.value.trim() !== '') validateEmail();
+            });
+            websiteInput.addEventListener('blur', function() {
+                if (this.value.trim() !== '') validateWebsite();
+            });
+            passwordInput.addEventListener('blur', function() {
+                if (this.value !== '') validatePassword();
+            });
+
+            // clear error on focus
+            fullnameInput.addEventListener('focus', function() {
+                removeErrorClass(this);
+                clearError(fullnameError);
+            });
+            emailInput.addEventListener('focus', function() {
+                removeErrorClass(this);
+                clearError(emailError);
+            });
+            websiteInput.addEventListener('focus', function() {
+                removeErrorClass(this);
+                clearError(websiteError);
+            });
+            passwordInput.addEventListener('focus', function() {
+                removeErrorClass(this);
+                clearError(passwordError);
+            });
+
+            // ---------- form submit ----------
+
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                successBanner.classList.remove('show');
+
+                const isNameValid = validateFullName();
+                const isEmailValid = validateEmail();
+                const isWebsiteValid = validateWebsite();
+                const isPasswordValid = validatePassword();
+
+                const allValid = isNameValid && isEmailValid && isWebsiteValid && isPasswordValid;
+
+                if (allValid) {
+                    successBanner.classList.add('show');
+                } else {
+                    if (!isNameValid) {
+                        fullnameInput.focus();
+                    } else if (!isEmailValid) {
+                        emailInput.focus();
+                    } else if (!isWebsiteValid) {
+                        websiteInput.focus();
+                    } else if (!isPasswordValid) {
+                        passwordInput.focus();
+                    }
+                }
+            });
+
+            // Hide success banner if user changes any input
+            [fullnameInput, emailInput, websiteInput, passwordInput].forEach(function(inp) {
+                inp.addEventListener('input', function() {
+                    if (successBanner.classList.contains('show')) {
+                        successBanner.classList.remove('show');
+                    }
+                });
+            });
+        })();
+    </script>
+
+</body>
+</html>

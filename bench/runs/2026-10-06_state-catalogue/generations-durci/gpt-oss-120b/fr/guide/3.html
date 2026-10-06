@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Formulaire d'inscription</title>
+<style>
+    body {font-family:Arial,sans-serif; margin:2rem;}
+    form {max-width:400px;}
+    .field {margin-bottom:1rem;}
+    label {display:block;margin-bottom:0.3rem;}
+    input {width:100%;padding:0.4rem;box-sizing:border-box;}
+    .error {
+        color:#b00;
+        font-size:0.85rem;
+        margin-top:0.2rem;
+        display:none;
+    }
+</style>
+</head>
+<body>
+
+<h1>Inscription</h1>
+
+<form id="signupForm" novalidate>
+    <div class="field">
+        <label for="fullName">Nom complet</label>
+        <input type="text" id="fullName" name="fullName" required>
+        <div class="error" id="fullNameError"></div>
+    </div>
+
+    <div class="field">
+        <label for="email">Adresse e‑mail</label>
+        <input type="text" id="email" name="email" required autocomplete="email">
+        <div class="error" id="emailError"></div>
+    </div>
+
+    <div class="field">
+        <label for="website">Site web</label>
+        <input type="text" id="website" name="website" required autocomplete="url">
+        <div class="error" id="websiteError"></div>
+    </div>
+
+    <div class="field">
+        <label for="password">Mot de passe</label>
+        <input type="password" id="password" name="password" required autocomplete="new-password">
+        <div class="error" id="passwordError"></div>
+    </div>
+
+    <button type="submit">S'inscrire</button>
+</form>
+
+<script>
+(function () {
+    const form = document.getElementById('signupForm');
+
+    const validators = {
+        fullName(value) {
+            if (!value.trim()) {
+                return 'Le nom complet est requis.';
+            }
+            return '';
+        },
+
+        // RFC 6531‑compatible (Unicode‑aware) e‑mail check.
+        email(value) {
+            // 1) exactly one "@"
+            const parts = value.split('@');
+            if (parts.length !== 2) {
+                return 'L’adresse e‑mail doit contenir un seul « @ ».';
+            }
+            const [local, domain] = parts;
+
+            // 2) local part non‑empty and without spaces or control chars
+            if (!local) {
+                return 'La partie locale de l’e‑mail ne peut être vide.';
+            }
+            if (/\s/.test(local)) {
+                return 'La partie locale de l’e‑mail ne doit pas contenir d’espaces.';
+            }
+
+            // 3) domain validation
+            //    - no leading/trailing dot, no consecutive dots
+            //    - each label 1‑63 octets, no hyphen at start/end
+            //    - TLD ≥2 letters or xn--…
+            if (!domain) {
+                return 'Le domaine de l’e‑mail ne peut être vide.';
+            }
+            if (domain.startsWith('.') || domain.endsWith('.')) {
+                return 'Le domaine ne doit pas commencer ou finir par un point.';
+            }
+            if (domain.includes('..')) {
+                return 'Le domaine ne doit pas contenir de points consécutifs.';
+            }
+
+            const labels = domain.split('.');
+            if (labels.length < 2) {
+                return 'Le domaine doit contenir au moins deux labels séparés par des points.';
+            }
+            for (let i = 0; i < labels.length; i++) {
+                const lbl = labels[i];
+                if (!lbl) {
+                    return 'Les labels du domaine ne peuvent être vides.';
+                }
+                if (lbl.startsWith('-') || lbl.endsWith('-')) {
+                    return 'Un label ne doit pas commencer ou finir par un trait‑d’union (« - »).';
+                }
+                // Approximate octet limit (Unicode code points)
+                if ([...lbl].length > 63) {
+                    return 'Un label ne doit pas dépasser 63 caractères.';
+                }
+            }
+            const tld = labels[labels.length - 1];
+            const tldPattern = /^(xn--[a-z0-9-]+|[^\W\d_]{2,})$/iu; // xn--… or ≥2 letters
+            if (!tldPattern.test(tld)) {
+                return 'Le TLD du domaine est invalide.';
+            }
+
+            return '';
+        },
+
+        website(value) {
+            try {
+                const url = new URL(value);
+                if (!/^https?:$/.test(url.protocol)) {
+                    return 'L’URL doit commencer par http:// ou https://.';
+                }
+
+                // Hostname checks (Unicode allowed)
+                const host = url.hostname;
+                if (!host) {
+                    return 'Le domaine de l’URL est manquant.';
+                }
+                if (host.includes(' ')) {
+                    return 'Le domaine de l’URL ne doit pas contenir d’espaces.';
+                }
+                if (host.startsWith('.') || host.endsWith('.')) {
+                    return 'Le domaine ne doit pas commencer ou finir par un point.';
+                }
+                if (host.includes('..')) {
+                    return 'Le domaine ne doit pas contenir de points consécutifs.';
+                }
+
+                const labels = host.split('.');
+                if (labels.length < 2) {
+                    return 'Le domaine de l’URL doit contenir au moins deux labels.';
+                }
+                for (const lbl of labels) {
+                    if (!lbl) return 'Les labels du domaine ne peuvent être vides.';
+                    if (lbl.startsWith('-') || lbl.endsWith('-')) {
+                        return 'Un label ne doit pas commencer ou finir par un tiret.';
+                    }
+                }
+                return '';
+            } catch (e) {
+                return 'L’adresse du site web n’est pas une URL valide.';
+            }
+        },
+
+        password(value) {
+            if (value.length < 8) {
+                return 'Le mot de passe doit contenir au moins 8 caractères.';
+            }
+            if (!/[A-Za-z]/.test(value) || !/[0-9]/.test(value)) {
+                return 'Le mot de passe doit contenir au moins une lettre et un chiffre.';
+            }
+            return '';
+        }
+    };
+
+    function showError(fieldId, message) {
+        const errorEl = document.getElementById(fieldId + 'Error');
+        if (message) {
+            errorEl.textContent = message;
+            errorEl.style.display = 'block';
+        } else {
+            errorEl.textContent = '';
+            errorEl.style.display = 'none';
+        }
+    }
+
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        // Reset errors
+        ['fullName', 'email', 'website', 'password'].forEach(id => showError(id, ''));
+
+        const values = {
+            fullName: document.getElementById('fullName').value,
+            email:    document.getElementById('email').value,
+            website:  document.getElementById('website').value,
+            password: document.getElementById('password').value
+        };
+
+        let hasError = false;
+        for (const [key, val] of Object.entries(values)) {
+            const msg = validators[key](val);
+            if (msg) {
+                hasError = true;
+                showError(key, msg);
+            }
+        }
+
+        if (!hasError) {
+            alert('Inscription réussie ! (les données seraient envoyées au serveur)');
+            // form.submit(); // décommenter pour un vrai envoi
+        }
+    });
+
+    // Validation à la volée
+    ['fullName', 'email', 'website', 'password'].forEach(id => {
+        const input = document.getElementById(id);
+        input.addEventListener('input', () => {
+            const msg = validators[id](input.value);
+            showError(id, msg);
+        });
+    });
+})();
+</script>
+
+</body>
+</html>

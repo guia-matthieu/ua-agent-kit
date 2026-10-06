@@ -4,6 +4,7 @@
 
 - **TLD packs 0.2.0** (`battery/packs/tld/`): one file of cases per TLD, filed by kind of TLD and not by country. Six to start with, 62 cases in all: `geotld/bzh`, `geotld/corsica`, `geotld/alsace`, `geotld/paris`, `geotld/eus` and `cctld/fr` (accented names). Scored apart: the standard battery, its totals and the two commands are unchanged. Accented names on the geoTLDs are labelled as syntax cases. See `battery/packs/README.md`.
 - **`--battery <file>`** on `ua-kit check` and `ua-kit score`: plays a pack or any file in the battery format. The file is checked against the schema first, and the report names it (`batteryFile` in JSON) so that its score is not read as a score on the standard battery. Without the option, nothing changes.
+- **Run of 2026-10-06** (`bench/runs/2026-10-06_state-catalogue/`): the bench replayed on seven more models, those listed in the catalogue of the French State's Albert API, called through OpenRouter. 126 first-draft pages scored on the standard battery and on the TLD packs, and a hardening turn (122 pages) that is not part of the kit's bench. Every page, the CSV files and the scripts are published; the first run and its numbers are untouched.
 
 ## 0.1.0 — 2026-09-29
 

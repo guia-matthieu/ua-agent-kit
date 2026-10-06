@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulaire d'Inscription</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .form-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        
+        input[type="text"],
+        input[type="email"],
+        input[type="url"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        
+        input.error {
+            border-color: #ff4757;
+        }
+        
+        .error-message {
+            color: #ff4757;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background-color: #3742fa;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .submit-btn:hover {
+            background-color: #2a36e9;
+        }
+        
+        .submit-btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Inscription</h1>
+        <form id="registrationForm" novalidate>
+            <div class="form-group">
+                <label for="fullName">Nom complet *</label>
+                <input type="text" id="fullName" name="fullName" required>
+                <div class="error-message" id="fullNameError"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Adresse e-mail *</label>
+                <input type="email" id="email" name="email" required>
+                <div class="error-message" id="emailError"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="website">Site web</label>
+                <input type="url" id="website" name="website">
+                <div class="error-message" id="websiteError"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Mot de passe *</label>
+                <input type="password" id="password" name="password" required>
+                <div class="error-message" id="passwordError"></div>
+            </div>
+            
+            <button type="submit" class="submit-btn">S'inscrire</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('registrationForm');
+            const inputs = form.querySelectorAll('input');
+            
+            // Fonction de validation
+            function validateField(input) {
+                const value = input.value.trim();
+                const fieldName = input.name;
+                let isValid = true;
+                let errorMessage = '';
+                
+                switch(fieldName) {
+                    case 'fullName':
+                        if (value.length < 2) {
+                            isValid = false;
+                            errorMessage = 'Le nom complet doit contenir au moins 2 caractères.';
+                        } else if (!/^[a-zA-ZÀ-ÿ\s\-]+$/.test(value)) {
+                            isValid = false;
+                            errorMessage = 'Le nom complet ne peut contenir que des lettres, espaces et tirets.';
+                        }
+                        break;
+                        
+                    case 'email':
+                        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                        if (!value) {
+                            isValid = false;
+                            errorMessage = 'L\'adresse e-mail est requise.';
+                        } else if (!emailRegex.test(value)) {
+                            isValid = false;
+                            errorMessage = 'Veuillez entrer une adresse e-mail valide.';
+                        }
+                        break;
+                        
+                    case 'website':
+                        if (value && !/^https?:\/\/.+/.test(value)) {
+                            isValid = false;
+                            errorMessage = 'Veuillez entrer une URL valide (commençant par http:// ou https://).';
+                        }
+                        break;
+                        
+                    case 'password':
+                        if (value.length < 8) {
+                            isValid = false;
+                            errorMessage = 'Le mot de passe doit contenir au moins 8 caractères.';
+                        } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(value)) {
+                            isValid = false;
+                            errorMessage = 'Le mot de passe doit contenir au moins une majuscule, une minuscule et un chiffre.';
+                        }
+                        break;
+                }
+                
+                // Afficher/masquer le message d'erreur
+                const errorElement = document.getElementById(fieldName + 'Error');
+                if (!isValid) {
+                    input.classList.add('error');
+                    errorElement.textContent = errorMessage;
+                    errorElement.style.display = 'block';
+                } else {
+                    input.classList.remove('error');
+                    errorElement.style.display = 'none';
+                }
+                
+                return isValid;
+            }
+            
+            // Validation en temps réel pour les champs requis
+            inputs.forEach(input => {
+                input.addEventListener('blur', function() {
+                    if (this.hasAttribute('required') || this.name === 'website') {
+                        validateField(this);
+                    }
+                });
+                
+                input.addEventListener('input', function() {
+                    if (this.classList.contains('error')) {
+                        validateField(this);
+                    }
+                });
+            });
+            
+            // Validation du formulaire lors de la soumission
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                let isFormValid = true;
+                
+                // Valider tous les champs requis
+                inputs.forEach(input => {
+                    if (input.hasAttribute('required') || input.name === 'website') {
+                        if (!validateField(input)) {
+                            isFormValid = false;
+                        }
+                    }
+                });
+                
+                // Si le formulaire est valide, afficher un message de succès
+                if (isFormValid) {
+                    alert('Inscription réussie !');
+                    // Ici vous pouvez ajouter le code pour envoyer les données au serveur
+                    // form.submit(); // Décommentez cette ligne pour vraiment envoyer le formulaire
+                }
+            });
+        });
+    </script>
+</body>
+</html>

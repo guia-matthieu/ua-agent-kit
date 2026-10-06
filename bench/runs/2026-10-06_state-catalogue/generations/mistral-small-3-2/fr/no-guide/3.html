@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulaire d'inscription</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .error {
+            color: red;
+            font-size: 0.9em;
+            margin-top: 5px;
+            display: none;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Formulaire d'inscription</h1>
+    <form id="registrationForm" onsubmit="return validateForm()">
+        <div>
+            <label for="fullName">Nom complet :</label>
+            <input type="text" id="fullName" name="fullName" required>
+            <div id="fullNameError" class="error">Le nom doit contenir au moins 2 caractères</div>
+        </div>
+
+        <div>
+            <label for="email">Adresse e-mail :</label>
+            <input type="email" id="email" name="email" required>
+            <div id="emailError" class="error">Veuillez entrer une adresse e-mail valide</div>
+        </div>
+
+        <div>
+            <label for="website">Site web (optionnel) :</label>
+            <input type="url" id="website" name="website">
+            <div id="websiteError" class="error">Veuillez entrer une URL valide (commencez par http:// ou https://)</div>
+        </div>
+
+        <div>
+            <label for="password">Mot de passe :</label>
+            <input type="password" id="password" name="password" required>
+            <div id="passwordError" class="error">Le mot de passe doit contenir au moins 8 caractères</div>
+        </div>
+
+        <button type="submit">S'inscrire</button>
+    </form>
+
+    <script>
+        function validateForm() {
+            // Réinitialiser les messages d'erreur
+            document.querySelectorAll('.error').forEach(el => el.style.display = 'none');
+
+            let isValid = true;
+
+            // Validation du nom complet
+            const fullName = document.getElementById('fullName').value.trim();
+            if (fullName.length < 2) {
+                document.getElementById('fullNameError').style.display = 'block';
+                isValid = false;
+            }
+
+            // Validation de l'email
+            const email = document.getElementById('email').value.trim();
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                document.getElementById('emailError').style.display = 'block';
+                isValid = false;
+            }
+
+            // Validation du site web (si fourni)
+            const website = document.getElementById('website').value.trim();
+            if (website && !website.startsWith('http://') && !website.startsWith('https://')) {
+                document.getElementById('websiteError').style.display = 'block';
+                isValid = false;
+            }
+
+            // Validation du mot de passe
+            const password = document.getElementById('password').value;
+            if (password.length < 8) {
+                document.getElementById('passwordError').style.display = 'block';
+                isValid = false;
+            }
+
+            if (isValid) {
+                alert('Formulaire soumis avec succès !');
+                // Ici vous pourriez envoyer le formulaire via fetch ou autre méthode
+                // document.getElementById('registrationForm').submit();
+            }
+
+            return false; // Empêche l'envoi du formulaire pour la démonstration
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulaire d'inscription</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="url"],
+        input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .error {
+            color: red;
+            font-size: 0.8em;
+            margin-top: 5px;
+            display: none;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .success-message {
+            display: none;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Inscription</h1>
+    <form id="inscriptionForm" onsubmit="return validateForm()">
+        <div class="form-group">
+            <label for="nomComplet">Nom complet*</label>
+            <input type="text" id="nomComplet" name="nomComplet" required>
+            <div id="nomCompletError" class="error">Veuillez entrer votre nom complet (au moins 3 caractères)</div>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Adresse e-mail*</label>
+            <input type="email" id="email" name="email" required>
+            <div id="emailError" class="error">Veuillez entrer une adresse e-mail valide</div>
+        </div>
+
+        <div class="form-group">
+            <label for="siteWeb">Site web (optionnel)</label>
+            <input type="url" id="siteWeb" name="siteWeb">
+            <div id="siteWebError" class="error">Veuillez entrer une URL valide (ex: https://exemple.com)</div>
+        </div>
+
+        <div class="form-group">
+            <label for="motDePasse">Mot de passe*</label>
+            <input type="password" id="motDePasse" name="motDePasse" required>
+            <div id="motDePasseError" class="error">Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule et un chiffre</div>
+        </div>
+
+        <button type="submit">S'inscrire</button>
+    </form>
+
+    <div id="successMessage" class="success-message">
+        Inscription réussie ! Merci de vérifier votre adresse e-mail pour confirmer votre compte.
+    </div>
+
+    <script>
+        function validateForm() {
+            // Réinitialisation des messages d'erreur
+            document.querySelectorAll('.error').forEach(el => el.style.display = 'none');
+
+            // Récupération des valeurs des champs
+            const nomComplet = document.getElementById('nomComplet').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const siteWeb = document.getElementById('siteWeb').value.trim();
+            const motDePasse = document.getElementById('motDePasse').value;
+
+            let isValid = true;
+
+            // Validation du nom complet
+            if (nomComplet.length < 3) {
+                document.getElementById('nomCompletError').style.display = 'block';
+                isValid = false;
+            }
+
+            // Validation de l'e-mail
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                document.getElementById('emailError').style.display = 'block';
+                isValid = false;
+            }
+
+            // Validation du site web (si fourni)
+            if (siteWeb && !siteWeb.startsWith('http://') && !siteWeb.startsWith('https://')) {
+                document.getElementById('siteWebError').style.display = 'block';
+                isValid = false;
+            }
+
+            // Validation du mot de passe
+            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+            if (!passwordRegex.test(motDePasse)) {
+                document.getElementById('motDePasseError').style.display = 'block';
+                isValid = false;
+            }
+
+            if (isValid) {
+                // Simuler l'envoi du formulaire (remplacer par votre logique réelle)
+                document.getElementById('inscriptionForm').style.display = 'none';
+                document.getElementById('successMessage').style.display = 'block';
+
+                // Dans une application réelle, vous enverriez les données au serveur ici
+                // Exemple avec fetch:
+                /*
+                fetch('votre-api-inscription', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        nomComplet,
+                        email,
+                        siteWeb,
+                        motDePasse
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Gérer la réponse du serveur
+                })
+                .catch(error => {
+                    console.error('Erreur:', error);
+                });
+                */
+
+                return false; // Empêche le rechargement de la page
+            }
+
+            return false; // Empêche le rechargement de la page si validation échoue
+        }
+    </script>
+</body>
+</html>

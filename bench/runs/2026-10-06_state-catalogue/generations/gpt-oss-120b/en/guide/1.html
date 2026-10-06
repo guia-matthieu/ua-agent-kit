@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Sign‑up</title>
+<style>
+  body {font-family:Arial,sans-serif; max-width:600px; margin:2rem auto;}
+  form {display:grid; gap:0.8rem;}
+  label {display:flex; flex-direction:column; font-weight:600;}
+  input {padding:0.4rem; font-size:1rem;}
+  .error {color:#c00; font-size:0.9rem; height:1.2rem;}
+  button {padding:0.6rem 1.2rem; font-size:1rem;}
+</style>
+</head>
+<body>
+
+<h1>Sign‑up</h1>
+
+<form id="signup" novalidate>
+  <label>
+    Full name
+    <input type="text" id="name" name="name" autocomplete="name" required>
+    <span class="error" id="nameError"></span>
+  </label>
+
+  <label>
+    Email address
+    <input type="text" id="email" name="email" autocomplete="email" required>
+    <span class="error" id="emailError"></span>
+  </label>
+
+  <label>
+    Website
+    <input type="url" id="website" name="website" autocomplete="url" required placeholder="https://example.com">
+    <span class="error" id="websiteError"></span>
+  </label>
+
+  <label>
+    Password
+    <input type="password" id="password" name="password" autocomplete="new-password" required>
+    <span class="error" id="passwordError"></span>
+  </label>
+
+  <button type="submit">Create account</button>
+</form>
+
+<script>
+  // Helper – create an element with text
+  const setText = (el, txt) => { el.textContent = txt; };
+
+  // Minimal Unicode‑aware email validator (U‑label → A‑label via URL)
+  function isValidEmail(email) {
+    // Exactly one @, no surrounding whitespace
+    if (!email || email.trim() !== email) return false;
+    const parts = email.split('@');
+    if (parts.length !== 2) return false;
+
+    const [local, domain] = parts;
+    if (!local || /\s/.test(local)) return false;          // local part must be non‑empty and without spaces
+
+    // Domain conversion to ASCII (punycode) using the URL constructor.
+    // If the constructor throws, the domain is syntactically invalid.
+    let asciiDomain;
+    try {
+      asciiDomain = new URL('http://' + domain).hostname; // punycode if needed
+    } catch (e) {
+      return false;
+    }
+
+    // Basic label checks (RFC 1035 §2.3.4) – each label ≤63 octets, total ≤253.
+    const labels = asciiDomain.split('.');
+    if (labels.length < 2) return false; // need at least one sub‑domain + TLD
+
+    for (const lbl of labels) {
+      if (!lbl || lbl.length > 63) return false;
+      // Labels may contain letters, digits, and hyphens, but not start or end with hyphen.
+      if (/^-|-$/.test(lbl) || /[^A-Za-z0-9-]/.test(lbl)) return false;
+    }
+
+    // TLD: at least 2 characters (covers xn--* punycode TLDs as well)
+    const tld = labels[labels.length - 1];
+    if (tld.length < 2) return false;
+
+    // All checks passed – keep the original Unicode version for storage if needed.
+    return true;
+  }
+
+  // Simple URL validator – uses the built‑in URL class.
+  function isValidURL(str) {
+    try {
+      const u = new URL(str);
+      return u.protocol === 'http:' || u.protocol === 'https:';
+    } catch (_) {
+      return false;
+    }
+  }
+
+  // Password policy: at least 8 characters.
+  function isValidPassword(pwd) {
+    return pwd.length >= 8;
+  }
+
+  // Full name – non‑empty after trimming.
+  function isValidName(name) {
+    return name.trim().length > 0;
+  }
+
+  // -----------------------------------------------------------------
+  document.getElementById('signup').addEventListener('submit', function (e) {
+    e.preventDefault(); // prevent actual submission until we validate
+
+    // Grab fields and error spans
+    const name        = document.getElementById('name');
+    const email       = document.getElementById('email');
+    const website     = document.getElementById('website');
+    const password    = document.getElementById('password');
+
+    const nameError   = document.getElementById('nameError');
+    const emailError  = document.getElementById('emailError');
+    const websiteError= document.getElementById('websiteError');
+    const passwordError= document.getElementById('passwordError');
+
+    // Reset errors
+    [nameError, emailError, websiteError, passwordError].forEach(el => setText(el, ''));
+
+    let ok = true;
+
+    if (!isValidName(name.value)) {
+      setText(nameError, 'Please enter your full name.');
+      ok = false;
+    }
+
+    if (!isValidEmail(email.value)) {
+      setText(emailError, 'Enter a valid email address.');
+      ok = false;
+    }
+
+    if (!isValidURL(website.value)) {
+      setText(websiteError, 'Enter a valid URL (http/https).');
+      ok = false;
+    }
+
+    if (!isValidPassword(password.value)) {
+      setText(passwordError, 'Password must be at least 8 characters.');
+      ok = false;
+    }
+
+    if (ok) {
+      // For demo purposes we just show an alert.
+      // In a real app you would now submit the data via fetch()/XHR.
+      alert('Form looks good! Submitting…');
+      // this.submit(); // uncomment to actually submit
+    }
+  });
+</script>
+
+</body>
+</html>

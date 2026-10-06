@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Registro</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="url"],
+        input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        .success {
+            color: green;
+            font-size: 16px;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Formulario de Registro</h1>
+    <form id="registroForm">
+        <div class="form-group">
+            <label for="nombre">Nombre completo:</label>
+            <input type="text" id="nombre" name="nombre" required>
+            <div id="errorNombre" class="error"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Dirección de correo electrónico:</label>
+            <input type="email" id="email" name="email" required>
+            <div id="errorEmail" class="error"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="web">Sitio web (opcional):</label>
+            <input type="url" id="web" name="web">
+            <div id="errorWeb" class="error"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Contraseña:</label>
+            <input type="password" id="password" name="password" required>
+            <div id="errorPassword" class="error"></div>
+        </div>
+
+        <button type="submit">Registrarse</button>
+    </form>
+
+    <div id="mensajeExito" class="success"></div>
+
+    <script>
+        document.getElementById('registroForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Limpiar mensajes de error
+            document.querySelectorAll('.error').forEach(el => el.style.display = 'none');
+            document.getElementById('mensajeExito').style.display = 'none';
+
+            // Validar campos
+            let esValido = true;
+
+            // Validar nombre completo
+            const nombre = document.getElementById('nombre').value.trim();
+            if (nombre === '') {
+                document.getElementById('errorNombre').textContent = 'El nombre completo es obligatorio';
+                document.getElementById('errorNombre').style.display = 'block';
+                esValido = false;
+            } else if (nombre.length < 3) {
+                document.getElementById('errorNombre').textContent = 'El nombre debe tener al menos 3 caracteres';
+                document.getElementById('errorNombre').style.display = 'block';
+                esValido = false;
+            }
+
+            // Validar email
+            const email = document.getElementById('email').value.trim();
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (email === '') {
+                document.getElementById('errorEmail').textContent = 'El correo electrónico es obligatorio';
+                document.getElementById('errorEmail').style.display = 'block';
+                esValido = false;
+            } else if (!emailRegex.test(email)) {
+                document.getElementById('errorEmail').textContent = 'Por favor ingrese un correo electrónico válido';
+                document.getElementById('errorEmail').style.display = 'block';
+                esValido = false;
+            }
+
+            // Validar sitio web (opcional)
+            const web = document.getElementById('web').value.trim();
+            if (web !== '' && !web.startsWith('http://') && !web.startsWith('https://')) {
+                document.getElementById('errorWeb').textContent = 'Por favor ingrese una URL válida (ej: https://ejemplo.com)';
+                document.getElementById('errorWeb').style.display = 'block';
+                esValido = false;
+            }
+
+            // Validar contraseña
+            const password = document.getElementById('password').value;
+            if (password === '') {
+                document.getElementById('errorPassword').textContent = 'La contraseña es obligatoria';
+                document.getElementById('errorPassword').style.display = 'block';
+                esValido = false;
+            } else if (password.length < 6) {
+                document.getElementById('errorPassword').textContent = 'La contraseña debe tener al menos 6 caracteres';
+                document.getElementById('errorPassword').style.display = 'block';
+                esValido = false;
+            }
+
+            // Si todo es válido, mostrar mensaje de éxito
+            if (esValido) {
+                document.getElementById('mensajeExito').textContent = '¡Registro exitoso!';
+                document.getElementById('mensajeExito').style.display = 'block';
+
+                // Aquí podrías agregar el código para enviar los datos al servidor
+                // Por ejemplo: fetch('tu-api-endpoint', { method: 'POST', body: formData });
+            }
+        });
+    </script>
+</body>
+</html>

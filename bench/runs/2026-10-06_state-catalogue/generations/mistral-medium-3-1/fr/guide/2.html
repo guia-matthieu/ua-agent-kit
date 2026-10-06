@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Inscription</title>
+<style>
+  body { font-family: Arial, sans-serif; max-width: 600px; margin: 2em auto; padding: 1em; }
+  label { display: block; margin-top: 1em; }
+  input { width: 100%; box-sizing: border-box; padding: .5em; margin-top: .25em; }
+  .error { color: #c00; font-size: .85em; margin-top: .25em; display: none; }
+  button { margin-top: 1.5em; padding: .5em 1em; }
+</style>
+</head>
+<body>
+
+<h1>Inscription</h1>
+
+<form id="signup">
+  <label>
+    Nom complet *
+    <input type="text" name="fullname" required>
+    <div class="error" id="fullnameError">Veuillez indiquer votre nom complet.</div>
+  </label>
+
+  <label>
+    Adresse e-mail *
+    <input type="text" name="email" required>
+    <div class="error" id="emailError">Adresse e-mail invalide.</div>
+  </label>
+
+  <label>
+    Site web
+    <input type="text" name="website">
+    <div class="error" id="websiteError">URL invalide (ex: https://exemple.com).</div>
+  </label>
+
+  <label>
+    Mot de passe *
+    <input type="password" name="password" required>
+    <div class="error" id="passwordError">Le mot de passe doit contenir au moins 8 caractères.</div>
+  </label>
+
+  <button type="submit">S’inscrire</button>
+</form>
+
+<script>
+(function () {
+  const form = document.getElementById('signup');
+
+  // Valide un nom complet (au moins deux caractères, pas de balises HTML)
+  function validateFullname(value) {
+    return value.trim().length >= 2 && !/<[^>]*>/.test(value);
+  }
+
+  // Valide une adresse e-mail (UA-ready : Unicode autorisé dans la partie locale et le domaine)
+  function validateEmail(value) {
+    // Expression minimale qui accepte les adresses internationalisées
+    const emailRegex = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+    if (!emailRegex.test(value)) return false;
+
+    // Vérifie que chaque partie est valide
+    const [localPart, domain] = value.split('@');
+
+    // Local-part : au moins un caractère, pas d'espaces
+    if (!localPart || localPart.includes(' ')) return false;
+
+    // Domain : au moins un point, chaque label 1-63 octets en A-label
+    const labels = domain.split('.');
+    if (labels.length < 2) return false;
+
+    for (const label of labels) {
+      if (label.length === 0 || label.length > 63) return false;
+      // Si le label commence par xn--, c'est un A-label valide
+      if (label.startsWith('xn--')) continue;
+      // Sinon, vérifie que c'est un label ASCII valide
+      if (!/^[a-zA-Z0-9-]+$/.test(label)) {
+        // Peut être un U-label, on tente une conversion IDNA simplifiée
+        try {
+          // Vérification basique : tous les caractères sont des lettres ou chiffres Unicode
+          if (!/^[\p{L}\p{N}-]+$/u.test(label)) return false;
+        } catch (e) {
+          return false;
+        }
+      }
+    }
+
+    return true;
+  }
+
+  // Valide une URL (UA-ready : accepte les domaines internationalisés)
+  function validateWebsite(value) {
+    if (!value) return true; // Champ optionnel
+
+    try {
+      // Ajoute https:// si absent pour faciliter la validation
+      let url = value.trim();
+      if (!url.startsWith('http://') && !url.startsWith('https://')) {
+        url = 'https://' + url;
+      }
+
+      const parsed = new URL(url);
+      if (!parsed.hostname) return false;
+
+      // Valide le hostname (similaire à la validation email)
+      const hostname = parsed.hostname;
+      const labels = hostname.split('.');
+
+      for (const label of labels) {
+        if (label.length === 0 || label.length > 63) return false;
+        if (label.startsWith('xn--')) continue;
+        if (!/^[a-zA-Z0-9-]+$/.test(label)) {
+          if (!/^[\p{L}\p{N}-]+$/u.test(label)) return false;
+        }
+      }
+
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  // Valide le mot de passe (au moins 8 caractères)
+  function validatePassword(value) {
+    return value.length >= 8;
+  }
+
+  // Affiche ou cache les messages d'erreur
+  function showError(fieldId, show) {
+    const errorElement = document.getElementById(fieldId + 'Error');
+    if (errorElement) {
+      errorElement.style.display = show ? 'block' : 'none';
+    }
+  }
+
+  // Valide le formulaire
+  function validateForm() {
+    let isValid = true;
+
+    const fullname = form.elements.fullname.value;
+    if (!validateFullname(fullname)) {
+      showError('fullname', true);
+      isValid = false;
+    } else {
+      showError('fullname', false);
+    }
+
+    const email = form.elements.email.value;
+    if (!validateEmail(email)) {
+      showError('email', true);
+      isValid = false;
+    } else {
+      showError('email', false);
+    }
+
+    const website = form.elements.website.value;
+    if (!validateWebsite(website)) {
+      showError('website', true);
+      isValid = false;
+    } else {
+      showError('website', false);
+    }
+
+    const password = form.elements.password.value;
+    if (!validatePassword(password)) {
+      showError('password', true);
+      isValid = false;
+    } else {
+      showError('password', false);
+    }
+
+    return isValid;
+  }
+
+  // Écouteurs d'événements
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    if (validateForm()) {
+      alert('Formulaire valide ! Envoi des données...');
+      // Ici, vous pourriez envoyer le formulaire avec form.submit() ou fetch()
+    }
+  });
+
+  // Validation en temps réel (optionnel)
+  form.addEventListener('input', function(e) {
+    const field = e.target;
+    if (field.name === 'fullname') {
+      showError('fullname', !validateFullname(field.value));
+    } else if (field.name === 'email') {
+      showError('email', !validateEmail(field.value));
+    } else if (field.name === 'website') {
+      showError('website', !validateWebsite(field.value));
+    } else if (field.name === 'password') {
+      showError('password', !validatePassword(field.value));
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de registro</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f7fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .form-container {
+            background: #ffffff;
+            padding: 2rem 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            width: 100%;
+            max-width: 480px;
+        }
+        h1 {
+            font-size: 1.8rem;
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 1.8rem;
+            color: #1e293b;
+        }
+        .campo {
+            margin-bottom: 1.25rem;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+            color: #334155;
+        }
+        input {
+            width: 100%;
+            padding: 0.7rem 0.9rem;
+            border: 2px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+            box-sizing: border-box;
+        }
+        input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+        }
+        .error {
+            color: #dc2626;
+            font-size: 0.875rem;
+            margin-top: 0.3rem;
+            min-height: 1.2em;
+            display: block;
+        }
+        .boton {
+            width: 100%;
+            padding: 0.8rem;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 0.5rem;
+        }
+        .boton:hover {
+            background: #2563eb;
+        }
+        .exito {
+            text-align: center;
+            color: #16a34a;
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Crear cuenta</h1>
+
+        <form id="registro" novalidate>
+            <div class="campo">
+                <label for="nombre">Nombre completo</label>
+                <input type="text" id="nombre" name="nombre" placeholder="Ej: María García López" required>
+                <span class="error" id="error-nombre"></span>
+            </div>
+
+            <div class="campo">
+                <label for="email">Correo electrónico</label>
+                <input type="text" id="email" name="email" placeholder="usuario@ejemplo.com" required>
+                <span class="error" id="error-email"></span>
+            </div>
+
+            <div class="campo">
+                <label for="web">Sitio web</label>
+                <input type="text" id="web" name="web" placeholder="https://ejemplo.com" required>
+                <span class="error" id="error-web"></span>
+            </div>
+
+            <div class="campo">
+                <label for="pass">Contraseña</label>
+                <input type="password" id="pass" name="pass" placeholder="Mínimo 8 caracteres" required>
+                <span class="error" id="error-pass"></span>
+            </div>
+
+            <button type="submit" class="boton">Registrarse</button>
+        </form>
+
+        <div id="exito" class="exito" style="display:none;">¡Registro exitoso!</div>
+    </div>
+
+    <script>
+        (function() {
+            const form = document.getElementById('registro');
+            const nombre = document.getElementById('nombre');
+            const email = document.getElementById('email');
+            const web = document.getElementById('web');
+            const pass = document.getElementById('pass');
+
+            const errNombre = document.getElementById('error-nombre');
+            const errEmail = document.getElementById('error-email');
+            const errWeb = document.getElementById('error-web');
+            const errPass = document.getElementById('error-pass');
+            const exito = document.getElementById('exito');
+
+            // Función de validación de correo adaptada a Universal Acceptance (RFC 6531)
+            // Permite caracteres Unicode en la parte local y en el dominio.
+            function validarEmail(valor) {
+                if (!valor || valor.trim() === '') {
+                    return 'El correo electrónico no puede estar vacío.';
+                }
+                // Debe contener exactamente una @
+                const arroba = valor.lastIndexOf('@');
+                if (arroba === -1) {
+                    return 'Debe contener una @.';
+                }
+                const local = valor.slice(0, arroba);
+                const dominio = valor.slice(arroba + 1);
+
+                if (local.length === 0) {
+                    return 'La parte local no puede estar vacía.';
+                }
+                // La parte local no debe contener espacios ni @
+                if (/[\s@]/.test(local)) {
+                    return 'La parte local no debe contener espacios ni otra @.';
+                }
+                // Dominio debe tener al menos un punto
+                if (dominio.indexOf('.') === -1) {
+                    return 'El dominio debe contener al menos un punto.';
+                }
+                // Dividir dominio en etiquetas
+                const etiquetas = dominio.split('.');
+                if (etiquetas.length < 2) {
+                    return 'El dominio debe tener al menos dos etiquetas (ej: ejemplo.com).';
+                }
+                // Cada etiqueta no debe estar vacía
+                for (let etq of etiquetas) {
+                    if (etq.length === 0) {
+                        return 'El dominio tiene etiquetas vacías (doble punto).';
+                    }
+                }
+                // TLD debe tener al menos 2 caracteres (ASCII o Unicode) o ser xn-- (A-label)
+                const tld = etiquetas[etiquetas.length - 1];
+                if (tld.length < 2) {
+                    return 'El TLD (última etiqueta) debe tener al menos 2 caracteres.';
+                }
+                // Si el TLD empieza con xn-- no hace falta verificar longitud mínima (ya es al menos 5+)
+                return null; // válido
+            }
+
+            function validarWeb(valor) {
+                if (!valor || valor.trim() === '') {
+                    return 'El sitio web no puede estar vacío.';
+                }
+                // Debe comenzar con http:// o https://
+                if (!/^https?:\/\//i.test(valor)) {
+                    return 'Debe comenzar con http:// o https://.';
+                }
+                // Después del protocolo debe haber un nombre de dominio válido
+                let resto = valor.replace(/^https?:\/\//i, '');
+                if (resto.length === 0) {
+                    return 'Después del protocolo debe haber un dominio.';
+                }
+                // Debe contener al menos un punto (dominio) y no terminar con punto
+                if (resto.indexOf('.') === -1) {
+                    return 'El dominio debe contener al menos un punto.';
+                }
+                if (resto.endsWith('.')) {
+                    return 'El dominio no debe terminar en punto.';
+                }
+                // Separar por puntos y validar etiquetas (igual que email, pero sin @)
+                const etiquetas = resto.split('.');
+                for (let etq of etiquetas) {
+                    if (etq.length === 0) {
+                        return 'El dominio tiene etiquetas vacías (doble punto).';
+                    }
+                }
+                const tld = etiquetas[etiquetas.length - 1];
+                if (tld.length < 2) {
+                    return 'El TLD (última etiqueta) debe tener al menos 2 caracteres.';
+                }
+                // Permitir caracteres Unicode en el dominio (IDN)
+                return null;
+            }
+
+            function validarPassword(valor) {
+                if (!valor || valor.trim() === '') {
+                    return 'La contraseña no puede estar vacía.';
+                }
+                if (valor.length < 8) {
+                    return 'La contraseña debe tener al menos 8 caracteres.';
+                }
+                return null;
+            }
+
+            function validarNombre(valor) {
+                if (!valor || valor.trim() === '') {
+                    return 'El nombre completo no puede estar vacío.';
+                }
+                return null;
+            }
+
+            function mostrarError(elemento, mensaje) {
+                elemento.textContent = mensaje || '';
+            }
+
+            function limpiarErrores() {
+                [errNombre, errEmail, errWeb, errPass].forEach(el => el.textContent = '');
+                exito.style.display = 'none';
+            }
+
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                limpiarErrores();
+
+                const nombreVal = nombre.value.trim();
+                const emailVal = email.value.trim();
+                const webVal = web.value.trim();
+                const passVal = pass.value.trim();
+
+                // Validar todos los campos
+                const errNom = validarNombre(nombreVal);
+                const errMail = validarEmail(emailVal);
+                const errWebSite = validarWeb(webVal);
+                const errPassw = validarPassword(passVal);
+
+                let hayError = false;
+                if (errNom) {
+                    mostrarError(errNombre, errNom);
+                    hayError = true;
+                }
+                if (errMail) {
+                    mostrarError(errEmail, errMail);
+                    hayError = true;
+                }
+                if (errWebSite) {
+                    mostrarError(errWeb, errWebSite);
+                    hayError = true;
+                }
+                if (errPassw) {
+                    mostrarError(errPass, errPassw);
+                    hayError = true;
+                }
+
+                if (!hayError) {
+                    // Simular envío exitoso
+                    exito.style.display = 'block';
+                    // Opcional: resetear formulario
+                    // form.reset();
+                }
+            });
+        })();
+    </script>
+</body>
+</html>
