@@ -3,6 +3,7 @@
 ## Unreleased
 
 - **France pack 0.1.2** (`battery/packs/fr.json`): 62 cases in the battery format, 54 to accept and 8 to refuse, on `.bzh`, `.corsica`, `.alsace`, `.paris`, `.eus` and on accented names under `.fr` and under those five TLDs. Scored apart: the standard battery, its totals and the two commands are unchanged. Accented names outside `.fr` are labelled as syntax cases. See `battery/packs/README.md`.
+- **`--battery <file>`** on `ua-kit check` and `ua-kit score`: plays a pack or any file in the battery format. The file is checked against the schema first, and the report names it (`batteryFile` in JSON) so that its score is not read as a score on the standard battery. Without the option, nothing changes.
 
 ## 0.1.0 — 2026-09-29
 

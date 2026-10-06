@@ -1,16 +1,15 @@
 # Packs
 
-A pack is a set of cases in the format of `battery/schema.json`, built for one territory or one registry. It is scored on its own sheet: the numbers of a pack are never added to those of `battery/cases.json`, and `ua-kit score` and `ua-kit check` do not load it.
+A pack is a set of cases in the format of `battery/schema.json`, built for one territory or one registry. It is scored on its own sheet: the numbers of a pack are never added to those of `battery/cases.json`, and `ua-kit score` and `ua-kit check` do not load it unless asked.
 
-To score a page against a pack, pass it to the runner:
+To play a pack, name it:
 
-```js
-import { readFileSync } from 'node:fs';
-import { checkForm } from './src/form-runner.mjs'; // from the repository root
-
-const pack = JSON.parse(readFileSync('battery/packs/fr.json', 'utf8'));
-const report = await checkForm('form.html', { battery: pack });
 ```
+ua-kit check signup.html --battery battery/packs/fr.json
+ua-kit score --kind email --regex '^[^@\s]+@[^@\s]+$' --battery battery/packs/fr.json
+```
+
+The file is checked against the schema before any value is typed, and the report names the file next to the version, so that a pack score is not read as a score on the standard battery.
 
 ## `fr.json` — France pack 0.1.2
 
