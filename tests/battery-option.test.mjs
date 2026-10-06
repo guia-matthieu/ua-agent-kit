@@ -9,7 +9,7 @@ import Ajv from 'ajv/dist/2020.js';
 import { loadBattery, loadBatteryFile, batteryProblems, CLASSES } from '../src/battery.mjs';
 
 const path = rel => fileURLToPath(new URL(rel, import.meta.url));
-const BIN = path('../bin/ua-kit.mjs'), PACK = path('../battery/packs/fr.json'), FORM = path('fixtures/form-text-no-validation.html');
+const BIN = path('../bin/ua-kit.mjs'), PACK = path('../battery/packs/tld/geotld/corsica.json'), FORM = path('fixtures/form-text-no-validation.html');
 const schema = JSON.parse(readFileSync(path('../battery/schema.json'), 'utf8'));
 const pack = JSON.parse(readFileSync(PACK, 'utf8'));
 const kit = (...args) => spawnSync(process.execPath, [BIN, ...args], { encoding: 'utf8' });
@@ -41,8 +41,8 @@ test('an id used twice is refused, which the schema alone does not catch', () =>
   assert.match(batteryProblems(file([one, { ...one, value: 'b@example.com' }])).join('\n'), /appears twice/);
 });
 
-test('loadBatteryFile reads the France pack and refuses what is not a battery', () => {
-  assert.equal(loadBatteryFile(PACK).cases.length, 62);
+test('loadBatteryFile reads a pack and refuses what is not a battery', () => {
+  assert.equal(loadBatteryFile(PACK).cases.length, pack.cases.length);
   assert.throws(() => loadBatteryFile(join(dir, 'absent.json')), /cannot read battery file/);
   assert.throws(() => loadBatteryFile(write('broken.json', '{')), /cannot read battery file/);
   assert.throws(() => loadBatteryFile(write('values.json', ['a@example.com'])), /does not follow battery\/schema\.json/);
@@ -55,7 +55,7 @@ test('ua-kit score --battery scores the pack and says so', () => {
   assert.equal(out.battery, pack.version);
   assert.equal(out.batteryFile, PACK);
   assert.equal(out.total, pack.cases.filter(c => c.kind === 'email').length);
-  assert.ok(out.failures.includes('email-fr-corsica-01'));
+  assert.ok(out.failures.includes('email-geotld-corsica-01'));
   assert.match(kit('score', '--kind', 'email', '--regex', '@', '--battery', PACK).stdout, /not the standard battery/);
 });
 
@@ -91,5 +91,5 @@ test('ua-kit check --battery types the values of the pack, only those, and names
     }
   }
   assert.ok(typed > 0, 'nothing was typed');
-  assert.match(kit('check', FORM, '--battery', PACK).stdout, /- battery: 0\.1\.2 — .*fr\.json, not the standard battery/);
+  assert.match(kit('check', FORM, '--battery', PACK).stdout, /- battery: 0\.2\.0 — .*corsica\.json, not the standard battery/);
 });

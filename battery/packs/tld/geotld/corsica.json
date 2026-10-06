@@ -1,0 +1,116 @@
+{
+  "version": "0.2.0",
+  "generated": "2026-10-06",
+  "license": "CC0-1.0",
+  "method": "Pack for .corsica: .corsica in ASCII and one accented name under .corsica; the accented name is a syntax case, not a name in use. Same format as battery/cases.json, scored apart from it and never merged into its totals. Built by scripts/build-packs.mjs.",
+  "cases": [
+    {
+      "id": "email-geotld-corsica-01",
+      "kind": "email",
+      "class": "ascii-tld-long",
+      "value": "contact@mairie.corsica",
+      "expect": "accept",
+      "note": "7-letter geoTLD",
+      "ref": "IANA root zone"
+    },
+    {
+      "id": "domain-geotld-corsica-01",
+      "kind": "domain",
+      "class": "ascii-tld-long",
+      "value": "mairie.corsica",
+      "expect": "accept",
+      "note": "7-letter geoTLD",
+      "ref": "IANA root zone"
+    },
+    {
+      "id": "url-geotld-corsica-01",
+      "kind": "url",
+      "class": "ascii-tld-long",
+      "value": "https://www.mairie.corsica/contact",
+      "expect": "accept",
+      "note": "7-letter geoTLD, www and path",
+      "ref": "WHATWG URL"
+    },
+    {
+      "id": "email-geotld-corsica-idn-01",
+      "kind": "email",
+      "class": "email-idn-domain",
+      "value": "contact@cità.corsica",
+      "expect": "accept",
+      "note": "U-label domain, Corsican — syntax only",
+      "ref": "RFC 6531 §3.3"
+    },
+    {
+      "id": "email-geotld-corsica-idn-02",
+      "kind": "email",
+      "class": "idn-sld-alabel",
+      "value": "contact@xn--cit-cla.corsica",
+      "expect": "accept",
+      "note": "same domain as an A-label — syntax only",
+      "ref": "RFC 5891; .corsica IDN table published at IANA"
+    },
+    {
+      "id": "domain-geotld-corsica-idn-01",
+      "kind": "domain",
+      "class": "idn-ulabel",
+      "value": "cità.corsica",
+      "expect": "accept",
+      "note": "U-label, Corsican — syntax only",
+      "ref": "RFC 5891; .corsica IDN table published at IANA"
+    },
+    {
+      "id": "domain-geotld-corsica-idn-02",
+      "kind": "domain",
+      "class": "idn-sld-alabel",
+      "value": "xn--cit-cla.corsica",
+      "expect": "accept",
+      "note": "A-label of cità.corsica — syntax only",
+      "ref": "RFC 5891; .corsica IDN table published at IANA"
+    },
+    {
+      "id": "url-geotld-corsica-idn-01",
+      "kind": "url",
+      "class": "idn-ulabel",
+      "value": "https://cità.corsica/",
+      "expect": "accept",
+      "note": "U-label host, Corsican — syntax only",
+      "ref": "RFC 5891; .corsica IDN table published at IANA"
+    },
+    {
+      "id": "url-geotld-corsica-idn-02",
+      "kind": "url",
+      "class": "idn-sld-alabel",
+      "value": "https://xn--cit-cla.corsica/",
+      "expect": "accept",
+      "note": "A-label host of cità.corsica — syntax only",
+      "ref": "RFC 5891; .corsica IDN table published at IANA"
+    },
+    {
+      "id": "email-geotld-corsica-eai-01",
+      "kind": "email",
+      "class": "eai-full",
+      "value": "andría@cità.corsica",
+      "expect": "accept",
+      "note": "accented local part and domain — syntax only",
+      "ref": "RFC 6531"
+    },
+    {
+      "id": "email-geotld-corsica-guard-01",
+      "kind": "email",
+      "class": "guard",
+      "value": "contact@mairie..corsica",
+      "expect": "reject",
+      "note": "empty label",
+      "ref": "RFC 1035 §2.3.4"
+    },
+    {
+      "id": "url-geotld-corsica-guard-01",
+      "kind": "url",
+      "class": "guard",
+      "value": "https://mairie .corsica",
+      "expect": "reject",
+      "note": "space in the host",
+      "ref": "RFC 3986 §3.2.2"
+    }
+  ]
+}

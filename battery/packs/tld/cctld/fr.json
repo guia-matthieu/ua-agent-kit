@@ -1,0 +1,89 @@
+{
+  "version": "0.2.0",
+  "generated": "2026-10-06",
+  "license": "CC0-1.0",
+  "method": "Pack for .fr: accented names under .fr; its plain ASCII cases are in battery/cases.json. Same format as battery/cases.json, scored apart from it and never merged into its totals. Built by scripts/build-packs.mjs.",
+  "cases": [
+    {
+      "id": "email-cctld-fr-idn-01",
+      "kind": "email",
+      "class": "email-idn-domain",
+      "value": "contact@mairie-héry.fr",
+      "expect": "accept",
+      "note": "U-label domain, French",
+      "ref": "RFC 6531 §3.3"
+    },
+    {
+      "id": "email-cctld-fr-idn-02",
+      "kind": "email",
+      "class": "idn-sld-alabel",
+      "value": "contact@xn--mairie-hry-i7a.fr",
+      "expect": "accept",
+      "note": "same domain as an A-label",
+      "ref": "RFC 5891; AFNIC naming charter, version of 2026-07-06, art. 19"
+    },
+    {
+      "id": "domain-cctld-fr-idn-01",
+      "kind": "domain",
+      "class": "idn-ulabel",
+      "value": "mairie-héry.fr",
+      "expect": "accept",
+      "note": "U-label, French",
+      "ref": "RFC 5891; AFNIC naming charter, version of 2026-07-06, art. 19"
+    },
+    {
+      "id": "domain-cctld-fr-idn-02",
+      "kind": "domain",
+      "class": "idn-sld-alabel",
+      "value": "xn--mairie-hry-i7a.fr",
+      "expect": "accept",
+      "note": "A-label of mairie-héry.fr",
+      "ref": "RFC 5891; AFNIC naming charter, version of 2026-07-06, art. 19"
+    },
+    {
+      "id": "url-cctld-fr-idn-01",
+      "kind": "url",
+      "class": "idn-ulabel",
+      "value": "https://mairie-héry.fr/",
+      "expect": "accept",
+      "note": "U-label host, French",
+      "ref": "RFC 5891; AFNIC naming charter, version of 2026-07-06, art. 19"
+    },
+    {
+      "id": "url-cctld-fr-idn-02",
+      "kind": "url",
+      "class": "idn-sld-alabel",
+      "value": "https://xn--mairie-hry-i7a.fr/",
+      "expect": "accept",
+      "note": "A-label host of mairie-héry.fr",
+      "ref": "RFC 5891; AFNIC naming charter, version of 2026-07-06, art. 19"
+    },
+    {
+      "id": "email-cctld-fr-eai-01",
+      "kind": "email",
+      "class": "eai-full",
+      "value": "hélène@mairie-héry.fr",
+      "expect": "accept",
+      "note": "accented local part and domain",
+      "ref": "RFC 6531"
+    },
+    {
+      "id": "email-cctld-fr-guard-01",
+      "kind": "email",
+      "class": "guard",
+      "value": "contact@mairie héry.fr",
+      "expect": "reject",
+      "note": "space in the domain",
+      "ref": "RFC 5321 §4.1.2"
+    },
+    {
+      "id": "domain-cctld-fr-guard-01",
+      "kind": "domain",
+      "class": "guard",
+      "value": "mairie héry.fr",
+      "expect": "reject",
+      "note": "space",
+      "ref": "RFC 1035 §2.3.1"
+    }
+  ]
+}

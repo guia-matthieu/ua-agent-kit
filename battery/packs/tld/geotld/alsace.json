@@ -1,0 +1,98 @@
+{
+  "version": "0.2.0",
+  "generated": "2026-10-06",
+  "license": "CC0-1.0",
+  "method": "Pack for .alsace: .alsace in ASCII and one accented name under .alsace; the accented name is a syntax case, not a name in use. Same format as battery/cases.json, scored apart from it and never merged into its totals. Built by scripts/build-packs.mjs.",
+  "cases": [
+    {
+      "id": "email-geotld-alsace-01",
+      "kind": "email",
+      "class": "ascii-tld-long",
+      "value": "contact@mairie.alsace",
+      "expect": "accept",
+      "note": "6-letter geoTLD",
+      "ref": "IANA root zone"
+    },
+    {
+      "id": "domain-geotld-alsace-01",
+      "kind": "domain",
+      "class": "ascii-tld-long",
+      "value": "mairie.alsace",
+      "expect": "accept",
+      "note": "6-letter geoTLD",
+      "ref": "IANA root zone"
+    },
+    {
+      "id": "url-geotld-alsace-01",
+      "kind": "url",
+      "class": "ascii-tld-long",
+      "value": "https://www.mairie.alsace/contact",
+      "expect": "accept",
+      "note": "6-letter geoTLD, www and path",
+      "ref": "WHATWG URL"
+    },
+    {
+      "id": "email-geotld-alsace-idn-01",
+      "kind": "email",
+      "class": "email-idn-domain",
+      "value": "contact@münster.alsace",
+      "expect": "accept",
+      "note": "U-label domain, Alsatian — syntax only",
+      "ref": "RFC 6531 §3.3"
+    },
+    {
+      "id": "email-geotld-alsace-idn-02",
+      "kind": "email",
+      "class": "idn-sld-alabel",
+      "value": "contact@xn--mnster-3ya.alsace",
+      "expect": "accept",
+      "note": "same domain as an A-label — syntax only",
+      "ref": "RFC 5891; .alsace IDN table published at IANA"
+    },
+    {
+      "id": "domain-geotld-alsace-idn-01",
+      "kind": "domain",
+      "class": "idn-ulabel",
+      "value": "münster.alsace",
+      "expect": "accept",
+      "note": "U-label, Alsatian — syntax only",
+      "ref": "RFC 5891; .alsace IDN table published at IANA"
+    },
+    {
+      "id": "domain-geotld-alsace-idn-02",
+      "kind": "domain",
+      "class": "idn-sld-alabel",
+      "value": "xn--mnster-3ya.alsace",
+      "expect": "accept",
+      "note": "A-label of münster.alsace — syntax only",
+      "ref": "RFC 5891; .alsace IDN table published at IANA"
+    },
+    {
+      "id": "url-geotld-alsace-idn-01",
+      "kind": "url",
+      "class": "idn-ulabel",
+      "value": "https://münster.alsace/",
+      "expect": "accept",
+      "note": "U-label host, Alsatian — syntax only",
+      "ref": "RFC 5891; .alsace IDN table published at IANA"
+    },
+    {
+      "id": "url-geotld-alsace-idn-02",
+      "kind": "url",
+      "class": "idn-sld-alabel",
+      "value": "https://xn--mnster-3ya.alsace/",
+      "expect": "accept",
+      "note": "A-label host of münster.alsace — syntax only",
+      "ref": "RFC 5891; .alsace IDN table published at IANA"
+    },
+    {
+      "id": "domain-geotld-alsace-guard-01",
+      "kind": "domain",
+      "class": "guard",
+      "value": "mairie..alsace",
+      "expect": "reject",
+      "note": "empty label",
+      "ref": "RFC 1035 §2.3.4"
+    }
+  ]
+}
