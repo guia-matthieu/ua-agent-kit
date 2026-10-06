@@ -1,0 +1,566 @@
+{
+  "version": "0.1.2",
+  "generated": "2026-10-06",
+  "license": "CC0-1.0",
+  "method": "France pack: .bzh, .corsica, .alsace, .paris and .eus in ASCII, and accented names under .fr and under those five TLDs. Same format as battery/cases.json, scored apart from it and never merged into its totals. Accented names outside .fr are syntax cases, not names in use. Built by scripts/build-pack-fr.mjs.",
+  "cases": [
+    {
+      "id": "email-fr-alsace-01",
+      "kind": "email",
+      "class": "ascii-tld-long",
+      "value": "contact@mairie.alsace",
+      "expect": "accept",
+      "note": "6-letter geoTLD",
+      "ref": "IANA root zone"
+    },
+    {
+      "id": "domain-fr-alsace-01",
+      "kind": "domain",
+      "class": "ascii-tld-long",
+      "value": "mairie.alsace",
+      "expect": "accept",
+      "note": "6-letter geoTLD",
+      "ref": "IANA root zone"
+    },
+    {
+      "id": "url-fr-alsace-01",
+      "kind": "url",
+      "class": "ascii-tld-long",
+      "value": "https://www.mairie.alsace/contact",
+      "expect": "accept",
+      "note": "6-letter geoTLD, www and path",
+      "ref": "WHATWG URL"
+    },
+    {
+      "id": "email-fr-paris-01",
+      "kind": "email",
+      "class": "ascii-tld-long",
+      "value": "contact@mairie.paris",
+      "expect": "accept",
+      "note": "5-letter geoTLD",
+      "ref": "IANA root zone"
+    },
+    {
+      "id": "domain-fr-paris-01",
+      "kind": "domain",
+      "class": "ascii-tld-long",
+      "value": "mairie.paris",
+      "expect": "accept",
+      "note": "5-letter geoTLD",
+      "ref": "IANA root zone"
+    },
+    {
+      "id": "url-fr-paris-01",
+      "kind": "url",
+      "class": "ascii-tld-long",
+      "value": "https://www.mairie.paris/contact",
+      "expect": "accept",
+      "note": "5-letter geoTLD, www and path",
+      "ref": "WHATWG URL"
+    },
+    {
+      "id": "email-fr-corsica-01",
+      "kind": "email",
+      "class": "ascii-tld-long",
+      "value": "contact@mairie.corsica",
+      "expect": "accept",
+      "note": "7-letter geoTLD",
+      "ref": "IANA root zone"
+    },
+    {
+      "id": "domain-fr-corsica-01",
+      "kind": "domain",
+      "class": "ascii-tld-long",
+      "value": "mairie.corsica",
+      "expect": "accept",
+      "note": "7-letter geoTLD",
+      "ref": "IANA root zone"
+    },
+    {
+      "id": "url-fr-corsica-01",
+      "kind": "url",
+      "class": "ascii-tld-long",
+      "value": "https://www.mairie.corsica/contact",
+      "expect": "accept",
+      "note": "7-letter geoTLD, www and path",
+      "ref": "WHATWG URL"
+    },
+    {
+      "id": "email-fr-bzh-01",
+      "kind": "email",
+      "class": "ascii-tld-short",
+      "value": "contact@kemper.bzh",
+      "expect": "accept",
+      "note": "3-letter geoTLD",
+      "ref": "IANA root zone"
+    },
+    {
+      "id": "domain-fr-bzh-01",
+      "kind": "domain",
+      "class": "ascii-tld-short",
+      "value": "kemper.bzh",
+      "expect": "accept",
+      "note": "3-letter geoTLD",
+      "ref": "IANA root zone"
+    },
+    {
+      "id": "url-fr-bzh-01",
+      "kind": "url",
+      "class": "ascii-tld-short",
+      "value": "https://www.kemper.bzh/contact",
+      "expect": "accept",
+      "note": "3-letter geoTLD, www and path",
+      "ref": "WHATWG URL"
+    },
+    {
+      "id": "email-fr-eus-01",
+      "kind": "email",
+      "class": "ascii-tld-short",
+      "value": "contact@udala.eus",
+      "expect": "accept",
+      "note": "3-letter geoTLD",
+      "ref": "IANA root zone"
+    },
+    {
+      "id": "domain-fr-eus-01",
+      "kind": "domain",
+      "class": "ascii-tld-short",
+      "value": "udala.eus",
+      "expect": "accept",
+      "note": "3-letter geoTLD",
+      "ref": "IANA root zone"
+    },
+    {
+      "id": "url-fr-eus-01",
+      "kind": "url",
+      "class": "ascii-tld-short",
+      "value": "https://www.udala.eus/contact",
+      "expect": "accept",
+      "note": "3-letter geoTLD, www and path",
+      "ref": "WHATWG URL"
+    },
+    {
+      "id": "email-fr-idn-fr-01",
+      "kind": "email",
+      "class": "email-idn-domain",
+      "value": "contact@mairie-héry.fr",
+      "expect": "accept",
+      "note": "U-label domain, example given in the ANCT RPNT reference, criterion 1.2",
+      "ref": "RFC 6531 §3.3"
+    },
+    {
+      "id": "email-fr-idn-fr-02",
+      "kind": "email",
+      "class": "idn-sld-alabel",
+      "value": "contact@xn--mairie-hry-i7a.fr",
+      "expect": "accept",
+      "note": "same domain as an A-label",
+      "ref": "RFC 5891; AFNIC naming charter, version of 2026-07-06, art. 19"
+    },
+    {
+      "id": "domain-fr-idn-fr-01",
+      "kind": "domain",
+      "class": "idn-ulabel",
+      "value": "mairie-héry.fr",
+      "expect": "accept",
+      "note": "U-label, example given in the ANCT RPNT reference, criterion 1.2",
+      "ref": "RFC 5891; AFNIC naming charter, version of 2026-07-06, art. 19"
+    },
+    {
+      "id": "domain-fr-idn-fr-02",
+      "kind": "domain",
+      "class": "idn-sld-alabel",
+      "value": "xn--mairie-hry-i7a.fr",
+      "expect": "accept",
+      "note": "A-label of mairie-héry.fr",
+      "ref": "RFC 5891; AFNIC naming charter, version of 2026-07-06, art. 19"
+    },
+    {
+      "id": "url-fr-idn-fr-01",
+      "kind": "url",
+      "class": "idn-ulabel",
+      "value": "https://mairie-héry.fr/",
+      "expect": "accept",
+      "note": "U-label host, example given in the ANCT RPNT reference, criterion 1.2",
+      "ref": "RFC 5891; AFNIC naming charter, version of 2026-07-06, art. 19"
+    },
+    {
+      "id": "url-fr-idn-fr-02",
+      "kind": "url",
+      "class": "idn-sld-alabel",
+      "value": "https://xn--mairie-hry-i7a.fr/",
+      "expect": "accept",
+      "note": "A-label host of mairie-héry.fr",
+      "ref": "RFC 5891; AFNIC naming charter, version of 2026-07-06, art. 19"
+    },
+    {
+      "id": "email-fr-idn-bzh-01",
+      "kind": "email",
+      "class": "email-idn-domain",
+      "value": "contact@kêr.bzh",
+      "expect": "accept",
+      "note": "U-label domain, Breton — syntax only",
+      "ref": "RFC 6531 §3.3"
+    },
+    {
+      "id": "email-fr-idn-bzh-02",
+      "kind": "email",
+      "class": "idn-sld-alabel",
+      "value": "contact@xn--kr-eja.bzh",
+      "expect": "accept",
+      "note": "same domain as an A-label — syntax only",
+      "ref": "RFC 5891; .bzh IDN table published at IANA"
+    },
+    {
+      "id": "domain-fr-idn-bzh-01",
+      "kind": "domain",
+      "class": "idn-ulabel",
+      "value": "kêr.bzh",
+      "expect": "accept",
+      "note": "U-label, Breton — syntax only",
+      "ref": "RFC 5891; .bzh IDN table published at IANA"
+    },
+    {
+      "id": "domain-fr-idn-bzh-02",
+      "kind": "domain",
+      "class": "idn-sld-alabel",
+      "value": "xn--kr-eja.bzh",
+      "expect": "accept",
+      "note": "A-label of kêr.bzh — syntax only",
+      "ref": "RFC 5891; .bzh IDN table published at IANA"
+    },
+    {
+      "id": "url-fr-idn-bzh-01",
+      "kind": "url",
+      "class": "idn-ulabel",
+      "value": "https://kêr.bzh/",
+      "expect": "accept",
+      "note": "U-label host, Breton — syntax only",
+      "ref": "RFC 5891; .bzh IDN table published at IANA"
+    },
+    {
+      "id": "url-fr-idn-bzh-02",
+      "kind": "url",
+      "class": "idn-sld-alabel",
+      "value": "https://xn--kr-eja.bzh/",
+      "expect": "accept",
+      "note": "A-label host of kêr.bzh — syntax only",
+      "ref": "RFC 5891; .bzh IDN table published at IANA"
+    },
+    {
+      "id": "email-fr-idn-corsica-01",
+      "kind": "email",
+      "class": "email-idn-domain",
+      "value": "contact@cità.corsica",
+      "expect": "accept",
+      "note": "U-label domain, Corsican — syntax only",
+      "ref": "RFC 6531 §3.3"
+    },
+    {
+      "id": "email-fr-idn-corsica-02",
+      "kind": "email",
+      "class": "idn-sld-alabel",
+      "value": "contact@xn--cit-cla.corsica",
+      "expect": "accept",
+      "note": "same domain as an A-label — syntax only",
+      "ref": "RFC 5891; .corsica IDN table published at IANA"
+    },
+    {
+      "id": "domain-fr-idn-corsica-01",
+      "kind": "domain",
+      "class": "idn-ulabel",
+      "value": "cità.corsica",
+      "expect": "accept",
+      "note": "U-label, Corsican — syntax only",
+      "ref": "RFC 5891; .corsica IDN table published at IANA"
+    },
+    {
+      "id": "domain-fr-idn-corsica-02",
+      "kind": "domain",
+      "class": "idn-sld-alabel",
+      "value": "xn--cit-cla.corsica",
+      "expect": "accept",
+      "note": "A-label of cità.corsica — syntax only",
+      "ref": "RFC 5891; .corsica IDN table published at IANA"
+    },
+    {
+      "id": "url-fr-idn-corsica-01",
+      "kind": "url",
+      "class": "idn-ulabel",
+      "value": "https://cità.corsica/",
+      "expect": "accept",
+      "note": "U-label host, Corsican — syntax only",
+      "ref": "RFC 5891; .corsica IDN table published at IANA"
+    },
+    {
+      "id": "url-fr-idn-corsica-02",
+      "kind": "url",
+      "class": "idn-sld-alabel",
+      "value": "https://xn--cit-cla.corsica/",
+      "expect": "accept",
+      "note": "A-label host of cità.corsica — syntax only",
+      "ref": "RFC 5891; .corsica IDN table published at IANA"
+    },
+    {
+      "id": "email-fr-idn-alsace-01",
+      "kind": "email",
+      "class": "email-idn-domain",
+      "value": "contact@münster.alsace",
+      "expect": "accept",
+      "note": "U-label domain, Alsatian — syntax only",
+      "ref": "RFC 6531 §3.3"
+    },
+    {
+      "id": "email-fr-idn-alsace-02",
+      "kind": "email",
+      "class": "idn-sld-alabel",
+      "value": "contact@xn--mnster-3ya.alsace",
+      "expect": "accept",
+      "note": "same domain as an A-label — syntax only",
+      "ref": "RFC 5891; .alsace IDN table published at IANA"
+    },
+    {
+      "id": "domain-fr-idn-alsace-01",
+      "kind": "domain",
+      "class": "idn-ulabel",
+      "value": "münster.alsace",
+      "expect": "accept",
+      "note": "U-label, Alsatian — syntax only",
+      "ref": "RFC 5891; .alsace IDN table published at IANA"
+    },
+    {
+      "id": "domain-fr-idn-alsace-02",
+      "kind": "domain",
+      "class": "idn-sld-alabel",
+      "value": "xn--mnster-3ya.alsace",
+      "expect": "accept",
+      "note": "A-label of münster.alsace — syntax only",
+      "ref": "RFC 5891; .alsace IDN table published at IANA"
+    },
+    {
+      "id": "url-fr-idn-alsace-01",
+      "kind": "url",
+      "class": "idn-ulabel",
+      "value": "https://münster.alsace/",
+      "expect": "accept",
+      "note": "U-label host, Alsatian — syntax only",
+      "ref": "RFC 5891; .alsace IDN table published at IANA"
+    },
+    {
+      "id": "url-fr-idn-alsace-02",
+      "kind": "url",
+      "class": "idn-sld-alabel",
+      "value": "https://xn--mnster-3ya.alsace/",
+      "expect": "accept",
+      "note": "A-label host of münster.alsace — syntax only",
+      "ref": "RFC 5891; .alsace IDN table published at IANA"
+    },
+    {
+      "id": "email-fr-idn-paris-01",
+      "kind": "email",
+      "class": "email-idn-domain",
+      "value": "contact@théâtre.paris",
+      "expect": "accept",
+      "note": "U-label domain, French — syntax only",
+      "ref": "RFC 6531 §3.3"
+    },
+    {
+      "id": "email-fr-idn-paris-02",
+      "kind": "email",
+      "class": "idn-sld-alabel",
+      "value": "contact@xn--thtre-4qa2c.paris",
+      "expect": "accept",
+      "note": "same domain as an A-label — syntax only",
+      "ref": "RFC 5891; .paris IDN table published at IANA"
+    },
+    {
+      "id": "domain-fr-idn-paris-01",
+      "kind": "domain",
+      "class": "idn-ulabel",
+      "value": "théâtre.paris",
+      "expect": "accept",
+      "note": "U-label, French — syntax only",
+      "ref": "RFC 5891; .paris IDN table published at IANA"
+    },
+    {
+      "id": "domain-fr-idn-paris-02",
+      "kind": "domain",
+      "class": "idn-sld-alabel",
+      "value": "xn--thtre-4qa2c.paris",
+      "expect": "accept",
+      "note": "A-label of théâtre.paris — syntax only",
+      "ref": "RFC 5891; .paris IDN table published at IANA"
+    },
+    {
+      "id": "url-fr-idn-paris-01",
+      "kind": "url",
+      "class": "idn-ulabel",
+      "value": "https://théâtre.paris/",
+      "expect": "accept",
+      "note": "U-label host, French — syntax only",
+      "ref": "RFC 5891; .paris IDN table published at IANA"
+    },
+    {
+      "id": "url-fr-idn-paris-02",
+      "kind": "url",
+      "class": "idn-sld-alabel",
+      "value": "https://xn--thtre-4qa2c.paris/",
+      "expect": "accept",
+      "note": "A-label host of théâtre.paris — syntax only",
+      "ref": "RFC 5891; .paris IDN table published at IANA"
+    },
+    {
+      "id": "email-fr-idn-eus-01",
+      "kind": "email",
+      "class": "email-idn-domain",
+      "value": "contact@iruña.eus",
+      "expect": "accept",
+      "note": "U-label domain, Basque — syntax only",
+      "ref": "RFC 6531 §3.3"
+    },
+    {
+      "id": "email-fr-idn-eus-02",
+      "kind": "email",
+      "class": "idn-sld-alabel",
+      "value": "contact@xn--irua-iqa.eus",
+      "expect": "accept",
+      "note": "same domain as an A-label — syntax only",
+      "ref": "RFC 5891; .eus IDN table published at IANA"
+    },
+    {
+      "id": "domain-fr-idn-eus-01",
+      "kind": "domain",
+      "class": "idn-ulabel",
+      "value": "iruña.eus",
+      "expect": "accept",
+      "note": "U-label, Basque — syntax only",
+      "ref": "RFC 5891; .eus IDN table published at IANA"
+    },
+    {
+      "id": "domain-fr-idn-eus-02",
+      "kind": "domain",
+      "class": "idn-sld-alabel",
+      "value": "xn--irua-iqa.eus",
+      "expect": "accept",
+      "note": "A-label of iruña.eus — syntax only",
+      "ref": "RFC 5891; .eus IDN table published at IANA"
+    },
+    {
+      "id": "url-fr-idn-eus-01",
+      "kind": "url",
+      "class": "idn-ulabel",
+      "value": "https://iruña.eus/",
+      "expect": "accept",
+      "note": "U-label host, Basque — syntax only",
+      "ref": "RFC 5891; .eus IDN table published at IANA"
+    },
+    {
+      "id": "url-fr-idn-eus-02",
+      "kind": "url",
+      "class": "idn-sld-alabel",
+      "value": "https://xn--irua-iqa.eus/",
+      "expect": "accept",
+      "note": "A-label host of iruña.eus — syntax only",
+      "ref": "RFC 5891; .eus IDN table published at IANA"
+    },
+    {
+      "id": "email-fr-eai-01",
+      "kind": "email",
+      "class": "eai-local",
+      "value": "françois@mairie.bzh",
+      "expect": "accept",
+      "note": "accented local part, geoTLD",
+      "ref": "RFC 6531"
+    },
+    {
+      "id": "email-fr-eai-02",
+      "kind": "email",
+      "class": "eai-full",
+      "value": "hélène@mairie-héry.fr",
+      "expect": "accept",
+      "note": "accented local part and domain",
+      "ref": "RFC 6531"
+    },
+    {
+      "id": "email-fr-eai-03",
+      "kind": "email",
+      "class": "eai-full",
+      "value": "andría@cità.corsica",
+      "expect": "accept",
+      "note": "accented local part and domain, geoTLD — syntax only",
+      "ref": "RFC 6531"
+    },
+    {
+      "id": "email-fr-guard-01",
+      "kind": "email",
+      "class": "guard",
+      "value": "contact@mairie..corsica",
+      "expect": "reject",
+      "note": "empty label",
+      "ref": "RFC 1035 §2.3.4"
+    },
+    {
+      "id": "email-fr-guard-02",
+      "kind": "email",
+      "class": "guard",
+      "value": "contact@.bzh",
+      "expect": "reject",
+      "note": "empty first label",
+      "ref": "RFC 1035 §2.3.4"
+    },
+    {
+      "id": "email-fr-guard-03",
+      "kind": "email",
+      "class": "guard",
+      "value": "contact@mairie héry.fr",
+      "expect": "reject",
+      "note": "space in the domain",
+      "ref": "RFC 5321 §4.1.2"
+    },
+    {
+      "id": "domain-fr-guard-01",
+      "kind": "domain",
+      "class": "guard",
+      "value": "-mairie.paris",
+      "expect": "reject",
+      "note": "label starts with a hyphen",
+      "ref": "RFC 5891 §4.2.3.1"
+    },
+    {
+      "id": "domain-fr-guard-02",
+      "kind": "domain",
+      "class": "guard",
+      "value": "mairie..alsace",
+      "expect": "reject",
+      "note": "empty label",
+      "ref": "RFC 1035 §2.3.4"
+    },
+    {
+      "id": "domain-fr-guard-03",
+      "kind": "domain",
+      "class": "guard",
+      "value": "mairie héry.fr",
+      "expect": "reject",
+      "note": "space",
+      "ref": "RFC 1035 §2.3.1"
+    },
+    {
+      "id": "url-fr-guard-01",
+      "kind": "url",
+      "class": "guard",
+      "value": "https://mairie .corsica",
+      "expect": "reject",
+      "note": "space in the host",
+      "ref": "RFC 3986 §3.2.2"
+    },
+    {
+      "id": "url-fr-guard-02",
+      "kind": "url",
+      "class": "guard",
+      "value": "https//udala.eus",
+      "expect": "reject",
+      "note": "missing colon after the scheme",
+      "ref": "RFC 3986 §3.1"
+    }
+  ]
+}
