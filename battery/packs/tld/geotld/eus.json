@@ -1,0 +1,98 @@
+{
+  "version": "0.2.0",
+  "generated": "2026-10-06",
+  "license": "CC0-1.0",
+  "method": "Pack for .eus: .eus in ASCII and one accented name under .eus; the accented name is a syntax case, not a name in use. Same format as battery/cases.json, scored apart from it and never merged into its totals. Built by scripts/build-packs.mjs.",
+  "cases": [
+    {
+      "id": "email-geotld-eus-01",
+      "kind": "email",
+      "class": "ascii-tld-short",
+      "value": "contact@udala.eus",
+      "expect": "accept",
+      "note": "3-letter geoTLD",
+      "ref": "IANA root zone"
+    },
+    {
+      "id": "domain-geotld-eus-01",
+      "kind": "domain",
+      "class": "ascii-tld-short",
+      "value": "udala.eus",
+      "expect": "accept",
+      "note": "3-letter geoTLD",
+      "ref": "IANA root zone"
+    },
+    {
+      "id": "url-geotld-eus-01",
+      "kind": "url",
+      "class": "ascii-tld-short",
+      "value": "https://www.udala.eus/contact",
+      "expect": "accept",
+      "note": "3-letter geoTLD, www and path",
+      "ref": "WHATWG URL"
+    },
+    {
+      "id": "email-geotld-eus-idn-01",
+      "kind": "email",
+      "class": "email-idn-domain",
+      "value": "contact@iruña.eus",
+      "expect": "accept",
+      "note": "U-label domain, Basque — syntax only",
+      "ref": "RFC 6531 §3.3"
+    },
+    {
+      "id": "email-geotld-eus-idn-02",
+      "kind": "email",
+      "class": "idn-sld-alabel",
+      "value": "contact@xn--irua-iqa.eus",
+      "expect": "accept",
+      "note": "same domain as an A-label — syntax only",
+      "ref": "RFC 5891; .eus IDN table published at IANA"
+    },
+    {
+      "id": "domain-geotld-eus-idn-01",
+      "kind": "domain",
+      "class": "idn-ulabel",
+      "value": "iruña.eus",
+      "expect": "accept",
+      "note": "U-label, Basque — syntax only",
+      "ref": "RFC 5891; .eus IDN table published at IANA"
+    },
+    {
+      "id": "domain-geotld-eus-idn-02",
+      "kind": "domain",
+      "class": "idn-sld-alabel",
+      "value": "xn--irua-iqa.eus",
+      "expect": "accept",
+      "note": "A-label of iruña.eus — syntax only",
+      "ref": "RFC 5891; .eus IDN table published at IANA"
+    },
+    {
+      "id": "url-geotld-eus-idn-01",
+      "kind": "url",
+      "class": "idn-ulabel",
+      "value": "https://iruña.eus/",
+      "expect": "accept",
+      "note": "U-label host, Basque — syntax only",
+      "ref": "RFC 5891; .eus IDN table published at IANA"
+    },
+    {
+      "id": "url-geotld-eus-idn-02",
+      "kind": "url",
+      "class": "idn-sld-alabel",
+      "value": "https://xn--irua-iqa.eus/",
+      "expect": "accept",
+      "note": "A-label host of iruña.eus — syntax only",
+      "ref": "RFC 5891; .eus IDN table published at IANA"
+    },
+    {
+      "id": "url-geotld-eus-guard-01",
+      "kind": "url",
+      "class": "guard",
+      "value": "https//udala.eus",
+      "expect": "reject",
+      "note": "missing colon after the scheme",
+      "ref": "RFC 3986 §3.1"
+    }
+  ]
+}

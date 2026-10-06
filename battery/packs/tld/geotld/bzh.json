@@ -1,0 +1,107 @@
+{
+  "version": "0.2.0",
+  "generated": "2026-10-06",
+  "license": "CC0-1.0",
+  "method": "Pack for .bzh: .bzh in ASCII and one accented name under .bzh; the accented name is a syntax case, not a name in use. Same format as battery/cases.json, scored apart from it and never merged into its totals. Built by scripts/build-packs.mjs.",
+  "cases": [
+    {
+      "id": "email-geotld-bzh-01",
+      "kind": "email",
+      "class": "ascii-tld-short",
+      "value": "contact@kemper.bzh",
+      "expect": "accept",
+      "note": "3-letter geoTLD",
+      "ref": "IANA root zone"
+    },
+    {
+      "id": "domain-geotld-bzh-01",
+      "kind": "domain",
+      "class": "ascii-tld-short",
+      "value": "kemper.bzh",
+      "expect": "accept",
+      "note": "3-letter geoTLD",
+      "ref": "IANA root zone"
+    },
+    {
+      "id": "url-geotld-bzh-01",
+      "kind": "url",
+      "class": "ascii-tld-short",
+      "value": "https://www.kemper.bzh/contact",
+      "expect": "accept",
+      "note": "3-letter geoTLD, www and path",
+      "ref": "WHATWG URL"
+    },
+    {
+      "id": "email-geotld-bzh-idn-01",
+      "kind": "email",
+      "class": "email-idn-domain",
+      "value": "contact@kêr.bzh",
+      "expect": "accept",
+      "note": "U-label domain, Breton — syntax only",
+      "ref": "RFC 6531 §3.3"
+    },
+    {
+      "id": "email-geotld-bzh-idn-02",
+      "kind": "email",
+      "class": "idn-sld-alabel",
+      "value": "contact@xn--kr-eja.bzh",
+      "expect": "accept",
+      "note": "same domain as an A-label — syntax only",
+      "ref": "RFC 5891; .bzh IDN table published at IANA"
+    },
+    {
+      "id": "domain-geotld-bzh-idn-01",
+      "kind": "domain",
+      "class": "idn-ulabel",
+      "value": "kêr.bzh",
+      "expect": "accept",
+      "note": "U-label, Breton — syntax only",
+      "ref": "RFC 5891; .bzh IDN table published at IANA"
+    },
+    {
+      "id": "domain-geotld-bzh-idn-02",
+      "kind": "domain",
+      "class": "idn-sld-alabel",
+      "value": "xn--kr-eja.bzh",
+      "expect": "accept",
+      "note": "A-label of kêr.bzh — syntax only",
+      "ref": "RFC 5891; .bzh IDN table published at IANA"
+    },
+    {
+      "id": "url-geotld-bzh-idn-01",
+      "kind": "url",
+      "class": "idn-ulabel",
+      "value": "https://kêr.bzh/",
+      "expect": "accept",
+      "note": "U-label host, Breton — syntax only",
+      "ref": "RFC 5891; .bzh IDN table published at IANA"
+    },
+    {
+      "id": "url-geotld-bzh-idn-02",
+      "kind": "url",
+      "class": "idn-sld-alabel",
+      "value": "https://xn--kr-eja.bzh/",
+      "expect": "accept",
+      "note": "A-label host of kêr.bzh — syntax only",
+      "ref": "RFC 5891; .bzh IDN table published at IANA"
+    },
+    {
+      "id": "email-geotld-bzh-eai-01",
+      "kind": "email",
+      "class": "eai-local",
+      "value": "françois@mairie.bzh",
+      "expect": "accept",
+      "note": "accented local part",
+      "ref": "RFC 6531"
+    },
+    {
+      "id": "email-geotld-bzh-guard-01",
+      "kind": "email",
+      "class": "guard",
+      "value": "contact@.bzh",
+      "expect": "reject",
+      "note": "empty first label",
+      "ref": "RFC 1035 §2.3.4"
+    }
+  ]
+}
