@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Registro de usuario</title>
+<style>
+  body {font-family: Arial, sans-serif; margin: 2rem;}
+  form {max-width: 500px;}
+  .field {margin-bottom: 1rem;}
+  label {display: block; margin-bottom: .3rem;}
+  input {width: 100%; padding: .4rem; box-sizing: border-box;}
+  .error {color:#d00; font-size:.9rem; margin-top:.2rem; display:block;}
+</style>
+</head>
+<body>
+
+<h1>Registro</h1>
+<form id="registerForm" novalidate>
+  <div class="field">
+    <label for="fullname">Nombre completo</label>
+    <input type="text" id="fullname" name="fullname" required>
+    <span class="error" id="err-fullname"></span>
+  </div>
+
+  <div class="field">
+    <label for="email">Correo electrónico</label>
+    <input type="text" id="email" name="email" required>
+    <span class="error" id="err-email"></span>
+  </div>
+
+  <div class="field">
+    <label for="website">Sitio web</label>
+    <input type="url" id="website" name="website" required placeholder="https://ejemplo.com">
+    <span class="error" id="err-website"></span>
+  </div>
+
+  <div class="field">
+    <label for="password">Contraseña</label>
+    <input type="password" id="password" name="password" required>
+    <span class="error" id="err-password"></span>
+  </div>
+
+  <button type="submit">Registrarse</button>
+</form>
+
+<script>
+(() => {
+  const form = document.getElementById('registerForm');
+
+  const errFullName = document.getElementById('err-fullname');
+  const errEmail    = document.getElementById('err-email');
+  const errWebsite  = document.getElementById('err-website');
+  const errPassword = document.getElementById('err-password');
+
+  const clearErrors = () => {
+    errFullName.textContent = '';
+    errEmail.textContent    = '';
+    errWebsite.textContent  = '';
+    errPassword.textContent = '';
+  };
+
+  const showError = (elem, msg) => { elem.textContent = msg; };
+
+  /* ----------- VALIDATORS ----------- */
+
+  const validateFullName = (value) => {
+    if (!value.trim()) return 'El nombre completo es obligatorio.';
+    if (value.trim().split(/\s+/).length < 2) return 'Introduce al menos dos nombres.';
+    return '';
+  };
+
+  /* Email validation compatible with UA‑requirements.
+     - Exactly one “@”.
+     - Local part non‑empty, no spaces.
+     - Domain converted to ASCII (punycode) via URL API.
+     - No empty labels, no label >63 chars, total length ≤253.
+     - Labels contain only LDH characters, may start with “xn--”.
+     - TLD length ≥2.
+     - No consecutive dots. */
+  const validateEmail = (email) => {
+    const parts = email.split('@');
+    if (parts.length !== 2) return 'El correo debe contener un solo “@”.';
+    const [local, domain] = parts;
+
+    if (!local) return 'La parte local del correo no puede estar vacía.';
+    if (/\s/.test(local)) return 'La parte local no puede contener espacios.';
+
+    // Domain checks
+    if (!domain) return 'El dominio del correo no puede estar vacío.';
+    if (domain.includes('..')) return 'El dominio no puede contener "..".';
+    if (/\s/.test(domain)) return 'El dominio no puede contener espacios.';
+
+    let asciiDomain;
+    try {
+      // URL constructor normalises to punycode for Unicode domains
+      asciiDomain = new URL('http://' + domain).hostname;
+    } catch {
+      return 'Dominio del correo no válido.';
+    }
+
+    if (asciiDomain.length > 253) return 'El dominio es demasiado largo.';
+
+    const labels = asciiDomain.split('.');
+    for (const lbl of labels) {
+      if (!lbl) return 'Los labels del dominio no pueden estar vacíos.';
+      if (lbl.length > 63) return 'Un label del dominio supera los 63 caracteres.';
+      // LDH rule (letters, digits, hyphen); hyphen cannot be first or last
+      if (!/^[A-Za-z0-9-]+$/.test(lbl)) return 'Los labels del dominio solo pueden contener letras, dígitos y guiones.';
+      if (/^-|-$/.test(lbl)) return 'Los labels del dominio no pueden comenzar o terminar con un guión.';
+    }
+
+    const tld = labels[labels.length - 1];
+    if (tld.length < 2) return 'El TLD debe tener al menos 2 caracteres.';
+
+    return '';
+  };
+
+  const validateWebsite = (value) => {
+    if (/\s/.test(value)) return 'La URL no puede contener espacios.';
+    let url;
+    try {
+      url = new URL(value);
+    } catch {
+      return 'URL no válida.';
+    }
+    if (!/^https?:$/.test(url.protocol)) return 'Sólo se admiten http o https.';
+
+    // Check hostname similar to email domain rules
+    const host = url.hostname;
+    if (host.includes('..')) return 'El hostname no puede contener "..".';
+    const labels = host.split('.');
+    for (const lbl of labels) {
+      if (!lbl) return 'Los labels del hostname no pueden estar vacíos.';
+      if (lbl.length > 63) return 'Un label del hostname supera los 63 caracteres.';
+      if (!/^[A-Za-z0-9-]+$/.test(lbl)) return 'Los labels del hostname solo pueden contener letras, dígitos y guiones.';
+      if (/^-|-$/.test(lbl)) return 'Los labels del hostname no pueden comenzar o terminar con un guión.';
+    }
+    return '';
+  };
+
+  const validatePassword = (value) => {
+    if (value.length < 8) return 'La contraseña debe tener al menos 8 caracteres.';
+    if (!/[A-Za-z]/.test(value)) return 'Debe contener al menos una letra.';
+    if (!/[0-9]/.test(value)) return 'Debe contener al menos un número.';
+    return '';
+  };
+
+  /* ----------- EVENT HANDLERS ----------- */
+
+  form.addEventListener('submit', (e) => {
+    clearErrors();
+    let hasError = false;
+
+    const fullName = form.fullname.value;
+    const email    = form.email.value;
+    const website  = form.website.value;
+    const password = form.password.value;
+
+    const errFN = validateFullName(fullName);
+    if (errFN) { showError(errFullName, errFN); hasError = true; }
+
+    const errEM = validateEmail(email);
+    if (errEM) { showError(errEmail, errEM); hasError = true; }
+
+    const errWS = validateWebsite(website);
+    if (errWS) { showError(errWebsite, errWS); hasError = true; }
+
+    const errPW = validatePassword(password);
+    if (errPW) { showError(errPassword, errPW); hasError = true; }
+
+    if (hasError) e.preventDefault();
+  });
+
+  // Opcional: limpiar mensaje al teclear
+  form.addEventListener('input', (e) => {
+    const target = e.target;
+    if (target.id === 'fullname') errFullName.textContent = '';
+    if (target.id === 'email')    errEmail.textContent    = '';
+    if (target.id === 'website')  errWebsite.textContent  = '';
+    if (target.id === 'password') errPassword.textContent = '';
+  });
+})();
+</script>
+
+</body>
+</html>

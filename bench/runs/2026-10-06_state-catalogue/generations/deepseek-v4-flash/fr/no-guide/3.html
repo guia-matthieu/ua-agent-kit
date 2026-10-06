@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulaire d'inscription</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background-color: white;
+            padding: 30px 40px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 450px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 25px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="url"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+        input:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.85em;
+            margin-top: 4px;
+            display: block;
+        }
+        button[type="submit"] {
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        .success-message {
+            text-align: center;
+            color: #27ae60;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Inscription</h1>
+        <form id="registrationForm" novalidate>
+            <div class="form-group">
+                <label for="fullName">Nom complet *</label>
+                <input type="text" id="fullName" name="fullName" placeholder="Jean Dupont">
+                <span id="error-fullName" class="error-message"></span>
+            </div>
+            <div class="form-group">
+                <label for="email">Adresse e-mail *</label>
+                <input type="email" id="email" name="email" placeholder="exemple@domaine.com">
+                <span id="error-email" class="error-message"></span>
+            </div>
+            <div class="form-group">
+                <label for="website">Site web</label>
+                <input type="url" id="website" name="website" placeholder="https://exemple.com">
+                <span id="error-website" class="error-message"></span>
+            </div>
+            <div class="form-group">
+                <label for="password">Mot de passe * (8 caractères minimum)</label>
+                <input type="password" id="password" name="password" placeholder="********">
+                <span id="error-password" class="error-message"></span>
+            </div>
+            <button type="submit">S'inscrire</button>
+        </form>
+        <div id="successMessage" class="success-message"></div>
+    </div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            const form = document.getElementById('registrationForm');
+            const successDiv = document.getElementById('successMessage');
+
+            // Supprime tous les messages d'erreur
+            function clearErrors() {
+                const errorSpans = document.querySelectorAll('.error-message');
+                errorSpans.forEach(span => span.textContent = '');
+                successDiv.textContent = '';
+            }
+
+            // Affiche un message d'erreur pour un champ donné
+            function showError(inputId, message) {
+                const errorSpan = document.getElementById('error-' + inputId);
+                if (errorSpan) {
+                    errorSpan.textContent = message;
+                }
+            }
+
+            // Validation du nom complet (non vide)
+            function validateFullName(value) {
+                if (!value.trim()) {
+                    return 'Le nom complet est requis.';
+                }
+                return '';
+            }
+
+            // Validation de l'email (non vide + format)
+            function validateEmail(value) {
+                if (!value.trim()) {
+                    return 'L\'adresse e-mail est requise.';
+                }
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(value.trim())) {
+                    return 'Format d\'e-mail invalide.';
+                }
+                return '';
+            }
+
+            // Validation du site web (optionnel mais doit être une URL valide si rempli)
+            function validateWebsite(value) {
+                if (!value.trim()) {
+                    return ''; // optionnel
+                }
+                try {
+                    const url = new URL(value.trim());
+                    // Vérifie qu'il y a un protocole acceptable
+                    if (!['http:', 'https:'].includes(url.protocol)) {
+                        return 'L\'URL doit commencer par http:// ou https://.';
+                    }
+                    return '';
+                } catch (e) {
+                    return 'URL invalide. Veuillez entrer une URL complète (ex: https://exemple.com).';
+                }
+            }
+
+            // Validation du mot de passe (non vide, minimum 8 caractères)
+            function validatePassword(value) {
+                if (!value) {
+                    return 'Le mot de passe est requis.';
+                }
+                if (value.length < 8) {
+                    return 'Le mot de passe doit contenir au moins 8 caractères.';
+                }
+                return '';
+            }
+
+            // Validation globale du formulaire
+            function validateForm() {
+                clearErrors();
+
+                const name = document.getElementById('fullName').value;
+                const email = document.getElementById('email').value;
+                const website = document.getElementById('website').value;
+                const password = document.getElementById('password').value;
+
+                const errors = {
+                    fullName: validateFullName(name),
+                    email: validateEmail(email),
+                    website: validateWebsite(website),
+                    password: validatePassword(password)
+                };
+
+                let hasErrors = false;
+                for (const [field, message] of Object.entries(errors)) {
+                    if (message) {
+                        showError(field, message);
+                        hasErrors = true;
+                    }
+                }
+
+                if (!hasErrors) {
+                    // Tous les champs sont valides : simulation d'envoi réussi
+                    successDiv.textContent = 'Inscription réussie ! (simulation)';
+                    // On pourrait effectuer l'envoi réel ici (form.submit())
+                }
+                return !hasErrors;
+            }
+
+            // Gestionnaire d'envoi du formulaire
+            form.addEventListener('submit', function(event) {
+                event.preventDefault(); // Toujours empêcher l'envoi par défaut
+                validateForm();
+            });
+
+        })();
+    </script>
+</body>
+</html>

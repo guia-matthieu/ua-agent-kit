@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulaire d'inscription</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="url"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        .error-input {
+            border-color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>Inscription</h1>
+    <form id="registrationForm" onsubmit="return validateForm()">
+        <div class="form-group">
+            <label for="fullName">Nom complet :</label>
+            <input type="text" id="fullName" name="fullName" required>
+            <div id="fullNameError" class="error"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Adresse e-mail :</label>
+            <input type="email" id="email" name="email" required>
+            <div id="emailError" class="error"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="website">Site web :</label>
+            <input type="url" id="website" name="website">
+            <div id="websiteError" class="error"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Mot de passe :</label>
+            <input type="password" id="password" name="password" required minlength="8">
+            <div id="passwordError" class="error"></div>
+        </div>
+
+        <button type="submit">S'inscrire</button>
+    </form>
+
+    <script>
+        function validateForm() {
+            let isValid = true;
+
+            // Réinitialiser les erreurs
+            document.querySelectorAll('.error').forEach(el => el.textContent = '');
+            document.querySelectorAll('input').forEach(el => el.classList.remove('error-input'));
+
+            // Validation du nom complet
+            const fullName = document.getElementById('fullName').value.trim();
+            if (fullName === '') {
+                document.getElementById('fullNameError').textContent = 'Le nom complet est requis';
+                document.getElementById('fullName').classList.add('error-input');
+                isValid = false;
+            } else if (fullName.length < 2) {
+                document.getElementById('fullNameError').textContent = 'Le nom doit contenir au moins 2 caractères';
+                document.getElementById('fullName').classList.add('error-input');
+                isValid = false;
+            }
+
+            // Validation de l'email
+            const email = document.getElementById('email').value.trim();
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (email === '') {
+                document.getElementById('emailError').textContent = 'L\'adresse e-mail est requise';
+                document.getElementById('email').classList.add('error-input');
+                isValid = false;
+            } else if (!emailRegex.test(email)) {
+                document.getElementById('emailError').textContent = 'Adresse e-mail invalide';
+                document.getElementById('email').classList.add('error-input');
+                isValid = false;
+            }
+
+            // Validation du site web (optionnel)
+            const website = document.getElementById('website').value.trim();
+            if (website !== '') {
+                const urlRegex = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
+                if (!urlRegex.test(website)) {
+                    document.getElementById('websiteError').textContent = 'URL du site web invalide';
+                    document.getElementById('website').classList.add('error-input');
+                    isValid = false;
+                }
+            }
+
+            // Validation du mot de passe
+            const password = document.getElementById('password').value;
+            if (password === '') {
+                document.getElementById('passwordError').textContent = 'Le mot de passe est requis';
+                document.getElementById('password').classList.add('error-input');
+                isValid = false;
+            } else if (password.length < 8) {
+                document.getElementById('passwordError').textContent = 'Le mot de passe doit contenir au moins 8 caractères';
+                document.getElementById('password').classList.add('error-input');
+                isValid = false;
+            }
+
+            if (isValid) {
+                alert('Formulaire valide ! Envoi en cours...');
+                // Ici vous pourriez soumettre le formulaire à un serveur
+                // document.getElementById('registrationForm').submit();
+            }
+
+            return false; // Empêche l'envoi réel pour cette démo
+        }
+    </script>
+</body>
+</html>

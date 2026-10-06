@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Signup Form</title>
+<style>
+    body {font-family: Arial, sans-serif; margin: 2rem; background:#f9f9f9;}
+    form {max-width: 500px; background:#fff; padding:1.5rem; border-radius:8px;
+          box-shadow:0 2px 6px rgba(0,0,0,.1);}
+    .field {margin-bottom:1rem; position:relative;}
+    label {display:block; margin-bottom:.3rem; font-weight:bold;}
+    input {width:100%; padding:.5rem; box-sizing:border-box;
+           border:1px solid #ccc; border-radius:4px;}
+    .error {color:#d00; font-size:.85rem; position:absolute; top:100%; left:0; 
+            margin-top:.2rem;}
+    button {padding:.6rem 1.2rem; font-size:1rem; background:#0069d9;
+            color:#fff; border:none; border-radius:4px; cursor:pointer;}
+    button:disabled {background:#999; cursor:not-allowed;}
+</style>
+</head>
+<body>
+
+<h2>Signup</h2>
+<form id="signupForm" novalidate>
+    <div class="field">
+        <label for="fullName">Full name</label>
+        <input type="text" id="fullName" name="fullName" autocomplete="name">
+        <span class="error" aria-live="polite"></span>
+    </div>
+
+    <div class="field">
+        <label for="email">Email address</label>
+        <input type="text" id="email" name="email" autocomplete="email">
+        <span class="error" aria-live="polite"></span>
+    </div>
+
+    <div class="field">
+        <label for="website">Website</label>
+        <input type="text" id="website" name="website" placeholder="https://example.com">
+        <span class="error" aria-live="polite"></span>
+    </div>
+
+    <div class="field">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" autocomplete="new-password">
+        <span class="error" aria-live="polite"></span>
+    </div>
+
+    <button type="submit">Sign up</button>
+</form>
+
+<script>
+/* ------------------------------------------------------------
+   Helper functions for validation (U‑label → A‑label conversion)
+   ------------------------------------------------------------ */
+function isValidDomain(domain) {
+    // Use the URL constructor to let the browser perform IDNA2008 conversion.
+    // It throws on completely invalid hostnames.
+    try {
+        // prepend a scheme because URL needs one
+        const url = new URL('http://' + domain);
+        const asciiHost = url.hostname; // punycode (ASCII) representation
+
+        // Basic length checks (labels 1‑63 octets, whole name ≤253)
+        if (asciiHost.length > 253) return false;
+        const labels = asciiHost.split('.');
+        for (const lbl of labels) {
+            if (lbl.length === 0 || lbl.length > 63) return false;
+        }
+
+        // TLD must be at least 2 characters or start with xn--
+        const tld = labels[labels.length - 1];
+        if (!/^[a-z0-9-]{2,}$/i.test(tld) && !/^xn--[a-z0-9-]+$/i.test(tld)) {
+            return false;
+        }
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
+
+function isValidEmail(email) {
+    // minimal syntax check: exactly one @, non‑empty local part, no spaces
+    if (typeof email !== 'string') return false;
+    const parts = email.split('@');
+    if (parts.length !== 2) return false;
+    const [local, domain] = parts;
+
+    if (!local || /\s/.test(local)) return false;           // no empty or spaces in local part
+    // Domain part validated with the same routine as for plain domains
+    return isValidDomain(domain);
+}
+
+function isValidUrl(str) {
+    try {
+        const url = new URL(str);
+        // Require http or https scheme
+        if (!/^https?:$/i.test(url.protocol)) return false;
+        // Validate the hostname with the same routine we use for domains
+        return isValidDomain(url.hostname);
+    } catch (e) {
+        return false;
+    }
+}
+
+/* ------------------------------------------------------------
+   Form handling
+   ------------------------------------------------------------ */
+document.getElementById('signupForm').addEventListener('submit', function (e) {
+    e.preventDefault();                     // we only validate here
+    const form = e.target;
+    const fields = [
+        {id: 'fullName',   validator: v => v.trim() !== '',               message: 'Full name is required.'},
+        {id: 'email',      validator: isValidEmail,                       message: 'Please enter a valid email address.'},
+        {id: 'website',   validator: isValidUrl,                         message: 'Please enter a valid URL (http/https).'},
+        {id: 'password',  validator: v => v.length >= 8,                  message: 'Password must be at least 8 characters.'}
+    ];
+
+    let allValid = true;
+
+    // clear previous errors
+    fields.forEach(f => {
+        const errSpan = form.querySelector(`#${f.id} ~ .error`);
+        errSpan.textContent = '';
+    });
+
+    // validate each field
+    fields.forEach(f => {
+        const input = form.querySelector('#' + f.id);
+        const value = input.value;
+        if (!f.validator(value)) {
+            const errSpan = form.querySelector(`#${f.id} ~ .error`);
+            errSpan.textContent = f.message;
+            allValid = false;
+        }
+    });
+
+    if (allValid) {
+        // All fields are ok – normally you would submit the form here.
+        // For this demo we just show a success message.
+        alert('Signup successful!\\nData that would be sent:\\n' +
+              JSON.stringify({
+                  fullName: form.fullName.value,
+                  email: form.email.value,
+                  website: form.website.value,
+                  password: '(hidden)'
+              }, null, 2));
+        form.reset();
+    }
+});
+</script>
+
+</body>
+</html>

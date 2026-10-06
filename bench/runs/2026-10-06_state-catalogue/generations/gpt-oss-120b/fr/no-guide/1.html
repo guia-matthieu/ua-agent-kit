@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulaire d'inscription</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 2rem;
+            background: #f9f9f9;
+        }
+        form {
+            max-width: 500px;
+            background: #fff;
+            padding: 1.5rem;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .field {
+            margin-bottom: 1rem;
+        }
+        label {
+            display: block;
+            margin-bottom: .3rem;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="url"],
+        input[type="password"] {
+            width: 100%;
+            padding: .5rem;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+        .error {
+            color: #d00;
+            font-size: .9rem;
+            margin-top: .2rem;
+            display: block;
+            min-height: 1.2em;
+        }
+        button {
+            padding: .6rem 1.2rem;
+            background: #0069d9;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0053b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Inscription</h1>
+    <form id="registerForm" novalidate>
+        <div class="field">
+            <label for="fullName">Nom complet</label>
+            <input type="text" id="fullName" name="fullName" required>
+            <span class="error" id="fullNameError"></span>
+        </div>
+
+        <div class="field">
+            <label for="email">Adresse e‑mail</label>
+            <input type="email" id="email" name="email" required>
+            <span class="error" id="emailError"></span>
+        </div>
+
+        <div class="field">
+            <label for="website">Site web</label>
+            <input type="url" id="website" name="website" required>
+            <span class="error" id="websiteError"></span>
+        </div>
+
+        <div class="field">
+            <label for="password">Mot de passe</label>
+            <input type="password" id="password" name="password" required>
+            <span class="error" id="passwordError"></span>
+        </div>
+
+        <button type="submit">S'inscrire</button>
+    </form>
+
+    <script>
+        // Fonction de validation du formulaire
+        document.getElementById('registerForm').addEventListener('submit', function (e) {
+            e.preventDefault(); // Empêche l'envoi tant qu'on n'a pas validé
+
+            // Nettoyage des messages d'erreur
+            const errors = {
+                fullName: '',
+                email: '',
+                website: '',
+                password: ''
+            };
+
+            const fullName = document.getElementById('fullName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const website = document.getElementById('website').value.trim();
+            const password = document.getElementById('password').value;
+
+            // Nom complet : non vide
+            if (fullName === '') {
+                errors.fullName = 'Veuillez entrer votre nom complet.';
+            }
+
+            // E‑mail : format simple
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email)) {
+                errors.email = 'L’adresse e‑mail n’est pas valide.';
+            }
+
+            // Site web : on tente de créer un objet URL
+            try {
+                const url = new URL(website);
+                if (!['http:', 'https:'].includes(url.protocol)) {
+                    errors.website = 'Le site web doit commencer par http:// ou https://';
+                }
+            } catch (_) {
+                errors.website = 'L’URL du site web n’est pas valide.';
+            }
+
+            // Mot de passe : au moins 8 caractères
+            if (password.length < 8) {
+                errors.password = 'Le mot de passe doit contenir au moins 8 caractères.';
+            }
+
+            // Affichage des erreurs
+            document.getElementById('fullNameError').textContent = errors.fullName;
+            document.getElementById('emailError').textContent = errors.email;
+            document.getElementById('websiteError').textContent = errors.website;
+            document.getElementById('passwordError').textContent = errors.password;
+
+            // Si aucune erreur, on peut soumettre (ici on simule avec un alert)
+            const hasError = Object.values(errors).some(msg => msg !== '');
+            if (!hasError) {
+                // Remplacez ceci par l’envoi réel du formulaire si besoin
+                alert('Inscription réussie ! Vous pouvez maintenant envoyer le formulaire.');
+                // this.submit(); // décommenter pour un vrai envoi
+            }
+        });
+    </script>
+</body>
+</html>

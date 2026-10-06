@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page d'Inscription</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 1.5rem;
+        }
+        .form-group {
+            margin-bottom: 1.2rem;
+            position: relative;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .error-message {
+            color: #d9534f;
+            font-size: 0.8rem;
+            margin-top: 4px;
+            height: 1rem;
+            display: block;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .success-message {
+            color: #28a745;
+            text-align: center;
+            margin-bottom: 1rem;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Inscription</h2>
+    <div id="success" class="success-message">Inscription réussie !</div>
+    
+    <form id="registrationForm" novalidate>
+        <div class="form-group">
+            <label for="fullName">Nom complet</label>
+            <input type="text" id="fullName" placeholder="Jean Dupont">
+            <span id="nameError" class="error-message"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Adresse e-mail</label>
+            <input type="email" id="email" placeholder="exemple@mail.com">
+            <span id="emailError" class="error-message"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="website">Site web</label>
+            <input type="url" id="website" placeholder="https://www.monsite.com">
+            <span id="webError" class="error-message"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Mot de passe</label>
+            <input type="password" id="password" placeholder="Minimum 8 caractères">
+            <span id="passError" class="error-message"></span>
+        </div>
+
+        <button type="submit">S'inscrire</button>
+    </form>
+</div>
+
+<script>
+    document.getElementById('registrationForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        
+        // Réinitialisation des erreurs
+        document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
+        document.getElementById('success').style.display = 'none';
+
+        let isValid = true;
+
+        // Validation Nom Complet
+        const fullName = document.getElementById('fullName').value.trim();
+        if (fullName === '') {
+            document.getElementById('nameError').textContent = 'Le nom complet est requis.';
+            isValid = false;
+        }
+
+        // Validation Email (Regex simple)
+        const email = document.getElementById('email').value.trim();
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            document.getElementById('emailError').textContent = 'Veuillez entrer une adresse e-mail valide.';
+            isValid = false;
+        }
+
+        // Validation Site Web (Regex URL)
+        const website = document.getElementById('website').value.trim();
+        const urlRegex = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
+        if (website !== '' && !urlRegex.test(website)) {
+            document.getElementById('webError').textContent = 'Le format de l\'URL est invalide.';
+            isValid = false;
+        }
+
+        // Validation Mot de Passe
+        const password = document.getElementById('password').value;
+        if (password.length < 8) {
+            document.getElementById('passError').textContent = 'Le mot de passe doit faire au moins 8 caractères.';
+            isValid = false;
+        }
+
+        if (isValid) {
+            document.getElementById('success').style.display = 'block';
+            this.reset();
+        }
+    });
+</script>
+
+</body>
+</html>

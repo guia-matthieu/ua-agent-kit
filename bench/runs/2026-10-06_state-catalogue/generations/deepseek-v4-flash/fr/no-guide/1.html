@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulaire d'inscription</title>
+    <style>
+        /* Style simple intégré */
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background: #fff;
+            border-radius: 8px;
+            padding: 30px 25px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-sizing: border-box;
+        }
+        h2 {
+            margin-top: 0;
+            color: #333;
+            text-align: center;
+            font-weight: 600;
+        }
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #444;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="url"] {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+        input:focus {
+            outline: none;
+            border-color: #4a90e2;
+            box-shadow: 0 0 0 3px rgba(74,144,226,0.15);
+        }
+        .error-message {
+            color: #d32f2f;
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: block;
+            min-height: 1em;
+            line-height: 1.2;
+        }
+        .error-message:empty {
+            display: none;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #4a90e2;
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #357abd;
+        }
+        .success-message {
+            background-color: #e6f4e6;
+            border: 1px solid #b2d8b2;
+            color: #2e7d32;
+            padding: 10px;
+            border-radius: 4px;
+            text-align: center;
+            margin-top: 15px;
+            display: none;
+        }
+        .success-message.show {
+            display: block;
+        }
+        /* Petit point pour signaler visuellement l'erreur */
+        .input-error {
+            border-color: #d32f2f !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Créer un compte</h2>
+
+        <form id="registration-form" novalidate>
+            <!-- Champ nom complet -->
+            <div class="form-group">
+                <label for="fullname">Nom complet</label>
+                <input type="text" id="fullname" name="fullname" placeholder="Jean Dupont" autocomplete="name">
+                <span class="error-message" id="fullname-error"></span>
+            </div>
+
+            <!-- Champ email -->
+            <div class="form-group">
+                <label for="email">Adresse e-mail</label>
+                <input type="email" id="email" name="email" placeholder="exemple@domaine.com" autocomplete="email">
+                <span class="error-message" id="email-error"></span>
+            </div>
+
+            <!-- Champ site web -->
+            <div class="form-group">
+                <label for="website">Site web</label>
+                <input type="url" id="website" name="website" placeholder="https://monsite.com" autocomplete="url">
+                <span class="error-message" id="website-error"></span>
+            </div>
+
+            <!-- Champ mot de passe -->
+            <div class="form-group">
+                <label for="password">Mot de passe</label>
+                <input type="password" id="password" name="password" placeholder="8 caractères minimum" autocomplete="new-password">
+                <span class="error-message" id="password-error"></span>
+            </div>
+
+            <button type="submit">S'inscrire</button>
+        </form>
+
+        <!-- Message de succès (affiché uniquement si le formulaire est valide et envoyé) -->
+        <div id="success-message" class="success-message">Inscription réussie (simulation) !</div>
+    </div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            // Récupération des éléments
+            const form = document.getElementById('registration-form');
+            const fullnameInput = document.getElementById('fullname');
+            const emailInput = document.getElementById('email');
+            const websiteInput = document.getElementById('website');
+            const passwordInput = document.getElementById('password');
+
+            const fullnameError = document.getElementById('fullname-error');
+            const emailError = document.getElementById('email-error');
+            const websiteError = document.getElementById('website-error');
+            const passwordError = document.getElementById('password-error');
+            const successMessage = document.getElementById('success-message');
+
+            // Fonction utilitaire pour définir une erreur
+            function setError(input, errorElement, message) {
+                errorElement.textContent = message;
+                input.classList.add('input-error');
+                // Pour l'accessibilité : signaler que le champ est invalide
+                input.setAttribute('aria-invalid', 'true');
+            }
+
+            // Fonction pour effacer l'erreur
+            function clearError(input, errorElement) {
+                errorElement.textContent = '';
+                input.classList.remove('input-error');
+                input.removeAttribute('aria-invalid');
+            }
+
+            // Validation du nom complet
+            function validateFullname() {
+                const value = fullnameInput.value.trim();
+                if (value.length === 0) {
+                    setError(fullnameInput, fullnameError, 'Le nom complet est obligatoire.');
+                    return false;
+                } else if (value.length < 2) {
+                    setError(fullnameInput, fullnameError, 'Le nom doit comporter au moins 2 caractères.');
+                    return false;
+                }
+                clearError(fullnameInput, fullnameError);
+                return true;
+            }
+
+            // Validation de l'email
+            function validateEmail() {
+                const value = emailInput.value.trim();
+                // Regex simple basée sur le standard HTML5
+                const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+                if (value.length === 0) {
+                    setError(emailInput, emailError, 'L\'adresse e-mail est obligatoire.');
+                    return false;
+                } else if (!emailRegex.test(value)) {
+                    setError(emailInput, emailError, 'Veuillez saisir une adresse e-mail valide (exemple: nom@domaine.com).');
+                    return false;
+                }
+                clearError(emailInput, emailError);
+                return true;
+            }
+
+            // Validation du site web (optionnel mais si renseigné, doit être valide)
+            function validateWebsite() {
+                const value = websiteInput.value.trim();
+                if (value === '') {
+                    clearError(websiteInput, websiteError);
+                    return true; // optionnel
+                }
+
+                // On ajoute https:// si absent pour la validation, mais on n'altère pas la valeur saisie
+                let urlToTest = value;
+                if (!/^https?:\/\//i.test(urlToTest)) {
+                    urlToTest = 'https://' + urlToTest;
+                }
+
+                try {
+                    const urlObj = new URL(urlToTest);
+                    // Vérifier que l'hôte est présent et a au moins un point
+                    if (urlObj.hostname.indexOf('.') === -1) {
+                        throw new Error('Pas de point');
+                    }
+                } catch (e) {
+                    setError(websiteInput, websiteError, 'Veuillez saisir une URL valide (exemple: https://exemple.com).');
+                    return false;
+                }
+
+                clearError(websiteInput, websiteError);
+                return true;
+            }
+
+            // Validation du mot de passe
+            function validatePassword() {
+                const value = passwordInput.value;
+                if (value.length === 0) {
+                    setError(passwordInput, passwordError, 'Le mot de passe est obligatoire.');
+                    return false;
+                } else if (value.length < 8) {
+                    setError(passwordInput, passwordError, 'Le mot de passe doit contenir au moins 8 caractères.');
+                    return false;
+                }
+                // Option : vérifier la présence d'une lettre et d'un chiffre (décommenter si nécessaire)
+                // if (!/[a-zA-Z]/.test(value) || !/[0-9]/.test(value)) {
+                //     setError(passwordInput, passwordError, 'Le mot de passe doit contenir au moins une lettre et un chiffre.');
+                //     return false;
+                // }
+                clearError(passwordInput, passwordError);
+                return true;
+            }
+
+            // Validation de tous les champs
+            function validateForm() {
+                const validFullname = validateFullname();
+                const validEmail = validateEmail();
+                const validWebsite = validateWebsite();
+                const validPassword = validatePassword();
+
+                return validFullname && validEmail && validWebsite && validPassword;
+            }
+
+            // Effacer les erreurs à la saisie (validation en temps réel)
+            fullnameInput.addEventListener('input', function() {
+                if (fullnameError.textContent !== '') validateFullname();
+            });
+            emailInput.addEventListener('input', function() {
+                if (emailError.textContent !== '') validateEmail();
+            });
+            websiteInput.addEventListener('input', function() {
+                if (websiteError.textContent !== '') validateWebsite();
+            });
+            passwordInput.addEventListener('input', function() {
+                if (passwordError.textContent !== '') validatePassword();
+            });
+
+            // À la soumission
+            form.addEventListener('submit', function(event) {
+                // On désactive la validation native du navigateur pour gérer la nôtre
+                event.preventDefault();
+
+                // On masque le message de succès précédent s'il était visible
+                successMessage.classList.remove('show');
+
+                // Validation
+                const isValid = validateForm();
+
+                // Si tout est valide, on affiche le message de succès (simulation d'envoi)
+                if (isValid) {
+                    // Dans un cas réel, on pourrait envoyer les données via fetch, etc.
+                    successMessage.classList.add('show');
+                    form.reset();
+                    // On efface aussi les erreurs résiduelles (les champs ont déjà été nettoyés par reset, mais les classes d'erreur restent)
+                    clearError(fullnameInput, fullnameError);
+                    clearError(emailInput, emailError);
+                    clearError(websiteInput, websiteError);
+                    clearError(passwordInput, passwordError);
+                }
+            });
+
+            // Nettoyage des messages d'erreur au clic sur un champ
+            [fullnameInput, emailInput, websiteInput, passwordInput].forEach(input => {
+                input.addEventListener('focus', function() {
+                    const errorId = input.id + '-error';
+                    const errorElement = document.getElementById(errorId);
+                    if (errorElement && errorElement.textContent !== '') {
+                        errorElement.textContent = '';
+                        input.classList.remove('input-error');
+                        input.removeAttribute('aria-invalid');
+                    }
+                });
+            });
+        })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            justify-content: center;
+            padding: 2rem;
+            background-color: #f4f4f9;
+        }
+        .form-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 0.5rem;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        input.invalid {
+            border-color: #d93025;
+        }
+        .error-message {
+            color: #d93025;
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+            min-height: 1em;
+        }
+        button {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h2>Créer un compte</h2>
+    <form id="registrationForm" novalidate>
+        <div class="form-group">
+            <label for="fullName">Nom complet</label>
+            <input type="text" id="fullName" name="fullName" required>
+            <div id="fullNameError" class="error-message"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Adresse e-mail</label>
+            <!-- type="text" utilisé pour permettre les emails internationalisés (EAI) sans blocage navigateur -->
+            <input type="text" id="email" name="email" required>
+            <div id="emailError" class="error-message"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="website">Site web</label>
+            <input type="url" id="website" name="website">
+            <div id="websiteError" class="error-message"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Mot de passe</label>
+            <input type="password" id="password" name="password" required>
+            <div id="passwordError" class="error-message"></div>
+        </div>
+
+        <button type="submit">S'inscrire</button>
+    </form>
+</div>
+
+<script>
+    const form = document.getElementById('registrationForm');
+
+    /**
+     * Validation respectant les principes de l'Universal Acceptance (UA).
+     * On évite les regex ASCII restrictives pour les domaines et TLDs.
+     */
+    const validators = {
+        fullName: (val) => val.trim().length > 0 ? '' : 'Le nom complet est requis.',
+        
+        email: (val) => {
+            if (!val) return 'L\'adresse e-mail est requise.';
+            // Syntaxe minimale UA : un '@', local-part non vide, domaine avec label et TLD (2+ lettres ou xn--)
+            const parts = val.split('@');
+            if (parts.length !== 2) return 'Format d\'e-mail invalide.';
+            
+            const [local, domain] = parts;
+            if (!local || local.includes(' ')) return 'La partie locale de l\'e-mail est invalide.';
+            
+            const domainParts = domain.split('.');
+            if (domainParts.length < 2) return 'Le domaine doit contenir un TLD (ex: .fr, .com).';
+            
+            const tld = domainParts[domainParts.length - 1];
+            const isALabel = tld.startsWith('xn--');
+            if (!isALabel && tld.length < 2) return 'Le TLD est trop court.';
+            
+            return '';
+        },
+
+        website: (val) => {
+            if (!val) return ''; // Optionnel
+            try {
+                new URL(val);
+                return '';
+            } catch (_) {
+                return 'Veuillez entrer une URL valide (ex: https://exemple.fr).';
+            }
+        },
+
+        password: (val) => val.length >= 8 ? '' : 'Le mot de passe doit contenir au moins 8 caractères.'
+    };
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        let isFormValid = true;
+
+        // On boucle sur les champs définis dans nos validateurs
+        for (const field in validators) {
+            const input = document.getElementById(field);
+            const errorDiv = document.getElementById(`${field}Error`);
+            const errorMessage = validators[field](input.value);
+
+            if (errorMessage) {
+                input.classList.add('invalid');
+                errorDiv.textContent = errorMessage;
+                isFormValid = false;
+            } else {
+                input.classList.remove('invalid');
+                errorDiv.textContent = '';
+            }
+        }
+
+        if (isFormValid) {
+            alert('Formulaire valide ! Envoi en cours...');
+            // form.submit(); // Décommenter pour envoyer réellement
+        }
+    });
+
+    // Nettoyage en temps réel lors de la saisie
+    form.querySelectorAll('input').forEach(input => {
+        input.addEventListener('input', () => {
+            if (input.classList.contains('invalid')) {
+                const error = validators[input.id](input.value);
+                const errorDiv = document.getElementById(`${input.id}Error`);
+                if (!error) {
+                    input.classList.remove('invalid');
+                    errorDiv.textContent = '';
+                } else {
+                    errorDiv.textContent = error;
+                }
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

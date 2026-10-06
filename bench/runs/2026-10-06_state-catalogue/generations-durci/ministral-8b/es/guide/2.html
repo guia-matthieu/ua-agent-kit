@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Registro</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="url"],
+        input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        .success {
+            color: green;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Formulario de Registro</h1>
+    <form id="registroForm">
+        <div class="form-group">
+            <label for="nombreCompleto">Nombre completo:</label>
+            <input type="text" id="nombreCompleto" name="nombreCompleto" required>
+            <div id="errorNombreCompleto" class="error">Por favor ingresa tu nombre completo (mínimo 2 caracteres)</div>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Dirección de correo electrónico:</label>
+            <input type="email" id="email" name="email" required>
+            <div id="errorEmail" class="error">Por favor ingresa un correo electrónico válido (ejemplo: usuario@dominio.com)</div>
+        </div>
+
+        <div class="form-group">
+            <label for="web">Sitio web (opcional):</label>
+            <input type="url" id="web" name="web">
+            <div id="errorWeb" class="error">Por favor ingresa una URL válida (ejemplo: https://ejemplo.com)</div>
+        </div>
+
+        <div class="form-group">
+            <label for="contraseña">Contraseña:</label>
+            <input type="password" id="contraseña" name="contraseña" required>
+            <div id="errorContraseña" class="error">La contraseña debe tener al menos 8 caracteres y contener al menos una letra mayúscula, una minúscula y un número</div>
+        </div>
+
+        <button type="submit">Registrarse</button>
+    </form>
+
+    <div id="mensajeExito" class="success">¡Registro exitoso!</div>
+
+    <script>
+        document.getElementById('registroForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Limpiar mensajes de error
+            document.querySelectorAll('.error').forEach(el => el.style.display = 'none');
+
+            // Obtener valores de los campos
+            const nombreCompleto = document.getElementById('nombreCompleto').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const web = document.getElementById('web').value.trim();
+            const contraseña = document.getElementById('contraseña').value;
+
+            let esValido = true;
+
+            // Validar nombre completo (mínimo 2 caracteres)
+            if (nombreCompleto.length < 2) {
+                document.getElementById('errorNombreCompleto').style.display = 'block';
+                esValido = false;
+            }
+
+            // Validación mejorada para email
+            const regexEmail = /^(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])$/i;
+            if (!regexEmail.test(email)) {
+                document.getElementById('errorEmail').style.display = 'block';
+                esValido = false;
+            }
+
+            // Validación mejorada para URL
+            if (web !== '') {
+                const regexUrl = /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}([\/\w \.-]*)*\/?$/;
+                if (!regexUrl.test(web)) {
+                    document.getElementById('errorWeb').style.display = 'block';
+                    esValido = false;
+                }
+            }
+
+            // Validar contraseña
+            const regexContraseña = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+            if (!regexContraseña.test(contraseña)) {
+                document.getElementById('errorContraseña').style.display = 'block';
+                esValido = false;
+            }
+
+            // Si todo es válido, mostrar mensaje de éxito
+            if (esValido) {
+                document.getElementById('mensajeExito').style.display = 'block';
+                alert("Registro exitoso. Aquí iría la lógica para enviar los datos al servidor.");
+            }
+        });
+    </script>
+</body>
+</html>

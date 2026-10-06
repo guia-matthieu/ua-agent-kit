@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulaire d'inscription</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 2rem;
+            max-width: 500px;
+        }
+        .field {
+            margin-bottom: 1rem;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="url"],
+        input[type="password"] {
+            width: 100%;
+            padding: 0.4rem;
+            box-sizing: border-box;
+        }
+        .error {
+            color: #c00;
+            font-size: 0.9rem;
+            margin-top: 0.2rem;
+            display: block;
+            height: 1em;
+        }
+        button {
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>Inscription</h1>
+    <form id="signupForm" novalidate>
+        <div class="field">
+            <label for="fullname">Nom complet *</label>
+            <input type="text" id="fullname" name="fullname" required>
+            <span class="error" id="fullnameError"></span>
+        </div>
+
+        <div class="field">
+            <label for="email">Adresse e‑mail *</label>
+            <input type="email" id="email" name="email" required>
+            <span class="error" id="emailError"></span>
+        </div>
+
+        <div class="field">
+            <label for="website">Site web *</label>
+            <input type="url" id="website" name="website" required placeholder="https://exemple.com">
+            <span class="error" id="websiteError"></span>
+        </div>
+
+        <div class="field">
+            <label for="password">Mot de passe *</label>
+            <input type="password" id="password" name="password" required minlength="6">
+            <span class="error" id="passwordError"></span>
+        </div>
+
+        <button type="submit">S'inscrire</button>
+    </form>
+
+    <script>
+        (function () {
+            const form = document.getElementById('signupForm');
+
+            // Helper pour afficher / masquer les messages d'erreur
+            function setError(elementId, message) {
+                document.getElementById(elementId).textContent = message;
+            }
+
+            function clearErrors() {
+                ['fullnameError', 'emailError', 'websiteError', 'passwordError'].forEach(id => setError(id, ''));
+            }
+
+            // Validation spécifique de chaque champ
+            function validateFullName(value) {
+                if (!value.trim()) return "Le champ est obligatoire.";
+                // Au moins deux mots (un espace entre eux)
+                if (!/\S+\s+\S+/.test(value.trim())) return "Veuillez entrer votre prénom et votre nom.";
+                return "";
+            }
+
+            function validateEmail(value) {
+                if (!value.trim()) return "Le champ est obligatoire.";
+                // Regex simple pour email
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(value) ? "" : "Adresse e‑mail invalide.";
+            }
+
+            function validateWebsite(value) {
+                if (!value.trim()) return "Le champ est obligatoire.";
+                try {
+                    const url = new URL(value);
+                    return (url.protocol === "http:" || url.protocol === "https:") ? "" : "L'URL doit commencer par http:// ou https://.";
+                } catch {
+                    return "URL invalide.";
+                }
+            }
+
+            function validatePassword(value) {
+                if (!value) return "Le champ est obligatoire.";
+                if (value.length < 6) return "Le mot de passe doit contenir au moins 6 caractères.";
+                return "";
+            }
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault(); // Empêche l'envoi tant qu'on n'a pas validé
+                clearErrors();
+
+                const fullname = form.fullname.value;
+                const email = form.email.value;
+                const website = form.website.value;
+                const password = form.password.value;
+
+                let hasError = false;
+
+                const fullnameMsg = validateFullName(fullname);
+                if (fullnameMsg) {
+                    setError('fullnameError', fullnameMsg);
+                    hasError = true;
+                }
+
+                const emailMsg = validateEmail(email);
+                if (emailMsg) {
+                    setError('emailError', emailMsg);
+                    hasError = true;
+                }
+
+                const websiteMsg = validateWebsite(website);
+                if (websiteMsg) {
+                    setError('websiteError', websiteMsg);
+                    hasError = true;
+                }
+
+                const passwordMsg = validatePassword(password);
+                if (passwordMsg) {
+                    setError('passwordError', passwordMsg);
+                    hasError = true;
+                }
+
+                if (!hasError) {
+                    // Tous les champs sont valides → on peut envoyer le formulaire.
+                    // Ici on simule l'envoi avec un alert, mais on pourrait appeler form.submit().
+                    alert('Formulaire soumis avec succès ! (Cette action est simulée.)');
+                    // form.submit(); // décommentez pour un vrai envoi
+                }
+            });
+        })();
+    </script>
+</body>
+</html>

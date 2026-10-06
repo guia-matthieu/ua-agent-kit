@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .error {
+            color: red;
+            font-size: 0.9em;
+            margin-top: 5px;
+            display: none;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Signup Form</h1>
+        <form id="signupForm">
+            <div class="form-group">
+                <label for="fullName">Full Name:</label>
+                <input type="text" id="fullName" name="fullName" required>
+                <div id="fullNameError" class="error">Please enter a valid name (at least 2 characters)</div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address:</label>
+                <input type="email" id="email" name="email" required>
+                <div id="emailError" class="error">Please enter a valid email address</div>
+            </div>
+
+            <div class="form-group">
+                <label for="website">Website (optional):</label>
+                <input type="text" id="website" name="website">
+                <div id="websiteError" class="error">Please enter a valid website URL (include http:// or https://)</div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+                <div id="passwordError" class="error">Password must be at least 8 characters</div>
+            </div>
+
+            <button type="submit">Sign Up</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Reset all error messages
+            const errorElements = document.querySelectorAll('.error');
+            errorElements.forEach(element => {
+                element.style.display = 'none';
+            });
+
+            // Validate each field
+            const fullName = document.getElementById('fullName').value;
+            const email = document.getElementById('email').value;
+            const website = document.getElementById('website').value;
+            const password = document.getElementById('password').value;
+
+            let isValid = true;
+
+            // Validate full name
+            if (fullName.length < 2) {
+                document.getElementById('fullNameError').style.display = 'block';
+                isValid = false;
+            }
+
+            // Validate email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                document.getElementById('emailError').style.display = 'block';
+                isValid = false;
+            }
+
+            // Validate website (if provided)
+            if (website && !website.startsWith('http://') && !website.startsWith('https://')) {
+                document.getElementById('websiteError').style.display = 'block';
+                isValid = false;
+            }
+
+            // Validate password
+            if (password.length < 8) {
+                document.getElementById('passwordError').style.display = 'block';
+                isValid = false;
+            }
+
+            // If all valid, submit the form (in a real app, you would send to server)
+            if (isValid) {
+                alert('Form submitted successfully!');
+                // In a real application, you would submit to a server here
+                // this.submit();
+            }
+        });
+    </script>
+</body>
+</html>

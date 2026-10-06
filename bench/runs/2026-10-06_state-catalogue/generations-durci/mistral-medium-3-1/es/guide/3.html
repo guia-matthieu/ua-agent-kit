@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 500px; margin: 20px auto; padding: 20px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input { width: 100%; padding: 8px; box-sizing: border-box; }
+        .error { color: red; font-size: 0.8em; margin-top: 5px; }
+        button { padding: 10px 15px; background: #007bff; color: white; border: none; cursor: pointer; }
+        button:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+    <h1>Registro</h1>
+    <form id="registerForm">
+        <div class="form-group">
+            <label for="fullName">Nombre completo:</label>
+            <input type="text" id="fullName" name="fullName" required>
+            <div id="fullNameError" class="error"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Correo electrónico:</label>
+            <input type="text" id="email" name="email" required>
+            <div id="emailError" class="error"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="website">Sitio web:</label>
+            <input type="text" id="website" name="website" required>
+            <div id="websiteError" class="error"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Contraseña:</label>
+            <input type="password" id="password" name="password" required>
+            <div id="passwordError" class="error"></div>
+        </div>
+
+        <button type="submit">Registrarse</button>
+    </form>
+
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            clearErrors();
+
+            let isValid = true;
+
+            // Validar nombre completo
+            const fullName = document.getElementById('fullName').value.trim();
+            if (fullName === '') {
+                showError('fullNameError', 'El nombre completo es obligatorio');
+                isValid = false;
+            }
+
+            // Validar correo electrónico
+            const email = document.getElementById('email').value.trim();
+            if (email === '') {
+                showError('emailError', 'El correo electrónico es obligatorio');
+                isValid = false;
+            } else if (!isValidEmail(email)) {
+                showError('emailError', 'Correo electrónico no válido');
+                isValid = false;
+            }
+
+            // Validar sitio web
+            const website = document.getElementById('website').value.trim();
+            if (website === '') {
+                showError('websiteError', 'El sitio web es obligatorio');
+                isValid = false;
+            } else if (!isValidUrl(website)) {
+                showError('websiteError', 'URL no válida');
+                isValid = false;
+            }
+
+            // Validar contraseña
+            const password = document.getElementById('password').value;
+            if (password === '') {
+                showError('passwordError', 'La contraseña es obligatoria');
+                isValid = false;
+            } else if (password.length < 8) {
+                showError('passwordError', 'La contraseña debe tener al menos 8 caracteres');
+                isValid = false;
+            }
+
+            if (isValid) {
+                alert('Formulario válido. Enviando datos...');
+                // this.submit();
+            }
+        });
+
+        function isValidEmail(email) {
+            // Validación básica que rechaza casos como user@example..com
+            const parts = email.split('@');
+            if (parts.length !== 2) return false;
+
+            const localPart = parts[0];
+            const domain = parts[1];
+
+            if (localPart.length === 0 || domain.length === 0) return false;
+
+            // Validar dominio
+            const domainParts = domain.split('.');
+            if (domainParts.length < 2) return false;
+
+            // Verificar que no hay partes vacías en el dominio (ej: example..com)
+            for (const part of domainParts) {
+                if (part.length === 0) return false;
+                if (part.length > 63) return false;
+                if (!/^[a-zA-Z0-9-]+$/.test(part) && !part.startsWith('xn--')) {
+                    try {
+                        if (!/^[\p{L}\p{N}-]+$/u.test(part)) return false;
+                    } catch (e) {
+                        return false;
+                    }
+                }
+                // Verificar que no empieza o termina con guión
+                if (part.startsWith('-') || part.endsWith('-')) return false;
+            }
+
+            // Validar local-part
+            try {
+                if (!/^[\p{L}\p{N}._%+-]+$/u.test(localPart)) return false;
+                // Verificar que no empieza o termina con punto
+                if (localPart.startsWith('.') || localPart.endsWith('.')) return false;
+                // Verificar que no tiene puntos consecutivos
+                if (localPart.includes('..')) return false;
+            } catch (e) {
+                return false;
+            }
+
+            return true;
+        }
+
+        function isValidUrl(url) {
+            try {
+                // Verificar que no hay espacios en la URL
+                if (/\s/.test(url)) return false;
+
+                // Añadir http:// si no tiene protocolo
+                let urlToTest = url;
+                if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                    urlToTest = 'https://' + url;
+                }
+
+                const parsedUrl = new URL(urlToTest);
+                const hostname = parsedUrl.hostname;
+
+                if (!hostname) return false;
+
+                // Validar hostname
+                const domainParts = hostname.split('.');
+                for (const part of domainParts) {
+                    if (part.length === 0) return false; // Rechaza casos como example..com
+                    if (part.length > 63) return false;
+                    if (!/^[a-zA-Z0-9-]+$/.test(part) && !part.startsWith('xn--')) {
+                        try {
+                            if (!/^[\p{L}\p{N}-]+$/u.test(part)) return false;
+                        } catch (e) {
+                            return false;
+                        }
+                    }
+                    if (part.startsWith('-') || part.endsWith('-')) return false;
+                }
+
+                return true;
+            } catch (e) {
+                return false;
+            }
+        }
+
+        function showError(elementId, message) {
+            const errorElement = document.getElementById(elementId);
+            errorElement.textContent = message;
+        }
+
+        function clearErrors() {
+            const errorElements = document.querySelectorAll('.error');
+            errorElements.forEach(element => {
+                element.textContent = '';
+            });
+        }
+    </script>
+</body>
+</html>

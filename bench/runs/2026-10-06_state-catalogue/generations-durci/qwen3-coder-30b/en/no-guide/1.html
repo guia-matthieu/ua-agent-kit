@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .form-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+        
+        .error {
+            color: #d32f2f;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .error.show {
+            display: block;
+        }
+        
+        input.error {
+            border-color: #d32f2f;
+        }
+        
+        input.success {
+            border-color: #4CAF50;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        
+        .submit-btn:hover {
+            background-color: #45a049;
+        }
+        
+        .submit-btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Create Account</h1>
+        <form id="signupForm">
+            <div class="form-group">
+                <label for="fullName">Full Name</label>
+                <input type="text" id="fullName" name="fullName">
+                <div class="error" id="fullNameError"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email">
+                <div class="error" id="emailError"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="website">Website</label>
+                <input type="url" id="website" name="website">
+                <div class="error" id="websiteError"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password">
+                <div class="error" id="passwordError"></div>
+            </div>
+            
+            <button type="submit" class="submit-btn">Sign Up</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('signupForm');
+            const fullNameInput = document.getElementById('fullName');
+            const emailInput = document.getElementById('email');
+            const websiteInput = document.getElementById('website');
+            const passwordInput = document.getElementById('password');
+            
+            const fullNameError = document.getElementById('fullNameError');
+            const emailError = document.getElementById('emailError');
+            const websiteError = document.getElementById('websiteError');
+            const passwordError = document.getElementById('passwordError');
+            
+            // Validation functions
+            function validateFullName() {
+                const value = fullNameInput.value.trim();
+                if (value === '') {
+                    showError(fullNameError, fullNameInput, 'Full name is required');
+                    return false;
+                } else if (value.length < 2) {
+                    showError(fullNameError, fullNameInput, 'Full name must be at least 2 characters');
+                    return false;
+                } else {
+                    showSuccess(fullNameInput);
+                    return true;
+                }
+            }
+            
+            function validateEmail() {
+                const value = emailInput.value.trim();
+                
+                if (value === '') {
+                    showError(emailError, emailInput, 'Email is required');
+                    return false;
+                }
+                
+                // More strict email validation
+                const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+                
+                if (!emailRegex.test(value)) {
+                    showError(emailError, emailInput, 'Please enter a valid email address');
+                    return false;
+                }
+                
+                // Additional checks
+                if (value.includes('..')) {
+                    showError(emailError, emailInput, 'Email cannot contain consecutive dots');
+                    return false;
+                }
+                
+                if (value.startsWith('.') || value.endsWith('.')) {
+                    showError(emailError, emailInput, 'Email cannot start or end with a dot');
+                    return false;
+                }
+                
+                showSuccess(emailInput);
+                return true;
+            }
+            
+            function validateWebsite() {
+                const value = websiteInput.value.trim();
+                
+                if (value === '') {
+                    showSuccess(websiteInput);
+                    return true;
+                }
+                
+                // More strict URL validation
+                try {
+                    const url = new URL(value);
+                    if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+                        showError(websiteError, websiteInput, 'Website must use http or https protocol');
+                        return false;
+                    }
+                } catch (e) {
+                    showError(websiteError, websiteInput, 'Please enter a valid website URL');
+                    return false;
+                }
+                
+                // Check for spaces
+                if (value.includes(' ')) {
+                    showError(websiteError, websiteInput, 'Website URL cannot contain spaces');
+                    return false;
+                }
+                
+                // Additional URL format validation
+                const urlRegex = /^(https?:\/\/)([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}(:[0-9]{1,5})?(\/[^\s]*)?$/;
+                
+                if (!urlRegex.test(value)) {
+                    showError(websiteError, websiteInput, 'Please enter a valid website URL');
+                    return false;
+                }
+                
+                showSuccess(websiteInput);
+                return true;
+            }
+            
+            function validatePassword() {
+                const value = passwordInput.value;
+                
+                if (value === '') {
+                    showError(passwordError, passwordInput, 'Password is required');
+                    return false;
+                } else if (value.length < 8) {
+                    showError(passwordError, passwordInput, 'Password must be at least 8 characters');
+                    return false;
+                } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(value)) {
+                    showError(passwordError, passwordInput, 'Password must contain uppercase, lowercase, and number');
+                    return false;
+                } else {
+                    showSuccess(passwordInput);
+                    return true;
+                }
+            }
+            
+            function showError(errorElement, inputElement, message) {
+                errorElement.textContent = message;
+                errorElement.classList.add('show');
+                inputElement.classList.add('error');
+                inputElement.classList.remove('success');
+            }
+            
+            function showSuccess(inputElement) {
+                inputElement.classList.remove('error');
+                inputElement.classList.add('success');
+            }
+            
+            // Real-time validation
+            fullNameInput.addEventListener('blur', validateFullName);
+            emailInput.addEventListener('blur', validateEmail);
+            websiteInput.addEventListener('blur', validateWebsite);
+            passwordInput.addEventListener('blur', validatePassword);
+            
+            // Form submission
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const isFullNameValid = validateFullName();
+                const isEmailValid = validateEmail();
+                const isWebsiteValid = validateWebsite();
+                const isPasswordValid = validatePassword();
+                
+                if (isFullNameValid && isEmailValid && isWebsiteValid && isPasswordValid) {
+                    alert('Form submitted successfully!');
+                    // In a real application, you would submit the form data here
+                }
+            });
+            
+            // Add input event listeners for real-time validation as user types
+            fullNameInput.addEventListener('input', function() {
+                if (this.classList.contains('error')) {
+                    validateFullName();
+                }
+            });
+            
+            emailInput.addEventListener('input', function() {
+                if (this.classList.contains('error')) {
+                    validateEmail();
+                }
+            });
+            
+            websiteInput.addEventListener('input', function() {
+                if (this.classList.contains('error')) {
+                    validateWebsite();
+                }
+            });
+            
+            passwordInput.addEventListener('input', function() {
+                if (this.classList.contains('error')) {
+                    validatePassword();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

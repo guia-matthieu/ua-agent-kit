@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulario de Registro</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 2rem;
+            background: #f9f9f9;
+        }
+        h1 {
+            text-align: center;
+        }
+        form {
+            max-width: 500px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,.1);
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        label {
+            display: block;
+            margin-bottom: .3rem;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="url"],
+        input[type="password"] {
+            width: 100%;
+            padding: .5rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .error {
+            color: #d00;
+            font-size: .9rem;
+            margin-top: .2rem;
+            display: none;
+        }
+        .error.active {
+            display: block;
+        }
+        button {
+            background: #0066cc;
+            color: #fff;
+            border: none;
+            padding: .7rem 1.2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        button:hover {
+            background: #0055aa;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Registro de Usuario</h1>
+
+<form id="registroForm" novalidate>
+    <div class="form-group">
+        <label for="nombre">Nombre completo</label>
+        <input type="text" id="nombre" name="nombre" required>
+        <span class="error" id="error-nombre"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="email">Correo electrónico</label>
+        <input type="email" id="email" name="email" required>
+        <span class="error" id="error-email"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="sitio">Sitio web</label>
+        <input type="url" id="sitio" name="sitio" required placeholder="https://ejemplo.com">
+        <span class="error" id="error-sitio"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="clave">Contraseña</label>
+        <input type="password" id="clave" name="clave" required minlength="6">
+        <span class="error" id="error-clave"></span>
+    </div>
+
+    <button type="submit">Registrarse</button>
+</form>
+
+<script>
+    (function () {
+        const form = document.getElementById('registroForm');
+
+        const fields = [
+            {
+                id: 'nombre',
+                validator: value => value.trim().length > 0 && /\S+\s+\S+/.test(value.trim()),
+                message: 'Introduce tu nombre completo (al menos dos palabras).'
+            },
+            {
+                id: 'email',
+                validator: value => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim()),
+                message: 'Introduce una dirección de correo válida.'
+            },
+            {
+                id: 'sitio',
+                validator: value => {
+                    try {
+                        const url = new URL(value);
+                        return url.protocol === 'http:' || url.protocol === 'https:';
+                    } catch (e) {
+                        return false;
+                    }
+                },
+                message: 'Introduce una URL válida (debe comenzar con http:// o https://).'
+            },
+            {
+                id: 'clave',
+                validator: value => value.length >= 6,
+                message: 'La contraseña debe tener al menos 6 caracteres.'
+            }
+        ];
+
+        function showError(input, message) {
+            const errorSpan = document.getElementById('error-' + input.id);
+            errorSpan.textContent = message;
+            errorSpan.classList.add('active');
+        }
+
+        function clearError(input) {
+            const errorSpan = document.getElementById('error-' + input.id);
+            errorSpan.textContent = '';
+            errorSpan.classList.remove('active');
+        }
+
+        function validateField(field) {
+            const input = document.getElementById(field.id);
+            const value = input.value;
+            if (!field.validator(value)) {
+                showError(input, field.message);
+                return false;
+            } else {
+                clearError(input);
+                return true;
+            }
+        }
+
+        // Validación al perder el foco (blur)
+        fields.forEach(f => {
+            const input = document.getElementById(f.id);
+            input.addEventListener('blur', () => validateField(f));
+        });
+
+        // Validación al enviar el formulario
+        form.addEventListener('submit', function (e) {
+            e.preventDefault(); // Evita envío automático
+
+            let allValid = true;
+            fields.forEach(f => {
+                const valid = validateField(f);
+                if (!valid) allValid = false;
+            });
+
+            if (allValid) {
+                // Aquí podrías enviar los datos con fetch/AJAX o simplemente
+                // permitir el envío tradicional si tuvieras un action definido.
+                alert('¡Registro exitoso!');
+                form.reset();
+                fields.forEach(f => clearError(document.getElementById(f.id)));
+            } else {
+                // Enfocar el primer campo con error
+                const firstError = document.querySelector('.error.active');
+                if (firstError) {
+                    const inputId = firstError.id.replace('error-', '');
+                    document.getElementById(inputId).focus();
+                }
+            }
+        });
+    })();
+</script>
+
+</body>
+</html>

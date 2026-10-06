@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Signup Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 2rem;
+        }
+        form {
+            max-width: 400px;
+        }
+        .field {
+            margin-bottom: 1rem;
+        }
+        label {
+            display: block;
+            margin-bottom: .3rem;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="url"],
+        input[type="password"] {
+            width: 100%;
+            padding: .4rem;
+            box-sizing: border-box;
+        }
+        .error {
+            color: #c00;
+            font-size: .9rem;
+            margin-top: .2rem;
+            display: block;
+        }
+        button {
+            padding: .5rem 1rem;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>Signup</h1>
+    <form id="signupForm" novalidate>
+        <div class="field">
+            <label for="fullName">Full Name</label>
+            <input type="text" id="fullName" name="fullName" required>
+            <span class="error" id="fullNameError"></span>
+        </div>
+
+        <div class="field">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" required>
+            <span class="error" id="emailError"></span>
+        </div>
+
+        <div class="field">
+            <label for="website">Website</label>
+            <input type="url" id="website" name="website" placeholder="https://example.com" required>
+            <span class="error" id="websiteError"></span>
+        </div>
+
+        <div class="field">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+            <span class="error" id="passwordError"></span>
+        </div>
+
+        <button type="submit">Sign Up</button>
+    </form>
+
+    <script>
+        (function () {
+            const form = document.getElementById('signupForm');
+
+            const fields = [
+                {
+                    id: 'fullName',
+                    validator: value => value.trim().length > 0 && /^[A-Za-z]+(?:\s+[A-Za-z]+)+$/.test(value.trim()),
+                    message: 'Please enter your full name (first and last).'
+                },
+                {
+                    id: 'email',
+                    validator: value => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
+                    message: 'Please enter a valid email address.'
+                },
+                {
+                    id: 'website',
+                    validator: value => {
+                        try {
+                            const url = new URL(value);
+                            return url.protocol === 'http:' || url.protocol === 'https:';
+                        } catch (_) {
+                            return false;
+                        }
+                    },
+                    message: 'Please enter a valid URL (http or https).'
+                },
+                {
+                    id: 'password',
+                    validator: value => value.length >= 6,
+                    message: 'Password must be at least 6 characters long.'
+                }
+            ];
+
+            function clearErrors() {
+                fields.forEach(f => {
+                    const errSpan = document.getElementById(f.id + 'Error');
+                    errSpan.textContent = '';
+                });
+            }
+
+            function showError(id, msg) {
+                const errSpan = document.getElementById(id + 'Error');
+                errSpan.textContent = msg;
+            }
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault(); // stop default submission
+                clearErrors();
+
+                let isValid = true;
+
+                fields.forEach(f => {
+                    const input = document.getElementById(f.id);
+                    const value = input.value.trim();
+                    if (!f.validator(value)) {
+                        isValid = false;
+                        showError(f.id, f.message);
+                    }
+                });
+
+                if (isValid) {
+                    // All good – you can submit via AJAX or simply let the form submit.
+                    // Here we just show a success message.
+                    alert('Form submitted successfully!');
+                    form.reset();
+                }
+            });
+        })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription - Validation Universelle</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            display: flex;
+            justify-content: center;
+            padding: 2rem;
+            background-color: #f4f4f9;
+        }
+        .form-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 0.6rem;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        input.invalid {
+            border-color: #d93025;
+            background-color: #fff8f7;
+        }
+        .error-msg {
+            color: #d93025;
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+        button {
+            width: 100%;
+            padding: 0.8rem;
+            background-color: #0056b3;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        button:hover {
+            background-color: #004494;
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h2>Créer un compte</h2>
+    <form id="registrationForm" novalidate>
+        <div class="form-group">
+            <label for="fullName">Nom complet</label>
+            <input type="text" id="fullName" name="fullName" required>
+            <div class="error-msg" id="fullNameError">Ce champ est requis.</div>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Adresse e-mail</label>
+            <!-- Utilisation de type="text" pour supporter les emails internationalisés (EAI) 
+                 car <input type="email"> rejette les caractères Unicode dans la partie locale sur certains navigateurs -->
+            <input type="text" id="email" name="email" required>
+            <div class="error-msg" id="emailError">Veuillez saisir une adresse e-mail valide.</div>
+        </div>
+
+        <div class="form-group">
+            <label for="website">Site web</label>
+            <input type="url" id="website" name="website">
+            <div class="error-msg" id="websiteError">Veuillez saisir une URL valide.</div>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Mot de passe</label>
+            <input type="password" id="password" name="password" required>
+            <div class="error-msg" id="passwordError">Le mot de passe doit contenir au moins 8 caractères.</div>
+        </div>
+
+        <button type="submit">S'inscrire</button>
+    </form>
+</div>
+
+<script>
+    const form = document.getElementById('registrationForm');
+
+    /**
+     * Validation universelle respectant les principes de l'Universal Acceptance.
+     * On évite les regex restrictives (ex: [a-z]{2,4}$) pour supporter 
+     * les TLD longs, les labels Unicode et les A-labels (xn--).
+     */
+    const validators = {
+        fullName: (val) => val.trim().length > 0,
+        
+        email: (val) => {
+            if (!val) return false;
+            // Syntaxe minimale : un '@', local part non vide, domaine avec au moins un point
+            // et un TLD de 2+ caractères ou un A-label (xn--).
+            const emailRegex = /^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/;
+            if (!emailRegex.test(val)) return false;
+            
+            const parts = val.split('@');
+            const domain = parts[1];
+            const labels = domain.split('.');
+            const tld = labels[labels.length - 1];
+            
+            // Vérification minimaliste du TLD : soit 2+ caractères, soit commence par xn--
+            return tld.length >= 2 || tld.startsWith('xn--');
+        },
+
+        website: (val) => {
+            if (!val) return true; // Optionnel
+            try {
+                const url = new URL(val);
+                // Le constructeur URL gère nativement l'internationalisation (UTS #46)
+                return url.protocol === 'http:' || url.protocol === 'https:';
+            } catch (_) {
+                return false;
+            }
+        },
+
+        password: (val) => val.length >= 8
+    };
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        let isFormValid = true;
+
+        for (const [id, validator] of Object.entries(validators)) {
+            const input = document.getElementById(id);
+            const errorDiv = document.getElementById(`${id}Error`);
+            const isValid = validator(input.value);
+
+            if (!isValid) {
+                input.classList.add('invalid');
+                errorDiv.style.display = 'block';
+                isFormValid = false;
+            } else {
+                input.classList.remove('invalid');
+                errorDiv.style.display = 'none';
+            }
+        }
+
+        if (isFormValid) {
+            alert('Inscription réussie !');
+            form.reset();
+        }
+    });
+
+    // Nettoyage visuel lors de la saisie
+    form.querySelectorAll('input').forEach(input => {
+        input.addEventListener('input', () => {
+            input.classList.remove('invalid');
+            const errorDiv = document.getElementById(`${input.id}Error`);
+            if (errorDiv) errorDiv.style.display = 'none';
+        });
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription - Universal Acceptance</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            display: flex;
+            justify-content: center;
+            padding: 2rem;
+            background-color: #f4f4f9;
+        }
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+        input.invalid {
+            border-color: #d32f2f;
+            background-color: #fff8f8;
+        }
+        .error-msg {
+            color: #d32f2f;
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+            min-height: 1.2em;
+        }
+        button {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Créer un compte</h2>
+    <form id="registrationForm" novalidate>
+        <div class="form-group">
+            <label for="fullName">Nom complet</label>
+            <input type="text" id="fullName" name="fullName" required>
+            <div class="error-msg" id="fullNameError"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Adresse e-mail</label>
+            <!-- type="text" utilisé pour supporter les emails internationalisés (EAI) sans restriction navigateur -->
+            <input type="text" id="email" name="email" required>
+            <div class="error-msg" id="emailError"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="website">Site web</label>
+            <input type="url" id="website" name="website">
+            <div class="error-msg" id="websiteError"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Mot de passe</label>
+            <input type="password" id="password" name="password" required>
+            <div class="error-msg" id="passwordError"></div>
+        </div>
+
+        <button type="submit">S'inscrire</button>
+    </form>
+</div>
+
+<script>
+    const form = document.getElementById('registrationForm');
+
+    /**
+     * Validation basée sur les principes de l'Universal Acceptance (UA)
+     * - Ne limite pas la longueur des TLDs
+     * - Supporte les caractères Unicode (Internationalized Domain Names / EAI)
+     * - Évite les regex ASCII restrictives
+     */
+    const validators = {
+        fullName: (val) => val.trim().length >= 2 || "Le nom est trop court.",
+        
+        email: (val) => {
+            if (!val) return "L'e-mail est requis.";
+            // Syntaxe minimale UA : un @, local-part non vide, domaine avec TLD de 2+ lettres ou A-label xn--
+            const emailRegex = /^[^@\s]+@[^@\s]+\.[^@\s]{2,}|[^@\s]+@xn--[^@\s]+$/;
+            return emailRegex.test(val) || "Veuillez entrer une adresse e-mail valide.";
+        },
+
+        website: (val) => {
+            if (!val) return true; // Optionnel
+            try {
+                const url = new URL(val);
+                // On vérifie que le hostname contient un point et respecte la structure basique
+                return (url.hostname.includes('.') && 
+                       (url.hostname.split('.').pop().length >= 2 || url.hostname.includes('xn--'))) 
+                       ? true : "URL invalide.";
+            } catch (_) {
+                return "L'URL doit être complète (ex: https://exemple.fr).";
+            }
+        },
+
+        password: (val) => val.length >= 8 || "Le mot de passe doit contenir au moins 8 caractères."
+    };
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        let isFormValid = true;
+
+        for (const [fieldId, validate] of Object.entries(validators)) {
+            const input = document.getElementById(fieldId);
+            const errorDiv = document.getElementById(`${fieldId}Error`);
+            const result = validate(input.value);
+
+            if (result === true) {
+                input.classList.remove('invalid');
+                errorDiv.textContent = '';
+            } else {
+                input.classList.add('invalid');
+                errorDiv.textContent = result;
+                isFormValid = false;
+            }
+        }
+
+        if (isFormValid) {
+            alert('Formulaire valide ! Envoi des données...');
+            form.submit();
+        }
+    });
+</script>
+
+</body>
+</html>

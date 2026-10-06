@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulaire d'inscription</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="url"],
+        input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .error {
+            color: red;
+            font-size: 0.8em;
+            margin-top: 5px;
+            display: none;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .success-message {
+            color: green;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Formulaire d'inscription</h1>
+    <form id="registrationForm">
+        <div class="form-group">
+            <label for="fullName">Nom complet</label>
+            <input type="text" id="fullName" name="fullName" required>
+            <div id="fullNameError" class="error">Veuillez entrer un nom complet valide (au moins 2 caractères)</div>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Adresse e-mail</label>
+            <input type="email" id="email" name="email" required>
+            <div id="emailError" class="error">Veuillez entrer une adresse e-mail valide (ex: nom@domaine.com)</div>
+        </div>
+
+        <div class="form-group">
+            <label for="website">Site web (optionnel)</label>
+            <input type="url" id="website" name="website">
+            <div id="websiteError" class="error">Veuillez entrer une URL valide (ex: https://example.com)</div>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Mot de passe</label>
+            <input type="password" id="password" name="password" required>
+            <div id="passwordError" class="error">Le mot de passe doit contenir au moins 8 caractères, une majuscule, un chiffre et un caractère spécial</div>
+        </div>
+
+        <button type="submit">S'inscrire</button>
+    </form>
+
+    <div id="successMessage" class="success-message">
+        Inscription réussie ! Merci de vérifier votre boîte mail pour confirmer votre adresse.
+    </div>
+
+    <script>
+        document.getElementById('registrationForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Réinitialiser les messages d'erreur
+            document.querySelectorAll('.error').forEach(el => el.style.display = 'none');
+
+            // Récupérer les valeurs des champs
+            const fullName = document.getElementById('fullName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const website = document.getElementById('website').value.trim();
+            const password = document.getElementById('password').value;
+
+            let isValid = true;
+
+            // Validation du nom complet
+            if (fullName.length < 2) {
+                document.getElementById('fullNameError').style.display = 'block';
+                isValid = false;
+            }
+
+            // Validation de l'email avec regex plus stricte
+            const emailRegex = /^(?!.*\.\.)(?!.*@\.)(?!.*\.$)[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!emailRegex.test(email)) {
+                document.getElementById('emailError').style.display = 'block';
+                isValid = false;
+            }
+
+            // Validation du site web avec regex plus stricte
+            if (website) {
+                const urlRegex = /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}([\/\?][^\s]*)?$/;
+                if (!urlRegex.test(website)) {
+                    document.getElementById('websiteError').style.display = 'block';
+                    isValid = false;
+                }
+            }
+
+            // Validation du mot de passe
+            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+            if (!passwordRegex.test(password)) {
+                document.getElementById('passwordError').style.display = 'block';
+                isValid = false;
+            }
+
+            // Si tout est valide, afficher le message de succès
+            if (isValid) {
+                document.getElementById('successMessage').style.display = 'block';
+                document.getElementById('registrationForm').reset();
+            }
+        });
+
+        // Validation en temps réel pour le nom complet
+        document.getElementById('fullName').addEventListener('input', function() {
+            const fullName = this.value.trim();
+            if (fullName.length >= 2) {
+                document.getElementById('fullNameError').style.display = 'none';
+            }
+        });
+
+        // Validation en temps réel pour l'email
+        document.getElementById('email').addEventListener('input', function() {
+            const email = this.value.trim();
+            const emailRegex = /^(?!.*\.\.)(?!.*@\.)(?!.*\.$)[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (emailRegex.test(email)) {
+                document.getElementById('emailError').style.display = 'none';
+            }
+        });
+
+        // Validation en temps réel pour le site web
+        document.getElementById('website').addEventListener('input', function() {
+            const website = this.value.trim();
+            if (!website) {
+                document.getElementById('websiteError').style.display = 'none';
+                return;
+            }
+            const urlRegex = /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}([\/\?][^\s]*)?$/;
+            if (urlRegex.test(website)) {
+                document.getElementById('websiteError').style.display = 'none';
+            }
+        });
+
+        // Validation en temps réel pour le mot de passe
+        document.getElementById('password').addEventListener('input', function() {
+            const password = this.value;
+            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+            if (passwordRegex.test(password)) {
+                document.getElementById('passwordError').style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

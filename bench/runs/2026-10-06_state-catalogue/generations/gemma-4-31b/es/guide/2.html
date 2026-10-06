@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Usuario</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            display: flex;
+            justify-content: center;
+            padding: 2rem;
+            background-color: #f4f7f6;
+        }
+        .form-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        .field-group {
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        input {
+            padding: 0.6rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        .error-msg {
+            color: #d32f2f;
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+            height: 1rem;
+            visibility: hidden;
+        }
+        .error-msg.visible {
+            visibility: visible;
+        }
+        input.invalid {
+            border-color: #d32f2f;
+            background-color: #fff8f8;
+        }
+        button {
+            width: 100%;
+            padding: 0.8rem;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <h2>Crea tu cuenta</h2>
+        <form id="registrationForm" novalidate>
+            <div class="field-group">
+                <label for="fullName">Nombre completo</label>
+                <input type="text" id="fullName" name="fullName" placeholder="Ej. María García">
+                <div id="fullNameError" class="error-msg">El nombre es obligatorio.</div>
+            </div>
+
+            <div class="field-group">
+                <label for="email">Correo electrónico</label>
+                <!-- Usamos type="text" para evitar que el navegador bloquee caracteres Unicode en el local-part (EAI) -->
+                <input type="text" id="email" name="email" placeholder="usuario@dominio.com">
+                <div id="emailError" class="error-msg">Ingrese un correo electrónico válido.</div>
+            </div>
+
+            <div class="field-group">
+                <label for="website">Sitio Web</label>
+                <input type="url" id="website" name="website" placeholder="https://ejemplo.com">
+                <div id="websiteError" class="error-msg">Ingrese una URL válida.</div>
+            </div>
+
+            <div class="field-group">
+                <label for="password">Contraseña</label>
+                <input type="password" id="password" name="password">
+                <div id="passwordError" class="error-msg">Mínimo 8 caracteres.</div>
+            </div>
+
+            <button type="submit">Registrarse</button>
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById('registrationForm');
+
+        /**
+         * Valida correos siguiendo los principios de Aceptación Universal:
+         * 1. No limita TLDs a 2-4 letras.
+         * 2. Permite caracteres Unicode (EAI).
+         * 3. Permite A-labels (xn--).
+         */
+        function isValidEmail(email) {
+            if (!email) return false;
+            // Sintaxis mínima: una @, local-part no vacía, dominio con labels y TLD de >= 2 letras o A-label.
+            const emailRegex = /^[^@\s]+@[^@\s]+\.[^@\s]{2,}|[^@\s]+@[^@\s]+\.xn--[a-z0-9-]+$/i;
+            return emailRegex.test(email);
+        }
+
+        function isValidUrl(url) {
+            if (!url) return false;
+            try {
+                new URL(url);
+                return true;
+            } catch (_) {
+                return false;
+            }
+        }
+
+        function setError(id, message, isValid) {
+            const input = document.getElementById(id);
+            const errorDiv = document.getElementById(id + 'Error');
+            
+            if (isValid) {
+                input.classList.remove('invalid');
+                errorDiv.classList.remove('visible');
+            } else {
+                input.classList.add('invalid');
+                errorDiv.innerText = message;
+                errorDiv.classList.add('visible');
+            }
+        }
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            let isFormValid = true;
+
+            // Validación Nombre
+            const fullName = document.getElementById('fullName').value.trim();
+            if (fullName.length < 2) {
+                setError('fullName', 'El nombre debe tener al menos 2 caracteres.', false);
+                isFormValid = false;
+            } else {
+                setError('fullName', '', true);
+            }
+
+            // Validación Email (UA Compliant)
+            const email = document.getElementById('email').value.trim();
+            if (!isValidEmail(email)) {
+                setError('email', 'Correo inválido o formato no soportado.', false);
+                isFormValid = false;
+            } else {
+                setError('email', '', true);
+            }
+
+            // Validación URL
+            const website = document.getElementById('website').value.trim();
+            if (website && !isValidUrl(website)) {
+                setError('website', 'URL inválida. Incluya el protocolo (http:// o https://).', false);
+                isFormValid = false;
+            } else {
+                setError('website', '', true);
+            }
+
+            // Validación Contraseña
+            const password = document.getElementById('password').value;
+            if (password.length < 8) {
+                setError('password', 'La contraseña debe tener al menos 8 caracteres.', false);
+                isFormValid = false;
+            } else {
+                setError('password', '', true);
+            }
+
+            if (isFormValid) {
+                alert('Formulario enviado con éxito.');
+                form.reset();
+            }
+        });
+    </script>
+</body>
+</html>

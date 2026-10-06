@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up – Universal Acceptance Demo</title>
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #f4f6f9;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        .container {
+            background: #fff;
+            max-width: 500px;
+            width: 100%;
+            padding: 2.5rem 2rem 2rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin: 0 0 0.15rem 0;
+            color: #1a1d23;
+            letter-spacing: -0.01em;
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            color: #5f6b7a;
+            margin: 0 0 2rem 0;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #2c313a;
+            margin-bottom: 0.35rem;
+            letter-spacing: 0.01em;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.7rem 0.9rem;
+            font-size: 1rem;
+            font-family: inherit;
+            border: 1.5px solid #d0d5dd;
+            border-radius: 10px;
+            background: #fff;
+            color: #1a1d23;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #1e6ef5;
+            box-shadow: 0 0 0 3px rgba(30, 110, 245, 0.12);
+        }
+
+        input.input-error {
+            border-color: #d0314e;
+            box-shadow: 0 0 0 3px rgba(208, 49, 78, 0.1);
+        }
+
+        .error {
+            display: block;
+            font-size: 0.8rem;
+            color: #d0314e;
+            margin-top: 0.3rem;
+            min-height: 1.2em;
+            line-height: 1.3;
+            word-break: break-word;
+        }
+
+        .error:empty {
+            visibility: hidden;
+        }
+
+        .error:not(:empty)::before {
+            content: "⚠\00a0";
+        }
+
+        button {
+            width: 100%;
+            padding: 0.8rem;
+            font-size: 1.05rem;
+            font-weight: 600;
+            font-family: inherit;
+            background: #1a1d23;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            margin-top: 0.5rem;
+            letter-spacing: 0.01em;
+        }
+
+        button:hover {
+            background: #2c313a;
+        }
+
+        button:active {
+            transform: scale(0.985);
+        }
+
+        .success-msg {
+            display: none;
+            text-align: center;
+            padding: 1.2rem 1rem;
+            background: #e6f7ed;
+            border-radius: 12px;
+            color: #0e6245;
+            font-weight: 500;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .success-msg.visible {
+            display: block;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 1.8rem 1.2rem 1.5rem;
+            }
+            h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Sign up</h1>
+        <p class="subtitle">Universal Acceptance ready — Unicode names, emails &amp; websites welcome.</p>
+
+        <div class="success-msg" id="success-msg" role="status">✓ Account created. Welcome aboard!</div>
+
+        <form id="signup-form" novalidate autocomplete="off">
+            <!-- Full Name -->
+            <div class="form-group">
+                <label for="fullname">Full name</label>
+                <input type="text" id="fullname" name="fullname" placeholder="María Santos" autocomplete="name" required>
+                <span class="error" id="fullname-error" role="alert" aria-live="polite"></span>
+            </div>
+
+            <!-- Email -->
+            <div class="form-group">
+                <label for="email">Email address</label>
+                <input type="text" id="email" name="email" placeholder="maría@example.fr" inputmode="email" autocomplete="email" required>
+                <span class="error" id="email-error" role="alert" aria-live="polite"></span>
+                <span class="sr-only" id="email-hint">Supports international email addresses with Unicode.</span>
+            </div>
+
+            <!-- Website -->
+            <div class="form-group">
+                <label for="website">Website <span style="font-weight:400;color:#6f7b8a;">(optional)</span></label>
+                <input type="text" id="website" name="website" placeholder="https://例子.中国" inputmode="url" autocomplete="url">
+                <span class="error" id="website-error" role="alert" aria-live="polite"></span>
+            </div>
+
+            <!-- Password -->
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Min. 8 chars, upper, lower, digit" autocomplete="new-password" required minlength="8">
+                <span class="error" id="password-error" role="alert" aria-live="polite"></span>
+            </div>
+
+            <button type="submit" id="submit-btn">Create account</button>
+        </form>
+    </div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            // ---- DOM refs ----
+            const form = document.getElementById('signup-form');
+            const fullname = document.getElementById('fullname');
+            const email = document.getElementById('email');
+            const website = document.getElementById('website');
+            const password = document.getElementById('password');
+
+            const errFull = document.getElementById('fullname-error');
+            const errEmail = document.getElementById('email-error');
+            const errWeb = document.getElementById('website-error');
+            const errPass = document.getElementById('password-error');
+
+            const successMsg = document.getElementById('success-msg');
+
+            // ---- helpers ----
+
+            function setError(el, msg) {
+                el.textContent = msg || '';
+                const input = el.previousElementSibling; // the <input>
+                if (input && input.tagName === 'INPUT') {
+                    input.classList.toggle('input-error', !!msg);
+                }
+            }
+
+            function clearAllErrors() {
+                setError(errFull, '');
+                setError(errEmail, '');
+                setError(errWeb, '');
+                setError(errPass, '');
+                [fullname, email, website, password].forEach(inp => inp.classList.remove('input-error'));
+            }
+
+            // ---- strict domain conversion and validation ----
+            // Converts a domain (Unicode or ASCII) to ASCII (A-label) using the URL constructor.
+            // Also rejects empty labels (double dots), spaces, and invalid characters.
+            // Returns null on failure.
+            function domainToASCII(domain) {
+                if (!domain || typeof domain !== 'string') return null;
+                domain = domain.trim();
+                if (domain.length === 0) return null;
+
+                // No whitespace allowed anywhere
+                if (/\s/.test(domain)) return null;
+
+                // Prepend scheme so URL parser can handle it
+                try {
+                    const url = new URL('http://' + domain);
+                    const host = url.hostname;
+                    if (!host) return null;
+
+                    // Must not end with a dot
+                    if (host.endsWith('.')) return null;
+
+                    // Every label must be non-empty and max 63 characters
+                    const labels = host.split('.');
+                    for (const lab of labels) {
+                        if (lab.length < 1 || lab.length > 63) return null;
+                        // xn-- labels must be valid A-labels (basic length check)
+                        if (lab.startsWith('xn--') && lab.length < 5) return null;
+                    }
+
+                    // TLD must be 2+ chars or an xn-- label
+                    const tld = labels[labels.length - 1];
+                    if (tld.length < 2 && !tld.startsWith('xn--')) return null;
+
+                    // No two consecutive dots (empty labels) already rejected above
+                    return host;
+                } catch (_) {
+                    return null;
+                }
+            }
+
+            // ---- validation functions ----
+            // Returns error message string (empty = valid)
+
+            function validateName(val) {
+                const v = (val || '').trim();
+                if (v.length === 0) return 'Full name is required.';
+                if (v.length < 2) return 'Name must be at least 2 characters.';
+                // Accept any Unicode letter, space, hyphen, apostrophe, dot
+                // Reject control characters
+                if (/[\p{C}]/u.test(v)) return 'Name contains invalid characters.';
+                return '';
+            }
+
+            function validateEmail(val) {
+                const v = (val || '').trim();
+                if (v.length === 0) return 'Email address is required.';
+
+                // Must contain exactly one @, not at start or end
+                const atPos = v.indexOf('@');
+                if (atPos === -1) return 'Email must contain an @ sign.';
+                if (v.indexOf('@', atPos + 1) !== -1) return 'Email must contain only one @.';
+                if (atPos === 0) return 'Email must have a local part before @.';
+                if (atPos === v.length - 1) return 'Email must have a domain after @.';
+
+                const local = v.slice(0, atPos);
+                const domain = v.slice(atPos + 1);
+
+                // Local part strict checks
+                if (local.length === 0) return 'Local part is empty.';
+
+                // No whitespace or control characters
+                if (/[\s\u0000-\u001F\u007F]/.test(local)) return 'Local part must not contain spaces or control characters.';
+
+                // No double dots, and no leading/trailing dot
+                if (local.startsWith('.') || local.endsWith('.')) return 'Local part must not start or end with a dot.';
+                if (local.includes('..')) return 'Local part must not contain two consecutive dots.';
+
+                // Allow Unicode letters, digits, and common ASCII specials: . _ % + - ' = ? ^ ~ ` { } | ! # $ % & * / = ? ^ ~ ` { } |
+                // Reject only characters that are absolutely invalid in local part: ( ) [ ] \ ; : " , < > @ and space already denied
+                if (/[()\[\]\\;:" ,<>@]/.test(local)) return 'Local part contains invalid characters.';
+
+                // Domain validation using IDNA
+                const asciiDomain = domainToASCII(domain);
+                if (!asciiDomain) return 'Domain is not valid. Check the spelling.';
+
+                // Domain must have at least two labels (e.g. example.fr)
+                const labels = asciiDomain.split('.');
+                if (labels.length < 2) return 'Domain must have at least two parts (e.g. example.fr).';
+
+                // TLD must be 2+ letters or an xn-- A-label
+                const tld = labels[labels.length - 1];
+                const tldIsXn = tld.startsWith('xn--');
+                if (!tldIsXn && tld.length < 2) return 'Top-level domain is too short.';
+                if (!tldIsXn && !/^[a-z][a-z0-9]*$/i.test(tld)) return 'Top-level domain contains invalid characters.';
+                if (tldIsXn && tld.length < 5) return 'Invalid internationalized top-level domain.';
+
+                return '';
+            }
+
+            function validateWebsite(val) {
+                const v = (val || '').trim();
+                if (v.length === 0) return ''; // optional
+
+                // No spaces allowed anywhere
+                if (/\s/.test(v)) return 'URL must not contain spaces.';
+
+                // Prepend https:// if no protocol
+                let urlStr = v;
+                if (!/^[a-zA-Z][a-zA-Z0-9+\-.]*:\/\//.test(urlStr)) {
+                    urlStr = 'https://' + urlStr;
+                }
+
+                let parsed;
+                try {
+                    parsed = new URL(urlStr);
+                } catch (_) {
+                    return 'Enter a valid URL (e.g. https://example.com).';
+                }
+
+                const protocol = parsed.protocol;
+                if (protocol !== 'http:' && protocol !== 'https:') {
+                    return 'URL must use http or https.';
+                }
+
+                const host = parsed.hostname;
+                if (!host || host.length === 0) return 'URL is missing a domain.';
+
+                // No trailing dot
+                if (host.endsWith('.')) return 'Domain must not end with a dot.';
+
+                // Validate domain structure (reuse domainToASCII logic, but allow single-label only for TLD?)
+                const asciiDomain = domainToASCII(host);
+                if (!asciiDomain) return 'Domain is not valid.';
+
+                const labels = asciiDomain.split('.');
+                const tld = labels[labels.length - 1];
+                const tldIsXn = tld.startsWith('xn--');
+                if (!tldIsXn && tld.length < 2) return 'Top-level domain is too short.';
+                if (!tldIsXn && !/^[a-z][a-z0-9]*$/i.test(tld)) return 'Top-level domain contains invalid characters.';
+                if (tldIsXn && tld.length < 5) return 'Invalid internationalized top-level domain.';
+
+                // Reject IP addresses as domains (optional strictness)
+                if (/^(\d{1,3}\.){3}\d{1,3}$/.test(host)) return 'Use a domain name, not an IP address.';
+                if (/^\[/.test(host)) return 'Use a domain name, not an IP address.';
+
+                return '';
+            }
+
+            function validatePassword(val) {
+                const v = val || '';
+                if (v.length === 0) return 'Password is required.';
+                if (v.length < 8) return 'Password must be at least 8 characters.';
+                if (!/[A-Z]/.test(v)) return 'Password must contain an uppercase letter.';
+                if (!/[a-z]/.test(v)) return 'Password must contain a lowercase letter.';
+                if (!/[0-9]/.test(v)) return 'Password must contain a digit.';
+                // Allow any Unicode — no further restrictions
+                return '';
+            }
+
+            // ---- real-time validation on blur ----
+            fullname.addEventListener('blur', function() {
+                const msg = validateName(this.value);
+                setError(errFull, msg);
+            });
+
+            email.addEventListener('blur', function() {
+                const msg = validateEmail(this.value);
+                setError(errEmail, msg);
+            });
+
+            website.addEventListener('blur', function() {
+                const msg = validateWebsite(this.value);
+                setError(errWeb, msg);
+            });
+
+            password.addEventListener('blur', function() {
+                const msg = validatePassword(this.value);
+                setError(errPass, msg);
+            });
+
+            // Clear error on focus
+            [fullname, email, website, password].forEach(inp => {
+                inp.addEventListener('focus', function() {
+                    const errorEl = this.nextElementSibling;
+                    if (errorEl && errorEl.classList.contains('error')) {
+                        setError(errorEl, '');
+                    }
+                    this.classList.remove('input-error');
+                });
+            });
+
+            // ---- form submit ----
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                clearAllErrors();
+                successMsg.classList.remove('visible');
+
+                // Validate all
+                const nameVal = fullname.value;
+                const emailVal = email.value;
+                const webVal = website.value;
+                const passVal = password.value;
+
+                const eName = validateName(nameVal);
+                const eEmail = validateEmail(emailVal);
+                const eWeb = validateWebsite(webVal);
+                const ePass = validatePassword(passVal);
+
+                setError(errFull, eName);
+                setError(errEmail, eEmail);
+                setError(errWeb, eWeb);
+                setError(errPass, ePass);
+
+                const hasErrors = eName || eEmail || eWeb || ePass;
+                if (hasErrors) {
+                    // Focus first invalid field
+                    if (eName) fullname.focus();
+                    else if (eEmail) email.focus();
+                    else if (eWeb) website.focus();
+                    else if (ePass) password.focus();
+                    return;
+                }
+
+                // Success — show message, reset form
+                successMsg.classList.add('visible');
+                form.reset();
+                // Scroll to top so user sees the message
+                document.querySelector('.container').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                // Remove error states
+                clearAllErrors();
+            });
+
+            // ---- clear success message on new interaction ----
+            form.addEventListener('input', function() {
+                successMsg.classList.remove('visible');
+            }, { once: false });
+
+            // ---- pointer to help ----
+            console.log('UA-Agent: email & website fields accept Unicode per Universal Acceptance guidelines.');
+        })();
+    </script>
+
+</body>
+</html>

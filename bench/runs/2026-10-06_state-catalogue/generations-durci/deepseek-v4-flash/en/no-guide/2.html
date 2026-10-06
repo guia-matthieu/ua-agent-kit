@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Signup Form</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 520px;
+      margin: 40px auto;
+      padding: 0 20px;
+      color: #333;
+    }
+    h2 { margin-top: 20px; }
+    .form-group { margin-bottom: 18px; }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+      font-size: 0.95em;
+    }
+    .field-row {
+      display: flex;
+      align-items: flex-start;
+    }
+    input {
+      width: 250px;
+      padding: 8px 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    input.error {
+      border-color: #e74c3c;
+      background-color: #fef7f7;
+    }
+    .error-msg {
+      margin-left: 10px;
+      color: #e74c3c;
+      font-size: 0.85em;
+      padding-top: 9px;
+      flex: 1;
+      line-height: 1.3;
+    }
+    button {
+      padding: 10px 30px;
+      font-size: 15px;
+      cursor: pointer;
+      background-color: #0078d4;
+      color: white;
+      border: none;
+      border-radius: 4px;
+    }
+    button:hover { background-color: #006bbf; }
+    .success-msg {
+      margin-top: 15px;
+      color: green;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h2>Sign Up</h2>
+  <form id="signupForm" action="#" method="post" novalidate>
+    <div class="form-group">
+      <label for="fullname">Full Name</label>
+      <div class="field-row">
+        <input type="text" id="fullname" name="fullname" placeholder="John Doe">
+        <span class="error-msg" id="fullnameError"></span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email Address</label>
+      <div class="field-row">
+        <input type="email" id="email" name="email" placeholder="you@example.com">
+        <span class="error-msg" id="emailError"></span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="website">Website</label>
+      <div class="field-row">
+        <input type="url" id="website" name="website" placeholder="https://example.com">
+        <span class="error-msg" id="websiteError"></span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="password">Password</label>
+      <div class="field-row">
+        <input type="password" id="password" name="password" placeholder="At least 8 characters">
+        <span class="error-msg" id="passwordError"></span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <button type="submit">Sign Up</button>
+    </div>
+
+    <p id="success" class="success-msg"></p>
+  </form>
+
+  <script>
+    var form = document.getElementById('signupForm');
+    var successMsg = document.getElementById('success');
+
+    function showError(fieldId, message) {
+      document.getElementById(fieldId).classList.add('error');
+      document.getElementById(fieldId + 'Error').textContent = message;
+    }
+
+    function isValidEmail(email) {
+      var at = email.lastIndexOf('@');
+      if (at <= 0 || at === email.length - 1) return false;
+
+      var local = email.substring(0, at);
+      var domain = email.substring(at + 1);
+
+      if (local.length > 64 || domain.length > 255) return false;
+      if (domain.indexOf('..') !== -1) return false;
+      if (domain.charAt(0) === '.' || domain.charAt(domain.length - 1) === '.') return false;
+
+      var localRegex = /^[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+)*$/;
+      if (!localRegex.test(local)) return false;
+
+      var labels = domain.split('.');
+      if (labels.length < 2) return false;
+
+      for (var i = 0; i < labels.length; i++) {
+        var label = labels[i];
+        if (label.length === 0 || label.length > 63) return false;
+        if (!/^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i.test(label)) return false;
+      }
+
+      var tld = labels[labels.length - 1];
+      if (tld.length < 2 || !/[a-z]/i.test(tld)) return false;
+
+      return true;
+    }
+
+    function getValidatedWebsite(raw) {
+      if (/\s/.test(raw)) return null;
+
+      var url;
+      try {
+        url = new URL(raw);
+      } catch (e) {
+        var withScheme = /^https?:\/\//i.test(raw) ? raw : 'https://' + raw;
+        try {
+          url = new URL(withScheme);
+          document.getElementById('website').value = url.href;
+        } catch (e2) {
+          return null;
+        }
+      }
+
+      if (url.protocol !== 'http:' && url.protocol !== 'https:') return null;
+
+      var hostname = url.hostname;
+      if (!hostname || hostname.indexOf('..') !== -1) return null;
+      if (hostname.charAt(0) === '.' || hostname.charAt(hostname.length - 1) === '.') return null;
+      if (!/^[a-z0-9.-]+$/i.test(hostname)) return null;
+
+      var labels = hostname.split('.');
+      for (var i = 0; i < labels.length; i++) {
+        var label = labels[i];
+        if (!/^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i.test(label)) return null;
+        if (label.length > 63) return null;
+      }
+
+      return url;
+    }
+
+    function validateForm() {
+      var valid = true;
+      var fields = ['fullname', 'email', 'website', 'password'];
+
+      fields.forEach(function(fieldId) {
+        document.getElementById(fieldId).classList.remove('error');
+        document.getElementById(fieldId + 'Error').textContent = '';
+      });
+
+      var fullName = document.getElementById('fullname').value.trim();
+      if (fullName === '') {
+        showError('fullname', 'Full name is required.');
+        valid = false;
+      } else if (fullName.split(/\s+/).length < 2) {
+        showError('fullname', 'Please enter first and last name.');
+        valid = false;
+      }
+
+      var email = document.getElementById('email').value.trim();
+      if (email === '') {
+        showError('email', 'Email address is required.');
+        valid = false;
+      } else if (!isValidEmail(email)) {
+        showError('email', 'Please enter a valid email address.');
+        valid = false;
+      }
+
+      var website = document.getElementById('website').value.trim();
+      if (website === '') {
+        showError('website', 'Website URL is required.');
+        valid = false;
+      } else if (!getValidatedWebsite(website)) {
+        showError('website', 'Please enter a valid URL (http or https).');
+        valid = false;
+      }
+
+      var password = document.getElementById('password').value;
+      if (password === '') {
+        showError('password', 'Password is required.');
+        valid = false;
+      } else if (password.length < 8) {
+        showError('password', 'Password must be at least 8 characters.');
+        valid = false;
+      }
+
+      return valid;
+    }
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      successMsg.textContent = '';
+
+      if (validateForm()) {
+        successMsg.textContent = 'Signup successful! Your data has been validated.';
+        form.reset();
+      }
+    });
+
+    document.querySelectorAll('#signupForm input').forEach(function(input) {
+      input.addEventListener('input', function() {
+        this.classList.remove('error');
+        document.getElementById(this.id + 'Error').textContent = '';
+        successMsg.textContent = '';
+      });
+    });
+  </script>
+</body>
+</html>

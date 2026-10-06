@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Registro</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="url"],
+        input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .error {
+            color: #e74c3c;
+            font-size: 0.8em;
+            margin-top: 5px;
+            display: none;
+        }
+
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        .success-message {
+            color: #2ecc71;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Formulario de Registro</h1>
+
+    <form id="registroForm" novalidate>
+        <div class="form-group">
+            <label for="nombreCompleto">Nombre completo:</label>
+            <input type="text" id="nombreCompleto" name="nombreCompleto" required>
+            <div id="errorNombreCompleto" class="error">Por favor ingresa tu nombre completo (mínimo 3 caracteres)</div>
+        </div>
+
+        <div class="form-group">
+            <label for="correoElectronico">Dirección de correo electrónico:</label>
+            <input type="email" id="correoElectronico" name="correoElectronico" required>
+            <div id="errorCorreoElectronico" class="error">Por favor ingresa un correo electrónico válido (ej: usuario@dominio.com)</div>
+        </div>
+
+        <div class="form-group">
+            <label for="sitioWeb">Sitio web (opcional):</label>
+            <input type="url" id="sitioWeb" name="sitioWeb" placeholder="https://ejemplo.com">
+            <div id="errorSitioWeb" class="error">Por favor ingresa una URL válida (ej: https://ejemplo.com)</div>
+        </div>
+
+        <div class="form-group">
+            <label for="contraseña">Contraseña:</label>
+            <input type="password" id="contraseña" name="contraseña" required>
+            <div id="errorContraseña" class="error">La contraseña debe tener al menos 8 caracteres</div>
+        </div>
+
+        <button type="submit">Registrarse</button>
+    </form>
+
+    <div id="mensajeExito" class="success-message">
+        ¡Registro exitoso! Los datos se han enviado correctamente.
+    </div>
+
+    <script>
+        document.getElementById('registroForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Limpiar errores previos
+            document.querySelectorAll('.error').forEach(el => el.style.display = 'none');
+
+            // Obtener valores de los campos
+            const nombreCompleto = document.getElementById('nombreCompleto').value.trim();
+            const correoElectronico = document.getElementById('correoElectronico').value.trim();
+            const sitioWeb = document.getElementById('sitioWeb').value.trim();
+            const contraseña = document.getElementById('contraseña').value;
+
+            let esValido = true;
+
+            // Validar nombre completo
+            if (nombreCompleto.length < 3 || !/^[a-zA-Z\sáéíóúüñÁÉÍÓÚÜÑ'-]+$/.test(nombreCompleto)) {
+                document.getElementById('errorNombreCompleto').style.display = 'block';
+                esValido = false;
+            }
+
+            // Validar correo electrónico con expresión regular más estricta
+            const correoRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!correoRegex.test(correoElectronico)) {
+                document.getElementById('errorCorreoElectronico').style.display = 'block';
+                esValido = false;
+            }
+
+            // Validar sitio web (solo si está presente)
+            if (sitioWeb) {
+                const urlRegex = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
+                if (!urlRegex.test(sitioWeb)) {
+                    document.getElementById('errorSitioWeb').style.display = 'block';
+                    esValido = false;
+                }
+            }
+
+            // Validar contraseña
+            if (contraseña.length < 8 || !/[A-Z]/.test(contraseña) || !/[a-z]/.test(contraseña) || !/[0-9]/.test(contraseña)) {
+                document.getElementById('errorContraseña').style.display = 'block';
+                esValido = false;
+            }
+
+            // Si todo es válido, mostrar mensaje de éxito
+            if (esValido) {
+                document.getElementById('mensajeExito').style.display = 'block';
+                this.reset();
+            }
+        });
+
+        // Validación en tiempo real para correo y sitio web
+        document.getElementById('correoElectronico').addEventListener('input', function() {
+            const correoRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!correoRegex.test(this.value.trim())) {
+                document.getElementById('errorCorreoElectronico').style.display = 'block';
+            } else {
+                document.getElementById('errorCorreoElectronico').style.display = 'none';
+            }
+        });
+
+        document.getElementById('sitioWeb').addEventListener('input', function() {
+            if (this.value.trim()) {
+                const urlRegex = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
+                if (!urlRegex.test(this.value.trim())) {
+                    document.getElementById('errorSitioWeb').style.display = 'block';
+                } else {
+                    document.getElementById('errorSitioWeb').style.display = 'none';
+                }
+            } else {
+                document.getElementById('errorSitioWeb').style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

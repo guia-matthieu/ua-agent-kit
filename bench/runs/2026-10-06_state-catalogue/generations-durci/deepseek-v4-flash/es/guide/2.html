@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de registro - Universal Acceptance</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: #f5f7fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+        .container {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            width: 100%;
+            max-width: 480px;
+        }
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #1a1a2e;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+            color: #333;
+        }
+        .required label::after {
+            content: " *";
+            color: #c0392b;
+        }
+        input {
+            width: 100%;
+            padding: 0.6rem 0.8rem;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            transition: border-color 0.2s;
+        }
+        input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 2px rgba(59,130,246,0.15);
+        }
+        input.error {
+            border-color: #e74c3c;
+        }
+        .error-message {
+            display: block;
+            color: #c0392b;
+            font-size: 0.85rem;
+            margin-top: 0.3rem;
+            min-height: 1.2em;
+        }
+        button[type="submit"] {
+            width: 100%;
+            padding: 0.75rem;
+            font-size: 1.05rem;
+            font-weight: 600;
+            background: #3b82f6;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        button[type="submit"]:hover {
+            background: #2563eb;
+        }
+        .success-msg {
+            text-align: center;
+            color: #27ae60;
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+        .note {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #777;
+            margin-top: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Registro</h1>
+        <form id="registrationForm" novalidate>
+            <div class="form-group required">
+                <label for="fullname">Nombre completo</label>
+                <input type="text" id="fullname" name="fullname" placeholder="Ej: María García López" autocomplete="name">
+                <span class="error-message" id="fullnameError"></span>
+            </div>
+
+            <div class="form-group required">
+                <label for="email">Correo electrónico</label>
+                <input type="text" id="email" name="email" placeholder="usuario@ejemplo.com" autocomplete="email">
+                <span class="error-message" id="emailError"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="website">Sitio web (opcional)</label>
+                <input type="text" id="website" name="website" placeholder="https://ejemplo.com" autocomplete="url">
+                <span class="error-message" id="websiteError"></span>
+            </div>
+
+            <div class="form-group required">
+                <label for="password">Contraseña</label>
+                <input type="password" id="password" name="password" placeholder="Mín. 8 caracteres, 1 mayúscula, 1 minúscula, 1 número" autocomplete="new-password">
+                <span class="error-message" id="passwordError"></span>
+            </div>
+
+            <button type="submit">Crear cuenta</button>
+        </form>
+        <div id="formSuccess" class="success-msg"></div>
+        <div class="note">✔ Validación compatible con Universal Acceptance (IDN, TLD largos, Unicode)</div>
+    </div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            const form = document.getElementById('registrationForm');
+            const fullnameInput = document.getElementById('fullname');
+            const emailInput = document.getElementById('email');
+            const websiteInput = document.getElementById('website');
+            const passwordInput = document.getElementById('password');
+
+            const fullnameError = document.getElementById('fullnameError');
+            const emailError = document.getElementById('emailError');
+            const websiteError = document.getElementById('websiteError');
+            const passwordError = document.getElementById('passwordError');
+
+            const successMsg = document.getElementById('formSuccess');
+
+            // Limpiar errores previos
+            function clearErrors() {
+                document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
+                document.querySelectorAll('input').forEach(el => el.classList.remove('error'));
+                successMsg.textContent = '';
+            }
+
+            // Mostrar error en un campo
+            function showError(input, errorSpan, message) {
+                if (input) input.classList.add('error');
+                if (errorSpan) errorSpan.textContent = message;
+            }
+
+            // ---------- Validación de nombre completo ----------
+            function validateFullname(name) {
+                if (!name || name.trim() === '') {
+                    return 'El nombre completo es obligatorio.';
+                }
+                const trimmed = name.trim();
+                const words = trimmed.split(/\s+/);
+                if (words.length < 2) {
+                    return 'Ingrese al menos un nombre y un apellido.';
+                }
+                return '';
+            }
+
+            // ---------- Validación de correo (Universal Acceptance) ----------
+            function validateEmail(email) {
+                if (!email || email.trim() === '') {
+                    return 'El correo electrónico es obligatorio.';
+                }
+                const value = email.trim();
+                // Debe contener exactamente un @
+                const atIndex = value.indexOf('@');
+                if (atIndex === -1 || value.indexOf('@', atIndex + 1) !== -1) {
+                    return 'Debe contener un símbolo @.';
+                }
+                const localPart = value.slice(0, atIndex);
+                const domain = value.slice(atIndex + 1);
+
+                if (localPart.length === 0) {
+                    return 'La parte local no puede estar vacía.';
+                }
+                // Permitir caracteres Unicode y ASCII en local part, pero no espacios
+                if (/\s/.test(localPart)) {
+                    return 'La parte local no debe contener espacios.';
+                }
+                // Prohibir puntos inicial o final
+                if (localPart.startsWith('.') || localPart.endsWith('.')) {
+                    return 'La parte local no puede empezar o terminar con punto.';
+                }
+                // Prohibir dos puntos consecutivos en local part
+                if (localPart.includes('..')) {
+                    return 'La parte local no puede contener dos puntos seguidos.';
+                }
+
+                // Dominio: al menos un punto, etiquetas separadas por punto
+                if (domain.length === 0) {
+                    return 'El dominio no puede estar vacío.';
+                }
+                // Rechazar explícitamente ".." en dominio (produce etiqueta vacía)
+                if (domain.includes('..')) {
+                    return 'El dominio no puede contener dos puntos seguidos.';
+                }
+                const labels = domain.split('.');
+                if (labels.length < 2) {
+                    return 'El dominio debe tener al menos dos niveles (ej: ejemplo.com).';
+                }
+                // Cada etiqueta: no vacía, longitud <=63 (aproximado), permitir Unicode y xn--
+                for (const label of labels) {
+                    if (label.length === 0) {
+                        return 'Hay una etiqueta vacía en el dominio.';
+                    }
+                    // Si la etiqueta es un A-label, debe empezar con xn-- (lo permitimos)
+                    if (/^xn--/i.test(label)) {
+                        continue;
+                    }
+                    // No espacios en ninguna etiqueta
+                    if (/\s/.test(label)) {
+                        return 'Las etiquetas del dominio no pueden contener espacios.';
+                    }
+                }
+                // El TLD (última etiqueta) debe tener al menos 2 caracteres (letras o A-label)
+                const tld = labels[labels.length - 1];
+                if (!/^xn--/i.test(tld)) {
+                    // TLD debe contener solo letras (incluye Unicode) y al menos 2
+                    if (!/^[a-zA-Z\u00C0-\u024F\u0250-\u02AF\u0370-\u1FFF\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD]{2,}$/.test(tld)) {
+                        return 'El TLD (última parte) debe tener al menos 2 letras.';
+                    }
+                }
+                // Longitud total del dominio (como ASCII) no debe exceder 253 caracteres
+                if (domain.length > 253) {
+                    return 'El dominio es demasiado largo.';
+                }
+                return '';
+            }
+
+            // ---------- Validación de sitio web (URL) ----------
+            function validateWebsite(url) {
+                if (!url || url.trim() === '') {
+                    return ''; // opcional
+                }
+                const value = url.trim();
+                // Rechazar espacios en toda la URL
+                if (/\s/.test(value)) {
+                    return 'La URL no puede contener espacios.';
+                }
+                try {
+                    const parsed = new URL(value);
+                    if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
+                        return 'La URL debe comenzar con http:// o https://.';
+                    }
+                    // Verificar que el hostname no esté vacío y no tenga espacios
+                    const hostname = parsed.hostname;
+                    if (hostname.length === 0) {
+                        return 'El dominio no puede estar vacío.';
+                    }
+                    if (/\s/.test(hostname)) {
+                        return 'El dominio no puede contener espacios.';
+                    }
+                    return '';
+                } catch (e) {
+                    return 'La URL no es válida.';
+                }
+            }
+
+            // ---------- Validación de contraseña ----------
+            function validatePassword(password) {
+                if (!password || password === '') {
+                    return 'La contraseña es obligatoria.';
+                }
+                if (password.length < 8) {
+                    return 'Debe tener al menos 8 caracteres.';
+                }
+                if (!/[A-Z]/.test(password)) {
+                    return 'Debe contener al menos una letra mayúscula.';
+                }
+                if (!/[a-z]/.test(password)) {
+                    return 'Debe contener al menos una letra minúscula.';
+                }
+                if (!/[0-9]/.test(password)) {
+                    return 'Debe contener al menos un número.';
+                }
+                return '';
+            }
+
+            // ---------- Validación general ----------
+            function validateForm() {
+                clearErrors();
+                let isValid = true;
+
+                // Nombre completo
+                const nameErr = validateFullname(fullnameInput.value);
+                if (nameErr) {
+                    showError(fullnameInput, fullnameError, nameErr);
+                    isValid = false;
+                }
+
+                // Email
+                const emailErr = validateEmail(emailInput.value);
+                if (emailErr) {
+                    showError(emailInput, emailError, emailErr);
+                    isValid = false;
+                }
+
+                // Sitio web (opcional)
+                const webErr = validateWebsite(websiteInput.value);
+                if (webErr) {
+                    showError(websiteInput, websiteError, webErr);
+                    isValid = false;
+                }
+
+                // Contraseña
+                const passErr = validatePassword(passwordInput.value);
+                if (passErr) {
+                    showError(passwordInput, passwordError, passErr);
+                    isValid = false;
+                }
+
+                return isValid;
+            }
+
+            // ---------- Evento submit ----------
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                if (validateForm()) {
+                    successMsg.textContent = '✓ Registro exitoso (simulado). Todos los campos son válidos.';
+                } else {
+                    successMsg.textContent = '';
+                    // Enfocar el primer campo con error
+                    const firstErrorSpan = document.querySelector('.error-message:not(:empty)');
+                    if (firstErrorSpan) {
+                        const input = firstErrorSpan.previousElementSibling; // asume input justo antes
+                        if (input && input.tagName === 'INPUT') input.focus();
+                    }
+                }
+            });
+
+            // Limpiar error al escribir (opcional para mejor UX)
+            document.querySelectorAll('input').forEach(input => {
+                input.addEventListener('input', function() {
+                    const errorSpan = this.parentElement.querySelector('.error-message');
+                    if (errorSpan && errorSpan.textContent !== '') {
+                        errorSpan.textContent = '';
+                        this.classList.remove('error');
+                        successMsg.textContent = '';
+                    }
+                });
+            });
+
+        })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Usuario</title>
+    <style>
+        body{
+            font-family:Arial,Helvetica,sans-serif;
+            margin:2rem;
+            max-width:500px;
+        }
+        form{
+            display:flex;
+            flex-direction:column;
+        }
+        label{
+            margin-top:1rem;
+        }
+        input{
+            padding:0.4rem;
+            font-size:1rem;
+        }
+        .error{
+            color:#d00;
+            font-size:0.9rem;
+            margin-top:0.2rem;
+        }
+        button{
+            margin-top:1.5rem;
+            padding:0.6rem;
+            font-size:1rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>Registro de Usuario</h1>
+
+    <form id="registroForm" novalidate>
+        <label for="nombre">Nombre completo</label>
+        <input type="text" id="nombre" name="nombre" required>
+        <div class="error" id="error-nombre"></div>
+
+        <label for="email">Dirección de correo electrónico</label>
+        <input type="email" id="email" name="email" required>
+        <div class="error" id="error-email"></div>
+
+        <label for="sitio">Sitio web</label>
+        <input type="url" id="sitio" name="sitio" required placeholder="https://ejemplo.com">
+        <div class="error" id="error-sitio"></div>
+
+        <label for="pass">Contraseña</label>
+        <input type="password" id="pass" name="pass" required minlength="6">
+        <div class="error" id="error-pass"></div>
+
+        <button type="submit">Registrarse</button>
+    </form>
+
+    <script>
+        (function(){
+            const form = document.getElementById('registroForm');
+
+            const validators = {
+                nombre: value => value.trim().length > 0,
+                email: value => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
+                sitio: value => {
+                    try {
+                        const url = new URL(value);
+                        return url.protocol === "http:" || url.protocol === "https:";
+                    } catch(e){
+                        return false;
+                    }
+                },
+                pass: value => value.length >= 6
+            };
+
+            const messages = {
+                nombre: "El nombre completo es obligatorio.",
+                email: "Introduce una dirección de correo válida.",
+                sitio: "Introduce una URL válida (http o https).",
+                pass: "La contraseña debe tener al menos 6 caracteres."
+            };
+
+            function showError(id, msg){
+                document.getElementById('error-' + id).textContent = msg;
+            }
+            function clearError(id){
+                document.getElementById('error-' + id).textContent = "";
+            }
+
+            form.addEventListener('submit', function(e){
+                e.preventDefault(); // Prevent actual submission
+
+                let valid = true;
+
+                // Validate each field
+                Object.keys(validators).forEach(id => {
+                    const field = document.getElementById(id);
+                    const value = field.value;
+                    if(!validators[id](value)){
+                        showError(id, messages[id]);
+                        valid = false;
+                    }else{
+                        clearError(id);
+                    }
+                });
+
+                if(valid){
+                    // Si todo está correcto, se podría enviar el formulario.
+                    // Por ahora, mostramos una alerta.
+                    alert('¡Registro completado con éxito!');
+                    form.reset();
+                }
+            });
+
+            // Opcional: validación en tiempo real
+            Object.keys(validators).forEach(id => {
+                const field = document.getElementById(id);
+                field.addEventListener('input', () => {
+                    if(validators[id](field.value)){
+                        clearError(id);
+                    }
+                });
+            });
+        })();
+    </script>
+</body>
+</html>

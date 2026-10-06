@@ -1,0 +1,5 @@
+{
+  "fr": "Ce formulaire accepte des valeurs invalides, par exemple `user@example..com` dans le champ e-mail et `https://exa mple.com` dans le champ site web. Corrige la validation pour refuser les valeurs invalides. Renvoie uniquement le fichier HTML complet.",
+  "en": "This form accepts invalid values, for example `user@example..com` in the email field and `https://exa mple.com` in the website field. Fix the validation so that invalid values are refused. Return only the complete HTML file.",
+  "es": "Este formulario acepta valores no válidos, por ejemplo `user@example..com` en el campo de correo electrónico y `https://exa mple.com` en el campo de sitio web. Corrige la validación para rechazar los valores no válidos. Devuelve únicamente el archivo HTML completo."
+}

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="url"],
+        input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input:invalid {
+            border-color: #ff6b6b;
+        }
+        input:valid {
+            border-color: #4CAF50;
+        }
+        .error {
+            color: #ff6b6b;
+            font-size: 0.8em;
+            margin-top: 5px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .success {
+            color: #4CAF50;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Signup Form</h1>
+    <form id="signupForm">
+        <div class="form-group">
+            <label for="fullName">Full Name:</label>
+            <input type="text" id="fullName" name="fullName" required minlength="2" maxlength="100">
+            <div id="fullNameError" class="error"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email Address:</label>
+            <input type="email" id="email" name="email" required pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$">
+            <div id="emailError" class="error"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="website">Website (optional):</label>
+            <input type="url" id="website" name="website" placeholder="https://example.com">
+            <div id="websiteError" class="error"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required minlength="8" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$">
+            <div id="passwordError" class="error"></div>
+            <small>Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.</small>
+        </div>
+
+        <button type="submit">Sign Up</button>
+    </form>
+
+    <div id="successMessage" class="success"></div>
+
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Clear previous errors
+            document.querySelectorAll('.error').forEach(el => el.textContent = '');
+            document.getElementById('successMessage').textContent = '';
+
+            let isValid = true;
+
+            // Validate Full Name
+            const fullName = document.getElementById('fullName').value.trim();
+            if (fullName === '') {
+                document.getElementById('fullNameError').textContent = 'Full name is required';
+                isValid = false;
+            } else if (fullName.length < 2) {
+                document.getElementById('fullNameError').textContent = 'Full name must be at least 2 characters';
+                isValid = false;
+            } else if (fullName.length > 100) {
+                document.getElementById('fullNameError').textContent = 'Full name must be less than 100 characters';
+                isValid = false;
+            }
+
+            // Validate Email
+            const email = document.getElementById('email').value.trim();
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (email === '') {
+                document.getElementById('emailError').textContent = 'Email is required';
+                isValid = false;
+            } else if (!emailRegex.test(email)) {
+                document.getElementById('emailError').textContent = 'Please enter a valid email address (e.g., user@example.com)';
+                isValid = false;
+            }
+
+            // Validate Website
+            const website = document.getElementById('website').value.trim();
+            const websiteRegex = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
+            if (website && !websiteRegex.test(website)) {
+                document.getElementById('websiteError').textContent = 'Please enter a valid website URL (e.g., https://example.com)';
+                isValid = false;
+            }
+
+            // Validate Password
+            const password = document.getElementById('password').value;
+            if (password === '') {
+                document.getElementById('passwordError').textContent = 'Password is required';
+                isValid = false;
+            } else if (password.length < 8) {
+                document.getElementById('passwordError').textContent = 'Password must be at least 8 characters';
+                isValid = false;
+            } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/.test(password)) {
+                document.getElementById('passwordError').textContent = 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character';
+                isValid = false;
+            }
+
+            if (isValid) {
+                // For demo purposes, show a success message
+                document.getElementById('successMessage').textContent =
+                    'Form submitted successfully! (This is a demo - no actual submission)';
+
+                // Log the data (in a real application, you would submit to a server)
+                console.log('Form data:', {
+                    fullName: fullName,
+                    email: email,
+                    website: website || '',
+                    password: '********' // Masking password for security
+                });
+            }
+        });
+
+        // Real-time validation for email
+        document.getElementById('email').addEventListener('input', function() {
+            const email = this.value.trim();
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            const errorElement = document.getElementById('emailError');
+
+            if (email === '') {
+                errorElement.textContent = '';
+            } else if (!emailRegex.test(email)) {
+                errorElement.textContent = 'Please enter a valid email address (e.g., user@example.com)';
+            } else {
+                errorElement.textContent = '';
+            }
+        });
+
+        // Real-time validation for website
+        document.getElementById('website').addEventListener('input', function() {
+            const website = this.value.trim();
+            const websiteRegex = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
+            const errorElement = document.getElementById('websiteError');
+
+            if (website === '') {
+                errorElement.textContent = '';
+            } else if (!websiteRegex.test(website)) {
+                errorElement.textContent = 'Please enter a valid website URL (e.g., https://example.com)';
+            } else {
+                errorElement.textContent = '';
+            }
+        });
+    </script>
+</body>
+</html>

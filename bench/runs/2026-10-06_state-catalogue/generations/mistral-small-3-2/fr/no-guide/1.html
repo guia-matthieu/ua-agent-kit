@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulaire d'inscription</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .error {
+            color: #d9534f;
+            font-size: 0.9em;
+            margin-top: 5px;
+            display: none;
+        }
+        button {
+            background-color: #5cb85c;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #4cae4c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Inscription</h1>
+        <form id="registrationForm" onsubmit="return validateForm()">
+            <div class="form-group">
+                <label for="fullname">Nom complet</label>
+                <input type="text" id="fullname" name="fullname" required>
+                <div id="fullnameError" class="error">Le nom complet doit contenir au moins 3 caractères</div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Adresse e-mail</label>
+                <input type="email" id="email" name="email" required>
+                <div id="emailError" class="error">Veuillez entrer une adresse e-mail valide</div>
+            </div>
+
+            <div class="form-group">
+                <label for="website">Site web (optionnel)</label>
+                <input type="text" id="website" name="website">
+                <div id="websiteError" class="error">Veuillez entrer une URL valide (ex: https://example.com)</div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Mot de passe</label>
+                <input type="password" id="password" name="password" required>
+                <div id="passwordError" class="error">Le mot de passe doit contenir au moins 8 caractères</div>
+            </div>
+
+            <button type="submit">S'inscrire</button>
+        </form>
+    </div>
+
+    <script>
+        function validateForm() {
+            // Réinitialiser les erreurs
+            document.querySelectorAll('.error').forEach(el => el.style.display = 'none');
+
+            let isValid = true;
+
+            // Validation du nom complet
+            const fullname = document.getElementById('fullname').value.trim();
+            if (fullname.length < 3) {
+                document.getElementById('fullnameError').style.display = 'block';
+                isValid = false;
+            }
+
+            // Validation de l'email
+            const email = document.getElementById('email').value.trim();
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                document.getElementById('emailError').style.display = 'block';
+                isValid = false;
+            }
+
+            // Validation du site web (optionnel)
+            const website = document.getElementById('website').value.trim();
+            if (website && !website.startsWith('http://') && !website.startsWith('https://')) {
+                document.getElementById('websiteError').style.display = 'block';
+                isValid = false;
+            }
+
+            // Validation du mot de passe
+            const password = document.getElementById('password').value;
+            if (password.length < 8) {
+                document.getElementById('passwordError').style.display = 'block';
+                isValid = false;
+            }
+
+            return isValid;
+        }
+    </script>
+</body>
+</html>

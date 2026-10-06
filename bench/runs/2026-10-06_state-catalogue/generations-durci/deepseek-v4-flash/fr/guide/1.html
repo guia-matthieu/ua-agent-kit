@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription – Universal Acceptance</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f7fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+        .form-container {
+            background: #fff;
+            padding: 2rem 2.5rem;
+            border-radius: 1.25rem;
+            box-shadow: 0 8px 30px rgba(0,0,0,.08);
+            width: 100%;
+            max-width: 520px;
+        }
+        h1 {
+            font-size: 1.6rem;
+            margin-bottom: 1.75rem;
+            color: #1e293b;
+            font-weight: 600;
+            text-align: center;
+        }
+        .field {
+            margin-bottom: 1.25rem;
+        }
+        label {
+            display: block;
+            margin-bottom: .35rem;
+            font-weight: 500;
+            color: #1e293b;
+            font-size: .95rem;
+        }
+        input {
+            width: 100%;
+            padding: .7rem .85rem;
+            border: 1.5px solid #d1d5db;
+            border-radius: .6rem;
+            font-size: 1rem;
+            transition: border-color .2s;
+            background: #fafafa;
+        }
+        input:focus {
+            outline: none;
+            border-color: #2563eb;
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(37,99,235,.15);
+        }
+        input.error {
+            border-color: #dc2626;
+            box-shadow: 0 0 0 3px rgba(220,38,38,.12);
+        }
+        .error-message {
+            display: block;
+            color: #dc2626;
+            font-size: .825rem;
+            margin-top: .35rem;
+            min-height: 1.2em;
+        }
+        .success-message {
+            background: #d1fae5;
+            color: #065f46;
+            padding: .7rem 1rem;
+            border-radius: .6rem;
+            margin-top: 1.25rem;
+            text-align: center;
+            font-weight: 500;
+        }
+        button {
+            width: 100%;
+            padding: .8rem;
+            background: #2563eb;
+            color: #fff;
+            border: none;
+            border-radius: .6rem;
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background .2s;
+            margin-top: .5rem;
+        }
+        button:hover {
+            background: #1d4ed8;
+        }
+        .footer-note {
+            font-size: .78rem;
+            color: #6b7280;
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Créer un compte</h1>
+        <form id="signup-form" novalidate>
+            <div class="field">
+                <label for="name">Nom complet</label>
+                <input type="text" id="name" name="name" placeholder="José Dupont" autocomplete="name" required>
+                <span class="error-message" id="name-error"></span>
+            </div>
+            <div class="field">
+                <label for="email">Adresse e-mail</label>
+                <input type="email" id="email" name="email" placeholder="josé.dupont@example.fr" autocomplete="email" required>
+                <span class="error-message" id="email-error"></span>
+            </div>
+            <div class="field">
+                <label for="website">Site web</label>
+                <input type="url" id="website" name="website" placeholder="https://société.fr" autocomplete="url">
+                <span class="error-message" id="website-error"></span>
+            </div>
+            <div class="field">
+                <label for="password">Mot de passe</label>
+                <input type="password" id="password" name="password" placeholder="Ex: P@ssw0rd!" autocomplete="new-password" required>
+                <span class="error-message" id="password-error"></span>
+            </div>
+            <button type="submit">S’inscrire</button>
+            <div id="form-success" class="success-message" style="display:none;"></div>
+        </form>
+        <p class="footer-note">Les adresses e-mail et domaines internationalisés (Unicode) sont acceptés.</p>
+    </div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            const form = document.getElementById('signup-form');
+            const nameInput = document.getElementById('name');
+            const emailInput = document.getElementById('email');
+            const websiteInput = document.getElementById('website');
+            const passwordInput = document.getElementById('password');
+            const nameError = document.getElementById('name-error');
+            const emailError = document.getElementById('email-error');
+            const websiteError = document.getElementById('website-error');
+            const passwordError = document.getElementById('password-error');
+            const successDiv = document.getElementById('form-success');
+
+            function clearErrors() {
+                [nameError, emailError, websiteError, passwordError].forEach(el => el.textContent = '');
+                [nameInput, emailInput, websiteInput, passwordInput].forEach(el => el.classList.remove('error'));
+                successDiv.style.display = 'none';
+                successDiv.textContent = '';
+            }
+
+            function setError(input, errorSpan, message) {
+                input.classList.add('error');
+                errorSpan.textContent = message;
+            }
+
+            // Validation du nom complet : lettres Unicode, espaces, apostrophes, tirets, min 2 caractères
+            function validateFullName(value) {
+                if (value.trim().length === 0) return 'Le nom complet est obligatoire.';
+                if (!/^[\p{L}\p{M}\s\-']{2,}$/u.test(value.trim())) {
+                    return 'Le nom doit contenir au moins 2 caractères alphabétiques (lettres, espaces, tirets, apostrophes).';
+                }
+                return null;
+            }
+
+            // Validation e-mail (Universal Acceptance)
+            function validateEmail(value) {
+                if (value.trim().length === 0) return 'L’adresse e-mail est obligatoire.';
+                const email = value.trim();
+                const atPos = email.indexOf('@');
+                if (atPos === -1) return 'L’adresse e-mail doit contenir un @.';
+                if (email.indexOf('@', atPos + 1) !== -1) return 'L’adresse e-mail ne peut contenir qu’un seul @.';
+                const localPart = email.slice(0, atPos);
+                const domain = email.slice(atPos + 1);
+                if (localPart.length === 0) return 'La partie locale de l’adresse e-mail est vide.';
+                if (domain.length === 0) return 'Le domaine de l’adresse e-mail est vide.';
+                // Espaces interdits
+                if (/[\s]/.test(localPart)) return 'La partie locale ne doit pas contenir d’espace.';
+                if (/[\s]/.test(domain)) return 'Le domaine ne doit pas contenir d’espace.';
+                // Points consécutifs ou aux extrémités (local part et domaine)
+                if (localPart.includes('..') || localPart.startsWith('.') || localPart.endsWith('.')) {
+                    return 'La partie locale contient des points consécutifs ou est mal formée.';
+                }
+                if (domain.includes('..') || domain.startsWith('.') || domain.endsWith('.')) {
+                    return 'Le domaine contient des points consécutifs ou est mal formé.';
+                }
+                // Chaque label du domaine doit avoir au moins 1 caractère, et il faut au moins 2 labels
+                const labels = domain.split('.');
+                if (labels.length < 2) return 'Le domaine doit contenir au moins un point.';
+                for (let label of labels) {
+                    if (label.length === 0) return 'Le domaine contient un label vide.';
+                }
+                // Le TLD doit comporter au moins 2 caractères
+                const tld = labels[labels.length - 1];
+                if (tld.length < 2) return 'Le TLD (dernière partie du domaine) doit comporter au moins 2 caractères.';
+                return null;
+            }
+
+            // Validation du site web
+            function validateWebsite(value) {
+                const url = value.trim();
+                if (url.length === 0) return null; // champ facultatif
+                // Interdire les espaces explicitement
+                if (/[\s]/.test(url)) return 'L’URL ne doit pas contenir d’espace.';
+                try {
+                    const parsed = new URL(url);
+                    if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
+                        return 'L’URL doit commencer par http:// ou https://.';
+                    }
+                    const hostname = parsed.hostname;
+                    // Vérifier points consécutifs ou aux extrémités dans l'hostname
+                    if (hostname.includes('..') || hostname.startsWith('.') || hostname.endsWith('.')) {
+                        return 'Le nom de domaine contient des points consécutifs ou est mal formé.';
+                    }
+                    const parts = hostname.split('.');
+                    if (parts.length < 2) {
+                        return 'Le nom de domaine doit contenir au moins un point (ex: exemple.fr).';
+                    }
+                    for (let part of parts) {
+                        if (part.length === 0) return 'Le nom de domaine contient un label vide.';
+                    }
+                    const tld = parts[parts.length - 1];
+                    if (tld.length < 2) {
+                        return 'Le TLD (dernière partie du domaine) doit comporter au moins 2 caractères.';
+                    }
+                } catch (e) {
+                    return 'Veuillez entrer une URL valide commençant par http:// ou https://.';
+                }
+                return null;
+            }
+
+            // Validation du mot de passe
+            function validatePassword(value) {
+                if (value.length === 0) return 'Le mot de passe est obligatoire.';
+                if (value.length < 8) return 'Le mot de passe doit contenir au moins 8 caractères.';
+                if (!/[a-z]/.test(value)) return 'Le mot de passe doit contenir au moins une lettre minuscule.';
+                if (!/[A-Z]/.test(value)) return 'Le mot de passe doit contenir au moins une lettre majuscule.';
+                if (!/[0-9]/.test(value)) return 'Le mot de passe doit contenir au moins un chiffre.';
+                if (!/[^a-zA-Z0-9]/.test(value)) return 'Le mot de passe doit contenir au moins un caractère spécial (ponctuation, symbole).';
+                return null;
+            }
+
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                clearErrors();
+
+                const nameVal = nameInput.value.trim();
+                const emailVal = emailInput.value.trim();
+                const websiteVal = websiteInput.value.trim();
+                const passwordVal = passwordInput.value;
+
+                let hasError = false;
+
+                const nameErr = validateFullName(nameVal);
+                if (nameErr) {
+                    setError(nameInput, nameError, nameErr);
+                    hasError = true;
+                }
+
+                const emailErr = validateEmail(emailVal);
+                if (emailErr) {
+                    setError(emailInput, emailError, emailErr);
+                    hasError = true;
+                }
+
+                const websiteErr = validateWebsite(websiteVal);
+                if (websiteErr) {
+                    setError(websiteInput, websiteError, websiteErr);
+                    hasError = true;
+                }
+
+                const passwordErr = validatePassword(passwordVal);
+                if (passwordErr) {
+                    setError(passwordInput, passwordError, passwordErr);
+                    hasError = true;
+                }
+
+                if (!hasError) {
+                    successDiv.textContent = '✅ Inscription réussie (simulation). Aucune donnée envoyée.';
+                    successDiv.style.display = 'block';
+                } else {
+                    const firstError = form.querySelector('.error');
+                    if (firstError) firstError.focus();
+                }
+            });
+
+            // Nettoyage des erreurs au fur et à mesure de la saisie
+            [nameInput, emailInput, websiteInput, passwordInput].forEach(input => {
+                input.addEventListener('input', function() {
+                    const errorSpan = this.parentElement.querySelector('.error-message');
+                    if (errorSpan && errorSpan.textContent !== '') {
+                        this.classList.remove('error');
+                        errorSpan.textContent = '';
+                    }
+                    successDiv.style.display = 'none';
+                    successDiv.textContent = '';
+                });
+            });
+        })();
+    </script>
+</body>
+</html>

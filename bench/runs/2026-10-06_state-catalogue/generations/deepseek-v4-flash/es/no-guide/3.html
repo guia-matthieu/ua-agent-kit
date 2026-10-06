@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 1.5rem;
+        }
+        .form-container {
+            background: #ffffff;
+            padding: 2.5rem 3rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+            max-width: 480px;
+            width: 100%;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 1.8rem;
+            font-size: 1.9rem;
+            font-weight: 600;
+            color: #2c3e50;
+            letter-spacing: -0.5px;
+        }
+        .form-group {
+            margin-bottom: 1.3rem;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #34495e;
+            font-size: 0.95rem;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="url"],
+        input[type="password"] {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid #dce1e7;
+            border-radius: 8px;
+            font-size: 1rem;
+            background-color: #fafbfc;
+            transition: border-color 0.25s ease, box-shadow 0.25s ease;
+            font-family: inherit;
+        }
+        input:focus {
+            border-color: #6c8bff;
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(108, 139, 255, 0.15);
+        }
+        .has-error {
+            border-color: #e74c3c !important;
+            box-shadow: 0 0 0 4px rgba(231, 76, 60, 0.2) !important;
+        }
+        .error-message {
+            display: block;
+            color: #e74c3c;
+            font-size: 0.85rem;
+            margin-top: 0.4rem;
+            min-height: 1.4em;
+            line-height: 1.4;
+        }
+        button {
+            width: 100%;
+            padding: 0.9rem;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.15rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            font-family: inherit;
+            margin-top: 0.5rem;
+        }
+        button:hover {
+            background: #2980b9;
+        }
+        button:active {
+            background: #1f618d;
+            transform: scale(0.98);
+        }
+        .success-message {
+            text-align: center;
+            color: #1a7a3b;
+            font-weight: 600;
+            margin-top: 1.2rem;
+            padding: 0.8rem 1rem;
+            background: #e7f5ea;
+            border-radius: 8px;
+            display: none;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>📝 Register</h1>
+        <form id="registrationForm" novalidate>
+            <!-- Full Name -->
+            <div class="form-group">
+                <label for="fullName">Full Name:</label>
+                <input
+                    type="text"
+                    id="fullName"
+                    name="fullName"
+                    placeholder="e.g. John Doe"
+                    autocomplete="name"
+                >
+                <span class="error-message" id="fullNameError"></span>
+            </div>
+
+            <!-- Email -->
+            <div class="form-group">
+                <label for="email">Email Address:</label>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="e.g. john@example.com"
+                    autocomplete="email"
+                >
+                <span class="error-message" id="emailError"></span>
+            </div>
+
+            <!-- Website -->
+            <div class="form-group">
+                <label for="website">Website:</label>
+                <input
+                    type="url"
+                    id="website"
+                    name="website"
+                    placeholder="e.g. https://example.com"
+                    autocomplete="url"
+                >
+                <span class="error-message" id="websiteError"></span>
+            </div>
+
+            <!-- Password -->
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Min 8 chars, 1 upper, 1 lower, 1 number"
+                    autocomplete="new-password"
+                >
+                <span class="error-message" id="passwordError"></span>
+            </div>
+
+            <!-- Submit -->
+            <button type="submit" id="submitBtn">Create Account</button>
+            <div id="successMessage" class="success-message">✅ Registration successful! (Demo)</div>
+        </form>
+    </div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            const form = document.getElementById('registrationForm');
+            const successMsg = document.getElementById('successMessage');
+
+            // ---------- Helper functions ----------
+            function showError(fieldId, message) {
+                const errorSpan = document.getElementById(fieldId + 'Error');
+                const input = document.getElementById(fieldId);
+                if (errorSpan) {
+                    errorSpan.textContent = message;
+                }
+                if (input) {
+                    input.classList.add('has-error');
+                }
+            }
+
+            function clearErrors() {
+                const errorSpans = document.querySelectorAll('.error-message');
+                for (let span of errorSpans) {
+                    span.textContent = '';
+                }
+                const errorInputs = document.querySelectorAll('.has-error');
+                for (let input of errorInputs) {
+                    input.classList.remove('has-error');
+                }
+            }
+
+            // Robust URL validator that actually parses the URL
+            function isValidUrl(string) {
+                try {
+                    let url = string.trim();
+                    if (url === '') return false;
+                    if (!/^https?:\/\//i.test(url)) {
+                        url = 'https://' + url;
+                    }
+                    const parsed = new URL(url);
+                    // Require at least one dot in the hostname for a "website" context
+                    if (!parsed.hostname.includes('.')) {
+                        return false;
+                    }
+                    return true;
+                } catch (_) {
+                    return false;
+                }
+            }
+
+            // ---------- Main validation logic ----------
+            function validateForm() {
+                clearErrors();
+                successMsg.style.display = 'none';
+                let isValid = true;
+
+                // --- Full Name ---
+                const name = document.getElementById('fullName').value.trim();
+                if (name === '') {
+                    showError('fullName', 'Full name is required.');
+                    isValid = false;
+                } else if (name.split(/\s+/).length < 2) {
+                    showError('fullName', 'Please enter your full name (first and last name).');
+                    isValid = false;
+                }
+
+                // --- Email ---
+                const email = document.getElementById('email').value.trim();
+                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (email === '') {
+                    showError('email', 'Email address is required.');
+                    isValid = false;
+                } else if (!emailPattern.test(email)) {
+                    showError('email', 'Please enter a valid email address (e.g., user@example.com).');
+                    isValid = false;
+                }
+
+                // --- Website ---
+                const website = document.getElementById('website').value.trim();
+                if (website === '') {
+                    showError('website', 'Website is required.');
+                    isValid = false;
+                } else if (!isValidUrl(website)) {
+                    showError('website', 'Please enter a valid website URL (e.g., https://example.com).');
+                    isValid = false;
+                }
+
+                // --- Password ---
+                const password = document.getElementById('password').value;
+                if (password === '') {
+                    showError('password', 'Password is required.');
+                    isValid = false;
+                } else if (password.length < 8) {
+                    showError('password', 'Password must be at least 8 characters long.');
+                    isValid = false;
+                } else if (!/[A-Z]/.test(password)) {
+                    showError('password', 'Password must contain at least one uppercase letter.');
+                    isValid = false;
+                } else if (!/[a-z]/.test(password)) {
+                    showError('password', 'Password must contain at least one lowercase letter.');
+                    isValid = false;
+                } else if (!/[0-9]/.test(password)) {
+                    showError('password', 'Password must contain at least one number.');
+                    isValid = false;
+                }
+
+                return isValid;
+            }
+
+            // ---------- Form submission handler ----------
+            form.addEventListener('submit', function(event) {
+                event.preventDefault(); // We control the flow entirely
+                if (validateForm()) {
+                    successMsg.style.display = 'block';
+                    console.log('✅ Form is valid. Data ready for submission.');
+                } else {
+                    console.log('❌ Form has errors. Please correct them.');
+                }
+            });
+
+            // ---------- Real-time error clearing on input ----------
+            const inputs = document.querySelectorAll('input');
+            for (let input of inputs) {
+                input.addEventListener('input', function() {
+                    const errorSpan = document.getElementById(input.id + 'Error');
+                    // Only clear if there is currently an error shown for this field
+                    if (errorSpan && errorSpan.textContent !== '') {
+                        errorSpan.textContent = '';
+                        input.classList.remove('has-error');
+                        // Also hide the general success message if user starts editing again
+                        successMsg.style.display = 'none';
+                    }
+                });
+            }
+        })();
+    </script>
+</body>
+</html>

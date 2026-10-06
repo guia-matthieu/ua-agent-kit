@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Sign‑up</title>
+<style>
+  body {font-family:Arial,sans-serif; max-width:600px; margin:2rem auto;}
+  form {display:grid; gap:0.8rem;}
+  label {display:flex; flex-direction:column; font-weight:600;}
+  input {padding:0.4rem; font-size:1rem;}
+  .error {color:#c00; font-size:0.9rem; height:1.2rem;}
+  button {padding:0.6rem 1.2rem; font-size:1rem;}
+</style>
+</head>
+<body>
+
+<h1>Sign‑up</h1>
+
+<form id="signup" novalidate>
+  <label>
+    Full name
+    <input type="text" id="name" name="name" autocomplete="name" required>
+    <span class="error" id="nameError"></span>
+  </label>
+
+  <label>
+    Email address
+    <input type="text" id="email" name="email" autocomplete="email" required>
+    <span class="error" id="emailError"></span>
+  </label>
+
+  <label>
+    Website
+    <input type="url" id="website" name="website" autocomplete="url" required placeholder="https://example.com">
+    <span class="error" id="websiteError"></span>
+  </label>
+
+  <label>
+    Password
+    <input type="password" id="password" name="password" autocomplete="new-password" required>
+    <span class="error" id="passwordError"></span>
+  </label>
+
+  <button type="submit">Create account</button>
+</form>
+
+<script>
+  // Helper – set text content of an element
+  const setText = (el, txt) => { el.textContent = txt; };
+
+  // -----------------------------------------------------------------
+  // Email validation (Unicode‑aware, strict domain checks)
+  function isValidEmail(email) {
+    if (!email) return false;
+
+    // Disallow surrounding or internal whitespace
+    if (/\s/.test(email)) return false;
+
+    const parts = email.split('@');
+    if (parts.length !== 2) return false;
+
+    const [local, domain] = parts;
+    if (!local) return false;               // empty local part
+
+    // Domain conversion to ASCII (punycode) – throws on illegal characters
+    let asciiDomain;
+    try {
+      asciiDomain = new URL('http://' + domain).hostname;
+    } catch (_) {
+      return false;
+    }
+
+    // Reject spaces or consecutive dots in the original (Unicode) domain
+    if (/\s/.test(domain) || /\.\./.test(domain)) return false;
+
+    // Basic label checks per RFC 1035 §2.3.4
+    const labels = asciiDomain.split('.');
+    if (labels.length < 2) return false; // need at least one sub‑domain + TLD
+
+    for (const lbl of labels) {
+      if (!lbl) return false;          // catches empty label (consecutive dots)
+      if (lbl.length > 63) return false;
+      // Labels may contain letters, digits, hyphens; but not start/end with hyphen
+      if (/^-|-$/.test(lbl) || /[^A-Za-z0-9-]/.test(lbl)) return false;
+    }
+
+    // TLD must be at least 2 characters (covers normal and punycode TLDs)
+    const tld = labels[labels.length - 1];
+    if (tld.length < 2) return false;
+
+    // All checks passed – keep original Unicode for storage if desired
+    return true;
+  }
+
+  // URL validation – enforce http/https, no spaces, no consecutive dots in host
+  function isValidURL(str) {
+    if (!str) return false;
+    if (/\s/.test(str)) return false; // quick reject for any whitespace
+
+    let u;
+    try {
+      u = new URL(str);
+    } catch (_) {
+      return false;
+    }
+
+    if (u.protocol !== 'http:' && u.protocol !== 'https:') return false;
+
+    // Hostname validation similar to email domain rules
+    const host = u.hostname; // already ASCII (punycode) if needed
+    if (host.includes('..')) return false; // consecutive dots not allowed
+
+    const labels = host.split('.');
+    if (labels.length < 2) return false;
+    for (const lbl of labels) {
+      if (!lbl) return false;
+      if (lbl.length > 63) return false;
+      if (/^-|-$/.test(lbl) || /[^A-Za-z0-9-]/.test(lbl)) return false;
+    }
+
+    // TLD length at least 2
+    if (labels[labels.length - 1].length < 2) return false;
+
+    return true;
+  }
+
+  // Simple password policy: minimum 8 characters
+  function isValidPassword(pwd) { return pwd.length >= 8; }
+
+  // Full name must contain at least one non‑space character
+  function isValidName(name) { return name.trim().length > 0; }
+
+  // -----------------------------------------------------------------
+  document.getElementById('signup').addEventListener('submit', function (e) {
+    e.preventDefault(); // stop submission until validation finishes
+
+    // Grab fields and error containers
+    const name          = document.getElementById('name');
+    const email         = document.getElementById('email');
+    const website       = document.getElementById('website');
+    const password      = document.getElementById('password');
+
+    const nameError     = document.getElementById('nameError');
+    const emailError    = document.getElementById('emailError');
+    const websiteError  = document.getElementById('websiteError');
+    const passwordError = document.getElementById('passwordError');
+
+    // Clear previous errors
+    [nameError, emailError, websiteError, passwordError].forEach(el => setText(el, ''));
+
+    let ok = true;
+
+    if (!isValidName(name.value)) {
+      setText(nameError, 'Please enter your full name.');
+      ok = false;
+    }
+
+    if (!isValidEmail(email.value)) {
+      setText(emailError, 'Enter a valid email address.');
+      ok = false;
+    }
+
+    if (!isValidURL(website.value)) {
+      setText(websiteError, 'Enter a valid URL (http/https) without spaces or consecutive dots.');
+      ok = false;
+    }
+
+    if (!isValidPassword(password.value)) {
+      setText(passwordError, 'Password must be at least 8 characters.');
+      ok = false;
+    }
+
+    if (ok) {
+      // Demo action – in a real app you would submit via fetch()/XHR or normal form post
+      alert('All data look good! Submitting…');
+      // this.submit(); // Uncomment to allow actual submission
+    }
+  });
+</script>
+
+</body>
+</html>

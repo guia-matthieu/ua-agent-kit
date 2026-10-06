@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulaire d'Inscription</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        .submit-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+        .submit-btn:hover {
+            background-color: #45a049;
+        }
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Inscription</h1>
+    <form id="registrationForm">
+        <div class="form-group">
+            <label for="fullName">Nom complet :</label>
+            <input type="text" id="fullName" name="fullName" required>
+            <div class="error" id="fullNameError"></div>
+        </div>
+        
+        <div class="form-group">
+            <label for="email">Adresse e-mail :</label>
+            <input type="email" id="email" name="email" required>
+            <div class="error" id="emailError"></div>
+        </div>
+        
+        <div class="form-group">
+            <label for="website">Site web :</label>
+            <input type="url" id="website" name="website">
+            <div class="error" id="websiteError"></div>
+        </div>
+        
+        <div class="form-group">
+            <label for="password">Mot de passe :</label>
+            <input type="password" id="password" name="password" required>
+            <div class="error" id="passwordError"></div>
+        </div>
+        
+        <button type="submit" class="submit-btn">S'inscrire</button>
+    </form>
+    
+    <div class="success-message" id="successMessage">
+        Inscription réussie !
+    </div>
+
+    <script>
+        // Validation universelle pour les adresses email, domaines et URLs
+        function validateEmail(email) {
+            // Utilisation de l'API native du navigateur pour l'IDNA
+            try {
+                const domain = email.split('@')[1];
+                const idnaDomain = new URL(`http://${domain}`).hostname;
+                // Vérification de base de l'email
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            } catch (e) {
+                return false;
+            }
+        }
+
+        function validateDomain(domain) {
+            // Validation universelle des domaines avec support Unicode
+            if (!domain) return false;
+            
+            // Vérification des caractères autorisés
+            const domainRegex = /^[a-zA-Z0-9.-]+(\.[a-zA-Z0-9.-]+)*$/;
+            if (!domainRegex.test(domain)) return false;
+            
+            // Vérification de la longueur totale
+            if (domain.length > 253) return false;
+            
+            // Vérification des étiquettes
+            const labels = domain.split('.');
+            for (let label of labels) {
+                if (label.length === 0 || label.length > 63) return false;
+                if (label.startsWith('-') || label.endsWith('-')) return false;
+            }
+            
+            // Vérification du TLD
+            const tld = labels[labels.length - 1];
+            if (tld.length < 2) return false;
+            
+            // Vérification IDNA avec conversion (si nécessaire)
+            try {
+                // @ts-ignore
+                if (window.IDN && typeof window.IDN.toASCII === 'function') {
+                    // Si la méthode native est disponible
+                    const asciiDomain = window.IDN.toASCII(domain);
+                    return true;
+                }
+                // Sinon, validation basique
+                return true;
+            } catch (e) {
+                // Revenir à une validation basique si IDNA non disponible
+                return /^[a-zA-Z0-9.-]+$/.test(domain);
+            }
+        }
+
+        function validateUrl(url) {
+            // Validation universelle des URLs avec support Unicode
+            if (!url) return true; // Champ optionnel
+            
+            try {
+                // Essayer avec la classe URL native
+                const parsedUrl = new URL(url);
+                return parsedUrl.protocol === 'http:' || parsedUrl.protocol === 'https:';
+            } catch (e) {
+                // Si échec, essayons une validation simplifiée
+                const urlRegex = /^https?:\/\/[^\s/$.?#].[^\s]*$/i;
+                return urlRegex.test(url);
+            }
+        }
+
+        function validatePassword(password) {
+            // Vérification du mot de passe
+            if (password.length < 8) return false;
+            if (!/[A-Z]/.test(password)) return false;
+            if (!/[a-z]/.test(password)) return false;
+            if (!/[0-9]/.test(password)) return false;
+            if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) return false;
+            return true;
+        }
+
+        function showError(fieldId, message) {
+            const errorElement = document.getElementById(fieldId + 'Error');
+            errorElement.textContent = message;
+        }
+
+        function clearError(fieldId) {
+            const errorElement = document.getElementById(fieldId + 'Error');
+            errorElement.textContent = '';
+        }
+
+        function validateForm() {
+            let isValid = true;
+
+            // Validation du nom complet
+            const fullName = document.getElementById('fullName').value.trim();
+            if (fullName.length < 2) {
+                showError('fullName', 'Le nom complet doit contenir au moins 2 caractères.');
+                isValid = false;
+            } else {
+                clearError('fullName');
+            }
+
+            // Validation de l'email
+            const email = document.getElementById('email').value.trim();
+            if (!email) {
+                showError('email', 'L\'adresse e-mail est requise.');
+                isValid = false;
+            } else if (!validateEmail(email)) {
+                showError('email', 'L\'adresse e-mail n\'est pas valide.');
+                isValid = false;
+            } else {
+                clearError('email');
+            }
+
+            // Validation du site web
+            const website = document.getElementById('website').value.trim();
+            if (website && !validateUrl(website)) {
+                showError('website', 'Le site web n\'est pas valide.');
+                isValid = false;
+            } else {
+                clearError('website');
+            }
+
+            // Validation du mot de passe
+            const password = document.getElementById('password').value;
+            if (!password) {
+                showError('password', 'Le mot de passe est requis.');
+                isValid = false;
+            } else if (!validatePassword(password)) {
+                showError('password', 'Le mot de passe doit contenir au moins 8 caractères, avec une majuscule, une minuscule, un chiffre et un caractère spécial.');
+                isValid = false;
+            } else {
+                clearError('password');
+            }
+
+            return isValid;
+        }
+
+        // Événement de soumission du formulaire
+        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (validateForm()) {
+                document.getElementById('successMessage').style.display = 'block';
+                // Réinitialiser le formulaire
+                this.reset();
+            }
+        });
+
+        // Validation en temps réel
+        document.getElementById('fullName').addEventListener('blur', function() {
+            const fullName = this.value.trim();
+            if (fullName.length < 2) {
+                showError('fullName', 'Le nom complet doit contenir au moins 2 caractères.');
+            } else {
+                clearError('fullName');
+            }
+        });
+
+        document.getElementById('email').addEventListener('blur', function() {
+            const email = this.value.trim();
+            if (email && !validateEmail(email)) {
+                showError('email', 'L\'adresse e-mail n\'est pas valide.');
+            } else {
+                clearError('email');
+            }
+        });
+
+        document.getElementById('website').addEventListener('blur', function() {
+            const website = this.value.trim();
+            if (website && !validateUrl(website)) {
+                showError('website', 'Le site web n\'est pas valide.');
+            } else {
+                clearError('website');
+            }
+        });
+
+        document.getElementById('password').addEventListener('blur', function() {
+            const password = this.value;
+            if (password && !validatePassword(password)) {
+                showError('password', 'Le mot de passe doit contenir au moins 8 caractères, avec une majuscule, une minuscule, un chiffre et un caractère spécial.');
+            } else {
+                clearError('password');
+            }
+        });
+    </script>
+</body>
+</html>

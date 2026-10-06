@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universal Signup</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            display: flex;
+            justify-content: center;
+            padding: 2rem;
+            background-color: #f4f4f9;
+        }
+        .form-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        .field-group {
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        input {
+            padding: 0.6rem;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .error-msg {
+            color: #d32f2f;
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+            min-height: 1.2em;
+        }
+        button {
+            width: 100%;
+            padding: 0.8rem;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        input.invalid {
+            border-color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <h2>Create Account</h2>
+        <form id="signupForm" novalidate>
+            <div class="field-group">
+                <label for="fullName">Full Name</label>
+                <input type="text" id="fullName" name="fullName" required>
+                <div id="fullNameError" class="error-msg"></div>
+            </div>
+
+            <div class="field-group">
+                <label for="email">Email Address</label>
+                <!-- type="text" used instead of "email" to allow Unicode local parts 
+                     and avoid browser-specific rewriting/rejection of IDN labels -->
+                <input type="text" id="email" name="email" required>
+                <div id="emailError" class="error-msg"></div>
+            </div>
+
+            <div class="field-group">
+                <label for="website">Website</label>
+                <input type="text" id="website" name="website">
+                <div id="websiteError" class="error-msg"></div>
+            </div>
+
+            <div class="field-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+                <div id="passwordError" class="error-msg"></div>
+            </div>
+
+            <button type="submit">Sign Up</button>
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById('signupForm');
+
+        /**
+         * Universal Acceptance Validation:
+         * 1. Local part: Non-empty, no spaces.
+         * 2. Domain: Dot-separated labels.
+         * 3. TLD: 2+ chars or an A-label (xn--).
+         * This avoids ASCII-only restrictions and TLD length caps.
+         */
+        function validateEmail(email) {
+            if (!email) return false;
+            
+            const parts = email.split('@');
+            if (parts.length !== 2) return false;
+
+            const [local, domain] = parts;
+            if (!local || local.includes(' ')) return false;
+            if (!domain || domain.includes(' ')) return false;
+
+            const domainParts = domain.split('.');
+            if (domainParts.length < 2) return false;
+
+            const tld = domainParts[domainParts.length - 1];
+            // TLD must be 2+ characters OR an A-label starting with xn--
+            if (tld.length < 2 && !tld.startsWith('xn--')) return false;
+
+            return true;
+        }
+
+        function validateUrl(url) {
+            if (!url) return true; // Optional field
+            try {
+                const parsed = new URL(url.startsWith('http') ? url : 'https://' + url);
+                return parsed.hostname.includes('.');
+            } catch (e) {
+                return false;
+            }
+        }
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            let isValid = true;
+
+            // Reset styles
+            document.querySelectorAll('input').forEach(i => i.classList.remove('invalid'));
+            document.querySelectorAll('.error-msg').forEach(m => m.textContent = '');
+
+            // Name Validation
+            const name = document.getElementById('fullName');
+            if (name.value.trim().length < 2) {
+                name.classList.add('invalid');
+                document.getElementById('fullNameError').textContent = 'Please enter your full name.';
+                isValid = false;
+            }
+
+            // Email Validation (UA Compliant)
+            const email = document.getElementById('email');
+            if (!validateEmail(email.value)) {
+                email.classList.add('invalid');
+                document.getElementById('emailError').textContent = 'Please enter a valid email address.';
+                isValid = false;
+            }
+
+            // Website Validation
+            const website = document.getElementById('website');
+            if (!validateUrl(website.value)) {
+                website.classList.add('invalid');
+                document.getElementById('websiteError').textContent = 'Please enter a valid URL.';
+                isValid = false;
+            }
+
+            // Password Validation
+            const password = document.getElementById('password');
+            if (password.value.length < 8) {
+                password.classList.add('invalid');
+                document.getElementById('passwordError').textContent = 'Password must be at least 8 characters.';
+                isValid = false;
+            }
+
+            if (isValid) {
+                alert('Form submitted successfully!');
+                form.reset();
+            }
+        });
+    </script>
+</body>
+</html>

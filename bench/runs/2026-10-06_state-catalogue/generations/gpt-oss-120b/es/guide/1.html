@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Registro de usuario</title>
+<style>
+  body {font-family: Arial, sans-serif; margin: 2rem;}
+  form {max-width: 500px;}
+  .field {margin-bottom: 1rem;}
+  label {display: block; margin-bottom: .3rem;}
+  input {width: 100%; padding: .4rem; box-sizing: border-box;}
+  .error {color:#d00; font-size:.9rem; margin-top:.2rem; display:block;}
+</style>
+</head>
+<body>
+
+<h1>Registro</h1>
+<form id="registerForm" novalidate>
+  <div class="field">
+    <label for="fullname">Nombre completo</label>
+    <input type="text" id="fullname" name="fullname" required>
+    <span class="error" id="err-fullname"></span>
+  </div>
+
+  <div class="field">
+    <label for="email">Correo electrónico</label>
+    <input type="text" id="email" name="email" required>
+    <span class="error" id="err-email"></span>
+  </div>
+
+  <div class="field">
+    <label for="website">Sitio web</label>
+    <input type="url" id="website" name="website" required placeholder="https://ejemplo.com">
+    <span class="error" id="err-website"></span>
+  </div>
+
+  <div class="field">
+    <label for="password">Contraseña</label>
+    <input type="password" id="password" name="password" required>
+    <span class="error" id="err-password"></span>
+  </div>
+
+  <button type="submit">Registrarse</button>
+</form>
+
+<script>
+(() => {
+  const form = document.getElementById('registerForm');
+
+  const errFullName = document.getElementById('err-fullname');
+  const errEmail    = document.getElementById('err-email');
+  const errWebsite  = document.getElementById('err-website');
+  const errPassword = document.getElementById('err-password');
+
+  const clearErrors = () => {
+    errFullName.textContent = '';
+    errEmail.textContent    = '';
+    errWebsite.textContent  = '';
+    errPassword.textContent = '';
+  };
+
+  const showError = (elem, msg) => { elem.textContent = msg; };
+
+  const validateFullName = (value) => {
+    if (!value.trim()) return 'El nombre completo es obligatorio.';
+    // al menos dos palabras
+    if (value.trim().split(/\s+/).length < 2) return 'Introduce al menos dos nombres.';
+    return '';
+  };
+
+  // ---- E‑mail validation (UA‑compatible) ----
+  const validateEmail = (email) => {
+    // must contain exactly one @
+    const parts = email.split('@');
+    if (parts.length !== 2) return 'El correo debe contener un solo “@”.';
+    const [local, domain] = parts;
+
+    // local part: non‑empty, no spaces or control chars
+    if (!local) return 'La parte local del correo no puede estar vacía.';
+    if (/\s/.test(local)) return 'La parte local no puede contener espacios.';
+
+    // domain validation via URL (gives punycode/ASCII form automatically)
+    try {
+      const url = new URL('http://' + domain);
+      const asciiDomain = url.hostname;               // punycode if needed
+      if (asciiDomain.length > 253) return 'El dominio es demasiado largo.';
+      const labels = asciiDomain.split('.');
+      for (const lbl of labels) {
+        if (!lbl) return 'Los labels del dominio no pueden estar vacíos.';
+        if (lbl.length > 63) return 'Un label del dominio supera los 63 caracteres.';
+      }
+      const tld = labels[labels.length - 1];
+      if (tld.length < 2) return 'El TLD debe tener al menos 2 caracteres.';
+      // TLD may start with xn-- (punycode) – already allowed
+    } catch (e) {
+      return 'Dominio del correo no válido.';
+    }
+    return '';
+  };
+
+  const validateWebsite = (value) => {
+    try {
+      const url = new URL(value);
+      if (!/^https?:$/.test(url.protocol)) return 'Sólo se admiten http o https.';
+    } catch {
+      return 'URL no válida.';
+    }
+    return '';
+  };
+
+  const validatePassword = (value) => {
+    if (value.length < 8) return 'La contraseña debe tener al menos 8 caracteres.';
+    if (!/[A-Za-z]/.test(value)) return 'Debe contener al menos una letra.';
+    if (!/[0-9]/.test(value)) return 'Debe contener al menos un número.';
+    return '';
+  };
+
+  form.addEventListener('submit', (e) => {
+    clearErrors();
+    let hasError = false;
+
+    const fullName = form.fullname.value;
+    const email    = form.email.value;
+    const website  = form.website.value;
+    const password = form.password.value;
+
+    const errFN = validateFullName(fullName);
+    if (errFN) { showError(errFullName, errFN); hasError = true; }
+
+    const errEM = validateEmail(email);
+    if (errEM) { showError(errEmail, errEM); hasError = true; }
+
+    const errWS = validateWebsite(website);
+    if (errWS) { showError(errWebsite, errWS); hasError = true; }
+
+    const errPW = validatePassword(password);
+    if (errPW) { showError(errPassword, errPW); hasError = true; }
+
+    if (hasError) e.preventDefault();
+  });
+
+  // opcional: limpiar mensaje al teclear
+  form.addEventListener('input', (e) => {
+    const target = e.target;
+    if (target.id === 'fullname') errFullName.textContent = '';
+    if (target.id === 'email')    errEmail.textContent    = '';
+    if (target.id === 'website')  errWebsite.textContent  = '';
+    if (target.id === 'password') errPassword.textContent = '';
+  });
+})();
+</script>
+
+</body>
+</html>

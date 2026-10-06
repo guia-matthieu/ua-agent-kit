@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up – Universal Acceptance</title>
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f0f2f5;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            line-height: 1.5;
+            color: #1a1a2e;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 1.25rem;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            padding: 2.5rem 2rem;
+            max-width: 520px;
+            width: 100%;
+            transition: box-shadow 0.2s;
+        }
+
+        .card h1 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            letter-spacing: -0.02em;
+            color: #0a0a1a;
+        }
+
+        .card .subtitle {
+            color: #5a5a72;
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+            border-left: 3px solid #3b82f6;
+            padding-left: 0.75rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            font-size: 0.9rem;
+            margin-bottom: 0.4rem;
+            color: #1e1e32;
+        }
+
+        .form-group label .required {
+            color: #dc2626;
+            margin-left: 0.1rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.7rem 0.9rem;
+            font-size: 1rem;
+            border: 1.5px solid #d1d5db;
+            border-radius: 0.65rem;
+            background: #fafafa;
+            transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+            outline: none;
+            font-family: inherit;
+            color: #1a1a2e;
+        }
+
+        .form-group input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+            background: #ffffff;
+        }
+
+        .form-group input.error-border {
+            border-color: #dc2626;
+            background: #fffbfb;
+        }
+
+        .form-group input.error-border:focus {
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12);
+            border-color: #dc2626;
+        }
+
+        .form-group input.success-border {
+            border-color: #16a34a;
+            background: #fafff9;
+        }
+
+        .error-message {
+            font-size: 0.85rem;
+            color: #dc2626;
+            margin-top: 0.3rem;
+            min-height: 1.2em;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            transition: opacity 0.15s;
+        }
+
+        .error-message::before {
+            content: '⚠';
+            font-size: 0.8rem;
+        }
+
+        .error-message:empty::before {
+            content: none;
+        }
+
+        .password-strength {
+            margin-top: 0.4rem;
+            display: flex;
+            gap: 0.3rem;
+            align-items: center;
+            font-size: 0.8rem;
+            color: #6b7280;
+            min-height: 1.2rem;
+        }
+
+        .password-strength .bar {
+            flex: 1;
+            height: 4px;
+            border-radius: 4px;
+            background: #e5e7eb;
+            overflow: hidden;
+            max-width: 120px;
+        }
+
+        .password-strength .bar .fill {
+            height: 100%;
+            width: 0%;
+            border-radius: 4px;
+            transition: width 0.25s, background 0.25s;
+        }
+
+        .password-strength .label {
+            white-space: nowrap;
+            font-weight: 500;
+        }
+
+        .form-actions {
+            margin-top: 1.75rem;
+        }
+
+        .form-actions button {
+            width: 100%;
+            padding: 0.8rem 1.5rem;
+            font-size: 1.05rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 0.75rem;
+            background: #1e3a8a;
+            color: #ffffff;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+            font-family: inherit;
+            letter-spacing: 0.01em;
+        }
+
+        .form-actions button:hover {
+            background: #1e40af;
+        }
+
+        .form-actions button:active {
+            transform: scale(0.98);
+        }
+
+        .form-actions button:focus-visible {
+            outline: 3px solid #3b82f6;
+            outline-offset: 2px;
+        }
+
+        .form-actions button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .success-banner {
+            display: none;
+            background: #dcfce7;
+            border: 1px solid #86d99b;
+            border-radius: 0.75rem;
+            padding: 1rem 1.25rem;
+            margin-top: 1.5rem;
+            color: #166534;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .success-banner.visible {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .success-banner::before {
+            content: '✓';
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                padding: 1.75rem 1.25rem;
+            }
+            .card h1 {
+                font-size: 1.5rem;
+            }
+            .form-group input {
+                padding: 0.6rem 0.75rem;
+                font-size: 0.95rem;
+            }
+        }
+
+        /* Visually hidden but accessible */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>Create your account</h1>
+        <p class="subtitle">All fields required · Supports international names and addresses</p>
+
+        <form id="signupForm" novalidate autocomplete="on">
+            <!-- Full Name -->
+            <div class="form-group">
+                <label for="fullname">Full name <span class="required" aria-hidden="true">*</span></label>
+                <input type="text" id="fullname" name="fullname"
+                placeholder="e.g. Marie Dupont"
+                autocomplete="name"
+                aria-describedby="fullname-error"
+                spellcheck="true" />
+                <div id="fullname-error" class="error-message" role="alert" aria-live="polite"></div>
+            </div>
+
+            <!-- Email -->
+            <div class="form-group">
+                <label for="email">Email address <span class="required" aria-hidden="true">*</span></label>
+                <input type="text" id="email" name="email"
+                placeholder="e.g. marie.dupont@example.fr"
+                autocomplete="email"
+                aria-describedby="email-error"
+                spellcheck="false" />
+                <div id="email-error" class="error-message" role="alert" aria-live="polite"></div>
+            </div>
+
+            <!-- Website -->
+            <div class="form-group">
+                <label for="website">Website <span class="required" aria-hidden="true">*</span></label>
+                <input type="text" id="website" name="website"
+                placeholder="e.g. example.com or https://société.fr"
+                autocomplete="url"
+                aria-describedby="website-error"
+                spellcheck="false" />
+                <div id="website-error" class="error-message" role="alert" aria-live="polite"></div>
+            </div>
+
+            <!-- Password -->
+            <div class="form-group">
+                <label for="password">Password <span class="required" aria-hidden="true">*</span></label>
+                <input type="password" id="password" name="password"
+                placeholder="Min. 8 characters with uppercase, lowercase, digit, symbol"
+                autocomplete="new-password"
+                aria-describedby="password-error password-strength-hint"
+                spellcheck="false" />
+                <div id="password-error" class="error-message" role="alert" aria-live="polite"></div>
+                <div id="password-strength-hint" class="password-strength" aria-live="polite">
+                    <span class="bar"><span class="fill" id="strengthFill"></span></span>
+                    <span class="label" id="strengthLabel"></span>
+                </div>
+            </div>
+
+            <!-- Submit -->
+            <div class="form-actions">
+                <button type="submit" id="submitBtn">Sign up</button>
+            </div>
+        </form>
+
+        <div id="successBanner" class="success-banner" role="status">Account created successfully (demo).</div>
+    </div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            // ---- DOM refs ----
+            const form = document.getElementById('signupForm');
+            const fullnameInput = document.getElementById('fullname');
+            const emailInput = document.getElementById('email');
+            const websiteInput = document.getElementById('website');
+            const passwordInput = document.getElementById('password');
+            const submitBtn = document.getElementById('submitBtn');
+            const successBanner = document.getElementById('successBanner');
+
+            const nameError = document.getElementById('fullname-error');
+            const emailError = document.getElementById('email-error');
+            const websiteError = document.getElementById('website-error');
+            const passwordError = document.getElementById('password-error');
+            const strengthFill = document.getElementById('strengthFill');
+            const strengthLabel = document.getElementById('strengthLabel');
+
+            // ---- Utility: IDNA domain normalisation via URL API ----
+            function normalizeDomain(domain) {
+                if (!domain || typeof domain !== 'string') return null;
+                let d = domain.trim();
+                if (d.length === 0) return null;
+                // Remove trailing dot if present
+                if (d.endsWith('.')) d = d.slice(0, -1);
+                try {
+                    const url = new URL('http://' + d);
+                    const host = url.hostname;
+                    // The URL API lowercases and converts IDN labels to punycode.
+                    // It also rejects obviously invalid domains.
+                    // We must ensure there's at least one dot (or it's 'localhost').
+                    if (host === 'localhost') return 'localhost';
+                    if (!host.includes('.')) return null;
+                    return host;
+                } catch (_) {
+                    return null;
+                }
+            }
+
+            // ---- Validation helpers ----
+            function isEmpty(val) {
+                return !val || val.trim().length === 0;
+            }
+
+            // ---- Full name validation ----
+            function validateName(val) {
+                const v = (val || '').trim();
+                if (v.length === 0) return 'Full name is required.';
+                if (v.length < 2) return 'Full name must be at least 2 characters.';
+                if (v.length > 100) return 'Full name must be at most 100 characters.';
+                // Reject obvious script injection (basic)
+                if (/[<>{}\\]/.test(v)) return 'Full name contains invalid characters.';
+                return '';
+            }
+
+            // ---- Email validation (UA-aware) ----
+            function validateEmail(val) {
+                const v = (val || '').trim();
+                if (v.length === 0) return 'Email address is required.';
+
+                // Must contain exactly one @
+                const atCount = (v.match(/@/g) || []).length;
+                if (atCount === 0) return 'Email must contain an "@" symbol.';
+                if (atCount > 1) return 'Email must contain exactly one "@" symbol.';
+
+                const parts = v.split('@');
+                const localPart = parts[0];
+                const domain = parts[1];
+
+                // Local part checks
+                if (!localPart || localPart.length === 0) return 'Local part (before @) is missing.';
+                if (localPart.length > 64) return 'Local part must be at most 64 characters.';
+                // Reject spaces
+                if (/\s/.test(localPart)) return 'Local part must not contain spaces.';
+                // Reject control characters
+                if (/[\x00-\x1F\x7F]/.test(localPart)) return 'Local part contains invalid control characters.';
+                // Allow Unicode letters, digits, and common symbols.
+                // Reject characters that are blatantly invalid in any context:
+                //   " ( ) , : ; < > [ \ ]  (these are not allowed in unquoted local parts)
+                if (/["(),:;<>[\]\\]/.test(localPart)) return 'Local part contains invalid characters.';
+
+                // Domain checks
+                if (!domain || domain.trim().length === 0) return 'Domain part (after @) is missing.';
+
+                const normalized = normalizeDomain(domain);
+                if (!normalized) return 'Domain part is not a valid domain name.';
+
+                if (normalized === 'localhost') return 'Email domain cannot be "localhost".';
+
+                const labels = normalized.split('.');
+                const tld = labels[labels.length - 1];
+
+                // TLD must be at least 2 chars OR an A-label (xn--...)
+                if (tld.length < 2 && !tld.startsWith('xn--')) {
+                    return 'Top-level domain must be at least 2 characters.';
+                }
+                if (tld.length > 63) return 'Top-level domain is too long.';
+
+                // Each label must be 1–63 chars
+                for (const label of labels) {
+                    if (label.length === 0) return 'Domain contains an empty label.';
+                    if (label.length > 63) return 'A domain label exceeds 63 characters.';
+                }
+
+                return '';
+            }
+
+            // ---- Website validation (UA-aware) ----
+            function validateWebsite(val) {
+                const v = (val || '').trim();
+                if (v.length === 0) return 'Website is required.';
+
+                let urlStr = v;
+                // Prepend https:// if no scheme
+                if (!/^[a-zA-Z][a-zA-Z0-9+\-.]*:\/\//.test(urlStr)) {
+                    urlStr = 'https://' + urlStr;
+                }
+
+                let parsed;
+                try {
+                    parsed = new URL(urlStr);
+                } catch (_) {
+                    return 'Please enter a valid website URL.';
+                }
+
+                // Only http / https
+                if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
+                    return 'Website must use http or https.';
+                }
+
+                const hostname = parsed.hostname;
+                if (!hostname || hostname.length === 0) return 'Website hostname is missing.';
+
+                // Allow localhost for testing, but require a dot otherwise
+                if (hostname !== 'localhost' && !hostname.includes('.')) {
+                    return 'Website domain must include a top-level domain (e.g. .com, .fr, .рф).';
+                }
+
+                // Validate domain structure via normalizeDomain (IDNA + label checks)
+                if (hostname !== 'localhost') {
+                    const normalized = normalizeDomain(hostname);
+                    if (!normalized) return 'Website domain is not valid.';
+
+                    const labels = normalized.split('.');
+                    const tld = labels[labels.length - 1];
+                    if (tld.length < 2 && !tld.startsWith('xn--') && tld !== 'localhost') {
+                        return 'Top-level domain must be at least 2 characters.';
+                    }
+                    if (tld.length > 63) return 'Top-level domain is too long.';
+                    for (const label of labels) {
+                        if (label.length === 0) return 'Domain contains an empty label.';
+                        if (label.length > 63) return 'A domain label exceeds 63 characters.';
+                    }
+                }
+
+                // Reject common malformed patterns
+                if (hostname.startsWith('.') || hostname.endsWith('.')) {
+                    return 'Domain must not start or end with a dot.';
+                }
+
+                return '';
+            }
+
+            // ---- Password validation ----
+            function validatePassword(val) {
+                const v = val || '';
+                if (v.length === 0) return 'Password is required.';
+                if (v.length < 8) return 'Password must be at least 8 characters.';
+                if (v.length > 128) return 'Password must be at most 128 characters.';
+
+                let missing = [];
+                if (!/[A-Z]/.test(v)) missing.push('uppercase letter');
+                if (!/[a-z]/.test(v)) missing.push('lowercase letter');
+                if (!/[0-9]/.test(v)) missing.push('digit');
+                if (!/[^A-Za-z0-9]/.test(v)) missing.push('symbol');
+
+                if (missing.length > 0) {
+                    return 'Password missing: ' + missing.join(', ') + '.';
+                }
+
+                // Common weak patterns check
+                const lower = v.toLowerCase();
+                const common = ['password', '12345678', 'qwerty', 'abc123', 'letmein', 'admin'];
+                for (const c of common) {
+                    if (lower.includes(c)) return 'Password contains a common pattern.';
+                }
+
+                return '';
+            }
+
+            // ---- Password strength meter (visual only, uses the same checks) ----
+            function updateStrength(val) {
+                const v = val || '';
+                let score = 0;
+                if (v.length >= 8) score += 1;
+                if (v.length >= 12) score += 1;
+                if (/[A-Z]/.test(v)) score += 1;
+                if (/[a-z]/.test(v)) score += 1;
+                if (/[0-9]/.test(v)) score += 1;
+                if (/[^A-Za-z0-9]/.test(v)) score += 1;
+
+                let pct = 0;
+                let label = '';
+                let color = '#e5e7eb';
+
+                if (v.length === 0) {
+                    pct = 0;
+                    label = '';
+                    color = '#e5e7eb';
+                } else if (score <= 2) {
+                    pct = 25;
+                    label = 'Weak';
+                    color = '#dc2626';
+                } else if (score <= 3) {
+                    pct = 50;
+                    label = 'Fair';
+                    color = '#f59e0b';
+                } else if (score <= 4) {
+                    pct = 75;
+                    label = 'Good';
+                    color = '#3b82f6';
+                } else {
+                    pct = 100;
+                    label = 'Strong';
+                    color = '#16a34a';
+                }
+
+                strengthFill.style.width = pct + '%';
+                strengthFill.style.background = color;
+                strengthLabel.textContent = label;
+            }
+
+            // ---- Render a single field error ----
+            function setError(errorEl, message, inputEl) {
+                errorEl.textContent = message;
+                if (message) {
+                    inputEl.classList.add('error-border');
+                    inputEl.classList.remove('success-border');
+                } else {
+                    inputEl.classList.remove('error-border');
+                    inputEl.classList.add('success-border');
+                }
+            }
+
+            function clearAllErrors() {
+                [nameError, emailError, websiteError, passwordError].forEach(el => el.textContent = '');
+                [fullnameInput, emailInput, websiteInput, passwordInput].forEach(el => {
+                    el.classList.remove('error-border');
+                    el.classList.remove('success-border');
+                });
+                successBanner.classList.remove('visible');
+            }
+
+            // ---- Main validation routine (runs on submit) ----
+            function validateForm() {
+                clearAllErrors();
+
+                const nameVal = fullnameInput.value;
+                const emailVal = emailInput.value;
+                const websiteVal = websiteInput.value;
+                const passwordVal = passwordInput.value;
+
+                const nameErr = validateName(nameVal);
+                const emailErr = validateEmail(emailVal);
+                const websiteErr = validateWebsite(websiteVal);
+                const passwordErr = validatePassword(passwordVal);
+
+                let hasError = false;
+
+                if (nameErr) { setError(nameError, nameErr, fullnameInput);
+                    hasError = true; } else { setError(nameError, '', fullnameInput); }
+                if (emailErr) { setError(emailError, emailErr, emailInput);
+                    hasError = true; } else { setError(emailError, '', emailInput); }
+                if (websiteErr) { setError(websiteError, websiteErr, websiteInput);
+                    hasError = true; } else { setError(websiteError, '', websiteInput); }
+                if (passwordErr) { setError(passwordError, passwordErr, passwordInput);
+                    hasError = true; } else { setError(passwordError, '', passwordInput); }
+
+                // If no errors, show success demo
+                if (!hasError) {
+                    successBanner.classList.add('visible');
+                    // Scroll to top so the banner is visible
+                    successBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    // In a real app you'd submit the form here.
+                    // For demo we prevent actual submission.
+                } else {
+                    successBanner.classList.remove('visible');
+                    // Focus the first field with an error
+                    const firstError = [
+                        [nameErr, fullnameInput],
+                        [emailErr, emailInput],
+                        [websiteErr, websiteInput],
+                        [passwordErr, passwordInput]
+                    ].find(([err]) => err);
+                    if (firstError) {
+                        firstError[1].focus();
+                    }
+                }
+
+                return !hasError;
+            }
+
+            // ---- Form submit handler ----
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                validateForm();
+            });
+
+            // ---- Live password strength indicator ----
+            passwordInput.addEventListener('input', function() {
+                updateStrength(this.value);
+                // Clear error while typing (but keep border if invalid)
+                const err = validatePassword(this.value);
+                if (!err) {
+                    setError(passwordError, '', passwordInput);
+                } else {
+                    // Don't show full error on every keystroke; just update border
+                    // but keep error message empty while typing to reduce noise.
+                    // The error will appear on submit.
+                    passwordError.textContent = '';
+                    if (this.value.length > 0) {
+                        passwordInput.classList.add('error-border');
+                    } else {
+                        passwordInput.classList.remove('error-border');
+                    }
+                }
+            });
+
+            // ---- Blur validation for each field (gentle hint, not full error) ----
+            fullnameInput.addEventListener('blur', function() {
+                if (isEmpty(this.value)) return; // don't nag on empty blur
+                const err = validateName(this.value);
+                if (err) {
+                    setError(nameError, err, this);
+                } else {
+                    setError(nameError, '', this);
+                }
+            });
+
+            emailInput.addEventListener('blur', function() {
+                if (isEmpty(this.value)) return;
+                const err = validateEmail(this.value);
+                if (err) {
+                    setError(emailError, err, this);
+                } else {
+                    setError(emailError, '', this);
+                }
+            });
+
+            websiteInput.addEventListener('blur', function() {
+                if (isEmpty(this.value)) return;
+                const err = validateWebsite(this.value);
+                if (err) {
+                    setError(websiteError, err, this);
+                } else {
+                    setError(websiteError, '', this);
+                }
+            });
+
+            passwordInput.addEventListener('blur', function() {
+                if (isEmpty(this.value)) return;
+                const err = validatePassword(this.value);
+                if (err) {
+                    setError(passwordError, err, this);
+                } else {
+                    setError(passwordError, '', this);
+                }
+            });
+
+            // ---- Clear success banner when any field changes ----
+            form.addEventListener('input', function() {
+                successBanner.classList.remove('visible');
+            });
+
+            // ---- Init strength meter at idle ----
+            updateStrength('');
+
+            // ---- Announce the form is ready (accessibility) ----
+            console.log('UA-aware signup form loaded. All fields validated with IDN/Unicode support.');
+        })();
+    </script>
+</body>
+</html>

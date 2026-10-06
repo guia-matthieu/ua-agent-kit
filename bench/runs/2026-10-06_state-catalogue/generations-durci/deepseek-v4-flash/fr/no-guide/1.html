@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulaire d'inscription</title>
+    <style>
+        /* Style intégré simple */
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background: #fff;
+            border-radius: 8px;
+            padding: 30px 25px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-sizing: border-box;
+        }
+        h2 {
+            margin-top: 0;
+            color: #333;
+            text-align: center;
+            font-weight: 600;
+        }
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #444;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="url"] {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+        input:focus {
+            outline: none;
+            border-color: #4a90e2;
+            box-shadow: 0 0 0 3px rgba(74,144,226,0.15);
+        }
+        .error-message {
+            color: #d32f2f;
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: block;
+            min-height: 1em;
+            line-height: 1.2;
+        }
+        .error-message:empty {
+            display: none;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #4a90e2;
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #357abd;
+        }
+        .success-message {
+            background-color: #e6f4e6;
+            border: 1px solid #b2d8b2;
+            color: #2e7d32;
+            padding: 10px;
+            border-radius: 4px;
+            text-align: center;
+            margin-top: 15px;
+            display: none;
+        }
+        .success-message.show {
+            display: block;
+        }
+        .input-error {
+            border-color: #d32f2f !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Créer un compte</h2>
+
+        <form id="registration-form" novalidate>
+            <!-- Champ nom complet -->
+            <div class="form-group">
+                <label for="fullname">Nom complet</label>
+                <input type="text" id="fullname" name="fullname" placeholder="Jean Dupont" autocomplete="name">
+                <span class="error-message" id="fullname-error"></span>
+            </div>
+
+            <!-- Champ email -->
+            <div class="form-group">
+                <label for="email">Adresse e-mail</label>
+                <input type="email" id="email" name="email" placeholder="exemple@domaine.com" autocomplete="email">
+                <span class="error-message" id="email-error"></span>
+            </div>
+
+            <!-- Champ site web -->
+            <div class="form-group">
+                <label for="website">Site web</label>
+                <input type="url" id="website" name="website" placeholder="https://monsite.com" autocomplete="url">
+                <span class="error-message" id="website-error"></span>
+            </div>
+
+            <!-- Champ mot de passe -->
+            <div class="form-group">
+                <label for="password">Mot de passe</label>
+                <input type="password" id="password" name="password" placeholder="8 caractères minimum" autocomplete="new-password">
+                <span class="error-message" id="password-error"></span>
+            </div>
+
+            <button type="submit">S'inscrire</button>
+        </form>
+
+        <!-- Message de succès -->
+        <div id="success-message" class="success-message">Inscription réussie (simulation) !</div>
+    </div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            // Récupération des éléments
+            const form = document.getElementById('registration-form');
+            const fullnameInput = document.getElementById('fullname');
+            const emailInput = document.getElementById('email');
+            const websiteInput = document.getElementById('website');
+            const passwordInput = document.getElementById('password');
+
+            const fullnameError = document.getElementById('fullname-error');
+            const emailError = document.getElementById('email-error');
+            const websiteError = document.getElementById('website-error');
+            const passwordError = document.getElementById('password-error');
+            const successMessage = document.getElementById('success-message');
+
+            // Fonctions utilitaires pour les erreurs
+            function setError(input, errorElement, message) {
+                errorElement.textContent = message;
+                input.classList.add('input-error');
+                input.setAttribute('aria-invalid', 'true');
+            }
+
+            function clearError(input, errorElement) {
+                errorElement.textContent = '';
+                input.classList.remove('input-error');
+                input.removeAttribute('aria-invalid');
+            }
+
+            // ---------- Validation renforcée de l'email ----------
+            function validateEmail() {
+                const value = emailInput.value.trim();
+                if (value.length === 0) {
+                    setError(emailInput, emailError, 'L\'adresse e-mail est obligatoire.');
+                    return false;
+                }
+
+                // Vérifier la présence d'un seul '@'
+                const atIndex = value.indexOf('@');
+                if (atIndex === -1 || value.indexOf('@', atIndex + 1) !== -1) {
+                    setError(emailInput, emailError, 'L\'adresse e-mail doit contenir un seul @.');
+                    return false;
+                }
+
+                const localPart = value.substring(0, atIndex);
+                const domain = value.substring(atIndex + 1);
+
+                // Vérifications de la partie locale
+                if (localPart.length === 0) {
+                    setError(emailInput, emailError, 'La partie avant @ ne peut pas être vide.');
+                    return false;
+                }
+                // Interdire les points consécutifs dans la partie locale
+                if (localPart.includes('..')) {
+                    setError(emailInput, emailError, 'La partie locale ne peut pas contenir deux points consécutifs.');
+                    return false;
+                }
+                // Ne doit pas commencer ou finir par un point
+                if (localPart.startsWith('.') || localPart.endsWith('.')) {
+                    setError(emailInput, emailError, 'La partie locale ne peut pas commencer ou finir par un point.');
+                    return false;
+                }
+                // Limitation des caractères autorisés (lettres, chiffres, certains spéciaux)
+                const validLocal = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+$/.test(localPart);
+                if (!validLocal) {
+                    setError(emailInput, emailError, 'La partie locale contient des caractères non autorisés.');
+                    return false;
+                }
+
+                // Vérifications du domaine
+                if (domain.length === 0) {
+                    setError(emailInput, emailError, 'Le domaine après @ ne peut pas être vide.');
+                    return false;
+                }
+                // Interdire les points consécutifs dans le domaine
+                if (domain.includes('..')) {
+                    setError(emailInput, emailError, 'Le domaine ne peut pas contenir deux points consécutifs.');
+                    return false;
+                }
+                // Ne doit pas commencer ou finir par un point
+                if (domain.startsWith('.') || domain.endsWith('.')) {
+                    setError(emailInput, emailError, 'Le domaine ne peut pas commencer ou finir par un point.');
+                    return false;
+                }
+                // Vérifier que le domaine a au moins un point (TLD)
+                const lastDot = domain.lastIndexOf('.');
+                if (lastDot === -1) {
+                    setError(emailInput, emailError, 'Le domaine doit contenir un point (exemple : domaine.com).');
+                    return false;
+                }
+                // Le TLD (après le dernier point) doit faire au moins 2 lettres
+                const tld = domain.substring(lastDot + 1);
+                if (tld.length < 2 || !/^[a-zA-Z]{2,}$/.test(tld)) {
+                    setError(emailInput, emailError, 'L\'extension (TLD) doit contenir au moins 2 lettres (exemple: .com, .fr).');
+                    return false;
+                }
+                // Chaque sous-domaine ne doit pas commencer ou finir par un tiret
+                const labels = domain.split('.');
+                for (let label of labels) {
+                    if (label.startsWith('-') || label.endsWith('-')) {
+                        setError(emailInput, emailError, 'Chaque partie du domaine ne peut pas commencer ou finir par un tiret.');
+                        return false;
+                    }
+                }
+
+                // Validation supplémentaire avec une regex robuste (sécurité)
+                const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*\.[a-zA-Z]{2,}$/;
+                if (!emailRegex.test(value)) {
+                    setError(emailInput, emailError, 'Format d\'email invalide (exemple: user@domain.com).');
+                    return false;
+                }
+
+                clearError(emailInput, emailError);
+                return true;
+            }
+
+            // ---------- Validation URL renforcée ----------
+            function validateWebsite() {
+                const value = websiteInput.value.trim();
+                if (value === '') {
+                    clearError(websiteInput, websiteError);
+                    return true; // champ optionnel
+                }
+
+                // Interdire les espaces
+                if (value.indexOf(' ') !== -1) {
+                    setError(websiteInput, websiteError, 'L\'URL ne doit pas contenir d\'espaces.');
+                    return false;
+                }
+
+                // Si aucun schéma n'est fourni, on ajoute https:// pour la validation
+                let urlToTest = value;
+                if (!/^https?:\/\//i.test(urlToTest)) {
+                    urlToTest = 'https://' + urlToTest;
+                }
+
+                // Vérification à l'aide de l'objet URL (valide et normalise)
+                try {
+                    const parsed = new URL(urlToTest);
+                    // S'assurer que l'hôte contient au moins un point
+                    if (parsed.hostname.indexOf('.') === -1) {
+                        throw new Error('Pas de point dans le nom d\'hôte');
+                    }
+                    // Rejeter les adresses IP nues ou localhost ? Acceptable mais on peut laisser
+                } catch (e) {
+                    setError(websiteInput, websiteError, 'Veuillez saisir une URL valide (exemple: https://exemple.com).');
+                    return false;
+                }
+
+                clearError(websiteInput, websiteError);
+                return true;
+            }
+
+            // ---------- Validation nom complet ----------
+            function validateFullname() {
+                const value = fullnameInput.value.trim();
+                if (value.length === 0) {
+                    setError(fullnameInput, fullnameError, 'Le nom complet est obligatoire.');
+                    return false;
+                } else if (value.length < 2) {
+                    setError(fullnameInput, fullnameError, 'Le nom doit comporter au moins 2 caractères.');
+                    return false;
+                }
+                // Optionnel : empêcher les chiffres seuls, mais on laisse
+                clearError(fullnameInput, fullnameError);
+                return true;
+            }
+
+            // ---------- Validation mot de passe ----------
+            function validatePassword() {
+                const value = passwordInput.value;
+                if (value.length === 0) {
+                    setError(passwordInput, passwordError, 'Le mot de passe est obligatoire.');
+                    return false;
+                } else if (value.length < 8) {
+                    setError(passwordInput, passwordError, 'Le mot de passe doit contenir au moins 8 caractères.');
+                    return false;
+                }
+                clearError(passwordInput, passwordError);
+                return true;
+            }
+
+            // Validation de tout le formulaire
+            function validateForm() {
+                const validFullname = validateFullname();
+                const validEmail = validateEmail();
+                const validWebsite = validateWebsite();
+                const validPassword = validatePassword();
+                return validFullname && validEmail && validWebsite && validPassword;
+            }
+
+            // Validation en temps réel (efface l'erreur si corrigée)
+            fullnameInput.addEventListener('input', function() {
+                if (fullnameError.textContent !== '') validateFullname();
+            });
+            emailInput.addEventListener('input', function() {
+                if (emailError.textContent !== '') validateEmail();
+            });
+            websiteInput.addEventListener('input', function() {
+                if (websiteError.textContent !== '') validateWebsite();
+            });
+            passwordInput.addEventListener('input', function() {
+                if (passwordError.textContent !== '') validatePassword();
+            });
+
+            // Soumission
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+                successMessage.classList.remove('show');
+
+                if (validateForm()) {
+                    successMessage.classList.add('show');
+                    form.reset();
+                    // Nettoyer les éventuelles classes d'erreur résiduelles
+                    clearError(fullnameInput, fullnameError);
+                    clearError(emailInput, emailError);
+                    clearError(websiteInput, websiteError);
+                    clearError(passwordInput, passwordError);
+                }
+            });
+
+            // Effacement des erreurs au focus sur un champ
+            [fullnameInput, emailInput, websiteInput, passwordInput].forEach(input => {
+                input.addEventListener('focus', function() {
+                    const errorId = input.id + '-error';
+                    const errorElement = document.getElementById(errorId);
+                    if (errorElement && errorElement.textContent !== '') {
+                        errorElement.textContent = '';
+                        input.classList.remove('input-error');
+                        input.removeAttribute('aria-invalid');
+                    }
+                });
+            });
+        })();
+    </script>
+</body>
+</html>

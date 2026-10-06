@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulaire d'Inscription</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .form-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        
+        input[type="text"],
+        input[type="email"],
+        input[type="url"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        
+        input.invalid {
+            border-color: #ff4444;
+        }
+        
+        .error-message {
+            color: #ff4444;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        .submit-btn:hover {
+            background-color: #45a049;
+        }
+        
+        .submit-btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Inscription</h1>
+        <form id="registrationForm" novalidate>
+            <div class="form-group">
+                <label for="fullName">Nom complet *</label>
+                <input type="text" id="fullName" name="fullName" required>
+                <div class="error-message" id="fullNameError"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Adresse e-mail *</label>
+                <input type="email" id="email" name="email" required>
+                <div class="error-message" id="emailError"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="website">Site web</label>
+                <input type="url" id="website" name="website">
+                <div class="error-message" id="websiteError"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Mot de passe *</label>
+                <input type="password" id="password" name="password" required>
+                <div class="error-message" id="passwordError"></div>
+            </div>
+            
+            <button type="submit" class="submit-btn">S'inscrire</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('registrationForm');
+            const inputs = form.querySelectorAll('input');
+            
+            // Ajouter un écouteur d'événement pour chaque champ
+            inputs.forEach(input => {
+                input.addEventListener('blur', validateField);
+                input.addEventListener('input', clearError);
+            });
+            
+            // Validation au submit
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                let isValid = true;
+                
+                // Valider tous les champs
+                const fullName = document.getElementById('fullName');
+                const email = document.getElementById('email');
+                const website = document.getElementById('website');
+                const password = document.getElementById('password');
+                
+                if (!validateField({ target: fullName })) isValid = false;
+                if (!validateField({ target: email })) isValid = false;
+                if (!validateField({ target: website })) isValid = false;
+                if (!validateField({ target: password })) isValid = false;
+                
+                if (isValid) {
+                    alert('Inscription réussie !');
+                    form.reset();
+                }
+            });
+            
+            function validateField(e) {
+                const field = e.target;
+                const fieldName = field.name;
+                const value = field.value.trim();
+                const errorElement = document.getElementById(fieldName + 'Error');
+                
+                // Effacer l'erreur précédente
+                clearError({ target: field });
+                
+                switch(fieldName) {
+                    case 'fullName':
+                        if (value === '') {
+                            showError(field, errorElement, 'Le nom complet est requis.');
+                            return false;
+                        } else if (value.length < 2) {
+                            showError(field, errorElement, 'Le nom complet doit contenir au moins 2 caractères.');
+                            return false;
+                        }
+                        break;
+                        
+                    case 'email':
+                        if (value === '') {
+                            showError(field, errorElement, 'L\'adresse e-mail est requise.');
+                            return false;
+                        } else if (!isValidEmail(value)) {
+                            showError(field, errorElement, 'Veuillez entrer une adresse e-mail valide.');
+                            return false;
+                        }
+                        break;
+                        
+                    case 'website':
+                        if (value !== '' && !isValidUrl(value)) {
+                            showError(field, errorElement, 'Veuillez entrer une URL valide.');
+                            return false;
+                        }
+                        break;
+                        
+                    case 'password':
+                        if (value === '') {
+                            showError(field, errorElement, 'Le mot de passe est requis.');
+                            return false;
+                        } else if (value.length < 8) {
+                            showError(field, errorElement, 'Le mot de passe doit contenir au moins 8 caractères.');
+                            return false;
+                        } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(value)) {
+                            showError(field, errorElement, 'Le mot de passe doit contenir au moins une majuscule, une minuscule et un chiffre.');
+                            return false;
+                        }
+                        break;
+                }
+                
+                return true;
+            }
+            
+            function showError(field, errorElement, message) {
+                field.classList.add('invalid');
+                errorElement.textContent = message;
+                errorElement.style.display = 'block';
+            }
+            
+            function clearError(e) {
+                const field = e.target;
+                const fieldName = field.name;
+                const errorElement = document.getElementById(fieldName + 'Error');
+                
+                field.classList.remove('invalid');
+                errorElement.style.display = 'none';
+            }
+            
+            function isValidEmail(email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            }
+            
+            function isValidUrl(url) {
+                try {
+                    new URL(url);
+                    return true;
+                } catch (e) {
+                    return false;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Signup Form</h1>
+    <form id="signupForm">
+        <div class="form-group">
+            <label for="fullName">Full Name:</label>
+            <input type="text" id="fullName" name="fullName">
+            <div id="fullNameError" class="error">Please enter your full name</div>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email Address:</label>
+            <input type="email" id="email" name="email">
+            <div id="emailError" class="error">Please enter a valid email address (e.g., user@example.com)</div>
+        </div>
+
+        <div class="form-group">
+            <label for="website">Website (optional):</label>
+            <input type="url" id="website" name="website">
+            <div id="websiteError" class="error">Please enter a valid URL (e.g., https://example.com)</div>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password">
+            <div id="passwordError" class="error">Password must be at least 8 characters</div>
+        </div>
+
+        <button type="submit">Sign Up</button>
+    </form>
+
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Reset error messages
+            document.querySelectorAll('.error').forEach(el => el.style.display = 'none');
+
+            // Validate fields
+            let isValid = true;
+
+            // Full name validation
+            const fullName = document.getElementById('fullName').value.trim();
+            if (fullName === '') {
+                document.getElementById('fullNameError').style.display = 'block';
+                isValid = false;
+            }
+
+            // Email validation
+            const email = document.getElementById('email').value.trim();
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!emailRegex.test(email)) {
+                document.getElementById('emailError').style.display = 'block';
+                isValid = false;
+            }
+
+            // Website validation (optional)
+            const website = document.getElementById('website').value.trim();
+            if (website !== '') {
+                try {
+                    const url = new URL(website);
+                    if (!url.protocol.match(/http[s]?/)) {
+                        throw new Error('Invalid protocol');
+                    }
+                } catch (e) {
+                    document.getElementById('websiteError').style.display = 'block';
+                    isValid = false;
+                }
+            }
+
+            // Password validation
+            const password = document.getElementById('password').value;
+            if (password.length < 8) {
+                document.getElementById('passwordError').style.display = 'block';
+                isValid = false;
+            }
+
+            // If all validations pass, submit the form
+            if (isValid) {
+                alert('Form submitted successfully!');
+                // In a real application, you would submit the form to a server here
+                // this.submit();
+            }
+        });
+    </script>
+</body>
+</html>

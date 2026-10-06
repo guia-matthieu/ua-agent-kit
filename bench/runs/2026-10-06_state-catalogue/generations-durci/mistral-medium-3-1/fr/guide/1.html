@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Inscription</title>
+<style>
+  body{font-family:Arial,Helvetica,sans-serif;margin:2rem}
+  form{max-width:40rem}
+  label{display:block;margin-top:1rem}
+  input{width:100%;padding:.5rem;box-sizing:border-box}
+  .error{color:#d32f2f;font-size:.875rem;margin-top:.25rem}
+  button{margin-top:1rem;padding:.75rem 1.5rem;background:#1976d2;color:#fff;border:none;border-radius:4px;cursor:pointer}
+  button:hover{background:#1565c0}
+</style>
+</head>
+<body>
+<h1>Inscription</h1>
+<form id="signup">
+  <div>
+    <label for="fullname">Nom complet *</label>
+    <input type="text" id="fullname" name="fullname" required>
+    <div id="fullnameError" class="error"></div>
+  </div>
+
+  <div>
+    <label for="email">Adresse e-mail *</label>
+    <input type="text" id="email" name="email" required>
+    <div id="emailError" class="error"></div>
+  </div>
+
+  <div>
+    <label for="website">Site web</label>
+    <input type="text" id="website" name="website">
+    <div id="websiteError" class="error"></div>
+  </div>
+
+  <div>
+    <label for="password">Mot de passe *</label>
+    <input type="password" id="password" name="password" required>
+    <div id="passwordError" class="error"></div>
+  </div>
+
+  <button type="submit">S’inscrire</button>
+</form>
+
+<script>
+(function () {
+  'use strict';
+
+  const form = document.getElementById('signup');
+
+  function validateFullname(value) {
+    if (!value || value.trim().length < 2) return 'Le nom doit contenir au moins 2 caractères.';
+    if (/<[^>]*>/.test(value)) return 'Le nom ne doit pas contenir de balises HTML.';
+    return '';
+  }
+
+  function validateEmail(value) {
+    if (!value) return 'L’adresse e-mail est obligatoire.';
+
+    const atIndex = value.lastIndexOf('@');
+    if (atIndex <= 0 || atIndex === value.length - 1) return 'Adresse e-mail invalide.';
+
+    const local = value.substring(0, atIndex);
+    const domain = value.substring(atIndex + 1);
+
+    if (!local || !domain) return 'Adresse e-mail invalide.';
+    if (/[\s@]/.test(local)) return 'Le local-part ne doit pas contenir d’espaces ou @.';
+
+    const domainLabels = domain.split('.');
+    if (domainLabels.length < 2) return 'Le domaine doit contenir au moins un point.';
+    if (domainLabels.some(l => !l)) return 'Le domaine contient des labels vides.';
+    if (domainLabels.some(l => l.length > 63)) return 'Un label du domaine est trop long (max 63 caractères).';
+    if (domain.length > 253) return 'Le domaine est trop long (max 253 caractères).';
+
+    const tld = domainLabels[domainLabels.length - 1];
+    if (tld.length < 2 && !tld.startsWith('xn--')) return 'Le TLD doit contenir au moins 2 caractères.';
+
+    return '';
+  }
+
+  function validateWebsite(value) {
+    if (!value) return '';
+
+    try {
+      let url = value.trim();
+      if (!/^https?:\/\//i.test(url)) {
+        url = 'https://' + url;
+      }
+      const parsed = new URL(url);
+      if (!parsed.hostname) return 'URL invalide. Exemple : https://exemple.com';
+
+      const hostnameLabels = parsed.hostname.split('.');
+      if (hostnameLabels.some(l => !l)) return 'Le domaine contient des labels vides.';
+      if (hostnameLabels.some(l => l.length > 63)) return 'Un label du domaine est trop long.';
+      if (parsed.hostname.length > 253) return 'Le domaine est trop long.';
+
+      return '';
+    } catch {
+      return 'URL invalide. Exemple : https://exemple.com';
+    }
+  }
+
+  function validatePassword(value) {
+    if (!value) return 'Le mot de passe est obligatoire.';
+    if (value.length < 8) return 'Le mot de passe doit contenir au moins 8 caractères.';
+    return '';
+  }
+
+  function showError(fieldId, message) {
+    const errorElement = document.getElementById(fieldId + 'Error');
+    errorElement.textContent = message;
+  }
+
+  function validateForm() {
+    let isValid = true;
+
+    const fullname = document.getElementById('fullname').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const website = document.getElementById('website').value.trim();
+    const password = document.getElementById('password').value;
+
+    const fullnameError = validateFullname(fullname);
+    showError('fullname', fullnameError);
+    if (fullnameError) isValid = false;
+
+    const emailError = validateEmail(email);
+    showError('email', emailError);
+    if (emailError) isValid = false;
+
+    const websiteError = validateWebsite(website);
+    showError('website', websiteError);
+    if (websiteError) isValid = false;
+
+    const passwordError = validatePassword(password);
+    showError('password', passwordError);
+    if (passwordError) isValid = false;
+
+    return isValid;
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (validateForm()) {
+      alert('Formulaire valide ! Envoi des données...');
+    }
+  });
+
+  ['fullname', 'email', 'website', 'password'].forEach(id => {
+    document.getElementById(id).addEventListener('blur', validateForm);
+  });
+})();
+</script>
+</body>
+</html>

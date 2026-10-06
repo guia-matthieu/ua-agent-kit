@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Inscription</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        max-width: 600px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+    }
+    form > div {
+        margin-bottom: 1rem;
+    }
+    label {
+        display: block;
+        margin-bottom: .3rem;
+        font-weight: bold;
+    }
+    input[type=text],
+    input[type=email],
+    input[type=url],
+    input[type=password] {
+        width: 100%;
+        padding: .4rem;
+        box-sizing: border-box;
+        font-size: 1rem;
+    }
+    .error {
+        color: #d00;
+        font-size: .9rem;
+        margin-top: .2rem;
+        display: block;
+    }
+    button {
+        padding: .6rem 1.2rem;
+        font-size: 1rem;
+    }
+</style>
+</head>
+<body>
+
+<h1>Formulaire d'inscription</h1>
+
+<form id="signupForm" novalidate>
+    <div>
+        <label for="fullname">Nom complet *</label>
+        <input type="text" id="fullname" name="fullname" required>
+        <span class="error" id="err-fullname"></span>
+    </div>
+
+    <div>
+        <label for="email">Adresse e‑mail *</label>
+        <input type="email" id="email" name="email" required>
+        <span class="error" id="err-email"></span>
+    </div>
+
+    <div>
+        <label for="website">Site web *</label>
+        <input type="url" id="website" name="website" placeholder="https://exemple.com" required>
+        <span class="error" id="err-website"></span>
+    </div>
+
+    <div>
+        <label for="password">Mot de passe *</label>
+        <input type="password" id="password" name="password" required minlength="8">
+        <span class="error" id="err-password"></span>
+    </div>
+
+    <button type="submit">S'inscrire</button>
+</form>
+
+<script>
+(function () {
+    const form = document.getElementById('signupForm');
+
+    // Regexes for domain labels (Unicode or punycode)
+    const unicodeLabel = /^[\p{L}\p{N}][\p{L}\p{N}\-]{0,61}[\p{L}\p{N}]$/u; // 1‑63 chars, no leading/trailing hyphen
+    const punycodeLabel = /^xn--[a-z0-9-]{1,58}$/i;                       // IDNA A‑label
+
+    function setError(id, msg) {
+        document.getElementById(id).textContent = msg;
+    }
+    function clearErrors() {
+        ['fullname', 'email', 'website', 'password'].forEach(f => setError('err-' + f, ''));
+    }
+
+    /***  EMAIL VALIDATION  ***/
+    function isValidEmail(email) {
+        // Basic structure
+        const parts = email.split('@');
+        if (parts.length !== 2) return false;
+        const [local, domain] = parts;
+        if (!local || !domain) return false;
+
+        // No whitespace anywhere
+        if (/\s/.test(local) || /\s/.test(domain)) return false;
+
+        // Local part rules (simplified)
+        if (local.startsWith('.') || local.endsWith('.')) return false;
+        if (local.includes('..')) return false;
+
+        // Domain part must contain at least one dot
+        const labels = domain.split('.');
+        if (labels.length < 2) return false;
+
+        // No empty label (covers consecutive dots, leading/trailing dot)
+        for (const lbl of labels) {
+            if (lbl.length === 0) return false;
+            // Validate each label
+            if (punycodeLabel.test(lbl)) continue;
+            if (!unicodeLabel.test(lbl)) return false;
+        }
+
+        // TLD length ≥ 2 (Unicode code points)
+        const tld = labels[labels.length - 1];
+        if (tld.length < 2) return false;
+
+        return true;
+    }
+
+    /***  URL VALIDATION  ***/
+    function isValidURL(str) {
+        try {
+            const url = new URL(str);
+            if (!/^https?:$/i.test(url.protocol)) return false; // only http/https
+
+            // Hostname validation (punycode already applied by the URL constructor)
+            const host = url.hostname; // e.g. "exemple.com" or "xn--exemple-9of.com"
+            if (host.includes('..')) return false;          // no empty labels
+
+            const labels = host.split('.');
+            for (const lbl of labels) {
+                if (lbl.length === 0) return false;
+                if (punycodeLabel.test(lbl)) continue;
+                if (!unicodeLabel.test(lbl)) return false;
+            }
+
+            return true;
+        } catch (_) {
+            return false;
+        }
+    }
+
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        clearErrors();
+
+        let ok = true;
+
+        // ----- Nom complet -----
+        const fullname = form.fullname.value.trim();
+        if (fullname === '') {
+            ok = false;
+            setError('err-fullname', 'Le nom complet est requis.');
+        }
+
+        // ----- Adresse e‑mail -----
+        const email = form.email.value.trim();
+        if (email === '') {
+            ok = false;
+            setError('err-email', 'L’adresse e‑mail est requise.');
+        } else if (!isValidEmail(email)) {
+            ok = false;
+            setError('err-email', 'Format d’adresse e‑mail invalide.');
+        }
+
+        // ----- Site web -----
+        const website = form.website.value.trim();
+        if (website === '') {
+            ok = false;
+            setError('err-website', 'L’URL du site web est requise.');
+        } else if (!isValidURL(website)) {
+            ok = false;
+            setError('err-website', 'URL du site web invalide (ex. https://exemple.com).');
+        }
+
+        // ----- Mot de passe -----
+        const password = form.password.value;
+        if (password.length < 8) {
+            ok = false;
+            setError('err-password', 'Le mot de passe doit contenir au moins 8 caractères.');
+        }
+
+        if (ok) {
+            // Ici vous pourriez envoyer le formulaire via fetch/ajax.
+            // Pour la démo, on montre simplement une alerte.
+            alert('Inscription réussie ! Vous pouvez maintenant envoyer le formulaire.');
+            form.submit(); // soumission réelle
+        }
+    });
+})();
+</script>
+
+</body>
+</html>

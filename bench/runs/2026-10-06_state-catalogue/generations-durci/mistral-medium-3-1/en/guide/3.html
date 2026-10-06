@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sign-up form</title>
+<style>
+  body{font-family:sans-serif;margin:2rem}
+  form{display:grid;gap:1rem;max-width:40rem}
+  label{display:block;margin-bottom:.25rem}
+  input{width:100%;box-sizing:border-box;padding:.5rem}
+  .error{color:red;font-size:.8rem;margin-top:.25rem}
+  button{padding:.5rem 1rem}
+</style>
+</head>
+<body>
+
+<form id="signup">
+  <div>
+    <label for="name">Full name</label>
+    <input id="name" name="name" required>
+    <div id="nameError" class="error"></div>
+  </div>
+
+  <div>
+    <label for="email">Email address</label>
+    <input id="email" name="email" type="text" required>
+    <div id="emailError" class="error"></div>
+  </div>
+
+  <div>
+    <label for="website">Website (https://…)</label>
+    <input id="website" name="website" type="text" required>
+    <div id="websiteError" class="error"></div>
+  </div>
+
+  <div>
+    <label for="password">Password (min 8 characters)</label>
+    <input id="password" name="password" type="password" required>
+    <div id="passwordError" class="error"></div>
+  </div>
+
+  <button type="submit">Sign up</button>
+</form>
+
+<script>
+(function () {
+  'use strict';
+
+  const form = document.getElementById('signup');
+
+  const isValidEmail = str => {
+    const parts = str.split('@');
+    if (parts.length !== 2) return false;
+    const [local, domain] = parts;
+    if (!local || !domain) return false;
+    if (domain.includes('..') || domain.startsWith('.') || domain.endsWith('.')) return false;
+    const labels = domain.split('.');
+    if (labels.length < 2) return false;
+    return labels.every(l => l.length >= 1 && l.length <= 63 && /^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/i.test(l));
+  };
+
+  const isValidWebsite = str => {
+    try {
+      const url = new URL(str.startsWith('http') ? str : 'https://' + str);
+      if (!url.hostname) return false;
+      if (url.hostname.includes('..') || url.hostname.startsWith('.') || url.hostname.endsWith('.')) return false;
+      const labels = url.hostname.split('.');
+      return labels.every(l => l.length >= 1 && l.length <= 63 && /^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/i.test(l));
+    } catch {
+      return false;
+    }
+  };
+
+  const isValidPassword = str => str.length >= 8;
+
+  const showError = (id, msg) => {
+    const el = document.getElementById(id);
+    el.textContent = msg;
+  };
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    let valid = true;
+
+    const name = document.getElementById('name').value.trim();
+    if (!name) {
+      showError('nameError', 'Full name is required');
+      valid = false;
+    } else {
+      showError('nameError', '');
+    }
+
+    const email = document.getElementById('email').value.trim();
+    if (!isValidEmail(email)) {
+      showError('emailError', 'Please enter a valid email address');
+      valid = false;
+    } else {
+      showError('emailError', '');
+    }
+
+    const website = document.getElementById('website').value.trim();
+    if (!isValidWebsite(website)) {
+      showError('websiteError', 'Please enter a valid website URL');
+      valid = false;
+    } else {
+      showError('websiteError', '');
+    }
+
+    const password = document.getElementById('password').value;
+    if (!isValidPassword(password)) {
+      showError('passwordError', 'Password must be at least 8 characters');
+      valid = false;
+    } else {
+      showError('passwordError', '');
+    }
+
+    if (valid) {
+      form.submit();
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

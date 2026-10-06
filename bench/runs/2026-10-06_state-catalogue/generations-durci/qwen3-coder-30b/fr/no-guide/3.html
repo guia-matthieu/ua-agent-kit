@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulaire d'Inscription</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .form-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        
+        input[type="text"],
+        input[type="email"],
+        input[type="url"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        
+        input.invalid {
+            border-color: #ff4757;
+        }
+        
+        .error-message {
+            color: #ff4757;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        .submit-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .submit-btn:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Inscription</h1>
+        <form id="registrationForm" novalidate>
+            <div class="form-group">
+                <label for="fullName">Nom complet *</label>
+                <input type="text" id="fullName" name="fullName" required>
+                <div class="error-message" id="fullNameError"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Adresse e-mail *</label>
+                <input type="email" id="email" name="email" required>
+                <div class="error-message" id="emailError"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="website">Site web</label>
+                <input type="url" id="website" name="website">
+                <div class="error-message" id="websiteError"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Mot de passe *</label>
+                <input type="password" id="password" name="password" required>
+                <div class="error-message" id="passwordError"></div>
+            </div>
+            
+            <button type="submit" class="submit-btn">S'inscrire</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('registrationForm');
+            const fields = {
+                fullName: { element: document.getElementById('fullName'), error: document.getElementById('fullNameError') },
+                email: { element: document.getElementById('email'), error: document.getElementById('emailError') },
+                website: { element: document.getElementById('website'), error: document.getElementById('websiteError') },
+                password: { element: document.getElementById('password'), error: document.getElementById('passwordError') }
+            };
+
+            // Validation des champs
+            function validateField(field, value) {
+                switch(field) {
+                    case 'fullName':
+                        if (!value.trim()) return "Le nom complet est requis";
+                        if (value.trim().length < 2) return "Le nom complet doit contenir au moins 2 caractères";
+                        return "";
+                        
+                    case 'email':
+                        if (!value.trim()) return "L'adresse e-mail est requise";
+                        // Vérification plus stricte de l'email
+                        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+                        if (!emailRegex.test(value)) return "Veuillez entrer une adresse e-mail valide";
+                        // Empêcher les points consécutifs
+                        if (value.includes('..')) return "L'adresse e-mail ne peut pas contenir de points consécutifs";
+                        // Empêcher les points au début ou à la fin
+                        if (value.startsWith('.') || value.endsWith('.')) return "L'adresse e-mail ne peut pas commencer ou terminer par un point";
+                        // Empêcher les points consécutifs après @
+                        const parts = value.split('@');
+                        if (parts.length === 2 && parts[1].includes('..')) return "Le domaine ne peut pas contenir de points consécutifs";
+                        return "";
+                        
+                    case 'website':
+                        if (value && !isValidUrl(value)) return "Veuillez entrer une URL valide";
+                        if (value && (value.includes(' ') || value.includes('\t'))) return "L'URL ne peut pas contenir d'espaces";
+                        return "";
+                        
+                    case 'password':
+                        if (!value) return "Le mot de passe est requis";
+                        if (value.length < 8) return "Le mot de passe doit contenir au moins 8 caractères";
+                        if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(value)) return "Le mot de passe doit contenir au moins une majuscule, une minuscule et un chiffre";
+                        return "";
+                        
+                    default:
+                        return "";
+                }
+            }
+
+            function isValidUrl(string) {
+                try {
+                    // Vérification basique avant création de l'URL
+                    if (!string.startsWith('http://') && !string.startsWith('https://')) {
+                        return false;
+                    }
+                    new URL(string);
+                    return true;
+                } catch (_) {
+                    return false;
+                }
+            }
+
+            function showError(field, message) {
+                fields[field].element.classList.add('invalid');
+                fields[field].error.textContent = message;
+                fields[field].error.style.display = 'block';
+            }
+
+            function hideError(field) {
+                fields[field].element.classList.remove('invalid');
+                fields[field].error.style.display = 'none';
+            }
+
+            function validateAllFields() {
+                let isValid = true;
+                
+                Object.keys(fields).forEach(field => {
+                    const value = fields[field].element.value;
+                    const errorMessage = validateField(field, value);
+                    
+                    if (errorMessage) {
+                        showError(field, errorMessage);
+                        isValid = false;
+                    } else {
+                        hideError(field);
+                    }
+                });
+                
+                return isValid;
+            }
+
+            // Validation en temps réel
+            Object.keys(fields).forEach(field => {
+                fields[field].element.addEventListener('blur', function() {
+                    const value = this.value;
+                    const errorMessage = validateField(field, value);
+                    
+                    if (errorMessage) {
+                        showError(field, errorMessage);
+                    } else {
+                        hideError(field);
+                    }
+                });
+                
+                fields[field].element.addEventListener('input', function() {
+                    if (this.classList.contains('invalid')) {
+                        const errorMessage = validateField(field, this.value);
+                        if (!errorMessage) {
+                            hideError(field);
+                        }
+                    }
+                });
+            });
+
+            // Soumission du formulaire
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                if (validateAllFields()) {
+                    alert('Inscription réussie !');
+                    // Ici vous pouvez envoyer les données au serveur
+                    console.log({
+                        fullName: fields.fullName.element.value,
+                        email: fields.email.element.value,
+                        website: fields.website.element.value,
+                        password: fields.password.element.value
+                    });
+                } else {
+                    // Faire défiler vers le premier champ invalide
+                    const firstInvalidField = document.querySelector('.invalid');
+                    if (firstInvalidField) {
+                        firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        firstInvalidField.focus();
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

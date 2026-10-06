@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup Page</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            display: flex;
+            justify-content: center;
+            padding: 2rem;
+            background-color: #f4f7f6;
+        }
+        .form-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        input {
+            width: 100%;
+            padding: 0.6rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+        input.invalid {
+            border-color: #d32f2f;
+            background-color: #fff8f8;
+        }
+        .error-msg {
+            color: #d32f2f;
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+        button {
+            width: 100%;
+            padding: 0.8rem;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h2>Create Account</h2>
+    <form id="signupForm" novalidate>
+        <div class="form-group">
+            <label for="fullName">Full Name</label>
+            <input type="text" id="fullName" placeholder="Jane Doe">
+            <div id="fullNameError" class="error-msg">Please enter your full name.</div>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email Address</label>
+            <!-- Using type="text" to avoid browser-specific Unicode rejection in <input type="email"> -->
+            <input type="text" id="email" placeholder="name@domain.tld">
+            <div id="emailError" class="error-msg">Please enter a valid email address.</div>
+        </div>
+
+        <div class="form-group">
+            <label for="website">Website</label>
+            <input type="text" id="website" placeholder="https://example.com">
+            <div id="websiteError" class="error-msg">Please enter a valid URL.</div>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="Min 8 characters">
+            <div id="passwordError" class="error-msg">Password must be at least 8 characters.</div>
+        </div>
+
+        <button type="submit">Sign Up</button>
+    </form>
+</div>
+
+<script>
+    const form = document.getElementById('signupForm');
+
+    const validateEmail = (email) => {
+        // Minimal syntax check following Universal Acceptance:
+        // 1. Contains one '@'
+        // 2. Non-empty local part (no spaces)
+        // 3. Domain has dot-separated labels
+        // 4. TLD is 2+ chars OR an xn-- A-label
+        if (!email || email.includes(' ')) return false;
+        const parts = email.split('@');
+        if (parts.length !== 2) return false;
+
+        const [local, domain] = parts;
+        if (!local) return false;
+        if (!domain) return false;
+
+        const domainParts = domain.split('.');
+        if (domainParts.length < 2) return false;
+
+        const tld = domainParts[domainParts.length - 1];
+        if (tld.length < 2 && !tld.startsWith('xn--')) return false;
+
+        return true;
+    };
+
+    const validateUrl = (url) => {
+        try {
+            // URL constructor handles Unicode (U-labels) correctly via internal Punycode conversion
+            new URL(url);
+            return true;
+        } catch (_) {
+            return false;
+        }
+    };
+
+    const setError = (id, isValid) => {
+        const input = document.getElementById(id);
+        const error = document.getElementById(id + 'Error');
+        if (isValid) {
+            input.classList.remove('invalid');
+            error.style.display = 'none';
+        } else {
+            input.classList.add('invalid');
+            error.style.display = 'block';
+        }
+    };
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const data = {
+            fullName: document.getElementById('fullName').value.trim(),
+            email: document.getElementById('email').value.trim(),
+            website: document.getElementById('website').value.trim(),
+            password: document.getElementById('password').value
+        };
+
+        const validity = {
+            fullName: data.fullName.length > 0,
+            email: validateEmail(data.email),
+            website: data.website === '' || validateUrl(data.website), // Optional field
+            password: data.password.length >= 8
+        };
+
+        setError('fullName', validity.fullName);
+        setError('email', validity.email);
+        setError('website', validity.website);
+        setError('password', validity.password);
+
+        if (Object.values(validity).every(v => v === true)) {
+            alert('Form submitted successfully!');
+            form.reset();
+            // Reset visual error states
+            ['fullName', 'email', 'website', 'password'].forEach(id => setError(id, true));
+        }
+    });
+</script>
+
+</body>
+</html>

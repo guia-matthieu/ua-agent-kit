@@ -1,0 +1,54 @@
+{
+  "model": "qwen3-coder-30b",
+  "model_version": "qwen/qwen3-coder-30b-a3b-instruct",
+  "lang": "es",
+  "condition": "guide",
+  "repeat": 2,
+  "turn": 2,
+  "usage": {
+    "prompt_tokens": 3071,
+    "completion_tokens": 2174,
+    "total_tokens": 5245,
+    "cost": 0.00080195,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost_details": {
+      "upstream_inference_cost": 0.00080195,
+      "upstream_inference_prompt_cost": 0.00021497,
+      "upstream_inference_completions_cost": 0.00058698
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 0,
+      "image_tokens": 0,
+      "audio_tokens": 0
+    }
+  },
+  "finish_reason": "stop",
+  "date": "2026-10-06T08:59:30.875Z",
+  "runner_error": null,
+  "standard": {
+    "email": {
+      "status": "not-testable",
+      "reason": "no-form"
+    },
+    "website": {
+      "status": "not-testable",
+      "reason": "no-form"
+    }
+  },
+  "fr": {
+    "email": {
+      "status": "not-testable",
+      "reason": "no-form"
+    },
+    "website": {
+      "status": "not-testable",
+      "reason": "no-form"
+    }
+  }
+}

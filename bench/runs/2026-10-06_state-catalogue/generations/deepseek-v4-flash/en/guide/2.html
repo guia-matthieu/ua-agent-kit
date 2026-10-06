@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UA-Ready Signup Form</title>
+    <style>
+        /* ---- Global Styles ---- */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            padding: 40px 45px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            max-width: 480px;
+            width: 100%;
+        }
+
+        h2 {
+            margin-top: 0;
+            margin-bottom: 28px;
+            color: #1a202c;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.8rem;
+        }
+
+        /* ---- Form Elements ---- */
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #2d3748;
+            font-size: 0.9rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.25s ease, box-shadow 0.25s ease;
+            outline: none;
+            background: #f7fafc;
+        }
+
+        input:focus {
+            border-color: #3182ce;
+            box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.15);
+            background: white;
+        }
+
+        /* Validation visual states */
+        input.error {
+            border-color: #e53e3e;
+            background: #fff5f5;
+        }
+
+        input.error:focus {
+            box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.15);
+        }
+
+        input.success {
+            border-color: #38a169;
+            background: #f0fff4;
+        }
+
+        input.success:focus {
+            box-shadow: 0 0 0 3px rgba(56, 161, 105, 0.15);
+        }
+
+        .error-message {
+            display: block;
+            min-height: 22px;
+            font-size: 0.8rem;
+            color: #e53e3e;
+            margin-top: 4px;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px 20px;
+            background: #3182ce;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.1s ease;
+            margin-top: 8px;
+        }
+
+        button:hover {
+            background: #2b6cb0;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        /* ---- Responsive ---- */
+        @media (max-width: 500px) {
+            .container {
+                padding: 25px 20px;
+            }
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* ---- Helper ---- */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Create Account</h2>
+
+        <form id="signup-form" novalidate>
+            <!-- Full Name -->
+            <div class="form-group">
+                <label for="fullname">Full Name</label>
+                <input type="text" id="fullname" name="fullname" placeholder="e.g., María López" required>
+                <span class="error-message" id="fullname-error" role="alert"></span>
+            </div>
+
+            <!-- Email Address (UA-Ready: uses type="text" to guarantee Unicode preservation) -->
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="text" id="email" name="email" placeholder="e.g., usuario@ejemplo.com" required>
+                <span class="error-message" id="email-error" role="alert"></span>
+            </div>
+
+            <!-- Website (UA-Ready: uses type="text" to allow internationalized domain names) -->
+            <div class="form-group">
+                <label for="website">Website</label>
+                <input type="text" id="website" name="website" placeholder="https://example.com or https://例子.中国">
+                <span class="error-message" id="website-error" role="alert"></span>
+            </div>
+
+            <!-- Password -->
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Minimum 8 characters" required>
+                <span class="error-message" id="password-error" role="alert"></span>
+            </div>
+
+            <button type="submit">Sign Up</button>
+        </form>
+    </div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            // ---------------------------------------------------------------
+            //  UA-Ready Validation Utilities
+            //  Follows Universal Acceptance guidelines:
+            //    - TLDs can be long (e.g., .technology, .corsica)
+            //    - IDN A-labels (xn--...) are fully supported
+            //    - Unicode local parts and domains are accepted
+            //    - No hard-coded TLD length caps (beyond the RFC minimum of 2)
+            //    - No ASCII-only character restrictions
+            // ---------------------------------------------------------------
+
+            /**
+             * Validates an email address per Universal Acceptance principles.
+             * Accepts Unicode local parts and internationalized domain names.
+             *
+             * Rules:
+             *  - Exactly one '@' symbol
+             *  - Non-empty local part
+             *  - Non-empty domain part containing at least one '.'
+             *  - TLD (part after the last '.') must be 2+ characters
+             *  - Rejects spaces in the local part or domain
+             */
+            function isValidUAEmail(value) {
+                const trimmed = value.trim();
+
+                // Must contain exactly one '@'
+                const atIndex = trimmed.lastIndexOf('@');
+                if (atIndex < 1) return false; // no @ or @ at the start
+
+                const localPart = trimmed.substring(0, atIndex);
+                const domainPart = trimmed.substring(atIndex + 1);
+
+                // Local part and domain must not be empty
+                if (localPart.length === 0 || domainPart.length === 0) return false;
+
+                // No spaces allowed in either part
+                if (localPart.includes(' ') || domainPart.includes(' ')) return false;
+
+                // Domain must contain a dot (e.g., example.com)
+                const dotIndex = domainPart.lastIndexOf('.');
+                if (dotIndex < 1 || dotIndex === domainPart.length - 1) return false;
+
+                // TLD must be at least 2 characters (covers .com, .technology, .xn--p1ai, etc.)
+                const tld = domainPart.substring(dotIndex + 1);
+                if (tld.length < 2) return false;
+
+                return true;
+            }
+
+            /**
+             * Validates a URL per Universal Acceptance principles.
+             * Accepts internationalized domain names (IDNs).
+             *
+             * Rules:
+             *  - Must start with http:// or https://
+             *  - Must have a non-empty hostname
+             *  - Hostname must contain at least one '.'
+             *  - TLD must be 2+ characters
+             *  - Accepts Unicode characters in the path and domain
+             */
+            function isValidUAURL(value) {
+                const trimmed = value.trim();
+
+                // Must start with http:// or https:// (case-insensitive)
+                if (!/^https?:\/\//i.test(trimmed)) return false;
+
+                // Extract the hostname (part between :// and the next / or end)
+                const afterProtocol = trimmed.substring(trimmed.indexOf('://') + 3);
+                const hostname = afterProtocol.split('/')[0];
+
+                // Hostname must not be empty
+                if (hostname.length === 0) return false;
+
+                // Must contain at least one dot (e.g., example.com, 例子.中国)
+                const dotIndex = hostname.lastIndexOf('.');
+                if (dotIndex < 1 || dotIndex === hostname.length - 1) return false;
+
+                // TLD must be at least 2 characters
+                const tld = hostname.substring(dotIndex + 1);
+                if (tld.length < 2) return false;
+
+                return true;
+            }
+
+            // ---------------------------------------------------------------
+            //  DOM Elements
+            // ---------------------------------------------------------------
+            const form = document.getElementById('signup-form');
+            const fullnameInput = document.getElementById('fullname');
+            const emailInput = document.getElementById('email');
+            const websiteInput = document.getElementById('website');
+            const passwordInput = document.getElementById('password');
+
+            const fullnameError = document.getElementById('fullname-error');
+            const emailError = document.getElementById('email-error');
+            const websiteError = document.getElementById('website-error');
+            const passwordError = document.getElementById('password-error');
+
+            // ---------------------------------------------------------------
+            //  Validation Functions for each field
+            //  Each returns a boolean (true if valid, false if invalid)
+            //  and sets the error message and CSS classes accordingly.
+            // ---------------------------------------------------------------
+
+            function validateFullName() {
+                const value = fullnameInput.value.trim();
+                if (value === '') {
+                    fullnameInput.classList.add('error');
+                    fullnameInput.classList.remove('success');
+                    fullnameError.textContent = 'Full name is required.';
+                    return false;
+                }
+                fullnameInput.classList.remove('error');
+                fullnameInput.classList.add('success');
+                fullnameError.textContent = '';
+                return true;
+            }
+
+            function validateEmail() {
+                const value = emailInput.value.trim();
+                if (value === '') {
+                    emailInput.classList.add('error');
+                    emailInput.classList.remove('success');
+                    emailError.textContent = 'Email address is required.';
+                    return false;
+                }
+                if (!isValidUAEmail(value)) {
+                    emailInput.classList.add('error');
+                    emailInput.classList.remove('success');
+                    emailError.textContent = 'Please enter a valid email (e.g., user@domain.tld). Internationalized emails are supported.';
+                    return false;
+                }
+                emailInput.classList.remove('error');
+                emailInput.classList.add('success');
+                emailError.textContent = '';
+                return true;
+            }
+
+            function validateWebsite() {
+                const value = websiteInput.value.trim();
+                // Website is optional — if empty, it's valid
+                if (value === '') {
+                    websiteInput.classList.remove('error');
+                    websiteInput.classList.add('success');
+                    websiteError.textContent = '';
+                    return true;
+                }
+                if (!isValidUAURL(value)) {
+                    websiteInput.classList.add('error');
+                    websiteInput.classList.remove('success');
+                    websiteError.textContent = 'Please enter a valid URL (e.g., https://example.com). Internationalized domains are supported.';
+                    return false;
+                }
+                websiteInput.classList.remove('error');
+                websiteInput.classList.add('success');
+                websiteError.textContent = '';
+                return true;
+            }
+
+            function validatePassword() {
+                const value = passwordInput.value;
+                if (value === '') {
+                    passwordInput.classList.add('error');
+                    passwordInput.classList.remove('success');
+                    passwordError.textContent = 'Password is required.';
+                    return false;
+                }
+                if (value.length < 8) {
+                    passwordInput.classList.add('error');
+                    passwordInput.classList.remove('success');
+                    passwordError.textContent = 'Password must be at least 8 characters.';
+                    return false;
+                }
+                passwordInput.classList.remove('error');
+                passwordInput.classList.add('success');
+                passwordError.textContent = '';
+                return true;
+            }
+
+            // ---------------------------------------------------------------
+            //  Real-time validation on blur (for better UX)
+            // ---------------------------------------------------------------
+            fullnameInput.addEventListener('blur', validateFullName);
+            emailInput.addEventListener('blur', validateEmail);
+            websiteInput.addEventListener('blur', validateWebsite);
+            passwordInput.addEventListener('blur', validatePassword);
+
+            // ---------------------------------------------------------------
+            //  Form Submit Handler
+            //  Prevents default submission, validates all fields,
+            //  shows errors, and submits if everything is valid.
+            // ---------------------------------------------------------------
+            form.addEventListener('submit', function(event) {
+                event.preventDefault(); // Always take control first
+
+                const isFullnameValid = validateFullName();
+                const isEmailValid = validateEmail();
+                const isWebsiteValid = validateWebsite();
+                const isPasswordValid = validatePassword();
+
+                if (isFullnameValid && isEmailValid && isWebsiteValid && isPasswordValid) {
+                    // In a real application, you would send the data to the server here.
+                    // For demonstration, we show a success message.
+                    alert('✓ Account created successfully! (Demo — no data was sent.)');
+
+                    // Optionally reset the form
+                    // form.reset();
+                    // Remove success/error classes on reset if needed.
+                } else {
+                    // Scroll to the first error for better usability
+                    const firstError = form.querySelector('.error');
+                    if (firstError) {
+                        firstError.focus();
+                    }
+                }
+            });
+
+        })();
+    </script>
+
+</body>
+</html>

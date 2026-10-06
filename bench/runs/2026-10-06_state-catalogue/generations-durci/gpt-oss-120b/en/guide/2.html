@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Signup Form</title>
+<style>
+    body {font-family: Arial, sans-serif; margin: 2rem; background:#f9f9f9;}
+    form {max-width: 500px; background:#fff; padding:1.5rem; border-radius:8px;
+          box-shadow:0 2px 6px rgba(0,0,0,.1);}
+    .field {margin-bottom:1rem; position:relative;}
+    label {display:block; margin-bottom:.3rem; font-weight:bold;}
+    input {width:100%; padding:.5rem; box-sizing:border-box;
+           border:1px solid #ccc; border-radius:4px;}
+    .error {color:#d00; font-size:.85rem; position:absolute; top:100%; left:0;
+            margin-top:.2rem;}
+    button {padding:.6rem 1.2rem; font-size:1rem; background:#0069d9;
+            color:#fff; border:none; border-radius:4px; cursor:pointer;}
+    button:disabled {background:#999; cursor:not-allowed;}
+</style>
+</head>
+<body>
+
+<h2>Signup</h2>
+<form id="signupForm" novalidate>
+    <div class="field">
+        <label for="fullName">Full name</label>
+        <input type="text" id="fullName" name="fullName" autocomplete="name">
+        <span class="error" aria-live="polite"></span>
+    </div>
+
+    <div class="field">
+        <label for="email">Email address</label>
+        <input type="text" id="email" name="email" autocomplete="email">
+        <span class="error" aria-live="polite"></span>
+    </div>
+
+    <div class="field">
+        <label for="website">Website</label>
+        <input type="text" id="website" name="website" placeholder="https://example.com">
+        <span class="error" aria-live="polite"></span>
+    </div>
+
+    <div class="field">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" autocomplete="new-password">
+        <span class="error" aria-live="polite"></span>
+    </div>
+
+    <button type="submit">Sign up</button>
+</form>
+
+<script>
+/* ------------------------------------------------------------
+   Helper: domain validation (handles IDNA2008 via URL)
+   ------------------------------------------------------------ */
+function isValidDomain(domain) {
+    // Use the URL API to get the ASCII (punycode) host name.
+    // Prepend a scheme because URL needs one.
+    let asciiHost;
+    try {
+        asciiHost = new URL('http://' + domain).hostname; // will be punycode if needed
+    } catch (_) {
+        return false;
+    }
+
+    // Overall length check (max 253 characters for the DNS name)
+    if (asciiHost.length > 253) return false;
+
+    const labels = asciiHost.split('.');
+    // Every label must be 1‑63 octets and obey LDH rules.
+    for (const lbl of labels) {
+        if (lbl.length === 0 || lbl.length > 63) return false;
+        // Allowed characters: a‑z, 0‑9, hyphen; punycode labels start with xn--
+        if (!/^(xn--)?[a-z0-9-]+$/i.test(lbl)) return false;
+        // Hyphens may not appear at the start or end of a label.
+        if (/^-|-$/.test(lbl)) return false;
+    }
+
+    // TLD must be at least 2 characters (letters/digits) or a punycode (xn--)
+    const tld = labels[labels.length - 1];
+    if (!/^[a-z0-9]{2,}$/i.test(tld) && !/^xn--[a-z0-9-]+$/i.test(tld)) {
+        return false;
+    }
+    return true;
+}
+
+/* ------------------------------------------------------------
+   Email validation (minimum EAI‑aware check)
+   ------------------------------------------------------------ */
+function isValidEmail(email) {
+    if (typeof email !== 'string') return false;
+    // Exactly one @
+    const parts = email.split('@');
+    if (parts.length !== 2) return false;
+    const [local, domain] = parts;
+
+    // Local part: non‑empty, no spaces, no leading/trailing dot, no consecutive dots
+    if (!local) return false;
+    if (/\s/.test(local)) return false;
+    if (local.startsWith('.') || local.endsWith('.')) return false;
+    if (local.includes('..')) return false;
+
+    // Domain part validated with the same routine as for plain domains
+    return isValidDomain(domain);
+}
+
+/* ------------------------------------------------------------
+   URL validation (http/https only, strict host check)
+   ------------------------------------------------------------ */
+function isValidUrl(str) {
+    let url;
+    try {
+        url = new URL(str);
+    } catch (_) {
+        return false;
+    }
+    // Only http(s) are allowed for the signup form.
+    if (!/^https?:$/i.test(url.protocol)) return false;
+    // Hostname (domain) must pass our domain validator.
+    return isValidDomain(url.hostname);
+}
+
+/* ------------------------------------------------------------
+   Form handling
+   ------------------------------------------------------------ */
+document.getElementById('signupForm').addEventListener('submit', function (e) {
+    e.preventDefault();                     // Validation only – prevent actual submit
+    const form = e.target;
+
+    const checks = [
+        {
+            id: 'fullName',
+            validator: v => v.trim() !== '',
+            message: 'Full name is required.'
+        },
+        {
+            id: 'email',
+            validator: isValidEmail,
+            message: 'Please enter a valid email address.'
+        },
+        {
+            id: 'website',
+            validator: isValidUrl,
+            message: 'Please enter a valid URL (http/https) with a proper domain.'
+        },
+        {
+            id: 'password',
+            validator: v => v.length >= 8,
+            message: 'Password must be at least 8 characters.'
+        }
+    ];
+
+    let allOk = true;
+
+    // Clear previous errors
+    checks.forEach(c => {
+        const err = form.querySelector(`#${c.id} ~ .error`);
+        err.textContent = '';
+    });
+
+    // Run each validation
+    checks.forEach(c => {
+        const input = form.querySelector('#' + c.id);
+        const value = input.value;
+        if (!c.validator(value)) {
+            const err = form.querySelector(`#${c.id} ~ .error`);
+            err.textContent = c.message;
+            allOk = false;
+        }
+    });
+
+    if (allOk) {
+        // In a real app you would now submit the data.
+        alert('Signup successful!\n\n' +
+            JSON.stringify({
+                fullName: form.fullName.value,
+                email: form.email.value,
+                website: form.website.value,
+                password: '(hidden)'
+            }, null, 2));
+        form.reset();
+    }
+});
+</script>
+
+</body>
+</html>
