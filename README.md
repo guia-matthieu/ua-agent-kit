@@ -131,6 +131,8 @@ The last section comes from the pattern catalogue (`patterns/catalogue.json`): k
 
 The battery tests syntax, not existence: a validator that accepts `boutique.corsica` is right even if that exact name is not registered. Every TLD used by a valid case is in the IANA root zone list pinned in `battery/iana-tlds.txt` (version 2026092400), checked in CI; the pinned list is not refreshed automatically; every second-level name is a placeholder. URL cases use the same classes, in `https://` form, with and without path and query. A domain with a trailing dot (`example.com.`) is valid DNS syntax but is left out of the battery on purpose, and the reference validators reject it.
 
+Packs of cases written for one TLD live in `battery/packs/tld/`, filed by kind of TLD, and are scored apart, never added to these totals. The first six cover `.bzh`, `.corsica`, `.alsace`, `.paris`, `.eus` and accented names under `.fr` (62 cases); see `battery/packs/README.md`.
+
 CI checks that the file matches its schema, that every U-label round-trips to its A-label, and that the reference validators (`runners/js/reference.mjs`, `runners/py/ua_score.py`) accept every valid case and refuse every invalid one. Choices those reference validators make, stated plainly:
 
 - Emoji and other pictographic labels are accepted by the JavaScript validator, because UTS #46 mapping does not enforce the IDNA2008 category rules. The Python validator with the `idna` package installed rejects them (IDNA2008): `😀.com` is valid for the first and invalid for the second (checked with `idna` 3.4). The battery holds no such label. Without `idna`, Python falls back to the standard library's IDNA2003 codec, so its results on U-labels can differ.
