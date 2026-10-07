@@ -14,6 +14,10 @@ test('signalsOf: a text of the field that the baseline did not show is a refusal
   assert.deepEqual(signalsOf(state(), state({ fieldTexts: ['Email address', 'Enter a valid email address.'] })), ['field-text']);
   assert.deepEqual(signalsOf(state({ fieldTexts: ['Email address'] }), state({ fieldTexts: ['Email address'] })), []);
   assert.deepEqual(signalsOf(state({ fieldTexts: ['Looks good'] }), state({ fieldTexts: ['Looks good'] })), []);
+  // a text that repeats the value typed is the same text for another value
+  assert.deepEqual(signalsOf(state({ value: 'ana@example.com', fieldTexts: ['Sending to ana@example.com'] }), state({ value: 'marie@example.fr', fieldTexts: ['Sending to marie@example.fr'] })), []);
+  // a fixed hint stays old when the value typed is the example it gives
+  assert.deepEqual(signalsOf(state({ value: 'x.example', fieldTexts: ['e.g. https://example.com'] }), state({ value: 'https://example.com', fieldTexts: ['e.g. https://example.com'] })), []);
   // a state read by an older runner carries no fieldTexts
   const old = Object.fromEntries(Object.entries(clean).filter(([k]) => k !== 'fieldTexts'));
   assert.deepEqual(signalsOf(old, old), []);

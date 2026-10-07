@@ -3,7 +3,7 @@ import { pathToFileURL } from 'node:url';
 import * as pw from 'playwright';
 import { loadBattery } from './battery.mjs';
 import { findFields } from './field-finder.mjs';
-import { decide, evidence, ownFace, readState } from './verdict.mjs';
+import { decide, evidence, sameOwn, readState } from './verdict.mjs';
 import { matchCatalogue, collectScripts } from './catalogue-match.mjs';
 import { recordResponses, recorded } from './replay.mjs';
 
@@ -83,49 +83,61 @@ async function probeField(page, selector, kind, cases, { submit = false, fresh =
     // `before`, so only what changes with the probed value counts as a rejection.
     const submitBaseline = async value => {
       await page.evaluate(fillCompanions, selector);
+      // the document receives a value: the next reload must bring another one (see `fresh`)
+      await page.evaluate(() => { window.__uaProbed = true; }).catch(() => {});
       await loc.fill(value, { timeout: FILL_TIMEOUT_MS }).catch(() => {});
       await page.evaluate(syncConfirm, selector);
       await page.evaluate(sel => { const f = document.querySelector(sel).form; if (f) f.requestSubmit(); }, selector).catch(() => {});
       await page.waitForTimeout(SETTLE_MS);
       return page.evaluate(readState, selector);
     };
-    // Is a baseline refused? What the field shows for it (texts elsewhere in the form may speak of another
-    // field, which the baseline is there to absorb) is a refusal when it carries a mark of one (aria-invalid,
-    // an error class, a custom validity, an enforced mismatch), or when it is exactly what the page shows for
-    // NO_VALUE. A page that writes "Looks good" under a valid value shows something else for NO_VALUE.
-    let refusalFace;
     // What the field gained with a value (a text, a mark of refusal); a form hidden after an accepted submit
-    // only loses texts, and that is not a refusal.
+    // only loses texts, and that is not a refusal. Texts elsewhere in the form may speak of another field
+    // (`error-text`), which the baseline is there to absorb.
     const gained = state => { const e = evidence(pristine, state); return [...(e.mismatch && e.enforced ? ['native'] : []), ...e.signals.filter(x => x !== 'error-text')]; };
-    const refused = async state => {
+    // What the page makes of a plain value:
+    //  `taken`    the field gained nothing, or a text the page does not write for NO_VALUE (a praise, a hint
+    //             shown next to an error written elsewhere);
+    //  `refused`  the field gained a mark of refusal (aria-invalid, an error class, a custom validity, an
+    //             enforced mismatch);
+    //  `as-no-value`  a text and nothing else, and the whole form reads exactly as it does for NO_VALUE: a
+    //             page refusing both, or a hint shown for any value. The two cannot be told apart.
+    let noValue;
+    const reading = async state => {
       const g = gained(state);
-      if (!g.length) return false;
-      if (g.some(x => x !== 'field-text')) return true;
-      if (refusalFace === undefined) {
+      if (!g.length) return 'taken';
+      if (g.some(x => x !== 'field-text')) return 'refused';
+      if (noValue === undefined) {
         const f = await fresh();
         if (!f.ok) throw Object.assign(new Error(f.reason), { notTestable: true });
-        refusalFace = ownFace(await submitBaseline(NO_VALUE));
+        noValue = await submitBaseline(NO_VALUE);
       }
-      return ownFace(state) === refusalFace;
+      const elsewhere = x => JSON.stringify([...x.errorTexts].sort());
+      return sameOwn(state, noValue) && elsewhere(state) === elsewhere(noValue) ? 'as-no-value' : 'taken';
     };
+    let read;
     try {
       before = await submitBaseline(BASELINE[kind]);
-      // `showed`: the field gained something with the baseline that the page as loaded did not show. When that is not
-      // held a refusal (it differs from what NO_VALUE gets), it is still said: a page that words each refusal
-      // differently and refuses the baseline cannot be told from one that praises it.
-      baseline = { typed: BASELINE[kind], refused: await refused(before), schemeRequired: false, showed: gained(before).length > 0 };
-      // A text field that refuses the bare domain and takes the same domain with a scheme asks for a URL, as a
-      // field of type url does: decision D1 below applies to it, and the field is reported with the url kind.
-      if (baseline.refused && kind === 'domain') {
+      read = await reading(before);
+      // `showed`: the field gained something with the baseline. When that is not held a refusal it is still
+      // said: a page that words each refusal differently and refuses the baseline cannot be told from one
+      // that praises it.
+      baseline = { typed: BASELINE[kind], refused: read === 'refused', schemeRequired: false, showed: gained(before).length > 0 };
+      // A text field that does not take the bare domain and takes the same domain with a scheme asks for a URL,
+      // as a field of type url does: decision D1 below applies to it, and the field is reported with the url kind.
+      if (read !== 'taken' && kind === 'domain') {
         const f = await fresh();
         if (!f.ok) return { status: 'not-testable', reason: f.reason };
         const withScheme = await submitBaseline(BASELINE.url);
-        if (!await refused(withScheme)) { kind = 'url'; before = withScheme; baseline = { typed: BASELINE.url, refused: false, schemeRequired: true, showed: gained(before).length > 0 }; }
+        if (await reading(withScheme) === 'taken') { kind = 'url'; before = withScheme; read = 'taken'; baseline = { typed: BASELINE.url, refused: false, schemeRequired: true, showed: gained(before).length > 0 }; }
       }
     } catch (e) {
       if (e.notTestable) return { status: 'not-testable', reason: e.message };
       throw e;
     }
+    // Nothing separates what the page says of a plain value from what it says of NO_VALUE: no verdict can be
+    // read on this field, and none is given.
+    if (read === 'as-no-value') return { status: 'not-testable', reason: 'baseline-ambiguous' };
     // The page refuses every form of the baseline: what it says of the field for a plain value cannot serve as
     // the reference, so the field is read against the page as it loaded and its refusals count as refusals.
     // What the baseline showed elsewhere in the form is kept.

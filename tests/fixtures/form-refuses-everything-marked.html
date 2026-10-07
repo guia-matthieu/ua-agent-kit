@@ -1,0 +1,13 @@
+<!doctype html><html lang="es"><body>
+<!-- A validator that refuses every value, the plain ASCII baseline included, and marks the field when it does. -->
+<form id="f" novalidate>
+<div class="field"><label for="email">Correo electrónico</label><input type="text" id="email" name="email"><span id="emailMsg"></span></div>
+<div class="field"><label for="web">Sitio web</label><input type="text" id="web" name="website"><span id="webMsg"></span></div>
+<button type="submit">Enviar</button></form>
+<script>
+document.getElementById('f').addEventListener('submit', e => {
+  e.preventDefault();
+  for (const id of ['email', 'web']) { document.getElementById(id).setAttribute('aria-invalid', 'true'); document.getElementById(id + 'Msg').textContent = 'Las etiquetas del dominio solo pueden contener letras, números y guiones.'; }
+});
+</script>
+</body></html>

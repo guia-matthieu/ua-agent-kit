@@ -9237,15 +9237,10 @@
   "condition": "guide",
   "repeat": 1,
   "field": "website",
-  "status": "tested",
-  "reason": null,
-  "kind": "domain",
-  "baseline": {
-   "typed": "example.com",
-   "refused": true,
-   "schemeRequired": false,
-   "showed": true
-  }
+  "status": "not-testable",
+  "reason": "baseline-ambiguous",
+  "kind": null,
+  "baseline": null
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",

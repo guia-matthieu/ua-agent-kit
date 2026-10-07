@@ -28,8 +28,8 @@ test('a text field that wants a scheme: the baseline is typed with it, and a ref
   assert.deepEqual(r.fields.email.baseline, { typed: 'ana.garcia@example.com', refused: false, schemeRequired: false, showed: false });
 });
 
-test('a page that refuses every value: read against the page as it loaded, every case is a refusal', async () => {
-  const r = await checkForm(fixture('form-refuses-everything.html'), { lang: 'es' });
+test('a page that refuses every value and marks the field: read against the page as it loaded, every case is a refusal', async () => {
+  const r = await checkForm(fixture('form-refuses-everything-marked.html'), { lang: 'es' });
   for (const name of ['email', 'website']) {
     const f = r.fields[name];
     assert.equal(f.baseline.refused, true);
@@ -39,6 +39,36 @@ test('a page that refuses every value: read against the page as it loaded, every
   }
   assert.equal(r.fields.website.kind, 'domain');
   assert.match(renderMarkdown(r), /The page refuses the plain value/);
+});
+
+test('the same text for a plain value and for a value with no @ or dot, and no mark: no verdict is given', async () => {
+  const r = await checkForm(fixture('form-refuses-everything.html'), { lang: 'es' });
+  for (const name of ['email', 'website']) assert.deepEqual({ status: r.fields[name].status, reason: r.fields[name].reason }, { status: 'not-testable', reason: 'baseline-ambiguous' });
+});
+
+test('a text that repeats the value typed is not a refusal of it', async () => {
+  const r = await checkForm(fixture('form-echoes-value.html'));
+  const f = r.fields.email, by = id => f.results.find(x => x.id === id);
+  assert.equal(f.baseline.refused, false);
+  assert.equal(f.results.filter(x => x.class === 'control' && x.verdict !== 'accepted').length, 0);
+  assert.equal(by('email-guard-07').verdict, 'rejected-script');
+});
+
+test('a hint shown for any value, the refusal written below the button: the baseline is taken', async () => {
+  const r = await checkForm(fixture('form-hint-for-any-value.html'));
+  const f = r.fields.email, by = id => f.results.find(x => x.id === id);
+  assert.deepEqual(f.baseline, { typed: 'ana.garcia@example.com', refused: false, schemeRequired: false, showed: true });
+  assert.equal(f.results.filter(x => x.class === 'control' && x.verdict !== 'accepted').length, 0);
+  assert.equal(by('email-guard-07').verdict, 'rejected-script');
+  assert.deepEqual(by('email-guard-07').signals, ['error-text']);
+});
+
+test('a complaint about another field, there from the baseline on, is not a refusal of this one', async () => {
+  const r = await checkForm(fixture('form-other-field-complains.html'));
+  const f = r.fields.email, by = id => f.results.find(x => x.id === id);
+  assert.deepEqual(f.baseline, { typed: 'ana.garcia@example.com', refused: false, schemeRequired: false, showed: false });
+  assert.equal(by('email-control-01').verdict, 'accepted');
+  assert.equal(by('email-guard-07').verdict, 'rejected-script');
 });
 
 test('a page that writes under a valid value: taken as an acceptance, and said', async () => {

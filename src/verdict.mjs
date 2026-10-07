@@ -3,6 +3,19 @@ import { isValidEmail, isValidDomain, isValidUrl } from '../runners/js/reference
 const ERR_CLASS = /invalid|error|erreur/i;
 const REF = { email: isValidEmail, domain: isValidDomain, url: isValidUrl };
 
+/** The texts of the field that `after` shows and `before` did not. A text that repeats the value typed
+ *  ("Sending to ana@example.com") or counts its characters says the same thing for every value and is not new
+ *  (review of PR #6: every valid address read as refused on such a page). A text is old when `before` shows it
+ *  as it is, or shows it once each side's own value is taken out of it; the first test keeps a fixed hint old
+ *  when the value typed happens to be the example it gives ("e.g. https://example.com"). */
+const ECHO_MIN = 3;   // a shorter value would be found inside ordinary words
+const counted = t => t.replace(/\d+/g, '#');
+const withoutValue = s => t => counted(s.value && s.value.length >= ECHO_MIN ? t.split(s.value).join('\u2423') : t);
+export function newTexts(before, after) {
+  const raw = (before.fieldTexts ?? []).map(counted), bare = (before.fieldTexts ?? []).map(withoutValue(before));
+  return (after.fieldTexts ?? []).filter(t => !raw.includes(counted(t)) && !bare.includes(withoutValue(after)(t)));
+}
+
 /** What the page showed for this value that it did not show for the baseline value: the signals of a refusal
  *  by the page's own script. `custom-validity`: the script called setCustomValidity() and changed nothing in
  *  the markup (review of #21, 27/09: on a novalidate form that refusal read as accepted). */
@@ -14,8 +27,7 @@ export function signalsOf(before, after) {
   // A text of the field itself needs no word list: whatever the page writes there for this value and did not
   // write for the baseline value is its refusal (run of 2026-10-06: "Enter a valid email address." holds none
   // of the words above and read as accepted, docs/qc/2026-10-06_refusal-wording/).
-  const shown = before.fieldTexts ?? [];
-  if ((after.fieldTexts ?? []).some(t => !shown.includes(t))) signals.push('field-text');
+  if (newTexts(before, after).length) signals.push('field-text');
   if (after.customError && after.validationMessage !== before.validationMessage) signals.push('custom-validity');
   return signals;
 }
@@ -27,11 +39,12 @@ export function evidence(before, after) {
   return { mismatch: Boolean(!after.valid && (after.typeMismatch || after.patternMismatch)), enforced: !after.noValidate, signals: signalsOf(before, after) };
 }
 
-/** What the field itself shows in a snapshot, as one comparable string: two snapshots with the same face say
- *  the same thing about the field. Texts elsewhere in the form are left out. */
-export function ownFace(s) {
-  return JSON.stringify([[...(s.fieldTexts ?? [])].sort(), s.ariaInvalid === 'true', ERR_CLASS.test(s.classes),
-    Boolean(s.customError) && s.validationMessage, Boolean(!s.valid && (s.typeMismatch || s.patternMismatch) && !s.noValidate)]);
+/** Two snapshots say the same thing of the field: neither shows a text the other does not, and the marks of
+ *  refusal are the same. Texts elsewhere in the form are left out. */
+export function sameOwn(a, b) {
+  const marks = s => JSON.stringify([s.ariaInvalid === 'true', ERR_CLASS.test(s.classes), Boolean(s.customError) && s.validationMessage,
+    Boolean(!s.valid && (s.typeMismatch || s.patternMismatch) && !s.noValidate)]);
+  return marks(a) === marks(b) && !newTexts(a, b).length && !newTexts(b, a).length;
 }
 
 /** before/after are snapshots from readState(); returns { verdict, rewritten, outcome }.
