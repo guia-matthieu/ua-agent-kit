@@ -3,7 +3,7 @@ import { pathToFileURL } from 'node:url';
 import * as pw from 'playwright';
 import { loadBattery } from './battery.mjs';
 import { findFields } from './field-finder.mjs';
-import { decide, evidence, readState } from './verdict.mjs';
+import { decide, evidence, ownFace, readState } from './verdict.mjs';
 import { matchCatalogue, collectScripts } from './catalogue-match.mjs';
 import { recordResponses, recorded } from './replay.mjs';
 
@@ -13,6 +13,7 @@ const LOCALE = { en: 'en-GB', fr: 'fr-FR', es: 'es-ES' };
 const SETTLE_MS = 60;        // script validators run synchronously on input/blur; 300 ms made the suite exceed 5 min (measured 24/09)
 const FILL_TIMEOUT_MS = 5000;
 const BASELINE = { email: 'ana.garcia@example.com', domain: 'example.com', url: 'https://example.com' };
+const NO_VALUE = 'x';        // no @, no dot, no scheme: what a page says of it is what it says of a value it refuses
 
 export function toUrl(target) {
   if (/^https?:\/\//i.test(target) || target.startsWith('file://')) return target;
@@ -70,17 +71,66 @@ async function probeField(page, selector, kind, cases, { submit = false, fresh =
   } catch {
     return { status: 'not-testable', reason: 'not-interactable' };
   }
+  // What the page shows before any value is typed. The baseline is read against it: a baseline value the page
+  // itself refuses would otherwise become the reference state, and every later refusal in the same words would
+  // read as accepted (measured 07/10 on the two benches: 38 text website fields refuse `example.com`, 37 of them
+  // because they ask for a scheme, docs/qc/2026-10-07_baseline-refused/).
+  const pristine = await page.evaluate(readState, selector);
+  let before = pristine, baseline = null;
   if (submit) {
     // Baseline: one submit with a plain ASCII value in the probed field. Whatever the page then says about
     // the other fields (a confirm-email mismatch, a website format it wants differently) is already in
     // `before`, so only what changes with the probed value counts as a rejection.
-    await page.evaluate(fillCompanions, selector);
-    await loc.fill(BASELINE[kind], { timeout: FILL_TIMEOUT_MS }).catch(() => {});
-    await page.evaluate(syncConfirm, selector);
-    await page.evaluate(sel => { const f = document.querySelector(sel).form; if (f) f.requestSubmit(); }, selector).catch(() => {});
-    await page.waitForTimeout(SETTLE_MS);
+    const submitBaseline = async value => {
+      await page.evaluate(fillCompanions, selector);
+      await loc.fill(value, { timeout: FILL_TIMEOUT_MS }).catch(() => {});
+      await page.evaluate(syncConfirm, selector);
+      await page.evaluate(sel => { const f = document.querySelector(sel).form; if (f) f.requestSubmit(); }, selector).catch(() => {});
+      await page.waitForTimeout(SETTLE_MS);
+      return page.evaluate(readState, selector);
+    };
+    // Is a baseline refused? What the field shows for it (texts elsewhere in the form may speak of another
+    // field, which the baseline is there to absorb) is a refusal when it carries a mark of one (aria-invalid,
+    // an error class, a custom validity, an enforced mismatch), or when it is exactly what the page shows for
+    // NO_VALUE. A page that writes "Looks good" under a valid value shows something else for NO_VALUE.
+    let refusalFace;
+    // What the field gained with a value (a text, a mark of refusal); a form hidden after an accepted submit
+    // only loses texts, and that is not a refusal.
+    const gained = state => { const e = evidence(pristine, state); return [...(e.mismatch && e.enforced ? ['native'] : []), ...e.signals.filter(x => x !== 'error-text')]; };
+    const refused = async state => {
+      const g = gained(state);
+      if (!g.length) return false;
+      if (g.some(x => x !== 'field-text')) return true;
+      if (refusalFace === undefined) {
+        const f = await fresh();
+        if (!f.ok) throw Object.assign(new Error(f.reason), { notTestable: true });
+        refusalFace = ownFace(await submitBaseline(NO_VALUE));
+      }
+      return ownFace(state) === refusalFace;
+    };
+    try {
+      before = await submitBaseline(BASELINE[kind]);
+      // `showed`: the field gained something with the baseline that the page as loaded did not show. When that is not
+      // held a refusal (it differs from what NO_VALUE gets), it is still said: a page that words each refusal
+      // differently and refuses the baseline cannot be told from one that praises it.
+      baseline = { typed: BASELINE[kind], refused: await refused(before), schemeRequired: false, showed: gained(before).length > 0 };
+      // A text field that refuses the bare domain and takes the same domain with a scheme asks for a URL, as a
+      // field of type url does: decision D1 below applies to it, and the field is reported with the url kind.
+      if (baseline.refused && kind === 'domain') {
+        const f = await fresh();
+        if (!f.ok) return { status: 'not-testable', reason: f.reason };
+        const withScheme = await submitBaseline(BASELINE.url);
+        if (!await refused(withScheme)) { kind = 'url'; before = withScheme; baseline = { typed: BASELINE.url, refused: false, schemeRequired: true, showed: gained(before).length > 0 }; }
+      }
+    } catch (e) {
+      if (e.notTestable) return { status: 'not-testable', reason: e.message };
+      throw e;
+    }
+    // The page refuses every form of the baseline: what it says of the field for a plain value cannot serve as
+    // the reference, so the field is read against the page as it loaded and its refusals count as refusals.
+    // What the baseline showed elsewhere in the form is kept.
+    if (baseline.refused) before = { ...pristine, errorTexts: before.errorTexts };
   }
-  const before = await page.evaluate(readState, selector);
   for (let i = 0; i < cases.length; i++) {
     const c = cases[i];
     // In submit mode every case starts from a freshly loaded page: after a "valid" submit many pages hide
@@ -94,7 +144,8 @@ async function probeField(page, selector, kind, cases, { submit = false, fresh =
       if (!f.ok) { for (const rest of cases.slice(i)) results.push(untested(rest, f.reason)); break; }
       await page.evaluate(fillCompanions, selector);
     }
-    // Decision D1 (Matthieu, 25/09): a field of type url asks for an absolute URL, so a bare domain is typed
+    // Decision D1 (Matthieu, 25/09): a field that asks for an absolute URL (type url, or a text field that
+    // refused the bare baseline and took it with a scheme, see above) gets a bare domain typed
     // with `https://` in front. <input type="url"> rejects `example.com` itself, whatever the page's script
     // does; on the bench every website-field failure of the classes ascii-tld-long, idn-ulabel and control
     // was a bare domain rejected-native — a property of the field type, not of the page's UA. The `url`
@@ -143,7 +194,7 @@ async function probeField(page, selector, kind, cases, { submit = false, fresh =
     else if (r.outcome === 'fail') counts.fail += 1;
     if (r.rewritten) counts.rewritten += 1;
   }
-  return { status: 'tested', selector, kind, submitExercised: submit, results, counts };
+  return { status: 'tested', selector, kind, submitExercised: submit, baseline, results, counts };
 }
 
 const NOT_TESTABLE = reason => ({ email: { status: 'not-testable', reason }, website: { status: 'not-testable', reason } });

@@ -27,6 +27,13 @@ export function evidence(before, after) {
   return { mismatch: Boolean(!after.valid && (after.typeMismatch || after.patternMismatch)), enforced: !after.noValidate, signals: signalsOf(before, after) };
 }
 
+/** What the field itself shows in a snapshot, as one comparable string: two snapshots with the same face say
+ *  the same thing about the field. Texts elsewhere in the form are left out. */
+export function ownFace(s) {
+  return JSON.stringify([[...(s.fieldTexts ?? [])].sort(), s.ariaInvalid === 'true', ERR_CLASS.test(s.classes),
+    Boolean(s.customError) && s.validationMessage, Boolean(!s.valid && (s.typeMismatch || s.patternMismatch) && !s.noValidate)]);
+}
+
 /** before/after are snapshots from readState(); returns { verdict, rewritten, outcome }.
  *  `submitted`: the form's submit event actually fired for this case. Without it, a page that validates
  *  only on submit was never exercised, so the absence of a rejection is not an acceptance. */

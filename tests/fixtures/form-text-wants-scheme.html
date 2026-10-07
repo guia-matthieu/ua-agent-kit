@@ -1,0 +1,19 @@
+<!doctype html><html lang="en"><body>
+<!-- The website field is a text field that wants a scheme and has one message for every refusal: the bare domain
+     typed as the baseline gets it, and so does a URL with a space in its host (bench run of 2026-10-06,
+     gpt-oss-120b/en/guide/2: 0 guard of 9 read as refused). -->
+<form id="f" novalidate>
+<div class="field"><label for="email">Email</label><input type="text" id="email" name="email"><span id="emailMsg"></span></div>
+<div class="field"><label for="web">Website</label><input type="text" id="web" name="website"><span id="webMsg"></span></div>
+<button type="submit">Send</button></form>
+<script>
+document.getElementById('f').addEventListener('submit', e => {
+  e.preventDefault();
+  const okMail = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(document.getElementById('email').value);
+  let okWeb = false;
+  try { const u = new URL(document.getElementById('web').value); okWeb = /^https?:$/.test(u.protocol) && u.hostname.includes('.') && !/\s/.test(document.getElementById('web').value); } catch { okWeb = false; }
+  document.getElementById('emailMsg').textContent = okMail ? '' : 'Please enter a valid email address.';
+  document.getElementById('webMsg').textContent = okWeb ? '' : 'Please enter a valid URL (http/https).';
+});
+</script>
+</body></html>
