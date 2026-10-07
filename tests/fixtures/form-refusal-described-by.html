@@ -1,0 +1,16 @@
+<!doctype html><html lang="en"><body>
+<!-- The message lives at the top of the form, away from the field, and the field points to it with aria-describedby. -->
+<form id="f" novalidate>
+<p id="emailHelp"></p>
+<div><label for="name">Full name</label><input type="text" id="name" name="name"></div>
+<div><label for="email">Email address</label><input type="text" id="email" name="email" aria-describedby="emailHelp"></div>
+<div><label for="pw">Password</label><input type="password" id="pw" name="password"></div>
+<button type="submit">Sign up</button></form>
+<script>
+document.getElementById('f').addEventListener('submit', e => {
+  e.preventDefault();
+  const ok = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(document.getElementById('email').value);
+  document.getElementById('emailHelp').textContent = ok ? '' : 'Check this address.';
+});
+</script>
+</body></html>

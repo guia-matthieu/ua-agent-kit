@@ -1,0 +1,16 @@
+<!doctype html><html lang="en"><body>
+<!-- The refusal says "Enter a valid email address.": no "invalid", no "error". Message inside the field's label
+     (bench run of 2026-10-06, gpt-oss-120b/en/guide/1: read as accepted). -->
+<form id="f" novalidate>
+<label>Full name <input type="text" id="name" name="name" required><span id="nameMsg"></span></label>
+<label>Email address <input type="text" id="email" name="email" required><span id="emailMsg"></span></label>
+<label>Password <input type="password" id="pw" name="password" required><span id="pwMsg"></span></label>
+<button type="submit">Create account</button></form>
+<script>
+document.getElementById('f').addEventListener('submit', e => {
+  e.preventDefault();
+  const ok = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(document.getElementById('email').value);
+  document.getElementById('emailMsg').textContent = ok ? '' : 'Enter a valid email address.';
+});
+</script>
+</body></html>

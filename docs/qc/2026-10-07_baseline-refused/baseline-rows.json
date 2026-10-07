@@ -1,0 +1,8400 @@
+[
+ {
+  "root": "bench/results/generations",
+  "page": "anthropic/en/guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "anthropic/en/guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "anthropic/en/guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "anthropic/en/guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "anthropic/en/guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "anthropic/en/guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "anthropic/en/no-guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "anthropic/en/no-guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "anthropic/en/no-guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "anthropic/en/no-guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "anthropic/en/no-guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "anthropic/en/no-guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "anthropic/es/guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "anthropic/es/guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "anthropic/es/guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "anthropic/es/guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "anthropic/es/guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "anthropic/es/guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "anthropic/es/no-guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "anthropic/es/no-guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "anthropic/es/no-guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "anthropic/es/no-guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "anthropic/es/no-guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "anthropic/es/no-guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "anthropic/fr/guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "anthropic/fr/guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "anthropic/fr/guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "anthropic/fr/guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "anthropic/fr/guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "anthropic/fr/guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "anthropic/fr/no-guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "anthropic/fr/no-guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "anthropic/fr/no-guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "anthropic/fr/no-guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "anthropic/fr/no-guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "anthropic/fr/no-guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "open-weight/en/guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "open-weight/en/guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "open-weight/en/guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "open-weight/en/guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "open-weight/en/guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "open-weight/en/guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "open-weight/en/no-guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "open-weight/en/no-guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "open-weight/en/no-guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "open-weight/en/no-guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "open-weight/en/no-guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "open-weight/en/no-guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "open-weight/es/guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "open-weight/es/guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "open-weight/es/guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "open-weight/es/guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "open-weight/es/guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "open-weight/es/guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "open-weight/es/no-guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "open-weight/es/no-guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "open-weight/es/no-guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "open-weight/es/no-guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "open-weight/es/no-guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "open-weight/es/no-guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "open-weight/fr/guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "open-weight/fr/guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "open-weight/fr/guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "open-weight/fr/guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "open-weight/fr/guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "open-weight/fr/guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "open-weight/fr/no-guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "open-weight/fr/no-guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "open-weight/fr/no-guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "open-weight/fr/no-guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "open-weight/fr/no-guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "open-weight/fr/no-guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "openai/en/guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "openai/en/guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "openai/en/guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "openai/en/guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "openai/en/guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "openai/en/guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "openai/en/no-guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "openai/en/no-guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "openai/en/no-guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "openai/en/no-guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "openai/en/no-guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "openai/en/no-guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "openai/es/guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "openai/es/guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "openai/es/guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "openai/es/guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "openai/es/guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "openai/es/guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "openai/es/no-guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "openai/es/no-guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "openai/es/no-guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "openai/es/no-guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "openai/es/no-guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "openai/es/no-guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "openai/fr/guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "openai/fr/guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "openai/fr/guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "openai/fr/guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "openai/fr/guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "openai/fr/guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": [
+    "aria-invalid",
+    "field-text"
+   ]
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "openai/fr/no-guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "openai/fr/no-guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "openai/fr/no-guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "openai/fr/no-guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "openai/fr/no-guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/results/generations",
+  "page": "openai/fr/no-guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "deepseek-v4-flash/en/guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "deepseek-v4-flash/en/guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "deepseek-v4-flash/en/guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "deepseek-v4-flash/en/guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": [
+    "error-class",
+    "error-text",
+    "field-text"
+   ]
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "deepseek-v4-flash/en/guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "deepseek-v4-flash/en/guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "deepseek-v4-flash/en/no-guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "deepseek-v4-flash/en/no-guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "deepseek-v4-flash/en/no-guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "deepseek-v4-flash/en/no-guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "deepseek-v4-flash/en/no-guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "deepseek-v4-flash/en/no-guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "deepseek-v4-flash/es/guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "deepseek-v4-flash/es/guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": [
+    "error-class",
+    "field-text"
+   ]
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "deepseek-v4-flash/es/guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "deepseek-v4-flash/es/guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": [
+    "field-text"
+   ]
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "deepseek-v4-flash/es/no-guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "deepseek-v4-flash/es/no-guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "deepseek-v4-flash/es/no-guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "deepseek-v4-flash/es/no-guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": [
+    "error-class",
+    "field-text"
+   ]
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "deepseek-v4-flash/es/no-guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "deepseek-v4-flash/es/no-guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "deepseek-v4-flash/fr/guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "deepseek-v4-flash/fr/guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "deepseek-v4-flash/fr/guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "deepseek-v4-flash/fr/guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": [
+    "error-class",
+    "field-text"
+   ]
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "deepseek-v4-flash/fr/guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "deepseek-v4-flash/fr/guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "deepseek-v4-flash/fr/no-guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "deepseek-v4-flash/fr/no-guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "deepseek-v4-flash/fr/no-guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "deepseek-v4-flash/fr/no-guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "deepseek-v4-flash/fr/no-guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "deepseek-v4-flash/fr/no-guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gemma-4-31b/en/guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gemma-4-31b/en/guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": [
+    "error-class"
+   ]
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gemma-4-31b/en/guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gemma-4-31b/en/guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": [
+    "error-class",
+    "field-text"
+   ]
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gemma-4-31b/en/guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gemma-4-31b/en/guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gemma-4-31b/en/no-guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gemma-4-31b/en/no-guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gemma-4-31b/en/no-guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gemma-4-31b/en/no-guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gemma-4-31b/en/no-guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gemma-4-31b/en/no-guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gemma-4-31b/es/guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gemma-4-31b/es/guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": [
+    "error-class",
+    "field-text"
+   ]
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gemma-4-31b/es/guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gemma-4-31b/es/guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": [
+    "error-class",
+    "error-text",
+    "field-text"
+   ]
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gemma-4-31b/es/guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gemma-4-31b/es/guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": [
+    "error-class"
+   ]
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gemma-4-31b/es/no-guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gemma-4-31b/es/no-guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gemma-4-31b/es/no-guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gemma-4-31b/es/no-guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gemma-4-31b/es/no-guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gemma-4-31b/es/no-guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gemma-4-31b/fr/guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gemma-4-31b/fr/guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gemma-4-31b/fr/guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gemma-4-31b/fr/guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": [
+    "error-class",
+    "field-text"
+   ]
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gemma-4-31b/fr/guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gemma-4-31b/fr/guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": [
+    "error-class",
+    "field-text"
+   ]
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gemma-4-31b/fr/no-guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gemma-4-31b/fr/no-guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gemma-4-31b/fr/no-guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gemma-4-31b/fr/no-guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gemma-4-31b/fr/no-guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gemma-4-31b/fr/no-guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gpt-oss-120b/en/guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gpt-oss-120b/en/guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gpt-oss-120b/en/guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gpt-oss-120b/en/guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": [
+    "field-text"
+   ]
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gpt-oss-120b/en/guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gpt-oss-120b/en/guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": [
+    "field-text"
+   ]
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gpt-oss-120b/en/no-guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gpt-oss-120b/en/no-guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gpt-oss-120b/en/no-guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gpt-oss-120b/en/no-guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gpt-oss-120b/en/no-guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gpt-oss-120b/en/no-guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gpt-oss-120b/es/guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gpt-oss-120b/es/guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gpt-oss-120b/es/guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gpt-oss-120b/es/guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": [
+    "field-text"
+   ]
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gpt-oss-120b/es/guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gpt-oss-120b/es/guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gpt-oss-120b/es/no-guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gpt-oss-120b/es/no-guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gpt-oss-120b/es/no-guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gpt-oss-120b/es/no-guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gpt-oss-120b/es/no-guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gpt-oss-120b/es/no-guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gpt-oss-120b/fr/guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gpt-oss-120b/fr/guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gpt-oss-120b/fr/guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gpt-oss-120b/fr/guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": [
+    "error-text",
+    "field-text"
+   ]
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gpt-oss-120b/fr/guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gpt-oss-120b/fr/guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": [
+    "field-text"
+   ]
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gpt-oss-120b/fr/no-guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gpt-oss-120b/fr/no-guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gpt-oss-120b/fr/no-guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gpt-oss-120b/fr/no-guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gpt-oss-120b/fr/no-guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "gpt-oss-120b/fr/no-guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "ministral-8b/en/guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "ministral-8b/en/guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "ministral-8b/en/guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "ministral-8b/en/guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "ministral-8b/en/guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "ministral-8b/en/guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "ministral-8b/en/no-guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "ministral-8b/en/no-guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "ministral-8b/en/no-guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "ministral-8b/en/no-guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "ministral-8b/en/no-guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "ministral-8b/en/no-guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "ministral-8b/es/guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "ministral-8b/es/guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "ministral-8b/es/guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "ministral-8b/es/guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "ministral-8b/es/guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "ministral-8b/es/guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "ministral-8b/es/no-guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "ministral-8b/es/no-guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "ministral-8b/es/no-guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "ministral-8b/es/no-guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "ministral-8b/es/no-guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "ministral-8b/es/no-guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "ministral-8b/fr/guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "ministral-8b/fr/guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "ministral-8b/fr/guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "ministral-8b/fr/guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "ministral-8b/fr/guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "ministral-8b/fr/guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "ministral-8b/fr/no-guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "ministral-8b/fr/no-guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "ministral-8b/fr/no-guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "ministral-8b/fr/no-guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "ministral-8b/fr/no-guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "ministral-8b/fr/no-guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-medium-3-1/en/guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-medium-3-1/en/guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-medium-3-1/en/guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-medium-3-1/en/guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-medium-3-1/en/guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-medium-3-1/en/guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-medium-3-1/en/no-guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-medium-3-1/en/no-guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-medium-3-1/en/no-guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-medium-3-1/en/no-guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-medium-3-1/en/no-guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-medium-3-1/en/no-guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-medium-3-1/es/guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": [
+    "field-text"
+   ]
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-medium-3-1/es/guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": [
+    "field-text"
+   ]
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-medium-3-1/es/guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-medium-3-1/es/guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-medium-3-1/es/guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-medium-3-1/es/guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-medium-3-1/es/no-guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-medium-3-1/es/no-guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-medium-3-1/es/no-guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-medium-3-1/es/no-guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-medium-3-1/es/no-guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-medium-3-1/es/no-guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-medium-3-1/fr/guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-medium-3-1/fr/guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-medium-3-1/fr/guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-medium-3-1/fr/guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-medium-3-1/fr/guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-medium-3-1/fr/guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-medium-3-1/fr/no-guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-medium-3-1/fr/no-guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-medium-3-1/fr/no-guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-medium-3-1/fr/no-guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-medium-3-1/fr/no-guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-medium-3-1/fr/no-guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-small-3-2/en/guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-small-3-2/en/guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-small-3-2/en/guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-small-3-2/en/guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-small-3-2/en/guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-small-3-2/en/guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-small-3-2/en/no-guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-small-3-2/en/no-guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-small-3-2/en/no-guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-small-3-2/en/no-guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-small-3-2/en/no-guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-small-3-2/en/no-guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-small-3-2/es/guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-small-3-2/es/guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-small-3-2/es/guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-small-3-2/es/guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-small-3-2/es/guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-small-3-2/es/guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-small-3-2/es/no-guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-small-3-2/es/no-guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-small-3-2/es/no-guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-small-3-2/es/no-guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-small-3-2/es/no-guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-small-3-2/es/no-guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-small-3-2/fr/guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-small-3-2/fr/guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-small-3-2/fr/guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-small-3-2/fr/guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-small-3-2/fr/guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-small-3-2/fr/guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-small-3-2/fr/no-guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-small-3-2/fr/no-guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-small-3-2/fr/no-guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-small-3-2/fr/no-guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-small-3-2/fr/no-guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "mistral-small-3-2/fr/no-guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "qwen3-coder-30b/en/guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "qwen3-coder-30b/en/guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": [
+    "field-text"
+   ]
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "qwen3-coder-30b/en/guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "qwen3-coder-30b/en/guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": [
+    "field-text"
+   ]
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "qwen3-coder-30b/en/no-guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "qwen3-coder-30b/en/no-guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "qwen3-coder-30b/en/no-guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "qwen3-coder-30b/en/no-guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "qwen3-coder-30b/en/no-guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "qwen3-coder-30b/en/no-guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "qwen3-coder-30b/es/guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "qwen3-coder-30b/es/guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "qwen3-coder-30b/es/guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "qwen3-coder-30b/es/guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "qwen3-coder-30b/es/guide/3",
+  "field": null,
+  "status": "no-form"
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "qwen3-coder-30b/es/no-guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "qwen3-coder-30b/es/no-guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "qwen3-coder-30b/es/no-guide/2",
+  "field": null,
+  "status": "no-form"
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "qwen3-coder-30b/fr/guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "qwen3-coder-30b/fr/guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "qwen3-coder-30b/fr/guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "qwen3-coder-30b/fr/guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "qwen3-coder-30b/fr/no-guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "qwen3-coder-30b/fr/no-guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "qwen3-coder-30b/fr/no-guide/2",
+  "field": null,
+  "status": "no-form"
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "qwen3-coder-30b/fr/no-guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "page": "qwen3-coder-30b/fr/no-guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "deepseek-v4-flash/en/guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "deepseek-v4-flash/en/guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "deepseek-v4-flash/en/guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "deepseek-v4-flash/en/guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": [
+    "error-class",
+    "field-text"
+   ]
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "deepseek-v4-flash/en/guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "deepseek-v4-flash/en/guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "deepseek-v4-flash/en/no-guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "deepseek-v4-flash/en/no-guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "deepseek-v4-flash/en/no-guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "deepseek-v4-flash/en/no-guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "deepseek-v4-flash/en/no-guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "deepseek-v4-flash/en/no-guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "deepseek-v4-flash/es/guide/1",
+  "field": null,
+  "status": "no-form"
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "deepseek-v4-flash/es/guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "deepseek-v4-flash/es/guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "deepseek-v4-flash/es/guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "deepseek-v4-flash/es/guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": [
+    "field-text"
+   ]
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "deepseek-v4-flash/es/no-guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "deepseek-v4-flash/es/no-guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "deepseek-v4-flash/es/no-guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "deepseek-v4-flash/es/no-guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": [
+    "error-class",
+    "field-text"
+   ]
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "deepseek-v4-flash/es/no-guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "deepseek-v4-flash/es/no-guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "deepseek-v4-flash/fr/guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "deepseek-v4-flash/fr/guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "deepseek-v4-flash/fr/guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "deepseek-v4-flash/fr/guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": [
+    "error-class",
+    "field-text"
+   ]
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "deepseek-v4-flash/fr/guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "deepseek-v4-flash/fr/guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "deepseek-v4-flash/fr/no-guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "deepseek-v4-flash/fr/no-guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "deepseek-v4-flash/fr/no-guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "deepseek-v4-flash/fr/no-guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "deepseek-v4-flash/fr/no-guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "deepseek-v4-flash/fr/no-guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gemma-4-31b/en/guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gemma-4-31b/en/guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gemma-4-31b/en/guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gemma-4-31b/en/guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": [
+    "error-class",
+    "field-text"
+   ]
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gemma-4-31b/en/guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gemma-4-31b/en/guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gemma-4-31b/en/no-guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gemma-4-31b/en/no-guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gemma-4-31b/en/no-guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gemma-4-31b/en/no-guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gemma-4-31b/en/no-guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gemma-4-31b/en/no-guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gemma-4-31b/es/guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gemma-4-31b/es/guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gemma-4-31b/es/guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gemma-4-31b/es/guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gemma-4-31b/es/guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gemma-4-31b/es/guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": [
+    "error-class"
+   ]
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gemma-4-31b/es/no-guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gemma-4-31b/es/no-guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gemma-4-31b/es/no-guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gemma-4-31b/es/no-guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gemma-4-31b/es/no-guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gemma-4-31b/es/no-guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gemma-4-31b/fr/guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gemma-4-31b/fr/guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gemma-4-31b/fr/guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gemma-4-31b/fr/guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gemma-4-31b/fr/guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gemma-4-31b/fr/guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gemma-4-31b/fr/no-guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gemma-4-31b/fr/no-guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gemma-4-31b/fr/no-guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gemma-4-31b/fr/no-guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gemma-4-31b/fr/no-guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gemma-4-31b/fr/no-guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gpt-oss-120b/en/guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gpt-oss-120b/en/guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gpt-oss-120b/en/guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gpt-oss-120b/en/guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": [
+    "field-text"
+   ]
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gpt-oss-120b/en/guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gpt-oss-120b/en/guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": [
+    "field-text"
+   ]
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gpt-oss-120b/en/no-guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gpt-oss-120b/en/no-guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gpt-oss-120b/en/no-guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gpt-oss-120b/en/no-guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gpt-oss-120b/en/no-guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gpt-oss-120b/en/no-guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gpt-oss-120b/es/guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gpt-oss-120b/es/guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gpt-oss-120b/es/guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gpt-oss-120b/es/guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": [
+    "field-text"
+   ]
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gpt-oss-120b/es/guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gpt-oss-120b/es/guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gpt-oss-120b/es/no-guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gpt-oss-120b/es/no-guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gpt-oss-120b/es/no-guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gpt-oss-120b/es/no-guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gpt-oss-120b/es/no-guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gpt-oss-120b/es/no-guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gpt-oss-120b/fr/guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gpt-oss-120b/fr/guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gpt-oss-120b/fr/guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gpt-oss-120b/fr/guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": [
+    "error-text",
+    "field-text"
+   ]
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gpt-oss-120b/fr/guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gpt-oss-120b/fr/guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": [
+    "field-text"
+   ]
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gpt-oss-120b/fr/no-guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gpt-oss-120b/fr/no-guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gpt-oss-120b/fr/no-guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gpt-oss-120b/fr/no-guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gpt-oss-120b/fr/no-guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "gpt-oss-120b/fr/no-guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "ministral-8b/en/guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "ministral-8b/en/guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "ministral-8b/en/guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "ministral-8b/en/guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "ministral-8b/en/guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "ministral-8b/en/guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "ministral-8b/en/no-guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "ministral-8b/en/no-guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "ministral-8b/en/no-guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "ministral-8b/en/no-guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "ministral-8b/en/no-guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "ministral-8b/en/no-guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "ministral-8b/es/guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "ministral-8b/es/guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "ministral-8b/es/guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "ministral-8b/es/guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "ministral-8b/es/guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "ministral-8b/es/guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "ministral-8b/es/no-guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "ministral-8b/es/no-guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "ministral-8b/es/no-guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "ministral-8b/es/no-guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "ministral-8b/es/no-guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "ministral-8b/es/no-guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "ministral-8b/fr/guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "ministral-8b/fr/guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "ministral-8b/fr/guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "ministral-8b/fr/guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "ministral-8b/fr/guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "ministral-8b/fr/guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "ministral-8b/fr/no-guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "ministral-8b/fr/no-guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "ministral-8b/fr/no-guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "ministral-8b/fr/no-guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "ministral-8b/fr/no-guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "ministral-8b/fr/no-guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-medium-3-1/en/guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-medium-3-1/en/guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-medium-3-1/en/guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-medium-3-1/en/guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-medium-3-1/en/guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-medium-3-1/en/guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-medium-3-1/en/no-guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-medium-3-1/en/no-guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-medium-3-1/en/no-guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-medium-3-1/en/no-guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-medium-3-1/en/no-guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-medium-3-1/en/no-guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-medium-3-1/es/guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-medium-3-1/es/guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-medium-3-1/es/guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-medium-3-1/es/guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-medium-3-1/es/guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-medium-3-1/es/guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-medium-3-1/es/no-guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-medium-3-1/es/no-guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-medium-3-1/es/no-guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-medium-3-1/es/no-guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-medium-3-1/es/no-guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-medium-3-1/es/no-guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-medium-3-1/fr/guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-medium-3-1/fr/guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-medium-3-1/fr/guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-medium-3-1/fr/guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-medium-3-1/fr/guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-medium-3-1/fr/guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-medium-3-1/fr/no-guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-medium-3-1/fr/no-guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-medium-3-1/fr/no-guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-medium-3-1/fr/no-guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-medium-3-1/fr/no-guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-medium-3-1/fr/no-guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-small-3-2/en/guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-small-3-2/en/guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-small-3-2/en/guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-small-3-2/en/guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-small-3-2/en/guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-small-3-2/en/guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-small-3-2/en/no-guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-small-3-2/en/no-guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": [
+    "field-text"
+   ]
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-small-3-2/en/no-guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-small-3-2/en/no-guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-small-3-2/en/no-guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-small-3-2/en/no-guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-small-3-2/es/guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-small-3-2/es/guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-small-3-2/es/guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-small-3-2/es/guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-small-3-2/es/guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-small-3-2/es/guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-small-3-2/es/no-guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-small-3-2/es/no-guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-small-3-2/es/no-guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-small-3-2/es/no-guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-small-3-2/es/no-guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-small-3-2/es/no-guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-small-3-2/fr/guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-small-3-2/fr/guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-small-3-2/fr/guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-small-3-2/fr/guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": [
+    "field-text"
+   ]
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-small-3-2/fr/guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-small-3-2/fr/guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-small-3-2/fr/no-guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-small-3-2/fr/no-guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": [
+    "field-text"
+   ]
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-small-3-2/fr/no-guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-small-3-2/fr/no-guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": [
+    "field-text"
+   ]
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-small-3-2/fr/no-guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "mistral-small-3-2/fr/no-guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "qwen3-coder-30b/en/guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "qwen3-coder-30b/en/guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": [
+    "field-text"
+   ]
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "qwen3-coder-30b/en/guide/2",
+  "field": null,
+  "status": "no-form"
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "qwen3-coder-30b/en/guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "qwen3-coder-30b/en/guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": [
+    "field-text"
+   ]
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "qwen3-coder-30b/en/no-guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "qwen3-coder-30b/en/no-guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "qwen3-coder-30b/en/no-guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "qwen3-coder-30b/en/no-guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "qwen3-coder-30b/en/no-guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "qwen3-coder-30b/en/no-guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "qwen3-coder-30b/es/guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "qwen3-coder-30b/es/guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "qwen3-coder-30b/es/guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "qwen3-coder-30b/es/guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "qwen3-coder-30b/es/guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "qwen3-coder-30b/es/guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "qwen3-coder-30b/es/no-guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "qwen3-coder-30b/es/no-guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "qwen3-coder-30b/es/no-guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "qwen3-coder-30b/es/no-guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "qwen3-coder-30b/es/no-guide/3",
+  "field": null,
+  "status": "no-form"
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "qwen3-coder-30b/fr/guide/1",
+  "field": null,
+  "status": "no-form"
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "qwen3-coder-30b/fr/guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "qwen3-coder-30b/fr/guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "qwen3-coder-30b/fr/guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "qwen3-coder-30b/fr/guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": true,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "qwen3-coder-30b/fr/no-guide/1",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "qwen3-coder-30b/fr/no-guide/1",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "qwen3-coder-30b/fr/no-guide/2",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "qwen3-coder-30b/fr/no-guide/2",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "qwen3-coder-30b/fr/no-guide/3",
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ },
+ {
+  "root": "bench/runs/2026-10-06_state-catalogue/generations",
+  "page": "qwen3-coder-30b/fr/no-guide/3",
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "mismatch": false,
+   "enforced": false,
+   "signals": []
+  }
+ }
+]

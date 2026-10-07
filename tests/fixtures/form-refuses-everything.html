@@ -1,0 +1,14 @@
+<!doctype html><html lang="es"><body>
+<!-- A validator that refuses every value, the plain ASCII baseline included, always in the same words
+     (bench run of 2026-10-06, hardened page mistral-medium-3-1/es/guide/1). -->
+<form id="f" novalidate>
+<div class="field"><label for="email">Correo electrónico</label><input type="text" id="email" name="email"><span id="emailMsg"></span></div>
+<div class="field"><label for="web">Sitio web</label><input type="text" id="web" name="website"><span id="webMsg"></span></div>
+<button type="submit">Enviar</button></form>
+<script>
+document.getElementById('f').addEventListener('submit', e => {
+  e.preventDefault();
+  for (const id of ['emailMsg', 'webMsg']) document.getElementById(id).textContent = 'Las etiquetas del dominio solo pueden contener letras, números y guiones.';
+});
+</script>
+</body></html>

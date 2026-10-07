@@ -1,0 +1,20 @@
+<!doctype html><html lang="es"><body>
+<!-- The website field is a text field that wants a scheme, so the bare domain typed as the baseline is refused.
+     A URL with a scheme is then accepted and the page says so below the button: a text the baseline did not
+     show, and not a refusal (bench run of 2026-10-06, deepseek-v4-flash/es/no-guide/2). -->
+<form id="f" novalidate>
+<div class="field"><label for="email">Correo electrónico:</label><input type="text" id="email" name="email"><span id="emailMsg"></span></div>
+<div class="field"><label for="web">Sitio web:</label><input type="text" id="web" name="website"><span id="webMsg"></span></div>
+<button type="submit">Registrarse</button>
+<div id="done"></div></form>
+<script>
+document.getElementById('f').addEventListener('submit', e => {
+  e.preventDefault();
+  const okMail = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(document.getElementById('email').value);
+  const okWeb = /^https?:\/\/[^\s/]+\.[^\s]+$/.test(document.getElementById('web').value);
+  document.getElementById('emailMsg').textContent = okMail ? '' : 'Introduce una dirección de correo válida.';
+  document.getElementById('webMsg').textContent = okWeb ? '' : 'La URL debe comenzar con http:// o https://';
+  document.getElementById('done').textContent = okMail && okWeb ? '✅ Registro exitoso. Todos los campos son válidos.' : '';
+});
+</script>
+</body></html>
