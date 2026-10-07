@@ -29,14 +29,20 @@ Text website fields whose baseline was refused: bench of 2026-09-25, 1 of 15 (`o
   - a text the page does not write for `x` (a praise, a hint next to an error written elsewhere): the baseline is taken, the field reports `showed`.
 - A text field that does not take the bare domain and takes it with `https://` is probed as a field of type `url`: bare domains are typed with `https://` in front (decision D1 of 2026-09-25, extended). The field reports `baseline.schemeRequired`.
 - A page that refuses every form of the baseline with a mark is read against the page as it loaded: `baseline.refused`.
-- A text that repeats the value typed, or counts its characters, is not new from one value to the next.
-- Every tested field carries `baseline: { typed, refused, schemeRequired, showed }`. Tests: `tests/baseline-refused.test.mjs`, six fixtures.
+- A text that repeats the value typed, or counts its characters, is not new from one value to the next. The value is looked for as the page may have written it: in another case, in another Unicode form, cut short.
+- Every tested field carries `baseline: { typed, refused, schemeRequired, showed }`. Tests: `tests/baseline-refused.test.mjs` (eight fixtures) and the cases of `signalsOf` and `sameOwn` in `tests/refusal-place.test.mjs`.
 
 ## Review of PR #6
 
 A reviewer with no part in the work rejected the first version (`7a642fa`) on one finding it reproduced: on a page that repeats the value under the field ("Sending to ana@example.com"), and on a page that shows a hint for any value, every valid address read as refused. Both pages are now fixtures. Corrected, then scored again: a first correction took the typed value out of every text of the field, which made a fixed hint look new whenever the value typed was the example it gives; the scoring showed it (86 rows of the bench of 2026-09-25 instead of 27) and it was corrected before anything was pushed. The rows below are those of the last scoring; they differ from the scoring made before the review by one field, the website field of the page that refuses every value, now `baseline-ambiguous`.
 
-In one of the three scorings, three hardened pages of `ministral-8b` gave a runner error or `not-interactable` with the TLD packs and not with the standard battery; the scoring before and the one after gave neither. Not explained.
+A second reviewer rejected `dfa9005`: a copy of the value in capitals, cut to its first twelve characters or in NFD still read as a refusal of every valid address (reproduced on four forms of its own). Corrected in the commit after it, with the cases added to `tests/refusal-place.test.mjs`, and scored again.
+
+On the hardened pages the field now `baseline-ambiguous` leaves the counts: its rows become one `not-testable` row, so the denominators move with it (valid values with the guide 3 854 → 3 815, guards 940 → 931).
+
+In two of the scorings made that day, fields of hardened pages came back `not-interactable` or with a runner error, never on the same pages; scored alone, twice, two of those pages are tested without trouble. With four browsers at work a fill can time out. `rescore-all.mjs` now scores such a page again, up to twice; in the last scoring no page needed it. The runner itself is unchanged on that point: a bench run under load can lose a field this way.
+
+The last scoring, with the runner of the last commit, gives the same rows as the scoring pushed with `dfa9005`, on the five files.
 
 ## Published, first correction, this correction (`compare.py`)
 
@@ -56,11 +62,11 @@ Every row that differs from the previous scoring is on a field whose baseline wa
 | guards refused, with the guide | 403/938 | 662/940 | 756/931 |
 | guards refused, without | 517/960 | 728/960 | 737/960 |
 
-The bench of 2026-09-25 scored with both corrections differs from the published `runs.csv` by 27 rows, all on `openai/fr/guide/3`: the bare domains that page refused are now typed with a scheme. The first correction changes no row of that bench.
+The bench of 2026-09-25 scored with both corrections differs from the published `runs.csv` by 27 rows, all on `openai/fr/guide/3`: the bare domains that page refused are now typed with a scheme. Whether the first correction alone changes a row of that bench was not scored apart.
 
 ## Not measured, not corrected
 
-- **A page that says the same thing of a plain value and of `x`, with no mark.** No verdict is given on that field (`generations-durci/mistral-medium-3-1/es/guide/1`, website field).
+- **A page that says the same thing of a plain value and of `x`, with no mark.** No verdict is given on that field (`generations-durci/mistral-medium-3-1/es/guide/1`, website field). The same happens to a page with no validation at all that shows a hint or a counter as soon as something is typed: it accepts everything, and the runner cannot tell it from the page that refuses everything.
 
 - **A baseline refused in words the page uses for nothing else.** `generations-durci/mistral-medium-3-1/es/guide/1`, email field: the page refuses `ana.garcia@example.com` with one message and `x` with another. That cannot be told from a page praising a valid value; the baseline is taken as accepted, the field reports `showed: true`, the report says so. 1 field of 590. A second plain value would not separate the two: that page refuses every address in the same words.
 - On a URL the runner never submits, so no baseline is typed: a text field that wants a scheme refuses every bare domain there, `example.com` included.

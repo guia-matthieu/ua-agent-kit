@@ -77,6 +77,13 @@ test('a page that writes under a valid value: taken as an acceptance, and said',
   assert.match(renderMarkdown(r), /writes something of its own in this field/);
 });
 
+test('the baseline is typed into a document the runner has marked: the next reload must bring another one', async () => {
+  const battery = (await import('../src/battery.mjs')).loadBattery();
+  const r = await checkForm(fixture('form-counts-unmarked-submits.html'), { battery: { ...battery, cases: battery.cases.filter(c => c.kind === 'email').slice(0, 3) }, keepPage: true });
+  assert.equal(r.fields.email.status, 'tested');
+  assert.equal(r.__page.submitted, 0);
+});
+
 test('a URL is never submitted: no baseline is typed', async () => {
   const { createServer } = await import('node:http');
   const { readFileSync } = await import('node:fs');

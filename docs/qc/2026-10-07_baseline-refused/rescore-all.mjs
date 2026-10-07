@@ -3,7 +3,11 @@
 // (standard battery) and the run of 2026-10-06 (first draft and hardened, standard battery and TLD packs).
 // Nothing published is rewritten: the CSV files go to rescored/ next to this script. fields.json keeps, per
 // page and field, the kind the field was probed with and what the baseline got.
-// Usage: node docs/qc/2026-10-07_baseline-refused/rescore-all.mjs     (no API call)
+// A page that comes back with a runner error or a field `not-interactable` is scored again, up to twice: with four
+// browsers at work a fill can time out on a page that is tested without trouble alone (seen in two scorings of
+// four on 2026-10-07, never on the same pages). What is still so after that is kept as it is.
+// Usage: node docs/qc/2026-10-07_baseline-refused/rescore-all.mjs [folder-suffix]     (no API call)
+//   with a suffix (`generations-durci`), only the sets whose folder ends with it are scored again.
 import { readFileSync, writeFileSync, readdirSync, mkdirSync } from 'node:fs';
 const KIT = new URL('../../../', import.meta.url).pathname;
 const here = new URL('./', import.meta.url).pathname;
@@ -15,8 +19,15 @@ const std = loadBattery(), pack = JSON.parse(readFileSync(KIT + RUN + 'pack-as-s
 const notTestable = reason => ({ email: { status: 'not-testable', reason }, website: { status: 'not-testable', reason } });
 async function score(file, html, lang, battery, finish) {
   if (!/<form[\s>]/i.test(html)) return { fields: notTestable(finish === 'length' ? 'truncated' : 'no-form') };
-  try { return await checkForm(file, { lang, battery }); }
-  catch (e) { return { fields: notTestable('runner-error'), error: String(e.message).split('\n')[0] }; }
+  const shaky = r => r.error || ['email', 'website'].some(f => r.fields[f].reason === 'not-interactable');
+  let report;
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    try { report = await checkForm(file, { lang, battery }); }
+    catch (e) { report = { fields: notTestable('runner-error'), error: String(e.message).split('\n')[0] }; }
+    if (!shaky(report)) break;
+    console.error(`attempt ${attempt} shaky: ${file.slice(KIT.length)}`);
+  }
+  return report;
 }
 mkdirSync(here + 'rescored', { recursive: true });
 const SETS = [
@@ -24,8 +35,10 @@ const SETS = [
   { folder: RUN + 'generations', out: [['runs-standard.csv', std], ['runs-fr.csv', pack]] },
   { folder: RUN + 'generations-durci', out: [['runs-durci-standard.csv', std], ['runs-durci-fr.csv', pack]] }
 ];
-const fields = [];
-for (const set of SETS) {
+const only = process.argv[2];
+const fieldsFile = here + 'rescored/fields.json';
+const fields = only ? JSON.parse(readFileSync(fieldsFile, 'utf8')).filter(f => !f.set.endsWith(only)) : [];
+for (const set of SETS.filter(x => !only || x.folder.endsWith(only))) {
   const metas = readdirSync(KIT + set.folder, { recursive: true }).filter(f => /(^|\/)\d+\.json$/.test(f)).sort();
   const res = []; let i = 0, errors = 0;
   await Promise.all(Array.from({ length: 4 }, async () => {
@@ -46,4 +59,4 @@ for (const set of SETS) {
   for (const r of res) for (const f of ['email', 'website']) { const x = r.reports[0].fields[f]; fields.push({ set: set.folder, ...r.row, field: f, status: x.status, reason: x.reason ?? null, kind: x.kind ?? null, baseline: x.baseline ?? null }); }
   console.error(`${set.folder}: ${res.length} pages, ${errors} with a runner error`);
 }
-writeFileSync(here + 'rescored/fields.json', JSON.stringify(fields, null, 1));
+writeFileSync(fieldsFile, JSON.stringify(fields, null, 1));

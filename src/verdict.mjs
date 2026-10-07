@@ -7,10 +7,45 @@ const REF = { email: isValidEmail, domain: isValidDomain, url: isValidUrl };
  *  ("Sending to ana@example.com") or counts its characters says the same thing for every value and is not new
  *  (review of PR #6: every valid address read as refused on such a page). A text is old when `before` shows it
  *  as it is, or shows it once each side's own value is taken out of it; the first test keeps a fixed hint old
- *  when the value typed happens to be the example it gives ("e.g. https://example.com"). */
-const ECHO_MIN = 3;   // a shorter value would be found inside ordinary words
+ *  when the value typed happens to be the example it gives ("e.g. https://example.com").
+ *  The value is looked for as the page may have written it: in another case, in another Unicode form, cut
+ *  short (second review of #6: a preview in capitals, the first twelve characters, an NFD copy). */
+const ECHO_MIN = 3;   // a shorter value, or a shorter piece of one, would be found inside ordinary words
+const ECHO_RUN = 6;   // characters in a row shared with the value for a text to be held a copy of it
+const MARK = '\u2423';
 const counted = t => t.replace(/\d+/g, '#');
-const withoutValue = s => t => counted(s.value && s.value.length >= ECHO_MIN ? t.split(s.value).join('\u2423') : t);
+const fold = t => t.normalize('NFC').toLowerCase();
+/** The longest run of characters `a` and `b` share: { at: its place in `a`, length }. */
+function sharedRun(a, b) {
+  let best = { at: 0, length: 0 }, prev = new Array(b.length + 1).fill(0);
+  for (let i = 1; i <= a.length; i++) {
+    const row = new Array(b.length + 1).fill(0);
+    for (let j = 1; j <= b.length; j++) if (a[i - 1] === b[j - 1]) { row[j] = prev[j - 1] + 1; if (row[j] > best.length) best = { at: i - row[j], length: row[j] }; }
+    prev = row;
+  }
+  return best;
+}
+const withoutValue = s => t => {
+  const v = fold(s.value ?? '');
+  let x = fold(t);
+  if (v.length >= ECHO_MIN) {
+    const run = sharedRun(x, v);
+    if (run.length >= Math.min(ECHO_RUN, v.length)) {
+      x = x.slice(0, run.at) + MARK + x.slice(run.at + run.length);
+      // what is left of the value on either side of the copy (the page took a space out of the middle)
+      for (;;) {
+        const sides = x.split(MARK), i = sides.findIndex((side, k) => { const r = sharedRun(side, v); return r.length >= ECHO_MIN && (k > 0 && r.at === 0 || k < sides.length - 1 && r.at + r.length === side.length); });
+        if (i < 0) break;
+        const r = sharedRun(sides[i], v);
+        sides[i] = sides[i].slice(0, r.at) + MARK + sides[i].slice(r.at + r.length);
+        x = sides.join(MARK);
+      }
+      // one mark for the copy, with or without the sign that it was cut short
+      x = x.replace(new RegExp(MARK + '+(\\u2026|\\.{3})?', 'g'), MARK);
+    }
+  }
+  return counted(x);
+};
 export function newTexts(before, after) {
   const raw = (before.fieldTexts ?? []).map(counted), bare = (before.fieldTexts ?? []).map(withoutValue(before));
   return (after.fieldTexts ?? []).filter(t => !raw.includes(counted(t)) && !bare.includes(withoutValue(after)(t)));
