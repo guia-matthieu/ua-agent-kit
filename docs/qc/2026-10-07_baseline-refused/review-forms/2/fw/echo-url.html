@@ -1,0 +1,9 @@
+<!doctype html><html lang="en"><body><form id="f" novalidate>
+<div class="field"><label for="web">Website</label><input type="text" id="web" name="website"><span id="m"></span></div>
+<button type="submit">Send</button></form>
+<script>
+const el=document.getElementById('web'), m=document.getElementById('m');
+document.getElementById('f').addEventListener('submit', e => { e.preventDefault(); const v=el.value;
+const ok=/^https?:\/\/[^\s\/]+\.[a-z]{2,}/i.test(v); m.textContent = ok?'Visiting '+v:'Enter a valid URL.';
+});
+</script></body></html>

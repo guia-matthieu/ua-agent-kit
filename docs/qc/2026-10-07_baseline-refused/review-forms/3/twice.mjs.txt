@@ -1,0 +1,8 @@
+import * as N from './new/src/verdict.mjs';
+import * as O from './old/src/verdict.mjs';
+const st=(value,fieldTexts)=>({value,valid:true,typeMismatch:false,patternMismatch:false,ariaInvalid:null,classes:'',errorTexts:[],fieldTexts,customError:false,validationMessage:''});
+const b='ana.garcia@example.com',v='marie.dupont@example.fr';
+for (const f of [x=>`Sending ${x} to ${x}`, x=>`Send to ${x}? Cancel to edit ${x}`, x=>`${x}, ${x}`, x=>`Confirm ${x.toUpperCase()} (${x})`]) {
+  const B=st(b,[f(b)]),A=st(v,[f(v)]);
+  console.log(JSON.stringify(f('V')),'new',N.signalsOf(B,A),'old',O.signalsOf(B,A));
+}

@@ -1,6 +1,7 @@
-0a56787
- 2 files changed, 36 insertions(+), 17 deletions(-)
-d4e75af42b2d69569644149d457cb0deca79c419a29b4c3ec3febe105c4d6e50  ../../../src/verdict.mjs
-00d4b144896a9f855b3296f53a0d501ba1fcfa62726dd21c648d2019e321e947  ../../../src/form-runner.mjs
-jeu.  8 oct. 2026 08:15:12 CEST
-jeu.  8 oct. 2026 08:47:16 CEST
+sets: all three
+commit: 85d96fa
+src differs from that commit: no
+sha256 src/verdict.mjs: f43e937b0349594af0bb8061258df81516d6c3a89d3619736657a4a5911a1779
+sha256 src/form-runner.mjs: 13428d08bfc96f9183de1dfc525fd8ffd2c3fa7da0e29fbe81d0797255fedaf8
+started: 2026-10-08T08:55:03.529Z
+ended: 2026-10-08T09:27:43.100Z

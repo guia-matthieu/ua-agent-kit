@@ -1,0 +1,7 @@
+<!doctype html><html lang="en"><body><form id="f" novalidate>
+<div class="field"><label for="email">Email</label><input type="text" id="email" name="email"><span id="m"></span></div>
+<button type="submit">Send</button></form>
+<script>
+const v=()=>document.getElementById('email').value;
+document.getElementById('f').addEventListener('submit', e => { e.preventDefault(); const ok=/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v()); document.getElementById('m').textContent = 'We never share your email'; if(!ok){document.getElementById('m').textContent='We never share your email. Enter a valid email address.'}; if(!ok){} });
+</script></body></html>

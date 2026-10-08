@@ -1,0 +1,16 @@
+const S='/private/tmp/claude-501/-Users-matthieucredou-Projects-guia/4ff1ab41-9934-48bd-adce-2d8aad9c5c9a/scratchpad/review4/';
+const st=(value,fieldTexts)=>({value,valid:true,typeMismatch:false,patternMismatch:false,customError:false,validationMessage:'',noValidate:true,ariaInvalid:null,classes:'',errorTexts:[],fieldTexts});
+const B='ana.garcia@example.com';
+const T=[
+ ['3x', 'Send V, V, V', 'contact@example.fr', ()=>'Send contact@example.fr, contact@example.fr, contact@example.fr', 'Send V, V, V'.replaceAll('V',B)],
+ ['upper+nfd+exact', 'x V y V z', 'josé.dupont@example.fr', ()=>'x JOSÉ.DUPONT@EXAMPLE.FR y josé.dupont@example.fr z', 'x '+B+' y '+B+' z'],
+ ['apart short', 'Hello L from D', 'info@example.eus', ()=>'Hello info from example.eus', 'Hello ana.garcia from example.com'],
+ ['apart cut', 'V…', 'contact@boutique.corsica', ()=>'contact@bouti… and contact@bouti…', 'ana.garcia@exam… and ana.garcia@exam…'],
+ ['trailing char', '', 'prenom.nom@sub.example.co.uk', ()=>'Sending to prenom.nom@sub.example.co.uk.', 'Sending to '+B+'.'],
+ ['refusal quoting twice', '', 'plainaddress', ()=>'"plainaddress" is not valid; plainaddress lacks @', 'Sending to '+B],
+ ['refusal eaten by run', '', 'plainaddress', ()=>'Not an address', 'Not an '+B],
+];
+for (const tree of ['src-0a56787','src-bc6d63d']) {
+  const {signalsOf}=await import(S+tree+'/src/verdict.mjs');
+  for (const [n,,typed,mk,bt] of T) console.log(tree.slice(4,8),n.padEnd(22),JSON.stringify(signalsOf(st(B,[bt]),st(typed,[mk('')]))));
+}

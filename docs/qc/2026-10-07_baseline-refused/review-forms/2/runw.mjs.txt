@@ -1,0 +1,10 @@
+import { checkForm } from '/Users/matthieucredou/Projects/ua-agent-kit-public/src/form-runner.mjs';
+import { readdirSync } from 'node:fs';
+const dir = new URL('./fw/', import.meta.url).pathname;
+for (const f of readdirSync(dir)) {
+  const r = await checkForm(dir + f, { lang: 'en' });
+  const e = r.fields.website;
+  if (e.status !== 'tested') { console.log(f, '=>', e.status, e.reason); continue; }
+  const ctl = e.results.filter(x => x.class === 'control');
+  console.log(f, e.kind, JSON.stringify(e.baseline), 'controls acc', ctl.filter(x=>x.verdict==='accepted').length+'/'+ctl.length, 'fails', e.counts.fail, 'pass', e.counts.pass);
+}

@@ -1,0 +1,13 @@
+import { checkForm } from '/Users/matthieucredou/Projects/ua-agent-kit-public/src/form-runner.mjs';
+import { readdirSync } from 'node:fs';
+const dir = new URL('./fx/', import.meta.url).pathname;
+const only = process.argv.slice(2);
+for (const f of readdirSync(dir).filter(f => !only.length || only.includes(f.replace('.html','')))) {
+  const r = await checkForm(dir + f, { lang: 'en' });
+  const e = r.fields.email;
+  if (e.status !== 'tested') { console.log(f, '=>', e.status, e.reason); continue; }
+  const ctl = e.results.filter(x => x.class === 'control');
+  const bad = e.results.filter(x => (x.expect==='accept') !== (x.verdict==='accepted'));
+  console.log(f, 'baseline', JSON.stringify(e.baseline), 'controls accepted', ctl.filter(x=>x.verdict==='accepted').length+'/'+ctl.length, 'total', e.results.length, 'outcome fails', e.counts.fail, 'pass', e.counts.pass);
+  if (process.env.V) for (const x of bad.slice(0,8)) console.log('   ', x.id, JSON.stringify(x.typed), x.verdict, x.signals);
+}

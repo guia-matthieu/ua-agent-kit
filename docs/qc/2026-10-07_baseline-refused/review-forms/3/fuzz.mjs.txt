@@ -1,0 +1,22 @@
+import * as N from './new/src/verdict.mjs';
+import * as O from './old/src/verdict.mjs';
+import { loadBattery } from '/Users/matthieucredou/Projects/ua-agent-kit-public/src/battery.mjs';
+const st=(value,fieldTexts)=>({value,valid:true,typeMismatch:false,patternMismatch:false,ariaInvalid:null,classes:'',errorTexts:[],fieldTexts,customError:false,validationMessage:''});
+const vals=loadBattery().cases.map(c=>c.value).filter(v=>v.length<80);
+const bases=['ana.garcia@example.com','https://example.com','example.com','x'];
+// text pieces: words that overlap typical values
+const words=['example','example.com','.com','address','email','invalid','valid','plain','user','@','garcia','ana','must','not','be','a','the','is','enter','Sending to','Use','like','name@example.com','exa','mple','https://','http','://','error','domain','.example.com','bad','dots'];
+let seed=12345;const rnd=()=>(seed=(seed*1103515245+12345)&0x7fffffff)/0x7fffffff;const pick=a=>a[Math.floor(rnd()*a.length)];
+const mk=(v)=>{const n=1+Math.floor(rnd()*4);let t=[];for(let i=0;i<n;i++)t.push(rnd()<0.35?v:pick(words));return t.join(rnd()<.5?' ':'')};
+let reg=[],ok=0,N_=200000;
+for(let i=0;i<N_;i++){const b=pick(bases),v=pick(vals);const bt=mk(b),at=mk(v);
+ const B=st(b,[bt]),A=st(v,[at]);
+ const o=O.signalsOf(B,A).length>0,w=N.signalsOf(B,A).length>0;
+ if(o&&!w)reg.push([b,bt,v,at]);}
+console.log('regressions (old refused, new accepted):',reg.length);
+// show the diverse ones; skip where at is a pure echo of v
+const interesting=reg.filter(([b,bt,v,at])=>!at.includes(v)&&!at.toLowerCase().includes(v.toLowerCase()));
+console.log('of which at does not contain the typed value verbatim:',interesting.length);
+for(const r of interesting.slice(0,25))console.log(JSON.stringify(r));
+console.log('--- regressions where refusal contains value; sample (value-containing)');
+const seen=new Set();for(const r of reg){const k=r[1]+'||'+r[3];if(seen.has(k))continue;seen.add(k);if(seen.size<=30)console.log(JSON.stringify(r));}

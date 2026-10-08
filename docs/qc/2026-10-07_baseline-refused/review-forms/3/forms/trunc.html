@@ -1,0 +1,10 @@
+<!doctype html><html lang="en"><body>
+<form id="f" novalidate>
+<div class="field"><label for="email">Email</label><input type="text" id="email" name="email"><span id="m"></span></div>
+<button type="submit">Send</button></form>
+<script>
+const v=()=>document.getElementById('email').value;
+const ok=s=>/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(s)&&!/\.\./.test(s);
+const esc=s=>s;
+document.getElementById('f').addEventListener('submit', e => { e.preventDefault(); const x=v(); const [l,d]=x.split('@'); document.getElementById('m').textContent = ok(x) ? ('To: '+x.slice(0,8)+'…') : ('Enter a valid email address.'); });
+</script></body></html>
