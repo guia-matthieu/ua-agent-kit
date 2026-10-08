@@ -1,0 +1,14 @@
+<!doctype html><html lang="en"><body>
+<!-- The page shows the value back with its local part masked: a text that changes with every value in a way no
+     comparison of texts follows (third review of PR #6). -->
+<form id="f" novalidate>
+<div class="field"><label for="email">Email</label><input type="text" id="email" name="email"><span id="m"></span></div>
+<button type="submit">Send</button></form>
+<script>
+document.getElementById('f').addEventListener('submit', e => {
+  e.preventDefault();
+  const v = document.getElementById('email').value, ok = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v);
+  document.getElementById('m').textContent = ok ? 'A code goes to ' + v[0] + '•'.repeat(v.indexOf('@') - 1) + v.slice(v.indexOf('@')).split('').reverse().join('') : 'Enter a valid email address.';
+});
+</script>
+</body></html>

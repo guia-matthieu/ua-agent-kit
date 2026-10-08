@@ -88,7 +88,8 @@ test('a page that reloads itself on input is still tested case by case, with no 
 });
 
 test('a page whose reloads stop bringing a new document: the cases left are reload-failed, the first ones stay', async () => {
-  // documents: 1 first load, 2 before the trial click, 3 case 1, 4 case 2, then the page looks already probed
+  // documents: 1 first load, 2 before the trial click (the baseline), 3 the second plain value, 4 case 1, 5 case 2,
+  // then the page looks already probed
   const r = await checkForm(fixture('form-stale-on-reload.html'), { battery: emailCases(6) });
   const email = r.fields.email;
   assert.equal(email.status, 'tested');

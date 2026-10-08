@@ -13,6 +13,9 @@ const LOCALE = { en: 'en-GB', fr: 'fr-FR', es: 'es-ES' };
 const SETTLE_MS = 60;        // script validators run synchronously on input/blur; 300 ms made the suite exceed 5 min (measured 24/09)
 const FILL_TIMEOUT_MS = 5000;
 const BASELINE = { email: 'ana.garcia@example.com', domain: 'example.com', url: 'https://example.com' };
+// A second plain value, in the same TLD as the first: what the field shows for it must be what it showed for the
+// baseline, or the page writes of each value something the runner cannot follow from one value to the next.
+const SECOND = { email: 'marie.dupont@example.com', domain: 'www.example.com', url: 'https://www.example.com' };
 const NO_VALUE = 'x';        // no @, no dot, no scheme: what a page says of it is what it says of a value it refuses
 
 export function toUrl(target) {
@@ -85,7 +88,10 @@ async function probeField(page, selector, kind, cases, { submit = false, fresh =
       await page.evaluate(fillCompanions, selector);
       // the document receives a value: the next reload must bring another one (see `fresh`)
       await page.evaluate(() => { window.__uaProbed = true; }).catch(() => {});
-      await loc.fill(value, { timeout: FILL_TIMEOUT_MS }).catch(() => {});
+      // a baseline that could not be typed is not a baseline: read as one, it made every case a refusal or
+      // none (third review of #6: a fill timing out on a loaded machine was swallowed here)
+      try { await loc.fill(value, { timeout: FILL_TIMEOUT_MS }); }
+      catch { throw Object.assign(new Error('not-interactable'), { notTestable: true }); }
       await page.evaluate(syncConfirm, selector);
       await page.evaluate(sel => { const f = document.querySelector(sel).form; if (f) f.requestSubmit(); }, selector).catch(() => {});
       await page.waitForTimeout(SETTLE_MS);
@@ -130,6 +136,16 @@ async function probeField(page, selector, kind, cases, { submit = false, fresh =
         if (!f.ok) return { status: 'not-testable', reason: f.reason };
         const withScheme = await submitBaseline(BASELINE.url);
         if (await reading(withScheme) === 'taken') { kind = 'url'; before = withScheme; read = 'taken'; baseline = { typed: BASELINE.url, refused: false, schemeRequired: true, showed: gained(before).length > 0 }; }
+      }
+      // The baseline is taken. A second plain value must leave the field as the baseline left it. When it does
+      // not, the page writes of each value something the runner cannot follow (a copy of it masked, reversed,
+      // in A-labels): every valid value would read as refused, so no verdict is given (three reviews of #6 and
+      // #7 each found one more such copy).
+      if (read === 'taken') {
+        const f = await fresh();
+        if (!f.ok) return { status: 'not-testable', reason: f.reason };
+        const second = await submitBaseline(kind === 'url' ? SECOND.url : SECOND[kind]);
+        if (!sameOwn(before, second)) return { status: 'not-testable', reason: 'value-dependent-text' };
       }
     } catch (e) {
       if (e.notTestable) return { status: 'not-testable', reason: e.message };

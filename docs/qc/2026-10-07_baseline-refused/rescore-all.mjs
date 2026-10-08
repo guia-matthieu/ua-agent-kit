@@ -6,6 +6,7 @@
 // A page that comes back with a runner error or a field `not-interactable` is scored again, up to twice: with four
 // browsers at work a fill can time out on a page that is tested without trouble alone (seen in two scorings of
 // four on 2026-10-07, never on the same pages). What is still so after that is kept as it is.
+// fields.json keeps the number of attempts the page took with the first battery of its set.
 // Usage: node docs/qc/2026-10-07_baseline-refused/rescore-all.mjs [folder-suffix]     (no API call)
 //   with a suffix (`generations-durci`), only the sets whose folder ends with it are scored again.
 import { readFileSync, writeFileSync, readdirSync, mkdirSync } from 'node:fs';
@@ -24,6 +25,7 @@ async function score(file, html, lang, battery, finish) {
   for (let attempt = 1; attempt <= 3; attempt++) {
     try { report = await checkForm(file, { lang, battery }); }
     catch (e) { report = { fields: notTestable('runner-error'), error: String(e.message).split('\n')[0] }; }
+    report.attempts = attempt;
     if (!shaky(report)) break;
     console.error(`attempt ${attempt} shaky: ${file.slice(KIT.length)}`);
   }
@@ -56,7 +58,7 @@ for (const set of SETS.filter(x => !only || x.folder.endsWith(only))) {
     for (const r of res) for (const x of toRows(r.row, r.reports[n])) lines.push(csvLine(x));
     writeFileSync(here + 'rescored/' + name, lines.join('\n') + '\n');
   });
-  for (const r of res) for (const f of ['email', 'website']) { const x = r.reports[0].fields[f]; fields.push({ set: set.folder, ...r.row, field: f, status: x.status, reason: x.reason ?? null, kind: x.kind ?? null, baseline: x.baseline ?? null }); }
+  for (const r of res) for (const f of ['email', 'website']) { const x = r.reports[0].fields[f]; fields.push({ set: set.folder, ...r.row, field: f, status: x.status, reason: x.reason ?? null, kind: x.kind ?? null, baseline: x.baseline ?? null, attempts: r.reports[0].attempts ?? 1 }); }
   console.error(`${set.folder}: ${res.length} pages, ${errors} with a runner error`);
 }
 writeFileSync(fieldsFile, JSON.stringify(fields, null, 1));

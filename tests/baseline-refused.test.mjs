@@ -54,6 +54,11 @@ test('a text that repeats the value typed is not a refusal of it', async () => {
   assert.equal(by('email-guard-07').verdict, 'rejected-script');
 });
 
+test('a text that changes with every value in a way the runner cannot follow: no verdict is given', async () => {
+  const r = await checkForm(fixture('form-masks-value.html'));
+  assert.deepEqual({ status: r.fields.email.status, reason: r.fields.email.reason }, { status: 'not-testable', reason: 'value-dependent-text' });
+});
+
 test('a hint shown for any value, the refusal written below the button: the baseline is taken', async () => {
   const r = await checkForm(fixture('form-hint-for-any-value.html'));
   const f = r.fields.email, by = id => f.results.find(x => x.id === id);

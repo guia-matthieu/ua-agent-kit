@@ -25,6 +25,16 @@ test('signalsOf: a text of the field that the baseline did not show is a refusal
   assert.deepEqual(echo('ana.garcia@example.com', 'Sending to ana.garcia@e…', 'info@例え.jp', 'Sending to info@例え.jp'), []);
   assert.deepEqual(echo('ana.garcia@example.com', 'Sending to ana.garcia@example.com', 'jos\u00e9@soci\u00e9t\u00e9.fr', 'Sending to jose\u0301@socie\u0301te\u0301.fr'), []);
   assert.deepEqual(echo('example.com', 'Preview: example.com', 'exa mple.com', 'Preview: example.com'), []);
+  // the value written twice in the same text
+  assert.deepEqual(echo('ana.garcia@example.com', 'Sending ana.garcia@example.com to ana.garcia@example.com', 'marie@example.fr', 'Sending marie@example.fr to marie@example.fr'), []);
+  // the local part and the domain apart
+  assert.deepEqual(echo('ana.garcia@example.com', 'Hello ana.garcia from example.com', 'marie.dupont@example.fr', 'Hello marie.dupont from example.fr'), []);
+  // a space the page took out of the middle: what is left of the value next to the copy goes with it
+  assert.deepEqual(echo('ana.garcia@example.com', 'Sending to ana.garcia@example.com', 'a@ex ample.com', 'Sending to a@example.com'), []);
+  // four or five characters shared with the value are not a copy of it
+  assert.deepEqual(echo('ana.garcia@example.com', 'Sending to ana.garcia@example.com', 'plainaddress', 'Sending to plain people only'), ['field-text']);
+  // with no copy of the value in it, a text is compared as written: a change of case is a change
+  assert.deepEqual(echo('ana.garcia@example.com', 'Valid', 'plainaddress', 'VALID'), ['field-text']);
   // a refusal that quotes the value is still not what the page wrote for the baseline
   assert.deepEqual(echo('ana.garcia@example.com', 'Sending to ana.garcia@example.com', 'plainaddress', '"plainaddress" is not an address'), ['field-text']);
   // a count of characters moves with every value
@@ -84,4 +94,6 @@ test('sameOwn: the same texts and the same marks, both ways', () => {
   assert.equal(sameOwn(state({ fieldTexts: ['Email'] }), a), false);            // a text only the second shows
   assert.equal(sameOwn(a, state({ fieldTexts: a.fieldTexts, ariaInvalid: 'true' })), false);
   assert.equal(sameOwn(a, state({ fieldTexts: a.fieldTexts, classes: 'field error' })), false);
+  assert.equal(sameOwn(a, state({ fieldTexts: a.fieldTexts, customError: true, validationMessage: 'No.' })), false);
+  assert.equal(sameOwn(a, state({ fieldTexts: a.fieldTexts, valid: false, typeMismatch: true })), false);
 });

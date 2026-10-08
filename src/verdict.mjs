@@ -27,24 +27,27 @@ function sharedRun(a, b) {
 }
 const withoutValue = s => t => {
   const v = fold(s.value ?? '');
-  let x = fold(t);
-  if (v.length >= ECHO_MIN) {
+  if (v.length < ECHO_MIN) return counted(t);
+  // every copy of the value, not the first only ("Sending V to V", second review of #7)
+  let x = fold(t), copies = 0;
+  for (;;) {
     const run = sharedRun(x, v);
-    if (run.length >= Math.min(ECHO_RUN, v.length)) {
-      x = x.slice(0, run.at) + MARK + x.slice(run.at + run.length);
-      // what is left of the value on either side of the copy (the page took a space out of the middle)
-      for (;;) {
-        const sides = x.split(MARK), i = sides.findIndex((side, k) => { const r = sharedRun(side, v); return r.length >= ECHO_MIN && (k > 0 && r.at === 0 || k < sides.length - 1 && r.at + r.length === side.length); });
-        if (i < 0) break;
-        const r = sharedRun(sides[i], v);
-        sides[i] = sides[i].slice(0, r.at) + MARK + sides[i].slice(r.at + r.length);
-        x = sides.join(MARK);
-      }
-      // one mark for the copy, with or without the sign that it was cut short
-      x = x.replace(new RegExp(MARK + '+(\\u2026|\\.{3})?', 'g'), MARK);
-    }
+    if (run.length < Math.min(ECHO_RUN, v.length)) break;
+    x = x.slice(0, run.at) + MARK + x.slice(run.at + run.length);
+    copies += 1;
   }
-  return counted(x);
+  // no copy of the value: the text is compared as it is written, its case included
+  if (!copies) return counted(t);
+  // what is left of the value on either side of a copy (the page took a space out of the middle)
+  for (;;) {
+    const sides = x.split(MARK), i = sides.findIndex((side, k) => { const r = sharedRun(side, v); return r.length >= ECHO_MIN && (k > 0 && r.at === 0 || k < sides.length - 1 && r.at + r.length === side.length); });
+    if (i < 0) break;
+    const r = sharedRun(sides[i], v);
+    sides[i] = sides[i].slice(0, r.at) + MARK + sides[i].slice(r.at + r.length);
+    x = sides.join(MARK);
+  }
+  // one mark for the copy, with or without the sign that it was cut short
+  return counted(x.replace(new RegExp(MARK + '+(\\u2026|\\.{3})?', 'g'), MARK));
 };
 export function newTexts(before, after) {
   const raw = (before.fieldTexts ?? []).map(counted), bare = (before.fieldTexts ?? []).map(withoutValue(before));
