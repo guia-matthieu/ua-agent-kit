@@ -15,7 +15,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -33,7 +34,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -51,7 +53,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -69,7 +72,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -87,7 +91,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -105,7 +110,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -123,7 +129,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -141,7 +148,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -159,7 +167,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -177,7 +186,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -195,7 +205,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -213,7 +224,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -231,7 +243,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -249,7 +262,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -267,7 +281,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -285,7 +300,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -303,7 +319,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -321,7 +338,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -339,7 +357,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -357,7 +376,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -375,7 +395,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -393,7 +414,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -411,7 +433,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -429,7 +452,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -447,7 +471,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -465,7 +490,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -483,7 +509,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -501,7 +528,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -519,7 +547,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -537,7 +566,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -555,7 +585,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -573,7 +604,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -591,7 +623,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -609,7 +642,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -627,7 +661,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -645,7 +680,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -663,7 +699,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -681,7 +718,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -699,7 +737,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -717,7 +756,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -735,229 +775,14 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
   "model": "open-weight",
   "model_version": "z-ai/glm-5.3",
   "lang": "en",
-  "condition": "guide",
-  "repeat": 3,
-  "field": "website",
-  "status": "tested",
-  "reason": null,
-  "kind": "domain",
-  "baseline": {
-   "typed": "example.com",
-   "refused": false,
-   "schemeRequired": false,
-   "showed": false
-  }
- },
- {
-  "set": "bench/results/generations",
-  "model": "open-weight",
-  "model_version": "z-ai/glm-5.3",
-  "lang": "en",
-  "condition": "no-guide",
-  "repeat": 1,
-  "field": "email",
-  "status": "tested",
-  "reason": null,
-  "kind": "email",
-  "baseline": {
-   "typed": "ana.garcia@example.com",
-   "refused": false,
-   "schemeRequired": false,
-   "showed": false
-  }
- },
- {
-  "set": "bench/results/generations",
-  "model": "open-weight",
-  "model_version": "z-ai/glm-5.3",
-  "lang": "en",
-  "condition": "no-guide",
-  "repeat": 1,
-  "field": "website",
-  "status": "tested",
-  "reason": null,
-  "kind": "url",
-  "baseline": {
-   "typed": "https://example.com",
-   "refused": false,
-   "schemeRequired": false,
-   "showed": false
-  }
- },
- {
-  "set": "bench/results/generations",
-  "model": "open-weight",
-  "model_version": "z-ai/glm-5.3",
-  "lang": "en",
-  "condition": "no-guide",
-  "repeat": 2,
-  "field": "email",
-  "status": "tested",
-  "reason": null,
-  "kind": "email",
-  "baseline": {
-   "typed": "ana.garcia@example.com",
-   "refused": false,
-   "schemeRequired": false,
-   "showed": false
-  }
- },
- {
-  "set": "bench/results/generations",
-  "model": "open-weight",
-  "model_version": "z-ai/glm-5.3",
-  "lang": "en",
-  "condition": "no-guide",
-  "repeat": 2,
-  "field": "website",
-  "status": "tested",
-  "reason": null,
-  "kind": "url",
-  "baseline": {
-   "typed": "https://example.com",
-   "refused": false,
-   "schemeRequired": false,
-   "showed": false
-  }
- },
- {
-  "set": "bench/results/generations",
-  "model": "open-weight",
-  "model_version": "z-ai/glm-5.3",
-  "lang": "en",
-  "condition": "no-guide",
-  "repeat": 3,
-  "field": "email",
-  "status": "tested",
-  "reason": null,
-  "kind": "email",
-  "baseline": {
-   "typed": "ana.garcia@example.com",
-   "refused": false,
-   "schemeRequired": false,
-   "showed": false
-  }
- },
- {
-  "set": "bench/results/generations",
-  "model": "open-weight",
-  "model_version": "z-ai/glm-5.3",
-  "lang": "en",
-  "condition": "no-guide",
-  "repeat": 3,
-  "field": "website",
-  "status": "tested",
-  "reason": null,
-  "kind": "url",
-  "baseline": {
-   "typed": "https://example.com",
-   "refused": false,
-   "schemeRequired": false,
-   "showed": false
-  }
- },
- {
-  "set": "bench/results/generations",
-  "model": "open-weight",
-  "model_version": "z-ai/glm-5.3",
-  "lang": "es",
-  "condition": "guide",
-  "repeat": 1,
-  "field": "email",
-  "status": "tested",
-  "reason": null,
-  "kind": "email",
-  "baseline": {
-   "typed": "ana.garcia@example.com",
-   "refused": false,
-   "schemeRequired": false,
-   "showed": false
-  }
- },
- {
-  "set": "bench/results/generations",
-  "model": "open-weight",
-  "model_version": "z-ai/glm-5.3",
-  "lang": "es",
-  "condition": "guide",
-  "repeat": 1,
-  "field": "website",
-  "status": "tested",
-  "reason": null,
-  "kind": "url",
-  "baseline": {
-   "typed": "https://example.com",
-   "refused": false,
-   "schemeRequired": false,
-   "showed": false
-  }
- },
- {
-  "set": "bench/results/generations",
-  "model": "open-weight",
-  "model_version": "z-ai/glm-5.3",
-  "lang": "es",
-  "condition": "guide",
-  "repeat": 2,
-  "field": "email",
-  "status": "tested",
-  "reason": null,
-  "kind": "email",
-  "baseline": {
-   "typed": "ana.garcia@example.com",
-   "refused": false,
-   "schemeRequired": false,
-   "showed": false
-  }
- },
- {
-  "set": "bench/results/generations",
-  "model": "open-weight",
-  "model_version": "z-ai/glm-5.3",
-  "lang": "es",
-  "condition": "guide",
-  "repeat": 2,
-  "field": "website",
-  "status": "tested",
-  "reason": null,
-  "kind": "url",
-  "baseline": {
-   "typed": "https://example.com",
-   "refused": false,
-   "schemeRequired": false,
-   "showed": false
-  }
- },
- {
-  "set": "bench/results/generations",
-  "model": "open-weight",
-  "model_version": "z-ai/glm-5.3",
-  "lang": "es",
-  "condition": "guide",
-  "repeat": 3,
-  "field": "email",
-  "status": "tested",
-  "reason": null,
-  "kind": "email",
-  "baseline": {
-   "typed": "ana.garcia@example.com",
-   "refused": false,
-   "schemeRequired": false,
-   "showed": false
-  }
- },
- {
-  "set": "bench/results/generations",
-  "model": "open-weight",
-  "model_version": "z-ai/glm-5.3",
-  "lang": "es",
   "condition": "guide",
   "repeat": 3,
   "field": "website",
@@ -969,7 +794,236 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/results/generations",
+  "model": "open-weight",
+  "model_version": "z-ai/glm-5.3",
+  "lang": "en",
+  "condition": "no-guide",
+  "repeat": 1,
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "refused": false,
+   "schemeRequired": false,
+   "showed": false
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/results/generations",
+  "model": "open-weight",
+  "model_version": "z-ai/glm-5.3",
+  "lang": "en",
+  "condition": "no-guide",
+  "repeat": 1,
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "refused": false,
+   "schemeRequired": false,
+   "showed": false
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/results/generations",
+  "model": "open-weight",
+  "model_version": "z-ai/glm-5.3",
+  "lang": "en",
+  "condition": "no-guide",
+  "repeat": 2,
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "refused": false,
+   "schemeRequired": false,
+   "showed": false
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/results/generations",
+  "model": "open-weight",
+  "model_version": "z-ai/glm-5.3",
+  "lang": "en",
+  "condition": "no-guide",
+  "repeat": 2,
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "refused": false,
+   "schemeRequired": false,
+   "showed": false
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/results/generations",
+  "model": "open-weight",
+  "model_version": "z-ai/glm-5.3",
+  "lang": "en",
+  "condition": "no-guide",
+  "repeat": 3,
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "refused": false,
+   "schemeRequired": false,
+   "showed": false
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/results/generations",
+  "model": "open-weight",
+  "model_version": "z-ai/glm-5.3",
+  "lang": "en",
+  "condition": "no-guide",
+  "repeat": 3,
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "refused": false,
+   "schemeRequired": false,
+   "showed": false
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/results/generations",
+  "model": "open-weight",
+  "model_version": "z-ai/glm-5.3",
+  "lang": "es",
+  "condition": "guide",
+  "repeat": 1,
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "refused": false,
+   "schemeRequired": false,
+   "showed": false
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/results/generations",
+  "model": "open-weight",
+  "model_version": "z-ai/glm-5.3",
+  "lang": "es",
+  "condition": "guide",
+  "repeat": 1,
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "refused": false,
+   "schemeRequired": false,
+   "showed": false
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/results/generations",
+  "model": "open-weight",
+  "model_version": "z-ai/glm-5.3",
+  "lang": "es",
+  "condition": "guide",
+  "repeat": 2,
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "refused": false,
+   "schemeRequired": false,
+   "showed": false
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/results/generations",
+  "model": "open-weight",
+  "model_version": "z-ai/glm-5.3",
+  "lang": "es",
+  "condition": "guide",
+  "repeat": 2,
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "refused": false,
+   "schemeRequired": false,
+   "showed": false
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/results/generations",
+  "model": "open-weight",
+  "model_version": "z-ai/glm-5.3",
+  "lang": "es",
+  "condition": "guide",
+  "repeat": 3,
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "refused": false,
+   "schemeRequired": false,
+   "showed": false
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/results/generations",
+  "model": "open-weight",
+  "model_version": "z-ai/glm-5.3",
+  "lang": "es",
+  "condition": "guide",
+  "repeat": 3,
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "refused": false,
+   "schemeRequired": false,
+   "showed": false
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -987,7 +1041,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -1005,7 +1060,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -1023,7 +1079,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -1041,7 +1098,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -1059,7 +1117,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -1077,7 +1136,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -1095,7 +1155,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -1113,7 +1174,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -1131,7 +1193,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -1139,114 +1202,6 @@
   "model_version": "z-ai/glm-5.3",
   "lang": "fr",
   "condition": "guide",
-  "repeat": 2,
-  "field": "website",
-  "status": "tested",
-  "reason": null,
-  "kind": "domain",
-  "baseline": {
-   "typed": "example.com",
-   "refused": false,
-   "schemeRequired": false,
-   "showed": false
-  }
- },
- {
-  "set": "bench/results/generations",
-  "model": "open-weight",
-  "model_version": "z-ai/glm-5.3",
-  "lang": "fr",
-  "condition": "guide",
-  "repeat": 3,
-  "field": "email",
-  "status": "tested",
-  "reason": null,
-  "kind": "email",
-  "baseline": {
-   "typed": "ana.garcia@example.com",
-   "refused": false,
-   "schemeRequired": false,
-   "showed": false
-  }
- },
- {
-  "set": "bench/results/generations",
-  "model": "open-weight",
-  "model_version": "z-ai/glm-5.3",
-  "lang": "fr",
-  "condition": "guide",
-  "repeat": 3,
-  "field": "website",
-  "status": "tested",
-  "reason": null,
-  "kind": "url",
-  "baseline": {
-   "typed": "https://example.com",
-   "refused": false,
-   "schemeRequired": false,
-   "showed": false
-  }
- },
- {
-  "set": "bench/results/generations",
-  "model": "open-weight",
-  "model_version": "z-ai/glm-5.3",
-  "lang": "fr",
-  "condition": "no-guide",
-  "repeat": 1,
-  "field": "email",
-  "status": "tested",
-  "reason": null,
-  "kind": "email",
-  "baseline": {
-   "typed": "ana.garcia@example.com",
-   "refused": false,
-   "schemeRequired": false,
-   "showed": false
-  }
- },
- {
-  "set": "bench/results/generations",
-  "model": "open-weight",
-  "model_version": "z-ai/glm-5.3",
-  "lang": "fr",
-  "condition": "no-guide",
-  "repeat": 1,
-  "field": "website",
-  "status": "tested",
-  "reason": null,
-  "kind": "domain",
-  "baseline": {
-   "typed": "example.com",
-   "refused": false,
-   "schemeRequired": false,
-   "showed": false
-  }
- },
- {
-  "set": "bench/results/generations",
-  "model": "open-weight",
-  "model_version": "z-ai/glm-5.3",
-  "lang": "fr",
-  "condition": "no-guide",
-  "repeat": 2,
-  "field": "email",
-  "status": "tested",
-  "reason": null,
-  "kind": "email",
-  "baseline": {
-   "typed": "ana.garcia@example.com",
-   "refused": false,
-   "schemeRequired": false,
-   "showed": false
-  }
- },
- {
-  "set": "bench/results/generations",
-  "model": "open-weight",
-  "model_version": "z-ai/glm-5.3",
-  "lang": "fr",
-  "condition": "no-guide",
   "repeat": 2,
   "field": "website",
   "status": "tested",
@@ -1257,7 +1212,122 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/results/generations",
+  "model": "open-weight",
+  "model_version": "z-ai/glm-5.3",
+  "lang": "fr",
+  "condition": "guide",
+  "repeat": 3,
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "refused": false,
+   "schemeRequired": false,
+   "showed": false
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/results/generations",
+  "model": "open-weight",
+  "model_version": "z-ai/glm-5.3",
+  "lang": "fr",
+  "condition": "guide",
+  "repeat": 3,
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "refused": false,
+   "schemeRequired": false,
+   "showed": false
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/results/generations",
+  "model": "open-weight",
+  "model_version": "z-ai/glm-5.3",
+  "lang": "fr",
+  "condition": "no-guide",
+  "repeat": 1,
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "refused": false,
+   "schemeRequired": false,
+   "showed": false
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/results/generations",
+  "model": "open-weight",
+  "model_version": "z-ai/glm-5.3",
+  "lang": "fr",
+  "condition": "no-guide",
+  "repeat": 1,
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "refused": false,
+   "schemeRequired": false,
+   "showed": false
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/results/generations",
+  "model": "open-weight",
+  "model_version": "z-ai/glm-5.3",
+  "lang": "fr",
+  "condition": "no-guide",
+  "repeat": 2,
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "refused": false,
+   "schemeRequired": false,
+   "showed": false
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/results/generations",
+  "model": "open-weight",
+  "model_version": "z-ai/glm-5.3",
+  "lang": "fr",
+  "condition": "no-guide",
+  "repeat": 2,
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "refused": false,
+   "schemeRequired": false,
+   "showed": false
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -1275,7 +1345,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -1293,7 +1364,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -1311,7 +1383,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -1329,7 +1402,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -1347,7 +1421,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -1365,7 +1440,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -1383,7 +1459,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -1401,7 +1478,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -1419,7 +1497,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -1437,7 +1516,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -1455,7 +1535,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -1473,7 +1554,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -1491,7 +1573,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -1509,7 +1592,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -1527,7 +1611,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -1545,7 +1630,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -1563,7 +1649,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -1581,7 +1668,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -1599,7 +1687,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -1617,7 +1706,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -1635,7 +1725,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -1653,7 +1744,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -1671,7 +1763,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -1689,7 +1782,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -1707,7 +1801,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -1725,7 +1820,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -1743,7 +1839,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -1761,7 +1858,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -1779,7 +1877,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -1797,7 +1896,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -1815,7 +1915,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -1833,7 +1934,8 @@
    "refused": false,
    "schemeRequired": true,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -1851,7 +1953,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -1869,7 +1972,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -1887,7 +1991,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -1905,7 +2010,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -1923,7 +2029,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/results/generations",
@@ -1941,7 +2048,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -1959,7 +2067,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -1977,7 +2086,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -1995,7 +2105,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -2013,7 +2124,8 @@
    "refused": false,
    "schemeRequired": true,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -2031,7 +2143,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -2049,7 +2162,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -2067,7 +2181,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -2085,7 +2200,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -2103,7 +2219,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -2121,7 +2238,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -2139,7 +2257,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -2157,7 +2276,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -2170,7 +2290,8 @@
   "status": "not-testable",
   "reason": "truncated",
   "kind": null,
-  "baseline": null
+  "baseline": null,
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -2183,7 +2304,8 @@
   "status": "not-testable",
   "reason": "truncated",
   "kind": null,
-  "baseline": null
+  "baseline": null,
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -2201,7 +2323,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -2219,7 +2342,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -2237,7 +2361,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -2255,7 +2380,8 @@
    "refused": false,
    "schemeRequired": true,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -2273,7 +2399,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -2291,7 +2418,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -2309,7 +2437,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -2327,7 +2456,8 @@
    "refused": false,
    "schemeRequired": true,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -2345,7 +2475,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -2363,7 +2494,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -2381,7 +2513,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -2399,7 +2532,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -2417,229 +2551,14 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
   "model": "deepseek-v4-flash",
   "model_version": "deepseek/deepseek-v4-flash",
   "lang": "fr",
-  "condition": "guide",
-  "repeat": 2,
-  "field": "website",
-  "status": "tested",
-  "reason": null,
-  "kind": "url",
-  "baseline": {
-   "typed": "https://example.com",
-   "refused": false,
-   "schemeRequired": true,
-   "showed": false
-  }
- },
- {
-  "set": "bench/runs/2026-10-06_state-catalogue/generations",
-  "model": "deepseek-v4-flash",
-  "model_version": "deepseek/deepseek-v4-flash",
-  "lang": "fr",
-  "condition": "guide",
-  "repeat": 3,
-  "field": "email",
-  "status": "tested",
-  "reason": null,
-  "kind": "email",
-  "baseline": {
-   "typed": "ana.garcia@example.com",
-   "refused": false,
-   "schemeRequired": false,
-   "showed": false
-  }
- },
- {
-  "set": "bench/runs/2026-10-06_state-catalogue/generations",
-  "model": "deepseek-v4-flash",
-  "model_version": "deepseek/deepseek-v4-flash",
-  "lang": "fr",
-  "condition": "guide",
-  "repeat": 3,
-  "field": "website",
-  "status": "tested",
-  "reason": null,
-  "kind": "url",
-  "baseline": {
-   "typed": "https://example.com",
-   "refused": false,
-   "schemeRequired": false,
-   "showed": false
-  }
- },
- {
-  "set": "bench/runs/2026-10-06_state-catalogue/generations",
-  "model": "deepseek-v4-flash",
-  "model_version": "deepseek/deepseek-v4-flash",
-  "lang": "fr",
-  "condition": "no-guide",
-  "repeat": 1,
-  "field": "email",
-  "status": "tested",
-  "reason": null,
-  "kind": "email",
-  "baseline": {
-   "typed": "ana.garcia@example.com",
-   "refused": false,
-   "schemeRequired": false,
-   "showed": false
-  }
- },
- {
-  "set": "bench/runs/2026-10-06_state-catalogue/generations",
-  "model": "deepseek-v4-flash",
-  "model_version": "deepseek/deepseek-v4-flash",
-  "lang": "fr",
-  "condition": "no-guide",
-  "repeat": 1,
-  "field": "website",
-  "status": "tested",
-  "reason": null,
-  "kind": "url",
-  "baseline": {
-   "typed": "https://example.com",
-   "refused": false,
-   "schemeRequired": false,
-   "showed": false
-  }
- },
- {
-  "set": "bench/runs/2026-10-06_state-catalogue/generations",
-  "model": "deepseek-v4-flash",
-  "model_version": "deepseek/deepseek-v4-flash",
-  "lang": "fr",
-  "condition": "no-guide",
-  "repeat": 2,
-  "field": "email",
-  "status": "tested",
-  "reason": null,
-  "kind": "email",
-  "baseline": {
-   "typed": "ana.garcia@example.com",
-   "refused": false,
-   "schemeRequired": false,
-   "showed": false
-  }
- },
- {
-  "set": "bench/runs/2026-10-06_state-catalogue/generations",
-  "model": "deepseek-v4-flash",
-  "model_version": "deepseek/deepseek-v4-flash",
-  "lang": "fr",
-  "condition": "no-guide",
-  "repeat": 2,
-  "field": "website",
-  "status": "tested",
-  "reason": null,
-  "kind": "url",
-  "baseline": {
-   "typed": "https://example.com",
-   "refused": false,
-   "schemeRequired": false,
-   "showed": false
-  }
- },
- {
-  "set": "bench/runs/2026-10-06_state-catalogue/generations",
-  "model": "deepseek-v4-flash",
-  "model_version": "deepseek/deepseek-v4-flash",
-  "lang": "fr",
-  "condition": "no-guide",
-  "repeat": 3,
-  "field": "email",
-  "status": "tested",
-  "reason": null,
-  "kind": "email",
-  "baseline": {
-   "typed": "ana.garcia@example.com",
-   "refused": false,
-   "schemeRequired": false,
-   "showed": false
-  }
- },
- {
-  "set": "bench/runs/2026-10-06_state-catalogue/generations",
-  "model": "deepseek-v4-flash",
-  "model_version": "deepseek/deepseek-v4-flash",
-  "lang": "fr",
-  "condition": "no-guide",
-  "repeat": 3,
-  "field": "website",
-  "status": "tested",
-  "reason": null,
-  "kind": "url",
-  "baseline": {
-   "typed": "https://example.com",
-   "refused": false,
-   "schemeRequired": false,
-   "showed": false
-  }
- },
- {
-  "set": "bench/runs/2026-10-06_state-catalogue/generations",
-  "model": "gemma-4-31b",
-  "model_version": "google/gemma-4-31b-it",
-  "lang": "en",
-  "condition": "guide",
-  "repeat": 1,
-  "field": "email",
-  "status": "tested",
-  "reason": null,
-  "kind": "email",
-  "baseline": {
-   "typed": "ana.garcia@example.com",
-   "refused": false,
-   "schemeRequired": false,
-   "showed": false
-  }
- },
- {
-  "set": "bench/runs/2026-10-06_state-catalogue/generations",
-  "model": "gemma-4-31b",
-  "model_version": "google/gemma-4-31b-it",
-  "lang": "en",
-  "condition": "guide",
-  "repeat": 1,
-  "field": "website",
-  "status": "tested",
-  "reason": null,
-  "kind": "url",
-  "baseline": {
-   "typed": "https://example.com",
-   "refused": false,
-   "schemeRequired": false,
-   "showed": false
-  }
- },
- {
-  "set": "bench/runs/2026-10-06_state-catalogue/generations",
-  "model": "gemma-4-31b",
-  "model_version": "google/gemma-4-31b-it",
-  "lang": "en",
-  "condition": "guide",
-  "repeat": 2,
-  "field": "email",
-  "status": "tested",
-  "reason": null,
-  "kind": "email",
-  "baseline": {
-   "typed": "ana.garcia@example.com",
-   "refused": false,
-   "schemeRequired": false,
-   "showed": false
-  }
- },
- {
-  "set": "bench/runs/2026-10-06_state-catalogue/generations",
-  "model": "gemma-4-31b",
-  "model_version": "google/gemma-4-31b-it",
-  "lang": "en",
   "condition": "guide",
   "repeat": 2,
   "field": "website",
@@ -2651,7 +2570,236 @@
    "refused": false,
    "schemeRequired": true,
    "showed": false
-  }
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/runs/2026-10-06_state-catalogue/generations",
+  "model": "deepseek-v4-flash",
+  "model_version": "deepseek/deepseek-v4-flash",
+  "lang": "fr",
+  "condition": "guide",
+  "repeat": 3,
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "refused": false,
+   "schemeRequired": false,
+   "showed": false
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/runs/2026-10-06_state-catalogue/generations",
+  "model": "deepseek-v4-flash",
+  "model_version": "deepseek/deepseek-v4-flash",
+  "lang": "fr",
+  "condition": "guide",
+  "repeat": 3,
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "refused": false,
+   "schemeRequired": false,
+   "showed": false
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/runs/2026-10-06_state-catalogue/generations",
+  "model": "deepseek-v4-flash",
+  "model_version": "deepseek/deepseek-v4-flash",
+  "lang": "fr",
+  "condition": "no-guide",
+  "repeat": 1,
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "refused": false,
+   "schemeRequired": false,
+   "showed": false
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/runs/2026-10-06_state-catalogue/generations",
+  "model": "deepseek-v4-flash",
+  "model_version": "deepseek/deepseek-v4-flash",
+  "lang": "fr",
+  "condition": "no-guide",
+  "repeat": 1,
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "refused": false,
+   "schemeRequired": false,
+   "showed": false
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/runs/2026-10-06_state-catalogue/generations",
+  "model": "deepseek-v4-flash",
+  "model_version": "deepseek/deepseek-v4-flash",
+  "lang": "fr",
+  "condition": "no-guide",
+  "repeat": 2,
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "refused": false,
+   "schemeRequired": false,
+   "showed": false
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/runs/2026-10-06_state-catalogue/generations",
+  "model": "deepseek-v4-flash",
+  "model_version": "deepseek/deepseek-v4-flash",
+  "lang": "fr",
+  "condition": "no-guide",
+  "repeat": 2,
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "refused": false,
+   "schemeRequired": false,
+   "showed": false
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/runs/2026-10-06_state-catalogue/generations",
+  "model": "deepseek-v4-flash",
+  "model_version": "deepseek/deepseek-v4-flash",
+  "lang": "fr",
+  "condition": "no-guide",
+  "repeat": 3,
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "refused": false,
+   "schemeRequired": false,
+   "showed": false
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/runs/2026-10-06_state-catalogue/generations",
+  "model": "deepseek-v4-flash",
+  "model_version": "deepseek/deepseek-v4-flash",
+  "lang": "fr",
+  "condition": "no-guide",
+  "repeat": 3,
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "refused": false,
+   "schemeRequired": false,
+   "showed": false
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/runs/2026-10-06_state-catalogue/generations",
+  "model": "gemma-4-31b",
+  "model_version": "google/gemma-4-31b-it",
+  "lang": "en",
+  "condition": "guide",
+  "repeat": 1,
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "refused": false,
+   "schemeRequired": false,
+   "showed": false
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/runs/2026-10-06_state-catalogue/generations",
+  "model": "gemma-4-31b",
+  "model_version": "google/gemma-4-31b-it",
+  "lang": "en",
+  "condition": "guide",
+  "repeat": 1,
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "refused": false,
+   "schemeRequired": false,
+   "showed": false
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/runs/2026-10-06_state-catalogue/generations",
+  "model": "gemma-4-31b",
+  "model_version": "google/gemma-4-31b-it",
+  "lang": "en",
+  "condition": "guide",
+  "repeat": 2,
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "refused": false,
+   "schemeRequired": false,
+   "showed": false
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/runs/2026-10-06_state-catalogue/generations",
+  "model": "gemma-4-31b",
+  "model_version": "google/gemma-4-31b-it",
+  "lang": "en",
+  "condition": "guide",
+  "repeat": 2,
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "refused": false,
+   "schemeRequired": true,
+   "showed": false
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -2669,7 +2817,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -2687,7 +2836,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -2705,7 +2855,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -2723,7 +2874,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -2741,7 +2893,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -2759,7 +2912,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -2777,7 +2931,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -2795,7 +2950,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -2813,7 +2969,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -2831,7 +2988,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -2849,7 +3007,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -2867,7 +3026,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -2885,7 +3045,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -2903,7 +3064,8 @@
    "refused": false,
    "schemeRequired": true,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -2921,7 +3083,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -2939,7 +3102,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -2957,7 +3121,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -2975,7 +3140,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -2993,7 +3159,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3011,7 +3178,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3029,7 +3197,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3047,7 +3216,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3065,7 +3235,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3083,7 +3254,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3101,7 +3273,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3119,7 +3292,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3137,7 +3311,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3155,7 +3330,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3173,7 +3349,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3191,7 +3368,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3209,7 +3387,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3227,7 +3406,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3245,7 +3425,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3263,7 +3444,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3281,7 +3463,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3299,7 +3482,8 @@
    "refused": false,
    "schemeRequired": true,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3317,7 +3501,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3335,7 +3520,8 @@
    "refused": false,
    "schemeRequired": true,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3353,7 +3539,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3371,7 +3558,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3389,7 +3577,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3407,7 +3596,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3425,7 +3615,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3443,7 +3634,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3461,7 +3653,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3479,7 +3672,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3497,7 +3691,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3515,7 +3710,8 @@
    "refused": false,
    "schemeRequired": true,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3533,7 +3729,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3551,7 +3748,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3569,7 +3767,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3587,7 +3786,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3605,7 +3805,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3623,7 +3824,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3641,7 +3843,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3659,7 +3862,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3677,7 +3881,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3695,7 +3900,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3713,7 +3919,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3731,7 +3938,8 @@
    "refused": false,
    "schemeRequired": true,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3749,7 +3957,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3767,7 +3976,8 @@
    "refused": false,
    "schemeRequired": true,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3785,7 +3995,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3803,7 +4014,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3821,7 +4033,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3839,7 +4052,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3857,7 +4071,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3875,7 +4090,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3893,7 +4109,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3911,7 +4128,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3929,7 +4147,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3947,7 +4166,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3965,7 +4185,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -3983,7 +4204,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4001,7 +4223,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4019,7 +4242,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4037,7 +4261,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4055,7 +4280,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4073,7 +4299,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4091,7 +4318,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4109,7 +4337,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4127,7 +4356,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4145,7 +4375,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4163,7 +4394,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4181,7 +4413,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4199,7 +4432,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4217,7 +4451,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4235,7 +4470,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4253,7 +4489,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4271,7 +4508,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4289,7 +4527,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4307,7 +4546,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4325,7 +4565,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4343,7 +4584,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4361,7 +4603,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4379,7 +4622,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4397,7 +4641,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4415,7 +4660,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4433,7 +4679,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4451,7 +4698,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4469,7 +4717,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4487,7 +4736,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4505,7 +4755,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4523,7 +4774,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4541,7 +4793,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4559,7 +4812,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4577,7 +4831,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4595,7 +4850,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4613,7 +4869,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4631,7 +4888,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4649,7 +4907,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4667,7 +4926,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4685,7 +4945,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4703,7 +4964,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4721,7 +4983,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4739,7 +5002,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4757,7 +5021,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4775,7 +5040,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4793,7 +5059,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4811,7 +5078,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4829,7 +5097,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4847,7 +5116,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4865,7 +5135,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4883,7 +5154,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4901,7 +5173,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4919,7 +5192,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4937,7 +5211,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4955,7 +5230,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4973,7 +5249,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -4991,7 +5268,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -5009,7 +5287,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -5027,7 +5306,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -5045,7 +5325,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -5063,7 +5344,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -5081,7 +5363,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -5099,7 +5382,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -5117,7 +5401,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -5135,7 +5420,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -5153,7 +5439,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -5171,7 +5458,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -5189,7 +5477,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -5207,7 +5496,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -5225,7 +5515,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -5243,7 +5534,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -5261,7 +5553,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -5279,7 +5572,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -5297,7 +5591,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -5315,7 +5610,8 @@
    "refused": false,
    "schemeRequired": true,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -5333,7 +5629,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -5351,7 +5648,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -5369,7 +5667,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -5387,7 +5686,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -5405,7 +5705,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -5423,7 +5724,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -5441,7 +5743,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -5459,7 +5762,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -5477,7 +5781,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -5495,7 +5800,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -5513,7 +5819,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -5531,7 +5838,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -5549,7 +5857,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -5567,7 +5876,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -5585,7 +5895,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -5603,7 +5914,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -5621,7 +5933,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -5639,7 +5952,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -5657,7 +5971,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -5665,114 +5980,6 @@
   "model_version": "mistralai/mistral-small-3.2-24b-instruct",
   "lang": "fr",
   "condition": "guide",
-  "repeat": 2,
-  "field": "website",
-  "status": "tested",
-  "reason": null,
-  "kind": "url",
-  "baseline": {
-   "typed": "https://example.com",
-   "refused": false,
-   "schemeRequired": true,
-   "showed": false
-  }
- },
- {
-  "set": "bench/runs/2026-10-06_state-catalogue/generations",
-  "model": "mistral-small-3-2",
-  "model_version": "mistralai/mistral-small-3.2-24b-instruct",
-  "lang": "fr",
-  "condition": "guide",
-  "repeat": 3,
-  "field": "email",
-  "status": "tested",
-  "reason": null,
-  "kind": "email",
-  "baseline": {
-   "typed": "ana.garcia@example.com",
-   "refused": false,
-   "schemeRequired": false,
-   "showed": false
-  }
- },
- {
-  "set": "bench/runs/2026-10-06_state-catalogue/generations",
-  "model": "mistral-small-3-2",
-  "model_version": "mistralai/mistral-small-3.2-24b-instruct",
-  "lang": "fr",
-  "condition": "guide",
-  "repeat": 3,
-  "field": "website",
-  "status": "tested",
-  "reason": null,
-  "kind": "url",
-  "baseline": {
-   "typed": "https://example.com",
-   "refused": false,
-   "schemeRequired": false,
-   "showed": false
-  }
- },
- {
-  "set": "bench/runs/2026-10-06_state-catalogue/generations",
-  "model": "mistral-small-3-2",
-  "model_version": "mistralai/mistral-small-3.2-24b-instruct",
-  "lang": "fr",
-  "condition": "no-guide",
-  "repeat": 1,
-  "field": "email",
-  "status": "tested",
-  "reason": null,
-  "kind": "email",
-  "baseline": {
-   "typed": "ana.garcia@example.com",
-   "refused": false,
-   "schemeRequired": false,
-   "showed": false
-  }
- },
- {
-  "set": "bench/runs/2026-10-06_state-catalogue/generations",
-  "model": "mistral-small-3-2",
-  "model_version": "mistralai/mistral-small-3.2-24b-instruct",
-  "lang": "fr",
-  "condition": "no-guide",
-  "repeat": 1,
-  "field": "website",
-  "status": "tested",
-  "reason": null,
-  "kind": "url",
-  "baseline": {
-   "typed": "https://example.com",
-   "refused": false,
-   "schemeRequired": true,
-   "showed": false
-  }
- },
- {
-  "set": "bench/runs/2026-10-06_state-catalogue/generations",
-  "model": "mistral-small-3-2",
-  "model_version": "mistralai/mistral-small-3.2-24b-instruct",
-  "lang": "fr",
-  "condition": "no-guide",
-  "repeat": 2,
-  "field": "email",
-  "status": "tested",
-  "reason": null,
-  "kind": "email",
-  "baseline": {
-   "typed": "ana.garcia@example.com",
-   "refused": false,
-   "schemeRequired": false,
-   "showed": false
-  }
- },
- {
-  "set": "bench/runs/2026-10-06_state-catalogue/generations",
-  "model": "mistral-small-3-2",
-  "model_version": "mistralai/mistral-small-3.2-24b-instruct",
-  "lang": "fr",
-  "condition": "no-guide",
   "repeat": 2,
   "field": "website",
   "status": "tested",
@@ -5783,7 +5990,122 @@
    "refused": false,
    "schemeRequired": true,
    "showed": false
-  }
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/runs/2026-10-06_state-catalogue/generations",
+  "model": "mistral-small-3-2",
+  "model_version": "mistralai/mistral-small-3.2-24b-instruct",
+  "lang": "fr",
+  "condition": "guide",
+  "repeat": 3,
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "refused": false,
+   "schemeRequired": false,
+   "showed": false
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/runs/2026-10-06_state-catalogue/generations",
+  "model": "mistral-small-3-2",
+  "model_version": "mistralai/mistral-small-3.2-24b-instruct",
+  "lang": "fr",
+  "condition": "guide",
+  "repeat": 3,
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "refused": false,
+   "schemeRequired": false,
+   "showed": false
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/runs/2026-10-06_state-catalogue/generations",
+  "model": "mistral-small-3-2",
+  "model_version": "mistralai/mistral-small-3.2-24b-instruct",
+  "lang": "fr",
+  "condition": "no-guide",
+  "repeat": 1,
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "refused": false,
+   "schemeRequired": false,
+   "showed": false
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/runs/2026-10-06_state-catalogue/generations",
+  "model": "mistral-small-3-2",
+  "model_version": "mistralai/mistral-small-3.2-24b-instruct",
+  "lang": "fr",
+  "condition": "no-guide",
+  "repeat": 1,
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "refused": false,
+   "schemeRequired": true,
+   "showed": false
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/runs/2026-10-06_state-catalogue/generations",
+  "model": "mistral-small-3-2",
+  "model_version": "mistralai/mistral-small-3.2-24b-instruct",
+  "lang": "fr",
+  "condition": "no-guide",
+  "repeat": 2,
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "refused": false,
+   "schemeRequired": false,
+   "showed": false
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/runs/2026-10-06_state-catalogue/generations",
+  "model": "mistral-small-3-2",
+  "model_version": "mistralai/mistral-small-3.2-24b-instruct",
+  "lang": "fr",
+  "condition": "no-guide",
+  "repeat": 2,
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "refused": false,
+   "schemeRequired": true,
+   "showed": false
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -5801,7 +6123,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -5819,7 +6142,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -5837,7 +6161,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -5855,7 +6180,8 @@
    "refused": false,
    "schemeRequired": true,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -5868,7 +6194,8 @@
   "status": "not-testable",
   "reason": "no-form",
   "kind": null,
-  "baseline": null
+  "baseline": null,
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -5881,7 +6208,8 @@
   "status": "not-testable",
   "reason": "no-form",
   "kind": null,
-  "baseline": null
+  "baseline": null,
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -5899,7 +6227,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -5917,7 +6246,8 @@
    "refused": false,
    "schemeRequired": true,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -5935,7 +6265,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -5953,7 +6284,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -5971,7 +6303,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -5989,7 +6322,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -6007,7 +6341,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -6015,114 +6350,6 @@
   "model_version": "qwen/qwen3-coder-30b-a3b-instruct",
   "lang": "en",
   "condition": "no-guide",
-  "repeat": 3,
-  "field": "website",
-  "status": "tested",
-  "reason": null,
-  "kind": "url",
-  "baseline": {
-   "typed": "https://example.com",
-   "refused": false,
-   "schemeRequired": false,
-   "showed": false
-  }
- },
- {
-  "set": "bench/runs/2026-10-06_state-catalogue/generations",
-  "model": "qwen3-coder-30b",
-  "model_version": "qwen/qwen3-coder-30b-a3b-instruct",
-  "lang": "es",
-  "condition": "guide",
-  "repeat": 1,
-  "field": "email",
-  "status": "tested",
-  "reason": null,
-  "kind": "email",
-  "baseline": {
-   "typed": "ana.garcia@example.com",
-   "refused": false,
-   "schemeRequired": false,
-   "showed": false
-  }
- },
- {
-  "set": "bench/runs/2026-10-06_state-catalogue/generations",
-  "model": "qwen3-coder-30b",
-  "model_version": "qwen/qwen3-coder-30b-a3b-instruct",
-  "lang": "es",
-  "condition": "guide",
-  "repeat": 1,
-  "field": "website",
-  "status": "tested",
-  "reason": null,
-  "kind": "url",
-  "baseline": {
-   "typed": "https://example.com",
-   "refused": false,
-   "schemeRequired": false,
-   "showed": false
-  }
- },
- {
-  "set": "bench/runs/2026-10-06_state-catalogue/generations",
-  "model": "qwen3-coder-30b",
-  "model_version": "qwen/qwen3-coder-30b-a3b-instruct",
-  "lang": "es",
-  "condition": "guide",
-  "repeat": 2,
-  "field": "email",
-  "status": "tested",
-  "reason": null,
-  "kind": "email",
-  "baseline": {
-   "typed": "ana.garcia@example.com",
-   "refused": false,
-   "schemeRequired": false,
-   "showed": false
-  }
- },
- {
-  "set": "bench/runs/2026-10-06_state-catalogue/generations",
-  "model": "qwen3-coder-30b",
-  "model_version": "qwen/qwen3-coder-30b-a3b-instruct",
-  "lang": "es",
-  "condition": "guide",
-  "repeat": 2,
-  "field": "website",
-  "status": "tested",
-  "reason": null,
-  "kind": "url",
-  "baseline": {
-   "typed": "https://example.com",
-   "refused": false,
-   "schemeRequired": false,
-   "showed": false
-  }
- },
- {
-  "set": "bench/runs/2026-10-06_state-catalogue/generations",
-  "model": "qwen3-coder-30b",
-  "model_version": "qwen/qwen3-coder-30b-a3b-instruct",
-  "lang": "es",
-  "condition": "guide",
-  "repeat": 3,
-  "field": "email",
-  "status": "tested",
-  "reason": null,
-  "kind": "email",
-  "baseline": {
-   "typed": "ana.garcia@example.com",
-   "refused": false,
-   "schemeRequired": false,
-   "showed": false
-  }
- },
- {
-  "set": "bench/runs/2026-10-06_state-catalogue/generations",
-  "model": "qwen3-coder-30b",
-  "model_version": "qwen/qwen3-coder-30b-a3b-instruct",
-  "lang": "es",
-  "condition": "guide",
   "repeat": 3,
   "field": "website",
   "status": "tested",
@@ -6133,7 +6360,122 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/runs/2026-10-06_state-catalogue/generations",
+  "model": "qwen3-coder-30b",
+  "model_version": "qwen/qwen3-coder-30b-a3b-instruct",
+  "lang": "es",
+  "condition": "guide",
+  "repeat": 1,
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "refused": false,
+   "schemeRequired": false,
+   "showed": false
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/runs/2026-10-06_state-catalogue/generations",
+  "model": "qwen3-coder-30b",
+  "model_version": "qwen/qwen3-coder-30b-a3b-instruct",
+  "lang": "es",
+  "condition": "guide",
+  "repeat": 1,
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "refused": false,
+   "schemeRequired": false,
+   "showed": false
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/runs/2026-10-06_state-catalogue/generations",
+  "model": "qwen3-coder-30b",
+  "model_version": "qwen/qwen3-coder-30b-a3b-instruct",
+  "lang": "es",
+  "condition": "guide",
+  "repeat": 2,
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "refused": false,
+   "schemeRequired": false,
+   "showed": false
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/runs/2026-10-06_state-catalogue/generations",
+  "model": "qwen3-coder-30b",
+  "model_version": "qwen/qwen3-coder-30b-a3b-instruct",
+  "lang": "es",
+  "condition": "guide",
+  "repeat": 2,
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "refused": false,
+   "schemeRequired": false,
+   "showed": false
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/runs/2026-10-06_state-catalogue/generations",
+  "model": "qwen3-coder-30b",
+  "model_version": "qwen/qwen3-coder-30b-a3b-instruct",
+  "lang": "es",
+  "condition": "guide",
+  "repeat": 3,
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "refused": false,
+   "schemeRequired": false,
+   "showed": false
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/runs/2026-10-06_state-catalogue/generations",
+  "model": "qwen3-coder-30b",
+  "model_version": "qwen/qwen3-coder-30b-a3b-instruct",
+  "lang": "es",
+  "condition": "guide",
+  "repeat": 3,
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "refused": false,
+   "schemeRequired": false,
+   "showed": false
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -6151,7 +6493,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -6169,7 +6512,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -6187,7 +6531,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -6205,7 +6550,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -6218,7 +6564,8 @@
   "status": "not-testable",
   "reason": "no-form",
   "kind": null,
-  "baseline": null
+  "baseline": null,
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -6231,7 +6578,8 @@
   "status": "not-testable",
   "reason": "no-form",
   "kind": null,
-  "baseline": null
+  "baseline": null,
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -6244,7 +6592,8 @@
   "status": "not-testable",
   "reason": "no-form",
   "kind": null,
-  "baseline": null
+  "baseline": null,
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -6257,7 +6606,8 @@
   "status": "not-testable",
   "reason": "no-form",
   "kind": null,
-  "baseline": null
+  "baseline": null,
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -6275,7 +6625,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -6293,7 +6644,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -6311,7 +6663,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -6329,7 +6682,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -6347,7 +6701,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -6365,7 +6720,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -6383,7 +6739,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -6401,7 +6758,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -6419,7 +6777,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations",
@@ -6437,7 +6796,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -6455,7 +6815,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -6473,7 +6834,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -6491,7 +6853,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -6509,7 +6872,8 @@
    "refused": false,
    "schemeRequired": true,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -6527,7 +6891,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -6545,7 +6910,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -6563,7 +6929,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -6581,7 +6948,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -6599,7 +6967,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -6617,7 +6986,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -6635,7 +7005,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -6653,7 +7024,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -6671,7 +7043,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -6689,7 +7062,8 @@
    "refused": false,
    "schemeRequired": true,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -6707,7 +7081,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -6725,7 +7100,8 @@
    "refused": false,
    "schemeRequired": true,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -6743,7 +7119,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -6761,7 +7138,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -6779,7 +7157,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -6787,114 +7166,6 @@
   "model_version": "deepseek/deepseek-v4-flash",
   "lang": "es",
   "condition": "no-guide",
-  "repeat": 2,
-  "field": "website",
-  "status": "tested",
-  "reason": null,
-  "kind": "url",
-  "baseline": {
-   "typed": "https://example.com",
-   "refused": false,
-   "schemeRequired": true,
-   "showed": false
-  }
- },
- {
-  "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
-  "model": "deepseek-v4-flash",
-  "model_version": "deepseek/deepseek-v4-flash",
-  "lang": "es",
-  "condition": "no-guide",
-  "repeat": 3,
-  "field": "email",
-  "status": "tested",
-  "reason": null,
-  "kind": "email",
-  "baseline": {
-   "typed": "ana.garcia@example.com",
-   "refused": false,
-   "schemeRequired": false,
-   "showed": false
-  }
- },
- {
-  "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
-  "model": "deepseek-v4-flash",
-  "model_version": "deepseek/deepseek-v4-flash",
-  "lang": "es",
-  "condition": "no-guide",
-  "repeat": 3,
-  "field": "website",
-  "status": "tested",
-  "reason": null,
-  "kind": "url",
-  "baseline": {
-   "typed": "https://example.com",
-   "refused": false,
-   "schemeRequired": false,
-   "showed": false
-  }
- },
- {
-  "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
-  "model": "deepseek-v4-flash",
-  "model_version": "deepseek/deepseek-v4-flash",
-  "lang": "fr",
-  "condition": "guide",
-  "repeat": 1,
-  "field": "email",
-  "status": "tested",
-  "reason": null,
-  "kind": "email",
-  "baseline": {
-   "typed": "ana.garcia@example.com",
-   "refused": false,
-   "schemeRequired": false,
-   "showed": false
-  }
- },
- {
-  "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
-  "model": "deepseek-v4-flash",
-  "model_version": "deepseek/deepseek-v4-flash",
-  "lang": "fr",
-  "condition": "guide",
-  "repeat": 1,
-  "field": "website",
-  "status": "tested",
-  "reason": null,
-  "kind": "url",
-  "baseline": {
-   "typed": "https://example.com",
-   "refused": false,
-   "schemeRequired": false,
-   "showed": false
-  }
- },
- {
-  "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
-  "model": "deepseek-v4-flash",
-  "model_version": "deepseek/deepseek-v4-flash",
-  "lang": "fr",
-  "condition": "guide",
-  "repeat": 2,
-  "field": "email",
-  "status": "tested",
-  "reason": null,
-  "kind": "email",
-  "baseline": {
-   "typed": "ana.garcia@example.com",
-   "refused": false,
-   "schemeRequired": false,
-   "showed": false
-  }
- },
- {
-  "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
-  "model": "deepseek-v4-flash",
-  "model_version": "deepseek/deepseek-v4-flash",
-  "lang": "fr",
-  "condition": "guide",
   "repeat": 2,
   "field": "website",
   "status": "tested",
@@ -6905,7 +7176,122 @@
    "refused": false,
    "schemeRequired": true,
    "showed": false
-  }
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "model": "deepseek-v4-flash",
+  "model_version": "deepseek/deepseek-v4-flash",
+  "lang": "es",
+  "condition": "no-guide",
+  "repeat": 3,
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "refused": false,
+   "schemeRequired": false,
+   "showed": false
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "model": "deepseek-v4-flash",
+  "model_version": "deepseek/deepseek-v4-flash",
+  "lang": "es",
+  "condition": "no-guide",
+  "repeat": 3,
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "refused": false,
+   "schemeRequired": false,
+   "showed": false
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "model": "deepseek-v4-flash",
+  "model_version": "deepseek/deepseek-v4-flash",
+  "lang": "fr",
+  "condition": "guide",
+  "repeat": 1,
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "refused": false,
+   "schemeRequired": false,
+   "showed": false
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "model": "deepseek-v4-flash",
+  "model_version": "deepseek/deepseek-v4-flash",
+  "lang": "fr",
+  "condition": "guide",
+  "repeat": 1,
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "refused": false,
+   "schemeRequired": false,
+   "showed": false
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "model": "deepseek-v4-flash",
+  "model_version": "deepseek/deepseek-v4-flash",
+  "lang": "fr",
+  "condition": "guide",
+  "repeat": 2,
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "refused": false,
+   "schemeRequired": false,
+   "showed": false
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "model": "deepseek-v4-flash",
+  "model_version": "deepseek/deepseek-v4-flash",
+  "lang": "fr",
+  "condition": "guide",
+  "repeat": 2,
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "refused": false,
+   "schemeRequired": true,
+   "showed": false
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -6923,7 +7309,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -6941,7 +7328,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -6959,7 +7347,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -6977,7 +7366,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -6995,7 +7385,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7013,7 +7404,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7031,7 +7423,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7049,7 +7442,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7067,7 +7461,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7085,7 +7480,8 @@
    "refused": false,
    "schemeRequired": true,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7103,7 +7499,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7121,7 +7518,8 @@
    "refused": false,
    "schemeRequired": true,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7139,7 +7537,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7157,7 +7556,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7175,7 +7575,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7193,7 +7594,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7211,7 +7613,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7229,7 +7632,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7247,7 +7651,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7265,7 +7670,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7283,7 +7689,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7301,7 +7708,8 @@
    "refused": false,
    "schemeRequired": true,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7319,7 +7727,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7337,7 +7746,8 @@
    "refused": false,
    "schemeRequired": true,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7355,7 +7765,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7373,7 +7784,8 @@
    "refused": false,
    "schemeRequired": true,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7391,7 +7803,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7409,7 +7822,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7427,7 +7841,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7445,7 +7860,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7463,7 +7879,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7481,7 +7898,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7499,7 +7917,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7517,7 +7936,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7535,7 +7955,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7553,7 +7974,8 @@
    "refused": false,
    "schemeRequired": true,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7571,7 +7993,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7589,7 +8012,8 @@
    "refused": false,
    "schemeRequired": true,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7607,7 +8031,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7625,7 +8050,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7643,7 +8069,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7661,7 +8088,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7679,7 +8107,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7697,7 +8126,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7715,7 +8145,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7733,7 +8164,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7751,7 +8183,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7769,7 +8202,8 @@
    "refused": false,
    "schemeRequired": true,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7787,7 +8221,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7805,7 +8240,8 @@
    "refused": false,
    "schemeRequired": true,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7823,7 +8259,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7841,7 +8278,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7859,7 +8297,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7877,7 +8316,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7895,7 +8335,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7913,7 +8354,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7931,7 +8373,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7949,7 +8392,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7967,7 +8411,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -7985,7 +8430,8 @@
    "refused": false,
    "schemeRequired": true,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8003,7 +8449,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8021,7 +8468,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8039,7 +8487,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8057,7 +8506,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8075,7 +8525,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8093,7 +8544,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8111,7 +8563,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8129,7 +8582,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8147,7 +8601,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8165,7 +8620,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8183,7 +8639,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8201,7 +8658,8 @@
    "refused": false,
    "schemeRequired": true,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8219,7 +8677,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8237,7 +8696,8 @@
    "refused": false,
    "schemeRequired": true,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8255,7 +8715,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8273,7 +8734,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8291,7 +8753,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8309,7 +8772,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8327,7 +8791,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8345,7 +8810,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8363,7 +8829,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8381,7 +8848,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8399,7 +8867,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8417,7 +8886,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8435,7 +8905,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8453,7 +8924,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8471,7 +8943,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8489,7 +8962,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8507,7 +8981,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8525,7 +9000,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8543,7 +9019,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8561,7 +9038,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8579,7 +9057,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8597,7 +9076,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8615,7 +9095,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8633,7 +9114,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8651,7 +9133,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8669,7 +9152,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8687,7 +9171,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8705,7 +9190,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8723,7 +9209,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8741,7 +9228,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8759,7 +9247,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8777,7 +9266,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8795,7 +9285,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8813,7 +9304,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8831,7 +9323,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8849,7 +9342,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8867,7 +9361,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8885,7 +9380,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8903,7 +9399,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8921,7 +9418,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8939,7 +9437,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8957,7 +9456,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8975,7 +9475,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -8993,7 +9494,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9011,7 +9513,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9029,7 +9532,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9047,7 +9551,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9065,7 +9570,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9083,7 +9589,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9101,7 +9608,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9119,7 +9627,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9137,7 +9646,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9155,7 +9665,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9173,7 +9684,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9191,7 +9703,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9209,7 +9722,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9227,7 +9741,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": true
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9237,15 +9752,11 @@
   "condition": "guide",
   "repeat": 1,
   "field": "website",
-  "status": "tested",
-  "reason": null,
-  "kind": "domain",
-  "baseline": {
-   "typed": "example.com",
-   "refused": true,
-   "schemeRequired": false,
-   "showed": true
-  }
+  "status": "not-testable",
+  "reason": "baseline-ambiguous",
+  "kind": null,
+  "baseline": null,
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9263,7 +9774,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9281,7 +9793,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9299,7 +9812,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9317,7 +9831,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9335,7 +9850,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9353,7 +9869,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9371,7 +9888,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9389,7 +9907,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9407,7 +9926,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9425,7 +9945,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9443,7 +9964,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9461,7 +9983,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9479,7 +10002,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9497,7 +10021,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9515,7 +10040,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9533,7 +10059,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9551,7 +10078,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9569,7 +10097,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9587,7 +10116,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9605,7 +10135,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9623,7 +10154,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9641,7 +10173,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9659,7 +10192,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9677,7 +10211,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9695,7 +10230,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9713,7 +10249,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9731,7 +10268,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9749,7 +10287,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9767,7 +10306,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9785,7 +10325,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9803,7 +10344,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9821,7 +10363,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9839,7 +10382,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9857,7 +10401,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9875,7 +10420,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9893,7 +10439,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9911,7 +10458,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9929,7 +10477,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9947,7 +10496,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9965,7 +10515,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -9983,7 +10534,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -10001,7 +10553,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -10019,7 +10572,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -10037,7 +10591,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -10055,7 +10610,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -10073,7 +10629,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -10091,7 +10648,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -10109,7 +10667,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -10127,7 +10686,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -10135,114 +10695,6 @@
   "model_version": "mistralai/mistral-small-3.2-24b-instruct",
   "lang": "fr",
   "condition": "guide",
-  "repeat": 2,
-  "field": "website",
-  "status": "tested",
-  "reason": null,
-  "kind": "domain",
-  "baseline": {
-   "typed": "example.com",
-   "refused": false,
-   "schemeRequired": false,
-   "showed": false
-  }
- },
- {
-  "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
-  "model": "mistral-small-3-2",
-  "model_version": "mistralai/mistral-small-3.2-24b-instruct",
-  "lang": "fr",
-  "condition": "guide",
-  "repeat": 3,
-  "field": "email",
-  "status": "tested",
-  "reason": null,
-  "kind": "email",
-  "baseline": {
-   "typed": "ana.garcia@example.com",
-   "refused": false,
-   "schemeRequired": false,
-   "showed": false
-  }
- },
- {
-  "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
-  "model": "mistral-small-3-2",
-  "model_version": "mistralai/mistral-small-3.2-24b-instruct",
-  "lang": "fr",
-  "condition": "guide",
-  "repeat": 3,
-  "field": "website",
-  "status": "tested",
-  "reason": null,
-  "kind": "url",
-  "baseline": {
-   "typed": "https://example.com",
-   "refused": false,
-   "schemeRequired": false,
-   "showed": false
-  }
- },
- {
-  "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
-  "model": "mistral-small-3-2",
-  "model_version": "mistralai/mistral-small-3.2-24b-instruct",
-  "lang": "fr",
-  "condition": "no-guide",
-  "repeat": 1,
-  "field": "email",
-  "status": "tested",
-  "reason": null,
-  "kind": "email",
-  "baseline": {
-   "typed": "ana.garcia@example.com",
-   "refused": false,
-   "schemeRequired": false,
-   "showed": false
-  }
- },
- {
-  "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
-  "model": "mistral-small-3-2",
-  "model_version": "mistralai/mistral-small-3.2-24b-instruct",
-  "lang": "fr",
-  "condition": "no-guide",
-  "repeat": 1,
-  "field": "website",
-  "status": "tested",
-  "reason": null,
-  "kind": "domain",
-  "baseline": {
-   "typed": "example.com",
-   "refused": false,
-   "schemeRequired": false,
-   "showed": false
-  }
- },
- {
-  "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
-  "model": "mistral-small-3-2",
-  "model_version": "mistralai/mistral-small-3.2-24b-instruct",
-  "lang": "fr",
-  "condition": "no-guide",
-  "repeat": 2,
-  "field": "email",
-  "status": "tested",
-  "reason": null,
-  "kind": "email",
-  "baseline": {
-   "typed": "ana.garcia@example.com",
-   "refused": false,
-   "schemeRequired": false,
-   "showed": false
-  }
- },
- {
-  "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
-  "model": "mistral-small-3-2",
-  "model_version": "mistralai/mistral-small-3.2-24b-instruct",
-  "lang": "fr",
-  "condition": "no-guide",
   "repeat": 2,
   "field": "website",
   "status": "tested",
@@ -10253,7 +10705,122 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "model": "mistral-small-3-2",
+  "model_version": "mistralai/mistral-small-3.2-24b-instruct",
+  "lang": "fr",
+  "condition": "guide",
+  "repeat": 3,
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "refused": false,
+   "schemeRequired": false,
+   "showed": false
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "model": "mistral-small-3-2",
+  "model_version": "mistralai/mistral-small-3.2-24b-instruct",
+  "lang": "fr",
+  "condition": "guide",
+  "repeat": 3,
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "url",
+  "baseline": {
+   "typed": "https://example.com",
+   "refused": false,
+   "schemeRequired": false,
+   "showed": false
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "model": "mistral-small-3-2",
+  "model_version": "mistralai/mistral-small-3.2-24b-instruct",
+  "lang": "fr",
+  "condition": "no-guide",
+  "repeat": 1,
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "refused": false,
+   "schemeRequired": false,
+   "showed": false
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "model": "mistral-small-3-2",
+  "model_version": "mistralai/mistral-small-3.2-24b-instruct",
+  "lang": "fr",
+  "condition": "no-guide",
+  "repeat": 1,
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "refused": false,
+   "schemeRequired": false,
+   "showed": false
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "model": "mistral-small-3-2",
+  "model_version": "mistralai/mistral-small-3.2-24b-instruct",
+  "lang": "fr",
+  "condition": "no-guide",
+  "repeat": 2,
+  "field": "email",
+  "status": "tested",
+  "reason": null,
+  "kind": "email",
+  "baseline": {
+   "typed": "ana.garcia@example.com",
+   "refused": false,
+   "schemeRequired": false,
+   "showed": false
+  },
+  "attempts": 1
+ },
+ {
+  "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
+  "model": "mistral-small-3-2",
+  "model_version": "mistralai/mistral-small-3.2-24b-instruct",
+  "lang": "fr",
+  "condition": "no-guide",
+  "repeat": 2,
+  "field": "website",
+  "status": "tested",
+  "reason": null,
+  "kind": "domain",
+  "baseline": {
+   "typed": "example.com",
+   "refused": false,
+   "schemeRequired": false,
+   "showed": false
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -10271,7 +10838,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -10289,7 +10857,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -10307,7 +10876,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -10325,7 +10895,8 @@
    "refused": false,
    "schemeRequired": true,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -10343,7 +10914,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -10361,7 +10933,8 @@
    "refused": false,
    "schemeRequired": true,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -10379,7 +10952,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -10397,7 +10971,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -10415,7 +10990,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -10433,7 +11009,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -10451,7 +11028,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -10469,7 +11047,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -10487,7 +11066,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -10505,7 +11085,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -10523,7 +11104,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -10541,7 +11123,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -10554,7 +11137,8 @@
   "status": "not-testable",
   "reason": "no-form",
   "kind": null,
-  "baseline": null
+  "baseline": null,
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -10567,7 +11151,8 @@
   "status": "not-testable",
   "reason": "no-form",
   "kind": null,
-  "baseline": null
+  "baseline": null,
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -10585,7 +11170,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -10603,7 +11189,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -10616,7 +11203,8 @@
   "status": "not-testable",
   "reason": "no-form",
   "kind": null,
-  "baseline": null
+  "baseline": null,
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -10629,7 +11217,8 @@
   "status": "not-testable",
   "reason": "no-form",
   "kind": null,
-  "baseline": null
+  "baseline": null,
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -10647,7 +11236,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -10665,7 +11255,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -10683,7 +11274,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -10701,7 +11293,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -10719,7 +11312,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -10737,7 +11331,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -10750,7 +11345,8 @@
   "status": "not-testable",
   "reason": "no-form",
   "kind": null,
-  "baseline": null
+  "baseline": null,
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -10763,7 +11359,8 @@
   "status": "not-testable",
   "reason": "no-form",
   "kind": null,
-  "baseline": null
+  "baseline": null,
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -10781,7 +11378,8 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  },
  {
   "set": "bench/runs/2026-10-06_state-catalogue/generations-durci",
@@ -10799,6 +11397,7 @@
    "refused": false,
    "schemeRequired": false,
    "showed": false
-  }
+  },
+  "attempts": 1
  }
 ]

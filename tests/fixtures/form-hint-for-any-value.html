@@ -1,0 +1,12 @@
+<!doctype html><html lang="en"><body>
+<!-- A hint appears under the field for any value typed, the bare "x" included; the refusal is written below the button (review of PR #6). -->
+<form id="f" novalidate>
+<div class="field"><label for="email">Email</label><input type="text" id="email" name="email"><span id="m"></span></div>
+<button type="submit">Send</button><div id="toast"></div></form>
+<script>
+const v=()=>document.getElementById('email').value;
+document.getElementById('f').addEventListener('submit', e => { e.preventDefault();
+ const ok=/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v());
+ document.getElementById('m').textContent = v()?'We never share your email':'';
+ document.getElementById('toast').textContent = ok?'':'Invalid email'; });
+</script></body></html>

@@ -1,0 +1,7 @@
+import * as N from './new/src/verdict.mjs';
+import * as O from './old/src/verdict.mjs';
+const st=(value,fieldTexts)=>({value,valid:true,typeMismatch:false,patternMismatch:false,ariaInvalid:null,classes:'',errorTexts:[],fieldTexts,customError:false,validationMessage:''});
+for (const [a,b] of [['Valid','VALID'],['Looks good','Looks Good'],['Email ok','Email OK'],['Required','REQUIRED'],['Plainé','Plainé']]) {
+ const B=st('ana.garcia@example.com',[a]),A=st('bad',[b]);
+ console.log(JSON.stringify([a,b]),'new',N.signalsOf(B,A),'old',O.signalsOf(B,A));
+}

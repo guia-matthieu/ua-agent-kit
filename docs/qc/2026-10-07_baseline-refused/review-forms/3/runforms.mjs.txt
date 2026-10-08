@@ -1,0 +1,11 @@
+import { readdirSync } from 'node:fs';
+const which = process.argv[2];
+const { checkForm } = await import(`${process.cwd()}/${which}/src/form-runner.mjs`);
+const only = process.argv[3];
+for (const f of readdirSync('forms').filter(f => !only || f.startsWith(only)).sort()) {
+  const r = await checkForm(`${process.cwd()}/forms/${f}`, {});
+  const e = r.fields.email;
+  if (e.status !== 'tested') { console.log(f.padEnd(18), which, e.status, e.reason); continue; }
+  const acc = e.results.filter(x => x.expect === 'accept'), rej = e.results.filter(x => x.expect === 'reject');
+  console.log(f.padEnd(18), which.padEnd(8), 'accept-cases read refused:', acc.filter(x => x.outcome === 'fail').length + '/' + acc.length, ' reject-cases read refused:', rej.filter(x => x.outcome === 'pass').length + '/' + rej.length, 'baselineRefused', e.baseline.refused, 'showed', e.baseline.showed);
+}

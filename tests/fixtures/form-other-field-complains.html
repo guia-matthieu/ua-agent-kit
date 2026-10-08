@@ -1,0 +1,17 @@
+<!doctype html><html lang="en"><body>
+<!-- The page refuses the name the runner fills in the other field and says so below the button, whatever the
+     email: a text elsewhere in the form, present from the baseline on, that says nothing of the email field. -->
+<form id="f" novalidate>
+<div class="field"><label for="name">Full name</label><input type="text" id="name" name="name"></div>
+<div class="field"><label for="email">Email</label><input type="text" id="email" name="email"><span id="emailMsg"></span></div>
+<button type="submit">Send</button>
+<div id="summary"></div></form>
+<script>
+document.getElementById('f').addEventListener('submit', e => {
+  e.preventDefault();
+  const ok = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(document.getElementById('email').value);
+  document.getElementById('emailMsg').textContent = ok ? '' : 'Enter a valid email address.';
+  document.getElementById('summary').textContent = /\s/.test(document.getElementById('name').value) ? 'Invalid name: one word only.' : '';
+});
+</script>
+</body></html>

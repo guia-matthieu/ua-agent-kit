@@ -1,0 +1,4 @@
+import * as N from './mut-loop-off/src/verdict.mjs';
+const st=(value,fieldTexts)=>({value,valid:true,typeMismatch:false,patternMismatch:false,ariaInvalid:null,classes:'',errorTexts:[],fieldTexts,customError:false,validationMessage:''});
+console.log(N.signalsOf(st('ana.garcia@example.com',['Sending to ana.garcia@example.com']),st('user@exa mple.com',['Sending to user@example.com'])));
+console.log(N.signalsOf(st('ana.garcia@example.com',['Sending to ana.garcia@example.com']),st('sub.exa mple.com',['Sending to sub.example.com'])));

@@ -1,0 +1,45 @@
+import * as N from './new/src/verdict.mjs';
+import * as O from './old/src/verdict.mjs';
+const st=(value,fieldTexts)=>({value,valid:true,typeMismatch:false,patternMismatch:false,ariaInvalid:null,classes:'',errorTexts:[],fieldTexts,customError:false,validationMessage:''});
+const run=(name,b,bt,a,at)=>{const B=st(b,bt),A=st(a,at);console.log(name.padEnd(46),'new:',JSON.stringify(N.signalsOf(B,A)),'old:',JSON.stringify(O.signalsOf(B,A)));};
+const b='ana.garcia@example.com', v='marie.dupont@example.fr';
+console.log('--- A1 false refusals (valid value, both valid; want [])');
+const tpl=[
+['punycode', t=>t, 'Sending to info@xn--r8jz45g.jp','info@例え.jp'],
+['domain only','x', 'Domain: example.com','Domain: example.fr'],
+['local only','x','Hello ana.garcia','Hello marie.dupont'],
+['html-escaped &amp;','x','Sending to &amp; ana','x'],
+['thousands sep', 0,'',''],
+];
+run('punycode domain echo',b,['Sending to ana.garcia@example.com'],'info@例え.jp',['Sending to info@xn--r8jz45g.jp']);
+run('domain only',b,['Domain: example.com'],v,['Domain: example.fr']);
+run('local only',b,['Hello ana.garcia'],v,['Hello marie.dupont']);
+run('local only short',b,['Hello ana'],'bo@example.fr',['Hello bo']);
+run('html-escaped value w/ + ',"a+b@example.com",['Sending to a+b@example.com'],"c&d@example.fr",['Sending to c&amp;d@example.fr']);
+run('spaces inserted',b,['Sending to a n a . g a r c i a @ e x a m p l e . c o m'],v,['Sending to m a r i e . d u p o n t @ e x a m p l e . f r']);
+run('reversed',b,['example.com — ana.garcia'],v,['example.fr — marie.dupont']);
+run('masked',b,['a•••••@example.com'],v,['m•••••@example.fr']);
+run('length counter 22/50',b,['22 characters'],v,['23 characters']);
+run('thousands (num)', '1234567',['Value: 1,234,567'],'7654321',['Value: 7,654,321']);
+run('domain url',  'https://example.com',['Visiting example.com'],'https://example.fr',['Visiting example.fr']);
+run('uppercase local',b,['ANA.GARCIA at EXAMPLE.COM'],v,['MARIE.DUPONT at EXAMPLE.FR']);
+run('value short echo "ok@a.fr"','x@y.fr',['You typed x@y.fr'],'bob@zz.fr',['You typed bob@zz.fr']);
+run('value len 4-5 echo',"a@b.c",['You typed a@b.c'],"d@e.fg",['You typed d@e.fg']);
+run('quoted w/ different unicode quote',b,['“ana.garcia@example.com” looks good'],v,['“marie.dupont@example.fr” looks good']);
+console.log('--- A2 false acceptances (refusal; want [field-text])');
+run('Sending to V vs Sending to V failed',b,['Sending to '+b],'bad',['Sending to bad failed']);
+run('same, valid typed',b,['Sending to '+b],'x@y',['Sending to x@y failed']);
+run('V + suffix refusal, long value',b,['Sending to '+b],v,['Sending to '+v+' failed']);
+run('hint overlap example.com',"x@example.com",['Use a .example.com address'],"y@example.org",['Use a .example.com address']);
+run('refusal shares >=6',"x@example.com",['Please enter email'],"bad@example.org",['Not an example.org address']);
+run('refusal = coincidence ".com address"','x@example.com',['Enter your .com address'],'bad.com',['Invalid .com address']);
+run('generic msg with example addr',"name@example.com",['Enter e.g. name@example.com'],"nam@example.com",['Invalid, e.g. name@example.com']);
+run('refusal containing typed value baseline different',b,['Looks good'],'plain',['"plain" is not valid']);
+run('value+fixed suffix both refused-ish',b,[b+' ok'],v,[v+' invalid']);
+run('prefix: "Invalid: V" vs "Valid: V"',b,['Valid: '+b],v,['Invalid: '+v]);
+run('"Not V" vs "V"',b,[b],v,['Not '+v]);
+run('"V is not valid" vs "V is valid"',b,[b+' is valid'],v,[v+' is not valid']);
+run('whole text is value, refusal is value?',b,[b],'bad',['bad']);
+run('refusal "Enter a valid email" w/ typed "valid@ex.com"',b,['Looks good'],'valid@example.com',['Enter a valid email']);
+run('baseline Email text vs refusal containing typed email-ish','x@example.com',['Email'],'email',['Email invalid']);
+run('typed "Enter a valid email" like',"enter a valid email address",['Enter a valid email address'],"a",['Enter a valid email address']);

@@ -1,0 +1,16 @@
+import * as N from './new/src/verdict.mjs';
+import * as O from './old/src/verdict.mjs';
+import { loadBattery } from '/Users/matthieucredou/Projects/ua-agent-kit-public/src/battery.mjs';
+const st=(value,fieldTexts)=>({value,valid:true,typeMismatch:false,patternMismatch:false,ariaInvalid:null,classes:'',errorTexts:[],fieldTexts,customError:false,validationMessage:''});
+const cases=loadBattery().cases;
+const bases=['ana.garcia@example.com','https://example.com','example.com','x'];
+const bt=[b=>[`Sending to ${b}`],b=>[b],b=>[`Preview: ${b}`],b=>[`${b} is valid`],b=>[`✓ ${b}`],b=>[`Looks good`],b=>[`Check ${b} before sending`],b=>['Email',`You typed: ${b}`]];
+const rt=[v=>['Invalid email'],v=>['Enter a valid email address.'],v=>[`${v} is not a valid email`],v=>[`Invalid: ${v}`],v=>[`Sending to ${v} failed`],v=>[`Not valid: ${v}`],v=>[`"${v}" is invalid`],v=>[`Invalid email address (${v})`],v=>[`Check ${v} before sending`,'Invalid'],v=>[`${v}`,'Invalid'],v=>[`${v} is not valid`]];
+const reg=new Map(); let n=0;
+for(const b of bases)for(const f of bt)for(const c of cases)for(const g of rt){
+  n++;const B=st(b,f(b)),A=st(c.value,g(c.value));
+  const o=O.signalsOf(B,A).includes('field-text'),w=N.signalsOf(B,A).includes('field-text');
+  if(o&&!w){const k=JSON.stringify([f(b),g('V'),]);if(!reg.has(k))reg.set(k,[]);reg.get(k).push(c.value+' | b='+b);}
+}
+console.log('total',n,'regressions groups',reg.size);
+for(const [k,v] of reg)console.log(k,v.length,v.slice(0,3).join(' ;; '));

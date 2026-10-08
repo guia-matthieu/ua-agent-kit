@@ -3,6 +3,59 @@ import { isValidEmail, isValidDomain, isValidUrl } from '../runners/js/reference
 const ERR_CLASS = /invalid|error|erreur/i;
 const REF = { email: isValidEmail, domain: isValidDomain, url: isValidUrl };
 
+/** The texts of the field that `after` shows and `before` did not. A text that repeats the value typed
+ *  ("Sending to ana@example.com") or counts its characters says the same thing for every value and is not new
+ *  (review of PR #6: every valid address read as refused on such a page). A text is old when `before` shows it
+ *  as it is, or shows it once each side's own value is taken out of it; the first test keeps a fixed hint old
+ *  when the value typed happens to be the example it gives ("e.g. https://example.com").
+ *  The value is looked for as the page may have written it: in another case, in another Unicode form, cut
+ *  short (second review of #6: a preview in capitals, the first twelve characters, an NFD copy). */
+const ECHO_MIN = 3;   // a shorter value, or a shorter piece of one, would be found inside ordinary words
+const ECHO_RUN = 6;   // characters in a row shared with the value for a text to be held a copy of it
+const ECHO_TEXT_MAX = 2000;
+const MARK = '\u2423';
+const counted = t => t.replace(/\d+/g, '#');
+const fold = t => t.normalize('NFC').toLowerCase();
+/** The longest run of characters `a` and `b` share: { at: its place in `a`, length }. */
+function sharedRun(a, b) {
+  let best = { at: 0, length: 0 }, prev = new Array(b.length + 1).fill(0);
+  for (let i = 1; i <= a.length; i++) {
+    const row = new Array(b.length + 1).fill(0);
+    for (let j = 1; j <= b.length; j++) if (a[i - 1] === b[j - 1]) { row[j] = prev[j - 1] + 1; if (row[j] > best.length) best = { at: i - row[j], length: row[j] }; }
+    prev = row;
+  }
+  return best;
+}
+const withoutValue = s => t => {
+  const v = fold(s.value ?? '');
+  // a text longer than any message is not searched: the search grows with its length times the value's
+  if (v.length < ECHO_MIN || t.length > ECHO_TEXT_MAX) return counted(t);
+  // every copy of the value, not the first only ("Sending V to V", second review of #7)
+  let x = fold(t), copies = 0;
+  for (;;) {
+    const run = sharedRun(x, v);
+    if (run.length < Math.min(ECHO_RUN, v.length)) break;
+    x = x.slice(0, run.at) + MARK + x.slice(run.at + run.length);
+    copies += 1;
+  }
+  // no copy of the value: the text is compared as it is written, its case included
+  if (!copies) return counted(t);
+  // what is left of the value on either side of a copy (the page took a space out of the middle)
+  for (;;) {
+    const sides = x.split(MARK), i = sides.findIndex((side, k) => { const r = sharedRun(side, v); return r.length >= ECHO_MIN && (k > 0 && r.at === 0 || k < sides.length - 1 && r.at + r.length === side.length); });
+    if (i < 0) break;
+    const r = sharedRun(sides[i], v);
+    sides[i] = sides[i].slice(0, r.at) + MARK + sides[i].slice(r.at + r.length);
+    x = sides.join(MARK);
+  }
+  // one mark for the copy, with or without the sign that it was cut short
+  return counted(x.replace(new RegExp(MARK + '+(\\u2026|\\.{3})?', 'g'), MARK));
+};
+export function newTexts(before, after) {
+  const raw = (before.fieldTexts ?? []).map(counted), bare = (before.fieldTexts ?? []).map(withoutValue(before));
+  return (after.fieldTexts ?? []).filter(t => !raw.includes(counted(t)) && !bare.includes(withoutValue(after)(t)));
+}
+
 /** What the page showed for this value that it did not show for the baseline value: the signals of a refusal
  *  by the page's own script. `custom-validity`: the script called setCustomValidity() and changed nothing in
  *  the markup (review of #21, 27/09: on a novalidate form that refusal read as accepted). */
@@ -14,8 +67,7 @@ export function signalsOf(before, after) {
   // A text of the field itself needs no word list: whatever the page writes there for this value and did not
   // write for the baseline value is its refusal (run of 2026-10-06: "Enter a valid email address." holds none
   // of the words above and read as accepted, docs/qc/2026-10-06_refusal-wording/).
-  const shown = before.fieldTexts ?? [];
-  if ((after.fieldTexts ?? []).some(t => !shown.includes(t))) signals.push('field-text');
+  if (newTexts(before, after).length) signals.push('field-text');
   if (after.customError && after.validationMessage !== before.validationMessage) signals.push('custom-validity');
   return signals;
 }
@@ -27,11 +79,12 @@ export function evidence(before, after) {
   return { mismatch: Boolean(!after.valid && (after.typeMismatch || after.patternMismatch)), enforced: !after.noValidate, signals: signalsOf(before, after) };
 }
 
-/** What the field itself shows in a snapshot, as one comparable string: two snapshots with the same face say
- *  the same thing about the field. Texts elsewhere in the form are left out. */
-export function ownFace(s) {
-  return JSON.stringify([[...(s.fieldTexts ?? [])].sort(), s.ariaInvalid === 'true', ERR_CLASS.test(s.classes),
-    Boolean(s.customError) && s.validationMessage, Boolean(!s.valid && (s.typeMismatch || s.patternMismatch) && !s.noValidate)]);
+/** Two snapshots say the same thing of the field: neither shows a text the other does not, and the marks of
+ *  refusal are the same. Texts elsewhere in the form are left out. */
+export function sameOwn(a, b) {
+  const marks = s => JSON.stringify([s.ariaInvalid === 'true', ERR_CLASS.test(s.classes), Boolean(s.customError) && s.validationMessage,
+    Boolean(!s.valid && (s.typeMismatch || s.patternMismatch) && !s.noValidate)]);
+  return marks(a) === marks(b) && !newTexts(a, b).length && !newTexts(b, a).length;
 }
 
 /** before/after are snapshots from readState(); returns { verdict, rewritten, outcome }.

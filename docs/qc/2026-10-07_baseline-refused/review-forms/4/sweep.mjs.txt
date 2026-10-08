@@ -1,0 +1,41 @@
+import { readFileSync } from 'node:fs';
+const S = '/private/tmp/claude-501/-Users-matthieucredou-Projects-guia/4ff1ab41-9934-48bd-adce-2d8aad9c5c9a/scratchpad/review4/';
+const A = await import(S + 'src-0a56787/src/verdict.mjs'), B = await import(S + 'src-bc6d63d/src/verdict.mjs');
+const cases = JSON.parse(readFileSync(S + 'src-bc6d63d/battery/cases.json', 'utf8')).cases;
+const BASE = { email: 'ana.garcia@example.com', domain: 'example.com', url: 'https://example.com' };
+const st = (value, fieldTexts) => ({ value, valid: true, typeMismatch: false, patternMismatch: false, customError: false, validationMessage: '', noValidate: true, ariaInvalid: null, classes: '', errorTexts: [], fieldTexts });
+// baseline texts (with {B} = baseline value)
+const baseTexts = [[], ['Email'], ['Email', 'Looks good'], ['Email', 'Sending to {B}'], ['Email', 'e.g. {B}'], ['Email', 'Example: name@example.com'], ['Email', 'Valid: {B}'], ['Website', 'Enter your site, e.g. https://example.com'], ['Email', 'Your address {B} will be used'], ['Email', 'Sending {B} to {B}'], ['Email', 'Hello {B}, we check {B} and {B}'], ['Email', 'Preview: {B}', 'Confirm {B}']];
+const words = [
+ '{V} is not a valid address', 'Invalid email', 'Please enter a valid email, like name@example.com', 'Enter a valid email address like ana.garcia@example.com',
+ 'The address {V} is not valid. Example: ana.garcia@example.com', 'Invalid: {V}', '"{V}" no es válido', 'Use an address like contact@example.com or info@example.com or marie.dupont@example.com',
+ 'Not accepted: {V}. Try example.com, example.fr or example.org', 'Enter a valid email, e.g. name@example.com', 'Domain not allowed', 'Error', 'Invalid domain example.com',
+ 'Must be like example.com and not https://example.com', 'Please use a domain such as example.com, www.example.com or sub.example.co.uk', 'Not a valid website', 'The label is too long',
+ 'Only letters allowed in {V}', 'That does not look like a website: {V}. Expected e.g. https://example.com/path', 'Looks good', 'Sending {V} to {V}', 'Email address {V} is invalid (like ana.garcia@example.com)',
+ 'international domains are not supported', 'Enter email: example.technology is a TLD we do not support', 'Please check {V} and {V} again', 'The email must contain an @ — {V}', 'mairie.bzh: invalid', 'Invalid example.corsica'
+];
+const out = [];
+let n = 0;
+for (const c of cases) {
+  const kinds = c.kind === 'email' ? ['email'] : ['domain', 'url'];
+  for (const k of kinds) {
+    const b = BASE[k];
+    for (const bt of baseTexts) for (const w of words) for (const withBaseText of [true, false]) {
+      const bT = bt.map(t => t.replaceAll('{B}', b));
+      const before = st(b, bT);
+      const typed = k === 'url' && c.kind === 'domain' ? 'https://' + c.value : c.value;
+      const aT = [...(withBaseText ? bT.filter(t => !t.includes(b)) : []), w.replaceAll('{V}', typed), ...(withBaseText ? bT.filter(t => t.includes(b)).map(t => t.replaceAll(b, typed)) : [])];
+      const after = st(typed, aT);
+      const sa = A.signalsOf(before, after).join(), sb = B.signalsOf(before, after).join();
+      n++;
+      if (sa !== sb) out.push({ typedFull: typed, id: c.id, k, typed: typed.slice(0, 40), bT, aT, a: sa, b: sb });
+    }
+  }
+}
+console.log('combos', n, 'differ', out.length);
+const loss = out.filter(o => o.a.includes('field-text') && !o.b.includes('field-text'));
+const gain = out.filter(o => !o.a.includes('field-text') && o.b.includes('field-text'));
+console.log('A refused, B none:', loss.length, ' A none, B refused:', gain.length);
+const pat={}; for (const o of loss){const key=o.aT.map(t=>t.replaceAll(o.typedFull,'{V}')).join(' | ')+'  <<BASE>> '+o.bT.join(' | '); (pat[key] ??= []).push(o.id);} for (const [k,v] of Object.entries(pat)) console.log('LOSS-PATTERN', v.length, k);
+const g = {}; for (const o of gain) { const key = o.aT.at(-1).replace(o.typed,'{V}')+' || '+o.bT.join('|'); g[key] = (g[key]||0)+1; }
+console.log('GAIN patterns', Object.keys(g).length); for (const [k,v] of Object.entries(g).slice(0,25)) console.log(v, k);

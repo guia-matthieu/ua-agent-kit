@@ -1,0 +1,23 @@
+import { pathToFileURL } from 'node:url';
+const S = '/private/tmp/claude-501/-Users-matthieucredou-Projects-guia/4ff1ab41-9934-48bd-adce-2d8aad9c5c9a/scratchpad/review4/';
+const tree = process.argv[2], names = process.argv.slice(3);
+const { checkForm } = await import(S + tree + '/src/form-runner.mjs');
+for (const n of names) {
+  const t0 = Date.now();
+  for (let attempt = 0; attempt < 2; attempt++) {
+    const r = await checkForm(S + 'pages/' + n + '.html', { lang: 'en' });
+    const parts = [];
+    let shaky = false;
+    for (const f of ['email', 'website']) {
+      const x = r.fields[f];
+      if (!x) continue;
+      if (x.status !== 'tested') { parts.push(`${f}:${x.status}/${x.reason}`); if (x.reason === 'not-interactable') shaky = true; continue; }
+      const bad = x.results.filter(c => (c.expect === 'accept') !== (c.verdict === 'accepted' || c.verdict === 'no-rejection-observed')).map(c => c.id.replace(/^(email|domain|url)-/, ''));
+      const acc = x.results.filter(c => c.expect === 'accept'), refAcc = acc.filter(c => c.verdict.startsWith('rejected'));
+      parts.push(`${f}:tested kind=${x.kind} base=${JSON.stringify(x.baseline)} validRefused=${refAcc.length}/${acc.length} guardsAccepted=${x.results.filter(c => c.expect === 'reject' && !c.verdict.startsWith('rejected')).length}/${x.results.filter(c => c.expect === 'reject').length}`);
+    }
+    if (shaky && attempt === 0) continue;
+    console.log(`${n} [${tree}] ${parts.join(' | ')} (${Date.now() - t0}ms)`);
+    break;
+  }
+}

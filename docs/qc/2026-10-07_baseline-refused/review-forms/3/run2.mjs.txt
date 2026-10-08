@@ -1,0 +1,6 @@
+const which=process.argv[2], file=process.argv[3];
+const { checkForm } = await import(`${process.cwd()}/${which}/src/form-runner.mjs`);
+const r = await checkForm(`${process.cwd()}/${file}`, {}); const e=r.fields.email;
+if(e.status!=='tested'){console.log(which,e.status,e.reason);process.exit()}
+const acc=e.results.filter(x=>x.expect==='accept'),rej=e.results.filter(x=>x.expect==='reject');
+console.log(which,file,'accept read refused',acc.filter(x=>x.outcome==='fail').length+'/'+acc.length,'reject read refused',rej.filter(x=>x.outcome==='pass').length+'/'+rej.length);

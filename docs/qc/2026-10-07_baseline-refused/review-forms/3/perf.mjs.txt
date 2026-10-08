@@ -1,0 +1,14 @@
+import * as N from './new/src/verdict.mjs';
+import * as O from './old/src/verdict.mjs';
+const st=(value,fieldTexts)=>({value,valid:true,typeMismatch:false,patternMismatch:false,ariaInvalid:null,classes:'',errorTexts:[],fieldTexts,customError:false,validationMessage:''});
+const words='lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua example address valid'.split(' ');
+let s=1;const r=()=>(s=(s*48271)%2147483647)/2147483647;
+const text=n=>{let t='';while(t.length<n)t+=words[Math.floor(r()*words.length)]+' ';return t.slice(0,n)};
+const long='a'.repeat(64)+'@'+['a'.repeat(63),'b'.repeat(63),'c'.repeat(63),'d'.repeat(57),'com'].join('.');
+for (const [cnt,len,val] of [[50,100,'marie.dupont@example.com'],[300,100,'marie.dupont@example.com'],[300,200,long],[1000,200,long],[5,20000,'marie.dupont@example.com'],[1,200000,'marie.dupont@example.com'],[5,20000,long]]) {
+  const bt=Array.from({length:cnt},()=>text(len)), at=Array.from({length:cnt},()=>text(len));
+  const B=st('ana.garcia@example.com',bt),A=st(val,at);
+  let t=performance.now();N.signalsOf(B,A);const dn=performance.now()-t;
+  t=performance.now();O.signalsOf(B,A);const dold=performance.now()-t;
+  console.log(`texts=${cnt} len=${len} value=${val.length}ch  new ${dn.toFixed(0)} ms  old ${dold.toFixed(0)} ms  per-case; x82 cases =${(dn*82/1000).toFixed(1)} s`);
+}

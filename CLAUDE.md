@@ -14,7 +14,7 @@ You are implementing `docs/superpowers/plans/2026-09-24-ua-agent-kit.md`, one ta
 
 - Never dispatch a `submit` event, call `requestSubmit()`, or click a submit control in `src/form-runner.mjs` or anything the runner reaches. `tests/guards.test.mjs` enforces this and must stay green in every task.
 - Never let a request whose method is not `GET` or `HEAD` through after page load.
-- Never type a value that is not in `battery/cases.json`, or in the file the user named with `--battery` once `loadBatteryFile` has accepted it.
+- Never type a value that is not in `battery/cases.json`, or in the file the user named with `--battery` once `loadBatteryFile` has accepted it. The only other values are the runner's own fixed ones in `src/form-runner.mjs`: the baseline (`BASELINE`), a second plain value (`SECOND`), the value with no @, dot or scheme (`NO_VALUE`) and what fills the other fields of the form.
 - Never edit files under `adapters/` by hand; run `npm run build:adapters`.
 - Never change the wording of `GUIDE.md`, `bench/prompts/*.txt`, `patterns/catalogue.json`, `README.md` or `bench/results/RESULTS.md`. Those files are human-owned.
 - Never use the network in tests: fixtures under `tests/fixtures/` and a local `http` server only.

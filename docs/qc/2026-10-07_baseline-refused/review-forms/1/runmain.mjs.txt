@@ -1,0 +1,7 @@
+import { checkForm } from '/private/tmp/claude-501/-Users-matthieucredou-Projects-guia/4ff1ab41-9934-48bd-adce-2d8aad9c5c9a/scratchpad/review-pr6/main/src/form-runner.mjs';
+for (const n of process.argv.slice(2)) {
+  const r = await checkForm(new URL(n+'.html', import.meta.url).pathname);
+  const f = r.fields.email;
+  console.log('==',n, JSON.stringify(f.kind), 'pass',f.counts.pass,'fail',f.counts.fail);
+  for (const x of f.results) if (x.outcome!=='pass') console.log(' ', x.id, x.expect, x.typed, x.verdict, x.outcome, x.signals);
+}

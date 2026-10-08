@@ -1,0 +1,7 @@
+const S = '/private/tmp/claude-501/-Users-matthieucredou-Projects-guia/4ff1ab41-9934-48bd-adce-2d8aad9c5c9a/scratchpad/review4/';
+const { checkForm } = await import(S + process.argv[2] + '/src/form-runner.mjs');
+for (const n of process.argv.slice(3)) {
+  const r = await checkForm(S + 'pages/' + n + '.html', { lang: 'en' });
+  for (const f of ['email', 'website']) { const x = r.fields[f]; if (x.status !== 'tested') continue;
+    console.log(n, f, x.kind, 'validRefused:', x.results.filter(c => c.expect === 'accept' && c.verdict.startsWith('rejected')).map(c => c.id + ':' + c.signals.join('+')).join(', ')); }
+}

@@ -1,0 +1,23 @@
+<!doctype html><html lang="en"><body>
+<!-- In its second document (IndexedDB counter, the one storage the runner does not reset), the one that receives the
+     baseline, the email field becomes read-only once the runner has checked it can be clicked: the baseline cannot
+     be typed. Every other document takes a value. -->
+<form id="f" novalidate><div><label for="email">Email</label><input id="email" name="email" type="text"><span id="m"></span></div><button type="submit">Send</button></form>
+<script>
+const spin = ms => { const t0 = Date.now(); while (Date.now() - t0 < ms) { /* let the storage answer queue before the load event */ } };
+const req = indexedDB.open('ua-kit-fixture-readonly', 1);
+req.onupgradeneeded = () => req.result.createObjectStore('kv');
+req.onsuccess = () => {
+  const store = req.result.transaction('kv', 'readwrite').objectStore('kv');
+  const get = store.get('documents');
+  get.onsuccess = () => { const n = (get.result || 0) + 1; store.put(n, 'documents'); if (n === 2) document.getElementById('email').readOnly = true; };
+  spin(40);
+};
+spin(40);
+document.getElementById('f').addEventListener('submit', e => {
+  e.preventDefault();
+  const ok = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(document.getElementById('email').value);
+  document.getElementById('m').textContent = ok ? '' : 'Enter a valid email address.';
+});
+</script>
+</body></html>

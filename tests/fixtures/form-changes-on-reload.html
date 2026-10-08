@@ -1,6 +1,6 @@
 <!doctype html><html lang="en"><body>
 <!-- Counts its own documents in IndexedDB (the one storage the runner does not reset between cases) and,
-     from the fourth document on, offers another email field: the runner must notice, not type the
+     from the fifth document on (the runner's second plain value takes one more than before), offers another email field: the runner must notice, not type the
      remaining cases into it. The busy waits keep the load event behind the IndexedDB answers, so the
      change is in place when the runner looks. -->
 <form id="f"><label>Email <input id="email" name="email" type="email"></label><button type="submit">Send</button></form>
@@ -14,7 +14,7 @@ req.onsuccess = () => {
   get.onsuccess = () => {
     const n = (get.result || 0) + 1;
     store.put(n, 'documents');
-    if (n > 3) { const i = document.getElementById('email'); i.type = 'text'; i.name = 'contact'; }
+    if (n > 4) { const i = document.getElementById('email'); i.type = 'text'; i.name = 'contact'; }
   };
   spin(40);
 };
