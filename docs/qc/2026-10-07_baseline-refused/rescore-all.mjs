@@ -10,6 +10,8 @@
 // Usage: node docs/qc/2026-10-07_baseline-refused/rescore-all.mjs [folder-suffix]     (no API call)
 //   with a suffix (`generations-durci`), only the sets whose folder ends with it are scored again.
 import { readFileSync, writeFileSync, readdirSync, mkdirSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 const KIT = new URL('../../../', import.meta.url).pathname;
 const here = new URL('./', import.meta.url).pathname;
 const RUN = 'bench/runs/2026-10-06_state-catalogue/';
@@ -32,6 +34,7 @@ async function score(file, html, lang, battery, finish) {
   return report;
 }
 mkdirSync(here + 'rescored', { recursive: true });
+const started = new Date().toISOString();
 const SETS = [
   { folder: 'bench/results/generations', out: [['bench-2026-09-25-runs.csv', std]] },
   { folder: RUN + 'generations', out: [['runs-standard.csv', std], ['runs-fr.csv', pack]] },
@@ -62,3 +65,8 @@ for (const set of SETS.filter(x => !only || x.folder.endsWith(only))) {
   console.error(`${set.folder}: ${res.length} pages, ${errors} with a runner error`);
 }
 writeFileSync(fieldsFile, JSON.stringify(fields, null, 1));
+// What scored these files: the commit the tree was at, whether src/ differed from it, the checksums of the runner.
+const git = (...a) => execFileSync('git', ['-C', KIT, ...a], { encoding: 'utf8' }).trim();
+const sha = f => createHash('sha256').update(readFileSync(KIT + f)).digest('hex');
+writeFileSync(here + 'rescored/SCORED-WITH.txt', [`sets: ${only ?? 'all three'}`, `commit: ${git('rev-parse', '--short', 'HEAD')}`, `src differs from that commit: ${git('status', '--porcelain', '--', 'src') ? 'yes' : 'no'}`,
+  ...['src/verdict.mjs', 'src/form-runner.mjs'].map(f => `sha256 ${f}: ${sha(f)}`), `started: ${started}`, `ended: ${new Date().toISOString()}`, ''].join('\n'));

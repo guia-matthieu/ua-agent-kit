@@ -30,11 +30,11 @@ Text website fields whose baseline was refused: bench of 2026-09-25, 1 of 15 (`o
 - A text field that does not take the bare domain and takes it with `https://` is probed as a field of type `url`: bare domains are typed with `https://` in front (decision D1 of 2026-09-25, extended). The field reports `baseline.schemeRequired`.
 - A page that refuses every form of the baseline with a mark is read against the page as it loaded: `baseline.refused`.
 - A text that repeats the value typed, or counts its characters, is not new from one value to the next. Every copy of the value is looked for as the page may have written it: in another case, in another Unicode form, cut short. A text with no copy of the value in it is compared as it is written.
-- Once the baseline is taken, a second plain value is submitted (`marie.dupont@example.com`, `www.example.com`). When the field does not show for it what it showed for the baseline, the page writes of each value something the runner cannot follow, and the field is `not-testable`, reason `value-dependent-text`. No field of the 590 is in that case.
+- Once the baseline is taken, a second plain value is submitted (`marie.dupont@example.com`, `example.org`). When the field does not show for it what it showed for the baseline, the page writes of each value something the runner cannot follow, and the field is `not-testable`, reason `value-dependent-text`. No field of the 590 is in that case.
 - A baseline that could not be typed makes the field `not-testable` (`not-interactable`); it was read as a baseline before.
-- Every tested field carries `baseline: { typed, refused, schemeRequired, showed }`. Tests: `tests/baseline-refused.test.mjs` (nine fixtures) and the cases of `signalsOf` and `sameOwn` in `tests/refusal-place.test.mjs`.
+- Every tested field carries `baseline: { typed, refused, schemeRequired, showed }`. Tests: `tests/baseline-refused.test.mjs` (twelve fixtures) and the cases of `signalsOf` and `sameOwn` in `tests/refusal-place.test.mjs`.
 
-## Review of PR #6
+## Reviews (PR #6, then PR #7)
 
 A reviewer with no part in the work rejected the first version (`7a642fa`) on one finding it reproduced: on a page that repeats the value under the field ("Sending to ana@example.com"), and on a page that shows a hint for any value, every valid address read as refused. Both pages are now fixtures. Corrected, then scored again: a first correction took the typed value out of every text of the field, which made a fixed hint look new whenever the value typed was the example it gives; the scoring showed it (86 rows of the bench of 2026-09-25 instead of 27) and it was corrected before anything was pushed. The rows below are those of the last scoring; they differ from the scoring made before the review by one field, the website field of the page that refuses every value, now `baseline-ambiguous`.
 
@@ -42,11 +42,13 @@ A second reviewer rejected `dfa9005`: a copy of the value in capitals, cut to it
 
 On the hardened pages the field now `baseline-ambiguous` leaves the counts: its rows become one `not-testable` row, so the denominators move with it (valid values with the guide 3 854 → 3 815, guards 940 → 931).
 
-A third reviewer rejected `0a56787`: a text holding the value twice ("Sending V to V") read as a refusal of every valid value, where `dfa9005` read it rightly; and a refusal differing from the baseline's text by its case alone read as accepted. Both corrected, with their cases in `tests/refusal-place.test.mjs`. That review also listed the copies no comparison of texts follows (the value masked, reversed, spelled with spaces, in A-labels): the second plain value above is the answer to those, a field with no verdict in place of refusals that are not.
+A third reviewer rejected `0a56787`: a text holding the value twice ("Sending V to V") read as a refusal of every valid value, where `dfa9005` read it rightly; and a refusal differing from the baseline's text by its case alone read as accepted. Both corrected, with their cases in `tests/refusal-place.test.mjs`. That review also listed copies no comparison of texts follows (the value masked, reversed, spelled with spaces): the second plain value above is the answer to those, a field with no verdict in place of refusals that are not.
+
+A fourth reviewer rejected `bc6d63d` on what this file claimed, not on the code (no row differing from `0a56787` to the worse, no refusal read as accepted in 87 360 combinations it compared): the second plain value does not see a copy in A-labels, and with `www.example.com` as that value a page with a word about `www.` lost its whole website field. The second website value is now `example.org`; the limits it reproduced are listed at the end of this file with its counts.
 
 In two of the scorings made on 2026-10-07, fields of hardened pages came back `not-interactable` or with a runner error, never on the same pages; scored alone, twice, two of those pages were tested without trouble. Observed, not archived: those logs were overwritten by the scorings that followed. With four browsers at work a fill can time out. `rescore-all.mjs` scores such a page again, up to twice, and `rescored/fields.json` keeps the number of attempts each page took. The retry is one-sided: it can turn a page that fails now and then into a tested one, never the reverse.
 
-`rescored/SCORED-WITH.txt` names the commit the last scoring started from, the checksums of the two files of the runner it used, and when it ran. All five files were written by that one scoring.
+`rescored/SCORED-WITH.txt` is written by `rescore-all.mjs`: the commit the tree was at, whether `src/` differed from it, the checksums of the two files of the runner, the start and the end of the run. All five files come from that one run.
 
 ## Published, first correction, this correction (`compare.py`)
 
@@ -70,8 +72,11 @@ The bench of 2026-09-25 scored with both corrections differs from the published 
 
 ## Not measured, not corrected
 
-- **A copy of the value the runner does not recognise, on a value the two plain ones do not stand for.** The two plain values are lower-case ASCII with a local part of six characters or more. A page that shows back only the local part reads a valid value with a short local part (`用户`) as refused, and nothing says so.
-
+- **A text that changes with a shape the two plain values do not have.** Both are lower-case ASCII, with a local part of twelve characters, a bare host and no path. A page whose text under the field follows something else passes the second-value check and still reads valid values as refused, and nothing says so. Reproduced by the fourth reviewer, valid values read refused: the host shown in A-labels, 7 of 27 emails (the IDN and EAI ones); a URL shown back normalised, with a trailing slash or percent-encoded, the URL cases with a path, a port or a non-ASCII path; only the local part, or local part and domain apart, or a mask of fixed length, 10 of 27 (every local part shorter than six characters); the TLD shown apart ("Region: COM"), 21 of 27.
+- **A baseline refused with a mark is not checked with a second value.** A page that refuses `@example.com` alone, with `aria-invalid`, and repeats every other value under the field is read against the page as it loaded: 25 of 27 valid values read refused, wrongly. No field of the two benches has a baseline refused with a mark.
+- **A page that reacts to `marie.dupont@example.com` or to `example.org` in particular** (an account that exists, a TLD it does not take) loses the field: `value-dependent-text`.
+- **A validator that answers after the runner has read** (the runner waits 60 ms): on a page showing "Checking…" for 20 to 120 ms, six runs gave four different outcomes, two of them `value-dependent-text`. The delay is older than this work; the second value adds one more way for it to show.
+- A text of more than 2 000 characters is compared as written, with no search for a copy of the value.
 - **A page that says the same thing of a plain value and of `x`, with no mark.** No verdict is given on that field (`generations-durci/mistral-medium-3-1/es/guide/1`, website field). The same happens to a page with no validation at all that shows a hint or a counter as soon as something is typed: it accepts everything, and the runner cannot tell it from the page that refuses everything.
 
 - **A baseline refused in words the page uses for nothing else.** `generations-durci/mistral-medium-3-1/es/guide/1`, email field: the page refuses `ana.garcia@example.com` with one message and `x` with another. That cannot be told from a page praising a valid value; the baseline is taken as accepted, the field reports `showed: true`, the report says so. 1 field of 590. A second plain value would not separate the two: that page refuses every address in the same words.

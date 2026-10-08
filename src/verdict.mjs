@@ -12,6 +12,7 @@ const REF = { email: isValidEmail, domain: isValidDomain, url: isValidUrl };
  *  short (second review of #6: a preview in capitals, the first twelve characters, an NFD copy). */
 const ECHO_MIN = 3;   // a shorter value, or a shorter piece of one, would be found inside ordinary words
 const ECHO_RUN = 6;   // characters in a row shared with the value for a text to be held a copy of it
+const ECHO_TEXT_MAX = 2000;
 const MARK = '\u2423';
 const counted = t => t.replace(/\d+/g, '#');
 const fold = t => t.normalize('NFC').toLowerCase();
@@ -27,7 +28,8 @@ function sharedRun(a, b) {
 }
 const withoutValue = s => t => {
   const v = fold(s.value ?? '');
-  if (v.length < ECHO_MIN) return counted(t);
+  // a text longer than any message is not searched: the search grows with its length times the value's
+  if (v.length < ECHO_MIN || t.length > ECHO_TEXT_MAX) return counted(t);
   // every copy of the value, not the first only ("Sending V to V", second review of #7)
   let x = fold(t), copies = 0;
   for (;;) {

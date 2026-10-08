@@ -1,6 +1,12 @@
 const NOT_TESTED_URL = 'Not tested: validation that runs only on submit, server-side validation, email delivery, storage and display. On a URL the runner never submits the form: "no-rejection-observed" means no rejection on input or blur, not an acceptance; such a case is counted not-observed, neither passed nor failed.';
 const NOT_TESTED_FILE = 'Not tested: server-side validation, email delivery, storage and display. On a local file the runner dispatches the submit event after each case, with the default action cancelled and every request after load blocked: nothing leaves the page. Limits: a validator slower than 60 ms (debounced, asynchronous) is read too early; the submit is dispatched on the form, not through a button, so a `formnovalidate` on a button is not exercised; a refusal shown only by a style (`:invalid`) is not read.';
 
+// What the two reasons of the baseline mean, for a reader who meets them in a report.
+const WHY = {
+  'baseline-ambiguous': 'The field shows the same text, and no mark of refusal, for a plain value and for a value with no @, dot or scheme: a page that refuses both, or a hint shown for any value. The two cannot be told apart, so no verdict is given.',
+  'value-dependent-text': 'The field does not show for a second plain value what it showed for the first: the page writes of each value something the runner cannot follow from one value to the next, so no verdict is given.'
+};
+
 // Everything below that comes from the page under test (title, observed values, script names) is
 // untrusted: it must not break the tables or render as markup on GitHub.
 // eslint-disable-next-line no-control-regex -- stripping control characters is the point
@@ -13,7 +19,7 @@ function code(v) {
 }
 
 function fieldSection(name, f) {
-  if (f.status !== 'tested') return `### ${name}\n\nnot-testable (${text(f.reason)})\n`;
+  if (f.status !== 'tested') return `### ${name}\n\nnot-testable (${text(f.reason)})\n${WHY[f.reason] ? '\n' + WHY[f.reason] + '\n' : ''}`;
   const lines = [`### ${name} — ${code(f.selector)} (${f.kind} cases)`, '',
     `passed ${f.counts.pass} · failed ${f.counts.fail} · rewritten ${f.counts.rewritten} · not-observed ${f.counts.notObserved ?? 0} · not-testable ${f.counts.notTestable ?? 0}`, '',
     ...(f.counts.notObserved ? [`no rejection observed — submit not exercised: ${f.counts.notObserved} of ${f.results.length} cases${f.submitExercised ? ' (native validation blocked the submit, e.g. a required field the runner could not fill)' : ''}. They are neither passed nor failed.`, ''] : []),

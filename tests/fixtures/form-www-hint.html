@@ -1,0 +1,14 @@
+<!doctype html><html lang="en"><body>
+<!-- The page has a word for a value that starts with www. and for no other: not a text that changes with every value. -->
+<form id="f" novalidate>
+<div><label for="email">Email</label><input id="email" name="email" type="text"></div>
+<div><label for="web">Website</label><input id="web" name="website" type="text"><span id="m"></span></div>
+<button type="submit">Send</button></form>
+<script>
+document.getElementById('f').addEventListener('submit', e => {
+  e.preventDefault();
+  const v = document.getElementById('web').value;
+  document.getElementById('m').textContent = /^(https?:\/\/)?www\./i.test(v) ? 'No need for www.' : /\s/.test(v) || !v.includes('.') ? 'Enter a valid website.' : '';
+});
+</script>
+</body></html>

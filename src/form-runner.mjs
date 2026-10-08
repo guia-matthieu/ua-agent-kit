@@ -13,9 +13,10 @@ const LOCALE = { en: 'en-GB', fr: 'fr-FR', es: 'es-ES' };
 const SETTLE_MS = 60;        // script validators run synchronously on input/blur; 300 ms made the suite exceed 5 min (measured 24/09)
 const FILL_TIMEOUT_MS = 5000;
 const BASELINE = { email: 'ana.garcia@example.com', domain: 'example.com', url: 'https://example.com' };
-// A second plain value, in the same TLD as the first: what the field shows for it must be what it showed for the
-// baseline, or the page writes of each value something the runner cannot follow from one value to the next.
-const SECOND = { email: 'marie.dupont@example.com', domain: 'www.example.com', url: 'https://www.example.com' };
+// A second plain value: what the field shows for it must be what it showed for the baseline, or the page writes of
+// each value something the runner cannot follow from one value to the next. No `www.`: pages have a word to say
+// about it ("no need for www"), and the field would be lost for that (fourth review of the correction).
+const SECOND = { email: 'marie.dupont@example.com', domain: 'example.org', url: 'https://example.org' };
 const NO_VALUE = 'x';        // no @, no dot, no scheme: what a page says of it is what it says of a value it refuses
 
 export function toUrl(target) {

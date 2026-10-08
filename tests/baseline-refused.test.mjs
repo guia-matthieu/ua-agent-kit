@@ -57,6 +57,23 @@ test('a text that repeats the value typed is not a refusal of it', async () => {
 test('a text that changes with every value in a way the runner cannot follow: no verdict is given', async () => {
   const r = await checkForm(fixture('form-masks-value.html'));
   assert.deepEqual({ status: r.fields.email.status, reason: r.fields.email.reason }, { status: 'not-testable', reason: 'value-dependent-text' });
+  assert.match(renderMarkdown(r), /does not show for a second plain value/);
+});
+
+test('a baseline that could not be typed is not a baseline: the field is not-interactable', async () => {
+  const r = await checkForm(fixture('form-readonly-for-baseline.html'));
+  assert.deepEqual({ status: r.fields.email.status, reason: r.fields.email.reason }, { status: 'not-testable', reason: 'not-interactable' });
+});
+
+test('a reload that fails before the second plain value: the field is not tested', async () => {
+  const r = await checkForm(fixture('form-stale-before-second.html'));
+  assert.deepEqual({ status: r.fields.email.status, reason: r.fields.email.reason }, { status: 'not-testable', reason: 'reload-failed' });
+});
+
+test('a word about www is not a word about every value: the website field is tested', async () => {
+  const r = await checkForm(fixture('form-www-hint.html'));
+  assert.equal(r.fields.website.status, 'tested');
+  assert.equal(r.fields.website.results.find(x => x.id === 'domain-control-01').verdict, 'accepted');
 });
 
 test('a hint shown for any value, the refusal written below the button: the baseline is taken', async () => {
