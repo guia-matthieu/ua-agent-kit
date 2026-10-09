@@ -226,3 +226,21 @@ test('a page that sets a fragment at load is reloaded all the same: every case g
   assert.ok(email.results.every(x => x.outcome !== 'not-testable'), JSON.stringify(email.results));
   assert.equal(email.results.find(x => x.id === 'email-ascii-tld-long-01').verdict, 'rejected-script');
 });
+
+test('a page that drops a submit with a trap filled: no value it refuses reads accepted, it is not-testable (finding 5)', async () => {
+  const r = await checkForm(fixture('form-honeypot.html'), { battery: pick(['email-control-01', 'email-ascii-tld-long-01', 'email-guard-01', 'email-guard-02', 'email-guard-03']) });
+  const email = r.fields.email;
+  assert.equal(email.status, 'tested', JSON.stringify(email));
+  const by = id => email.results.find(x => x.id === id);
+  assert.equal(by('email-control-01').verdict, 'accepted', JSON.stringify(by('email-control-01')));
+  for (const id of ['email-ascii-tld-long-01', 'email-guard-01', 'email-guard-02', 'email-guard-03']) assert.deepEqual([by(id).outcome, by(id).reason], ['not-testable', 'fill-dependent'], JSON.stringify(by(id)));
+});
+
+for (const name of ['form-app-shell.html', 'form-slides-in.html']) {
+  test(`a visible field that is not required is still filled: the page's refusals never read accepted (review of PR #8, ${name})`, async () => {
+    const r = await checkForm(fixture(name), { battery: pick(['email-control-01', 'email-ascii-tld-long-01', 'email-guard-01', 'email-guard-02']) });
+    const by = id => r.fields.email.results.find(x => x.id === id);
+    assert.equal(by('email-control-01').verdict, 'accepted', JSON.stringify(by('email-control-01')));
+    for (const id of ['email-ascii-tld-long-01', 'email-guard-01', 'email-guard-02']) assert.ok(['rejected-script', 'not-testable'].includes(by(id).verdict), JSON.stringify(by(id)));
+  });
+}
