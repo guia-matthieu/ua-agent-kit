@@ -255,3 +255,25 @@ test('the runner source never clicks a button nor dispatches a synthetic submit'
     assert.ok(!src.includes(forbidden), `form-runner.mjs must not contain ${forbidden}`);
   }
 });
+
+// ---- Review of 09/10, finding 1: a POST the page sends itself on submit ----
+const pick = ids => ({ ...battery, cases: ids.map(id => battery.cases.find(c => c.id === id)) });
+
+for (const name of ['form-posts-on-valid-submit.html', 'form-stops-submit-propagation.html']) {
+  test(`a POST navigation the page fires on submit is answered on the spot: the field is scored, nothing reaches the server (${name})`, async () => {
+    const srv = await serveFixtures();
+    try {
+      const report = await checkForm(srv.url(name), { submit: true, keepPage: true, battery: pick(['email-control-01', 'email-ascii-tld-long-01', 'email-guard-01']) });
+      const email = report.fields.email;
+      assert.equal(email.status, 'tested', JSON.stringify(email));
+      const by = id => email.results.find(r => r.id === id);
+      assert.equal(by('email-control-01').verdict, 'accepted', JSON.stringify(by('email-control-01')));
+      assert.equal(by('email-ascii-tld-long-01').verdict, 'rejected-script');
+      assert.equal(by('email-guard-01').outcome, 'pass');
+      // the POST was tried (the counter), and answered here: the server saw only the page itself
+      assert.ok(report.__guard.postNavigationsAnswered > 0, JSON.stringify(report.__guard));
+      assert.deepEqual(srv.received, []);
+      assert.ok(srv.gets.every(g => g === `/${name}`), `requests: ${[...new Set(srv.gets)].join(' ')}`);
+    } finally { await srv.close(); }
+  });
+}

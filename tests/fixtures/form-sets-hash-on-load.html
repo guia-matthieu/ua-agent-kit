@@ -1,0 +1,14 @@
+<!doctype html><html lang="en"><body>
+<!-- A page that sets a fragment at load: going to the same URL again is a same-document navigation, no new
+     document (review of 09/10, finding 2). -->
+<form id="f" novalidate><label>Email <input id="email" name="email" type="text"></label>
+<button type="submit">Send</button></form>
+<script>
+location.hash = 'start';
+const f = document.getElementById('f');
+f.addEventListener('submit', e => {
+  e.preventDefault();
+  if (!/^[^@]+@[^@]+\.[a-z]{2,4}$/i.test(document.getElementById('email').value)) { const d = document.createElement('div'); d.textContent = 'Invalid email'; f.appendChild(d); }
+});
+</script>
+</body></html>
