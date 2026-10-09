@@ -6,7 +6,7 @@
 | rows of PR #7's last scoring (runner of `85d96fa`) against these | `compare.py` | printed |
 | hidden fields on the bench pages, measured before the change | `../notes-review-2026-10-09.md` | — |
 
-`rescored/SCORED-WITH.txt`: commit `e8c230b`, `src/` not modified, 2026-10-09 12:02 → 12:35 UTC (32 min 41 s, four browsers).
+`rescored/SCORED-WITH.txt`: commit `2173901` (after the review of PR #8), `src/` not modified, 2026-10-09 13:22 → 13:54 UTC (32 min 13 s, four browsers). A first scoring with `e8c230b` (before that review), 12:02 → 12:35 UTC, gave the same result.
 
 Result of `python3 docs/qc/2026-10-09_review/compare.py`:
 
