@@ -37,7 +37,8 @@ have its real field untested. No page of the two benches has such a trap (above)
 ## Finding 5: two corrections tried, both rejected, withdrawn
 
 Two fresh-context reviews, then a second opinion (another model, fresh context). Fixtures of the reviews, outside the
-repo: `/private/tmp/claude-501/-Users-matthieucredou-Projects-ua-agent-kit-public/review-pr8/`, `review-pr8-2/`, `opinion-pr8/`.
+repo with the review harness (`guia/tasks/ua-kit-review-2026-10-09_harness/reviews/`: `review-pr8/`, `review-pr8-2/`,
+`opinion-pr8/`, `review-pr8-3/`); the fixtures of the withdrawn correction are in `fix5-withdrawn/` there.
 
 - First rule (`e8c230b`): a text field not rendered, of no size once cut by every ancestor hiding overflow, or off
   screen, is left empty. Review 1: a visible required name below the fold of an app shell, or in a form sliding in
