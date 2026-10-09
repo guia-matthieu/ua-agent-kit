@@ -29,3 +29,26 @@ Script: `scan-hidden.mjs`, kept outside the repo with the review harness (`guia/
 the trap `name="website"` is picked as the website field; the trial click then times out after 5 s and the field is
 reported `not-testable: not-interactable`. A page whose trap comes before its real website field in the document would
 have its real field untested. No page of the two benches has such a trap (above).
+
+## Review of PR #8 (fresh context, REJECTED) and what changed
+
+- The first rule cut each field by every ancestor that hides overflow, and judged it off screen at fill time. It
+  skipped visible fields in two layouts the reviewer wrote: a form below the fold of an app shell (outer box of the
+  viewport's height, `overflow: hidden`, a `<main>` inside that scrolls) and a form sliding in at load
+  (`translateX(-120%)`). On a page that stops at its first error the empty name read as a refusal: `email-guard-01`
+  `accepted/fail` where `38d0abf` gave `rejected-script/pass`. Both pages are now tests (`form-app-shell.html`,
+  `form-slides-in.html`), failing on the first rule.
+- Now: animations with an end are taken to it before the other fields are filled (one that never ends is left
+  running); an ancestor hides the field only when it hides overflow and has no size itself (≤ 1 px) on that axis.
+  The next step of an `overflow: hidden` carousel is filled again.
+- Traps still filled (reviewer's fixture, run on the new rule): `clip-path: inset(100%)`; `position: absolute;
+  clip: rect(0 0 0 0)` at full size; `opacity: 0`; far right (`left: 200vw`) or far below; `z-index: -1`.
+  Skipped: `transform: scale(0)`, `display: none`, `visibility: hidden`, no size, off screen left or above,
+  inside a wrapper of 1 px that hides overflow.
+
+## Seen in the review, not changed: a page that posts every value
+
+A page whose handler sends a POST for every value and validates only on its server was `runner-error` before this
+branch; it is now scored, and every value reads `accepted` (a decoy is a `fail`). A GET form that leaves on every
+submit already reads so. Telling such cases apart (a navigation answered during the case → `not-observed`) is a
+choice of scoring left open.
