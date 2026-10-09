@@ -1,0 +1,14 @@
+<!doctype html><html lang="en"><body>
+<!-- A POST form that cancels its submit, checks the value, then calls form.submit() itself: no submit event for
+     the runner to cancel, the POST navigation is the page's own (review of 09/10, finding 1). -->
+<form id="f" method="post" action="thanks.html" novalidate><label>Email <input id="email" name="email" type="text"></label>
+<button type="submit">Send</button></form>
+<script>
+const f = document.getElementById('f');
+f.addEventListener('submit', e => {
+  e.preventDefault();
+  if (/^[^@]+@[^@]+\.[a-z]{2,4}$/i.test(document.getElementById('email').value)) f.submit();
+  else { const d = document.createElement('div'); d.textContent = 'Invalid email'; f.appendChild(d); }
+});
+</script>
+</body></html>

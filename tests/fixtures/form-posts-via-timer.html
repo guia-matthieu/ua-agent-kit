@@ -1,0 +1,16 @@
+<!doctype html><html lang="en"><body>
+<!-- Once a value is typed, the document keeps posting the form with it, every 20 ms. The runner's reload has a
+     window in which this document still runs; a POST navigation fired there is answered on the spot and must not
+     leave (second opinion on PR #8). -->
+<form id="f" method="post" action="leak"><label>Email <input id="email" name="email" type="email"></label><button type="submit">Send</button></form>
+<script>
+const f = document.getElementById('f');
+let armed = false;
+document.getElementById('email').addEventListener('input', () => {
+  if (armed) return;
+  armed = true;
+  setInterval(() => HTMLFormElement.prototype.submit.call(f), 20);
+});
+f.addEventListener('submit', e => e.preventDefault());
+</script>
+</body></html>

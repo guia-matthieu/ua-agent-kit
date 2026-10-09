@@ -215,3 +215,14 @@ test('the second field starts from a fresh page even if the first field left the
   assert.equal(r.fields.email.status, 'tested');
   assert.equal(r.fields.website.status, 'tested', JSON.stringify(r.fields.website));
 });
+
+// ---- Review of 09/10 ----
+const pick = ids => ({ ...battery, cases: ids.map(id => battery.cases.find(c => c.id === id)) });
+
+test('a page that sets a fragment at load is reloaded all the same: every case gets a new document (finding 2)', async () => {
+  const r = await checkForm(fixture('form-sets-hash-on-load.html'), { battery: pick(['email-control-01', 'email-ascii-tld-long-01', 'email-guard-01']) });
+  const email = r.fields.email;
+  assert.equal(email.status, 'tested', JSON.stringify(email));
+  assert.ok(email.results.every(x => x.outcome !== 'not-testable'), JSON.stringify(email.results));
+  assert.equal(email.results.find(x => x.id === 'email-ascii-tld-long-01').verdict, 'rejected-script');
+});

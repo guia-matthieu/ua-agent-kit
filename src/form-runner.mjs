@@ -254,11 +254,22 @@ export async function checkForm(target, { engine = 'chromium', lang = 'en', batt
     let reloading = false; // the runner's own reloads, never the page's
     let finalUrl = null;   // the URL the first load ended on; every reload must end there too
     let recording = null;  // the responses of the first load, replayed on every reload
-    const guard = { reloadNavigationsBlocked: 0, reloadRequestsAborted: 0, reloadFulfilledFromCache: 0 };
+    const guard = { reloadNavigationsBlocked: 0, reloadRequestsAborted: 0, reloadFulfilledFromCache: 0, postNavigationsAnswered: 0 };
     await context.route('**/*', async route => {
       const r = route.request();
       const m = r.method();
-      if (m !== 'GET' && m !== 'HEAD') return route.abort('blockedbyclient');
+      if (m !== 'GET' && m !== 'HEAD') {
+        // A POST the page sends as a navigation of its own on submit (the form's submit method called from its
+        // handler, or a handler that stops the event before the init script's preventDefault): aborted, Chromium
+        // commits an error page and the field is lost (review of 09/10: the whole page became runner-error).
+        // Answered 204 here like a GET navigation, it never leaves either.
+        if (loaded && submit && r.isNavigationRequest()) {
+          guard.postNavigationsAnswered += 1;
+          if (reloading) guard.reloadNavigationsBlocked += 1;
+          return route.fulfill({ status: 204 });
+        }
+        return route.abort('blockedbyclient');
+      }
       if (loaded && submit) {
         if (reloading) {
           // The runner's own reload is answered from the first load: the document and every sub-resource
@@ -343,6 +354,10 @@ export async function checkForm(target, { engine = 'chromium', lang = 'en', batt
         reloading = true;
         try {
           if (reloadDelayMs) await new Promise(resolve => setTimeout(resolve, reloadDelayMs));
+          // To a URL with a fragment, from a document at the same address, goto is a same-document navigation:
+          // no new document, and a page that sets location.hash at load had its field reload-failed (review of
+          // 09/10). Leaving for about:blank first makes the goto below a load, fragment kept.
+          if (finalUrl.includes('#')) await page.goto('about:blank');
           // In submit mode the reload is answered from the cache and takes milliseconds. A navigation the old
           // document fires while it is under way can cancel it without any error: the competing navigation gets
           // a 204 and commits nothing, and goto waits for a load that never comes (measured 28/09 on Linux,
