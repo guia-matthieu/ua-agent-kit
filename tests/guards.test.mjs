@@ -277,3 +277,15 @@ for (const name of ['form-posts-on-valid-submit.html', 'form-stops-submit-propag
     } finally { await srv.close(); }
   });
 }
+
+test('a POST navigation the old document fires during a reload is answered on the spot — and the window is proven exercised', async () => {
+  const srv = await serveFixtures();
+  try {
+    const report = await checkForm(srv.url('form-posts-via-timer.html'), { submit: true, keepPage: true, reloadDelayMs: 50, battery: emailCases(3) });
+    assert.deepEqual(srv.received, [], 'a non-GET request reached the server');
+    assert.deepEqual(srv.gets.filter(g => g.startsWith('/leak')), []);
+    assert.ok(report.__guard.reloadNavigationsBlocked > 0, `window not exercised: no POST reached the guard during a reload (${JSON.stringify(report.__guard)})`);
+    assert.equal(report.fields.email.status, 'tested', JSON.stringify(report.fields.email));
+    assert.ok(report.fields.email.results.every(r => r.outcome !== 'not-testable'), JSON.stringify(report.fields.email.results));
+  } finally { await srv.close(); }
+});

@@ -1,5 +1,8 @@
 # Review of 09/10 — findings 1, 2 and 5: facts measured
 
+Findings 1 and 2 are corrected on this branch. Finding 5 is not: its correction was withdrawn (below), and
+`fillCompanions` fills every empty field as on `main`.
+
 ## Finding 5 — hidden fields filled by `fillCompanions`, counted on the two benches before any change
 
 Each page loaded in Chromium (network cut, `file://` only), `findFields` run, then every field of the probed
@@ -19,36 +22,48 @@ Script: `scan-hidden.mjs`, kept outside the repo with the review harness (`guia/
   them because their name matches `mail` or `site|web|url`. The page clears and rewrites them itself before reading them.
 - The 3 others (`open-weight/es/no-guide/2`, `open-weight/es/no-guide/3`, `open-weight/fr/no-guide/3`) are visible
   fields of a form that fades in at load (`opacity` 0 → 1): at fill time their opacity is 0. This is why the
-  correction does not look at opacity.
-- These 16 pages scored with the runner of `38d0abf` and with this branch: 0 result lines change (`cmp16.mjs`, same folder).
+  withdrawn correction did not look at opacity.
+- These 16 pages scored with the runner of `38d0abf` and with the first version of the withdrawn correction: 0 result
+  lines change (`cmp16.mjs`, same folder).
 
 ## Seen while testing finding 5, not corrected here
 
 `src/field-finder.mjs` counts a field as visible when its box has a size and it is not `display:none` /
-`visibility:hidden`. A trap placed off screen (`left: -9999px`) passes that test. On `tests/fixtures/form-honeypot.html`
+`visibility:hidden`. A trap placed off screen (`left: -9999px`) passes that test. On the honeypot fixture of the withdrawn correction (`form-honeypot.html`, in `e8c230b`)
 the trap `name="website"` is picked as the website field; the trial click then times out after 5 s and the field is
 reported `not-testable: not-interactable`. A page whose trap comes before its real website field in the document would
 have its real field untested. No page of the two benches has such a trap (above).
 
-## Review of PR #8 (fresh context, REJECTED) and what changed
+## Finding 5: two corrections tried, both rejected, withdrawn
 
-- The first rule cut each field by every ancestor that hides overflow, and judged it off screen at fill time. It
-  skipped visible fields in two layouts the reviewer wrote: a form below the fold of an app shell (outer box of the
-  viewport's height, `overflow: hidden`, a `<main>` inside that scrolls) and a form sliding in at load
-  (`translateX(-120%)`). On a page that stops at its first error the empty name read as a refusal: `email-guard-01`
-  `accepted/fail` where `38d0abf` gave `rejected-script/pass`. Both pages are now tests (`form-app-shell.html`,
-  `form-slides-in.html`), failing on the first rule.
-- Now: animations with an end are taken to it before the other fields are filled (one that never ends is left
-  running); an ancestor hides the field only when it hides overflow and has no size itself (≤ 1 px) on that axis.
-  The next step of an `overflow: hidden` carousel is filled again.
-- Traps still filled (reviewer's fixture, run on the new rule): `clip-path: inset(100%)`; `position: absolute;
-  clip: rect(0 0 0 0)` at full size; `opacity: 0`; far right (`left: 200vw`) or far below; `z-index: -1`.
-  Skipped: `transform: scale(0)`, `display: none`, `visibility: hidden`, no size, off screen left or above,
-  inside a wrapper of 1 px that hides overflow.
+Two fresh-context reviews, then a second opinion (another model, fresh context). Fixtures of the reviews, outside the
+repo: `/private/tmp/claude-501/-Users-matthieucredou-Projects-ua-agent-kit-public/review-pr8/`, `review-pr8-2/`, `opinion-pr8/`.
 
-## Seen in the review, not changed: a page that posts every value
+- First rule (`e8c230b`): a text field not rendered, of no size once cut by every ancestor hiding overflow, or off
+  screen, is left empty. Review 1: a visible required name below the fold of an app shell, or in a form sliding in
+  at load, was left empty; on a page that stops at its first error every decoy read `accepted/fail` (`38d0abf`:
+  `rejected-script/pass`).
+- Second rule (`2173901`): finite animations finished first; an ancestor hides only if it hides overflow and has
+  no size itself. Review 2, same failure on: a `position: fixed` or `absolute` form under a 0-height
+  `overflow: hidden` box (not clipped), a `display: contents` wrapper, animations run by `requestAnimationFrame`,
+  a timer or inside a shadow root, fields a person opens (closed `<details>`, wizard step, accordion); `finish()`
+  runs the page's `animationend` handlers.
+- Both rules changed 0 row of the two benches (full scorings of `e8c230b` and `2173901`, `2026-10-09_review/`).
+  A rule on what a person sees swaps a false acceptance on trap pages (none measured) for false acceptances on
+  layouts each review built in minutes.
+- Second opinion: choosing one fill from what the page says of `NO_VALUE` is one more rule. `x` shows that some
+  check runs, not the whole check: a page that checks for `@`, then the name, then a strict pattern, and its mirror
+  (checks `@` before the trap) each defeat one choice. Proposed for a PR of its own: probe the field with `main`'s
+  fill and with the doubtful fields (not `required`, not `type=hidden`) left empty, keep a verdict only when both
+  give it, report the others `not-testable`. Every verdict then given is `main`'s; coverage can only be lost, and a
+  full scoring counts how much.
+
+Known limit until then: a page that drops without a word a submit whose trap field is filled reads every value as
+accepted.
+
+## Seen in the reviews, not changed: a page that posts every value
 
 A page whose handler sends a POST for every value and validates only on its server was `runner-error` before this
 branch; it is now scored, and every value reads `accepted` (a decoy is a `fail`). A GET form that leaves on every
-submit already reads so. Telling such cases apart (a navigation answered during the case → `not-observed`) is a
-choice of scoring left open.
+submit already reads so. Reporting both `not-observed` when a navigation was answered during the case is a choice of
+scoring, left for a change of its own. `postNavigationsAnswered` is in the debug output (`keepPage`) only.

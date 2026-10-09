@@ -30,37 +30,9 @@ function fillCompanions(sel) {
   const el = document.querySelector(sel);
   if (!el.form) return;
   const set = (n, v) => { n.value = v; n.dispatchEvent(new Event('input', { bubbles: true })); n.dispatchEvent(new Event('change', { bubbles: true })); };
-  // A field a person cannot see is left as it is: pages put anti-spam traps there (a `website` off screen) and
-  // drop without a word a submit that fills one, so every value would read as accepted (review of 09/10).
-  // Opacity is not looked at: a form that fades in at load is still at 0 when the runner fills it (3 pages of
-  // the 25/09 bench). Checkboxes, radios and selects are still set: pages hide the real control behind a styled one.
-  // The page as a person sees it a moment after load: the runner fills right after each reload, while a form that
-  // slides or scales in is still off screen or of no size (review of PR #8). Animations with an end are taken to
-  // it; one that never ends (a spinner) is left running.
-  for (const a of document.getAnimations()) {
-    try { if (a.effect && a.effect.getComputedTiming().endTime !== Infinity) a.finish(); } catch { /* cannot be finished */ }
-  }
-  // An ancestor hides the field when it hides overflow and has no size itself on that axis: a "screen reader only"
-  // wrapper of 1 px leaves the field its own size. Only a box of no size counts: cutting the field by every box
-  // that hides overflow skipped visible fields, below the fold of an app shell whose outer box hides overflow, or
-  // in the next step of a carousel (review of PR #8). html and body are left out, their overflow applies to the viewport.
-  const cuts = o => o === 'hidden' || o === 'clip';
-  const unseen = n => {
-    if (!n.checkVisibility({ checkVisibilityCSS: true })) return true;
-    const r = n.getBoundingClientRect();
-    if (r.width <= 1 || r.height <= 1 || r.right + window.scrollX <= 0 || r.bottom + window.scrollY <= 0) return true;
-    for (let a = n.parentElement; a && a !== document.body && a !== document.documentElement; a = a.parentElement) {
-      const s = getComputedStyle(a);
-      if (!cuts(s.overflowX) && !cuts(s.overflowY)) continue;
-      const q = a.getBoundingClientRect();
-      if (cuts(s.overflowX) && q.width <= 1 || cuts(s.overflowY) && q.height <= 1) return true;
-    }
-    return false;
-  };
   for (const n of el.form.querySelectorAll('input, textarea, select')) {
     if (n === el || n.disabled || n.readOnly || n.value !== '' && !['checkbox', 'radio'].includes(n.type) && n.tagName !== 'SELECT') continue;
     const t = (n.type || 'text').toLowerCase();
-    if (!['checkbox', 'radio'].includes(t) && n.tagName !== 'SELECT' && unseen(n)) continue;
     if (t === 'checkbox') { if (n.required && !n.checked) { n.checked = true; n.dispatchEvent(new Event('change', { bubbles: true })); } }
     else if (t === 'radio') { if (n.required && !el.form.querySelector(`input[type=radio][name="${CSS.escape(n.name)}"]:checked`)) { n.checked = true; n.dispatchEvent(new Event('change', { bubbles: true })); } }
     else if (n.tagName === 'SELECT') { const o = [...n.options].find(x => x.value !== ''); if (o && n.value === '') { n.value = o.value; n.dispatchEvent(new Event('change', { bubbles: true })); } }
@@ -291,7 +263,11 @@ export async function checkForm(target, { engine = 'chromium', lang = 'en', batt
         // handler, or a handler that stops the event before the init script's preventDefault): aborted, Chromium
         // commits an error page and the field is lost (review of 09/10: the whole page became runner-error).
         // Answered 204 here like a GET navigation, it never leaves either.
-        if (loaded && submit && r.isNavigationRequest()) { guard.postNavigationsAnswered += 1; return route.fulfill({ status: 204 }); }
+        if (loaded && submit && r.isNavigationRequest()) {
+          guard.postNavigationsAnswered += 1;
+          if (reloading) guard.reloadNavigationsBlocked += 1;
+          return route.fulfill({ status: 204 });
+        }
         return route.abort('blockedbyclient');
       }
       if (loaded && submit) {

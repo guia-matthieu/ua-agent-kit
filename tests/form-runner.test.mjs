@@ -226,21 +226,3 @@ test('a page that sets a fragment at load is reloaded all the same: every case g
   assert.ok(email.results.every(x => x.outcome !== 'not-testable'), JSON.stringify(email.results));
   assert.equal(email.results.find(x => x.id === 'email-ascii-tld-long-01').verdict, 'rejected-script');
 });
-
-test('fields a person cannot see are left empty: a page that drops a submit with a trap filled still refuses its decoys (finding 5)', async () => {
-  const r = await checkForm(fixture('form-honeypot.html'), { battery: pick(['email-control-01', 'email-guard-01', 'email-guard-02', 'email-guard-03']) });
-  const email = r.fields.email;
-  assert.equal(email.status, 'tested', JSON.stringify(email));
-  const by = id => email.results.find(x => x.id === id);
-  assert.equal(by('email-control-01').verdict, 'accepted', JSON.stringify(by('email-control-01')));
-  for (const id of ['email-guard-01', 'email-guard-02', 'email-guard-03']) assert.equal(by(id).outcome, 'pass', JSON.stringify(by(id)));
-});
-
-for (const name of ['form-app-shell.html', 'form-slides-in.html']) {
-  test(`a visible field is filled even when a box above its scrolling container hides overflow, or its form is still sliding in (review of PR #8, ${name})`, async () => {
-    const r = await checkForm(fixture(name), { battery: pick(['email-control-01', 'email-ascii-tld-long-01', 'email-guard-01', 'email-guard-02']) });
-    const by = id => r.fields.email.results.find(x => x.id === id);
-    assert.equal(by('email-control-01').verdict, 'accepted', JSON.stringify(by('email-control-01')));
-    for (const id of ['email-ascii-tld-long-01', 'email-guard-01', 'email-guard-02']) assert.equal(by(id).verdict, 'rejected-script', JSON.stringify(by(id)));
-  });
-}
