@@ -1,8 +1,9 @@
 const NOT_TESTED_URL = 'Not tested: validation that runs only on submit, server-side validation, email delivery, storage and display. On a URL the runner never submits the form: "no-rejection-observed" means no rejection on input or blur, not an acceptance; such a case is counted not-observed, neither passed nor failed.';
 const NOT_TESTED_FILE = 'Not tested: server-side validation, email delivery, storage and display. On a local file the runner dispatches the submit event after each case, with the default action cancelled and every request after load blocked: nothing leaves the page. Limits: a validator slower than 60 ms (debounced, asynchronous) is read too early; the submit is dispatched on the form, not through a button, so a `formnovalidate` on a button is not exercised; a refusal shown only by a style (`:invalid`) is not read.';
 
-// What the two reasons of the baseline mean, for a reader who meets them in a report.
+// What the reasons of the baseline, and of the double probe, mean for a reader who meets them in a report.
 const WHY = {
+  'fill-dependent': 'The field was probed twice: with every other field of the form filled, and with the fields that are neither required nor hidden left empty (a page may drop a submit whose anti-spam trap is filled). The two probes did not give the same verdicts, so none is given.',
   'baseline-ambiguous': 'The field shows the same text, and no mark of refusal, for a plain value and for a value with no @, dot or scheme: a page that refuses both, or a hint shown for any value. The two cannot be told apart, so no verdict is given.',
   'value-dependent-text': 'The field does not show for a second plain value what it showed for the first: the page writes of each value something the runner cannot follow from one value to the next, so no verdict is given.'
 };

@@ -26,22 +26,28 @@ export function toUrl(target) {
 
 // Plausible values for the other fields of the form, so that a validator run on submit judges only the
 // probed field (an empty required name would otherwise show an error and read as a rejection).
-function fillCompanions(sel) {
+// A field neither `required` nor of type hidden is doubtful: it may be a trap a person never sees, and a page that
+// drops a submit with a trap filled reads every value as accepted (review of 09/10, finding 5). With
+// `leaveDoubtful` those fields stay empty. Returns how many doubtful fields the form offers to fill.
+function fillCompanions({ sel, leaveDoubtful = false }) {
   const el = document.querySelector(sel);
-  if (!el.form) return;
-  const set = (n, v) => { n.value = v; n.dispatchEvent(new Event('input', { bubbles: true })); n.dispatchEvent(new Event('change', { bubbles: true })); };
+  if (!el.form) return 0;
+  let doubtful = 0;
+  const left = n => { if (n.required || n.type === 'hidden') return false; doubtful += 1; return leaveDoubtful; };
+  const set = (n, v) => { if (left(n)) return; n.value = v; n.dispatchEvent(new Event('input', { bubbles: true })); n.dispatchEvent(new Event('change', { bubbles: true })); };
   for (const n of el.form.querySelectorAll('input, textarea, select')) {
     if (n === el || n.disabled || n.readOnly || n.value !== '' && !['checkbox', 'radio'].includes(n.type) && n.tagName !== 'SELECT') continue;
     const t = (n.type || 'text').toLowerCase();
     if (t === 'checkbox') { if (n.required && !n.checked) { n.checked = true; n.dispatchEvent(new Event('change', { bubbles: true })); } }
     else if (t === 'radio') { if (n.required && !el.form.querySelector(`input[type=radio][name="${CSS.escape(n.name)}"]:checked`)) { n.checked = true; n.dispatchEvent(new Event('change', { bubbles: true })); } }
-    else if (n.tagName === 'SELECT') { const o = [...n.options].find(x => x.value !== ''); if (o && n.value === '') { n.value = o.value; n.dispatchEvent(new Event('change', { bubbles: true })); } }
+    else if (n.tagName === 'SELECT') { const o = [...n.options].find(x => x.value !== ''); if (o && n.value === '' && !left(n)) { n.value = o.value; n.dispatchEvent(new Event('change', { bubbles: true })); } }
     else if (t === 'password') set(n, 'Str0ng-Passw0rd!2026');
     else if (t === 'email' || /mail|courriel|correo/i.test(n.name + n.id)) set(n, 'ana.garcia@example.com');
     else if (t === 'url' || /site|web|url/i.test(n.name + n.id)) set(n, 'https://example.com');
     else if (t === 'tel') set(n, '+33123456789');
     else if (['text', 'search', ''].includes(t) || n.tagName === 'TEXTAREA') set(n, 'Ana Garcia');
   }
+  return doubtful;
 }
 
 // A "confirm your email" field must follow the probed value, or every case reads as a mismatch.
@@ -62,8 +68,10 @@ function syncConfirm(sel) {
 // is never counted as a pass or a fail.
 const untested = (c, reason) => ({ id: c.id, class: c.class, expect: c.expect, typed: null, observed: null, submitted: false, verdict: 'not-testable', rewritten: false, outcome: 'not-testable', reason });
 
-async function probeField(page, selector, kind, cases, { submit = false, fresh = async () => ({ ok: true }) } = {}) {
+async function probeField(page, selector, kind, cases, { submit = false, fresh = async () => ({ ok: true }), leaveDoubtful = false, seen = {} } = {}) {
   const loc = page.locator(selector).first();
+  // `seen.doubtful`: the form offered a doubtful field to fill at least once (see fillCompanions)
+  const fill = async () => { if (await page.evaluate(fillCompanions, { sel: selector, leaveDoubtful }) > 0) seen.doubtful = true; };
   const results = [];
   // fill() does not hit-test (Playwright 1.63): it types through a consent overlay. A trial click runs
   // the actionability and hit-target checks and dispatches no event, so a covered or disabled field
@@ -86,7 +94,7 @@ async function probeField(page, selector, kind, cases, { submit = false, fresh =
     // the other fields (a confirm-email mismatch, a website format it wants differently) is already in
     // `before`, so only what changes with the probed value counts as a rejection.
     const submitBaseline = async value => {
-      await page.evaluate(fillCompanions, selector);
+      await fill();
       // the document receives a value: the next reload must bring another one (see `fresh`)
       await page.evaluate(() => { window.__uaProbed = true; }).catch(() => {});
       // a baseline that could not be typed is not a baseline: read as one, it made every case a refusal or
@@ -171,7 +179,7 @@ async function probeField(page, selector, kind, cases, { submit = false, fresh =
       // are kept, and the other field is still probed (review of #21: one failed reload cost a whole page).
       const f = await fresh();
       if (!f.ok) { for (const rest of cases.slice(i)) results.push(untested(rest, f.reason)); break; }
-      await page.evaluate(fillCompanions, selector);
+      await fill();
     }
     // Decision D1 (Matthieu, 25/09): a field that asks for an absolute URL (type url, or a text field that
     // refused the bare baseline and took it with a scheme, see above) gets a bare domain typed
@@ -210,6 +218,10 @@ async function probeField(page, selector, kind, cases, { submit = false, fresh =
       await loc.blur().catch(() => {});
     }
   }
+  return { status: 'tested', selector, kind, submitExercised: submit, baseline, results, counts: tally(results, submit) };
+}
+
+function tally(results, submit) {
   // Submit mode, the event never fired and nothing else rejected the value (a required field the runner
   // could not fill blocked native validation): those cases were not exercised and must be said so. A value
   // the field itself rejects natively also blocks the submit; that one is a rejection, not a gap.
@@ -223,7 +235,25 @@ async function probeField(page, selector, kind, cases, { submit = false, fresh =
     else if (r.outcome === 'fail') counts.fail += 1;
     if (r.rewritten) counts.rewritten += 1;
   }
-  return { status: 'tested', selector, kind, submitExercised: submit, baseline, results, counts };
+  return counts;
+}
+
+// Finding 5 (review of 09/10): no rule on what a person sees told a trap from a visible field a person fills
+// (two corrections rejected, each by a layout built in minutes). So the field is probed twice: with every
+// companion filled as before, and with the doubtful ones left empty. A verdict is kept only when both probes give
+// it; the others are reported not-testable. Every verdict given is the first probe's: coverage can only be lost.
+async function probeTwice(page, selector, kind, cases, opts) {
+  const seen = {};
+  const a = await probeField(page, selector, kind, cases, { ...opts, seen });
+  if (!seen.doubtful || a.status !== 'tested') return a;
+  const b = await probeField(page, selector, kind, cases, { ...opts, leaveDoubtful: true });
+  if (b.status !== 'tested' || b.kind !== a.kind) return { status: 'not-testable', reason: 'fill-dependent' };
+  const results = a.results.map((r, i) => {
+    const o = b.results[i];
+    if (r.outcome === 'not-testable' || o.outcome === r.outcome && o.verdict === r.verdict) return r;
+    return untested(cases[i], o.outcome === 'not-testable' ? o.reason : 'fill-dependent');
+  });
+  return { ...a, results, counts: tally(results, opts.submit) };
 }
 
 const NOT_TESTABLE = reason => ({ email: { status: 'not-testable', reason }, website: { status: 'not-testable', reason } });
@@ -388,8 +418,8 @@ export async function checkForm(target, { engine = 'chromium', lang = 'en', batt
     const siteKind = found.websiteType === 'url' ? 'url' : 'domain';
     const siteCases = battery.cases.filter(c => c.kind === 'domain' || c.kind === 'url');
 
-    report.fields.email = found.email ? await probeField(page, found.email, 'email', emailCases, { submit, fresh }) : { status: 'not-testable', reason: 'no-field' };
-    report.fields.website = found.website ? await probeField(page, found.website, siteKind, siteCases, { submit, fresh }) : { status: 'not-testable', reason: 'no-field' };
+    report.fields.email = found.email ? await probeTwice(page, found.email, 'email', emailCases, { submit, fresh }) : { status: 'not-testable', reason: 'no-field' };
+    report.fields.website = found.website ? await probeTwice(page, found.website, siteKind, siteCases, { submit, fresh }) : { status: 'not-testable', reason: 'no-field' };
 
     if (keepPage) {
       report.__page = await page.evaluate(() => ({ submitted: window.__submitted, submits: window.__uaSubmits ?? 0, posts: window.__posts ?? [], nameAtLoad: window.__nameAtLoad, popupOpened: window.__popupOpened }));
