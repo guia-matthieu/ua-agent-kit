@@ -83,3 +83,12 @@ test('a reject case the field rewrote into a valid value stays rewritten-sanitiz
   assert.equal(r.rewritten, true);
   assert.equal(r.outcome, 'rewritten-sanitized');
 });
+
+test('a domain case typed as a URL (decision D1) and cleaned by the page is judged as a URL: rewritten-sanitized', () => {
+  // review of 09/10, finding 4: the cleaned value was checked as a domain, which no value with a scheme is
+  const domainReject = { id: 'domain-guard-03', kind: 'domain', class: 'guard', expect: 'reject', value: 'exa mple.com' };
+  const r = decide(domainReject, 'https://exa mple.com', state(''), state('https://example.com'), { submitted: true });
+  assert.deepEqual(r, { verdict: 'accepted', rewritten: true, outcome: 'rewritten-sanitized' });
+  // typed bare into a domain field, the same cleaning is judged as a domain, as before
+  assert.equal(decide(domainReject, 'exa mple.com', state(''), state('example.com'), { submitted: true }).outcome, 'rewritten-sanitized');
+});

@@ -103,8 +103,12 @@ export function decide(c, typed, before, after, { submitted = true } = {}) {
   else verdict = submitted ? 'accepted' : 'no-rejection-observed';
   const notRejected = verdict === 'accepted' || verdict === 'no-rejection-observed';
 
+  // What the field holds is judged as what was typed: a domain case typed with `https://` in front (decision D1, a
+  // field that asks for a URL) is a URL, and a domain validator refused every value the page had cleaned (review of
+  // 09/10, finding 4: `https://exa mple.com` cleaned to `https://example.com` read as fail).
+  const kind = c.kind === 'domain' && typed !== c.value ? 'url' : c.kind;
   let outcome;
-  if (c.expect === 'reject' && rewritten && notRejected && REF[c.kind](after.value)) outcome = 'rewritten-sanitized';
+  if (c.expect === 'reject' && rewritten && notRejected && REF[kind](after.value)) outcome = 'rewritten-sanitized';
   // No rejection on input or blur and the submit never fired: a validator that runs on submit, if the page
   // has one, was not exercised. Neither an acceptance nor a rejection — an outcome of its own, outside the
   // pass rate (review of #21, Astra E: it read as pass for an accept case).
