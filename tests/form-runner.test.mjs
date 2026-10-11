@@ -246,3 +246,14 @@ for (const name of ['form-app-shell.html', 'form-slides-in.html']) {
     for (const id of ['email-ascii-tld-long-01', 'email-guard-01', 'email-guard-02']) assert.ok(['rejected-script', 'not-testable'].includes(by(id).verdict), JSON.stringify(by(id)));
   });
 }
+
+test('a field that cannot be typed into late in the loop: the cases measured stay, the ones left are not-interactable', async () => {
+  // review of 09/10, finding 3: one failed fill cost the whole field
+  const r = await checkForm(fixture('form-readonly-late.html'), { battery: emailCases(4), reloadInPlace: true });
+  const email = r.fields.email;
+  assert.equal(email.status, 'tested', JSON.stringify(email));
+  assert.ok(['pass', 'fail'].includes(email.results[0].outcome), JSON.stringify(email.results[0]));
+  const lost = email.results.slice(1);
+  assert.ok(lost.length === 3 && lost.every(x => x.outcome === 'not-testable' && x.reason === 'not-interactable'), JSON.stringify(lost));
+  assert.equal(email.counts.notTestable, 3);
+});

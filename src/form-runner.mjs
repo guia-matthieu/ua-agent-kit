@@ -194,7 +194,11 @@ async function probeField(tab, selector, kind, cases, { submit = false, fresh = 
     try {
       await loc().fill(typed, { timeout: FILL_TIMEOUT_MS });
     } catch {
-      return { status: 'not-testable', reason: 'not-interactable' };
+      // As for a failed reload: the cases measured so far stay, the ones left are not-testable with the reason
+      // (review of 09/10, finding 3: one fill failing late in the loop threw every verdict of the field away).
+      if (!results.length) return { status: 'not-testable', reason: 'not-interactable' };
+      for (const rest of cases.slice(i)) results.push(untested(rest, 'not-interactable'));
+      break;
     }
     if (submit) await tab.page.evaluate(syncConfirm, selector);
     await loc().dispatchEvent('change');

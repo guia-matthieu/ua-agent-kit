@@ -1,0 +1,22 @@
+<!doctype html><html lang="en"><body>
+<!-- Counts its documents in IndexedDB and makes the email field read-only from the fifth on: 1 the first load,
+     2 the baseline, 3 the second plain value, 4 the first case, 5 the second. The second case cannot be typed. -->
+<form id="f" novalidate><div><label for="email">Email</label><input id="email" name="email" type="text"><span id="m"></span></div><button type="submit">Send</button></form>
+<script>
+const spin = ms => { const t0 = Date.now(); while (Date.now() - t0 < ms) { /* let the storage answer queue before the load event */ } };
+const req = indexedDB.open('ua-kit-fixture-readonly-late', 1);
+req.onupgradeneeded = () => req.result.createObjectStore('kv');
+req.onsuccess = () => {
+  const store = req.result.transaction('kv', 'readwrite').objectStore('kv');
+  const get = store.get('documents');
+  get.onsuccess = () => { const n = (get.result || 0) + 1; store.put(n, 'documents'); if (n >= 5) document.getElementById('email').readOnly = true; };
+  spin(40);
+};
+spin(40);
+document.getElementById('f').addEventListener('submit', e => {
+  e.preventDefault();
+  const ok = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(document.getElementById('email').value);
+  document.getElementById('m').textContent = ok ? '' : 'Enter a valid email address.';
+});
+</script>
+</body></html>
