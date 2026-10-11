@@ -68,10 +68,11 @@ function syncConfirm(sel) {
 // is never counted as a pass or a fail.
 const untested = (c, reason) => ({ id: c.id, class: c.class, expect: c.expect, typed: null, observed: null, submitted: false, verdict: 'not-testable', rewritten: false, outcome: 'not-testable', reason });
 
-async function probeField(page, selector, kind, cases, { submit = false, fresh = async () => ({ ok: true }), leaveDoubtful = false, seen = {} } = {}) {
-  const loc = page.locator(selector).first();
+async function probeField(tab, selector, kind, cases, { submit = false, fresh = async () => ({ ok: true }), leaveDoubtful = false, seen = {} } = {}) {
+  // every reload brings a new page (see `fresh` in checkForm): the field is looked up on the current one
+  const loc = () => tab.page.locator(selector).first();
   // `seen.doubtful`: the form offered a doubtful field to fill at least once (see fillCompanions)
-  const fill = async () => { if (await page.evaluate(fillCompanions, { sel: selector, leaveDoubtful }) > 0) seen.doubtful = true; };
+  const fill = async () => { if (await tab.page.evaluate(fillCompanions, { sel: selector, leaveDoubtful }) > 0) seen.doubtful = true; };
   const results = [];
   // fill() does not hit-test (Playwright 1.63): it types through a consent overlay. A trial click runs
   // the actionability and hit-target checks and dispatches no event, so a covered or disabled field
@@ -79,7 +80,7 @@ async function probeField(page, selector, kind, cases, { submit = false, fresh =
   // A fresh page before the actionability check: the previous field's last submit may have hidden the form.
   if (submit) { const f = await fresh(); if (!f.ok) return { status: 'not-testable', reason: f.reason }; }
   try {
-    await loc.click({ trial: true, timeout: FILL_TIMEOUT_MS });
+    await loc().click({ trial: true, timeout: FILL_TIMEOUT_MS });
   } catch {
     return { status: 'not-testable', reason: 'not-interactable' };
   }
@@ -87,7 +88,7 @@ async function probeField(page, selector, kind, cases, { submit = false, fresh =
   // itself refuses would otherwise become the reference state, and every later refusal in the same words would
   // read as accepted (measured 07/10 on the two benches: 38 text website fields refuse `example.com`, 37 of them
   // because they ask for a scheme, docs/qc/2026-10-07_baseline-refused/).
-  const pristine = await page.evaluate(readState, selector);
+  const pristine = await tab.page.evaluate(readState, selector);
   let before = pristine, baseline = null;
   if (submit) {
     // Baseline: one submit with a plain ASCII value in the probed field. Whatever the page then says about
@@ -96,15 +97,15 @@ async function probeField(page, selector, kind, cases, { submit = false, fresh =
     const submitBaseline = async value => {
       await fill();
       // the document receives a value: the next reload must bring another one (see `fresh`)
-      await page.evaluate(() => { window.__uaProbed = true; }).catch(() => {});
+      await tab.page.evaluate(() => { window.__uaProbed = true; }).catch(() => {});
       // a baseline that could not be typed is not a baseline: read as one, it made every case a refusal or
       // none (third review of #6: a fill timing out on a loaded machine was swallowed here)
-      try { await loc.fill(value, { timeout: FILL_TIMEOUT_MS }); }
+      try { await loc().fill(value, { timeout: FILL_TIMEOUT_MS }); }
       catch { throw Object.assign(new Error('not-interactable'), { notTestable: true }); }
-      await page.evaluate(syncConfirm, selector);
-      await page.evaluate(sel => { const f = document.querySelector(sel).form; if (f) f.requestSubmit(); }, selector).catch(() => {});
-      await page.waitForTimeout(SETTLE_MS);
-      return page.evaluate(readState, selector);
+      await tab.page.evaluate(syncConfirm, selector);
+      await tab.page.evaluate(sel => { const f = document.querySelector(sel).form; if (f) f.requestSubmit(); }, selector).catch(() => {});
+      await tab.page.waitForTimeout(SETTLE_MS);
+      return tab.page.evaluate(readState, selector);
     };
     // What the field gained with a value (a text, a mark of refusal); a form hidden after an accepted submit
     // only loses texts, and that is not a refusal. Texts elsewhere in the form may speak of another field
@@ -189,33 +190,33 @@ async function probeField(page, selector, kind, cases, { submit = false, fresh =
     // cases are typed as they are; `rewritten` is judged against what was actually typed.
     const typed = kind === 'url' && c.kind === 'domain' ? 'https://' + c.value : c.value;
     // Marks the document about to receive a value: a reload that leaves this marker in place did not bring a new document.
-    await page.evaluate(() => { window.__uaProbed = true; }).catch(() => {});
+    await tab.page.evaluate(() => { window.__uaProbed = true; }).catch(() => {});
     try {
-      await loc.fill(typed, { timeout: FILL_TIMEOUT_MS });
+      await loc().fill(typed, { timeout: FILL_TIMEOUT_MS });
     } catch {
       return { status: 'not-testable', reason: 'not-interactable' };
     }
-    if (submit) await page.evaluate(syncConfirm, selector);
-    await loc.dispatchEvent('change');
-    await loc.blur();
-    await page.waitForTimeout(SETTLE_MS);
+    if (submit) await tab.page.evaluate(syncConfirm, selector);
+    await loc().dispatchEvent('change');
+    await loc().blur();
+    await tab.page.waitForTimeout(SETTLE_MS);
     let submitted = false;
     if (submit) {
       // requestSubmit() runs native constraint validation, then the page's own submit handlers. The
       // default action is cancelled by the init script and any navigation is aborted by the route guard,
       // so nothing leaves the page. A native block (invalid field) means the event never fires.
-      const n0 = await page.evaluate(() => window.__uaSubmits ?? 0);
-      await page.evaluate(sel => { const f = document.querySelector(sel).form; if (f) f.requestSubmit(); }, selector).catch(() => {});
-      await page.waitForTimeout(SETTLE_MS);
-      submitted = (await page.evaluate(() => window.__uaSubmits ?? 0)) > n0;
+      const n0 = await tab.page.evaluate(() => window.__uaSubmits ?? 0);
+      await tab.page.evaluate(sel => { const f = document.querySelector(sel).form; if (f) f.requestSubmit(); }, selector).catch(() => {});
+      await tab.page.waitForTimeout(SETTLE_MS);
+      submitted = (await tab.page.evaluate(() => window.__uaSubmits ?? 0)) > n0;
     }
-    const after = await page.evaluate(readState, selector);
+    const after = await tab.page.evaluate(readState, selector);
     const d = decide(c, typed, before, after, { submitted });
     // what was read goes with the verdict (mismatch, enforced, signals): a result can be checked against it
     results.push({ id: c.id, class: c.class, expect: c.expect, typed, observed: after.value, submitted, ...evidence(before, after), ...d });
     if (!submit) {
-      await loc.fill('', { timeout: FILL_TIMEOUT_MS }).catch(() => {});
-      await loc.blur().catch(() => {});
+      await loc().fill('', { timeout: FILL_TIMEOUT_MS }).catch(() => {});
+      await loc().blur().catch(() => {});
     }
   }
   return { status: 'tested', selector, kind, submitExercised: submit, baseline, results, counts: tally(results, submit) };
@@ -241,16 +242,14 @@ function tally(results, submit) {
 // Finding 5 (review of 09/10): no rule on what a person sees told a trap from a visible field a person fills
 // (two corrections rejected, each by a layout built in minutes). So the field is probed twice: with every
 // companion filled as before, and with the doubtful ones left empty. A verdict is kept only when both probes give
-// it; the others are reported not-testable. The first probe is main's run: on the email field every verdict given
-// is main's. The website field is probed after the email field's submits, twice as many as on main when the email
-// field had a doubtful companion: a page that keeps across the runner's reloads what `fresh` does not clear
-// (IndexedDB, history) can read the website field otherwise than on main (review of PR #9, a page counting its
-// submits in IndexedDB).
-async function probeTwice(page, selector, kind, cases, opts) {
+// it; the others are reported not-testable. Every reload is a new context (see `fresh`): the second probe, and the
+// email field's submits before the website field, leave nothing a later document can read (review of PR #9, a page
+// counting its submits in IndexedDB read the website field otherwise than with a single probe).
+async function probeTwice(tab, selector, kind, cases, opts) {
   const seen = {};
-  const a = await probeField(page, selector, kind, cases, { ...opts, seen });
+  const a = await probeField(tab, selector, kind, cases, { ...opts, seen });
   if (!seen.doubtful || a.status !== 'tested') return a;
-  const b = await probeField(page, selector, kind, cases, { ...opts, leaveDoubtful: true });
+  const b = await probeField(tab, selector, kind, cases, { ...opts, leaveDoubtful: true });
   if (b.status !== 'tested' || b.kind !== a.kind) return { status: 'not-testable', reason: 'fill-dependent' };
   const results = a.results.map((r, i) => {
     const o = b.results[i];
@@ -271,13 +270,14 @@ const noHash = u => u.split('#')[0];   // a fragment never reaches a server; a p
 /** `submit`: dispatch the form's submit event after each case (default: only for a local file, never for a
  *  URL, which is somebody's live site).
  *  `reloadDelayMs` (tests only): holds the runner's reload for that long after the reload lock is armed and
- *  before the navigation is issued, i.e. widens the window in which the old document still runs. */
-export async function checkForm(target, { engine = 'chromium', lang = 'en', battery = loadBattery(), keepPage = false, submit = !/^https?:\/\//i.test(target), reloadDelayMs = 0 } = {}) {
+ *  before the navigation is issued, i.e. widens the window in which the old document still runs.
+ *  `reloadInPlace` (tests only): reloads in the same context, as before every reload had a context of its own, so
+ *  that a fixture can count its documents in IndexedDB and change after a number of them; the runner's handling of
+ *  a page that changes, or stops bringing a new document, is tested that way. */
+export async function checkForm(target, { engine = 'chromium', lang = 'en', battery = loadBattery(), keepPage = false, submit = !/^https?:\/\//i.test(target), reloadDelayMs = 0, reloadInPlace = false } = {}) {
   const browser = await pw[engine].launch();
   const report = { target, finalUrl: null, title: null, engine, engineVersion: browser.version(), date: new Date().toISOString(), battery: battery.version, submitExercised: submit, fields: {}, catalogue: [] };
   try {
-    // Service workers are blocked: their requests can escape route interception.
-    const context = await browser.newContext({ locale: LOCALE[lang] ?? 'en-GB', serviceWorkers: 'block', userAgent: `ua-agent-kit/${VERSION} (+https://github.com/guia-matthieu/ua-agent-kit)` });
     // Guarantee: nothing but GET/HEAD leaves the page, armed before the first request so that a
     // script running during load cannot slip a POST in before the guard exists.
     // After load, in submit mode, nothing goes out at all — any frame, any request type: a submit handler
@@ -289,7 +289,7 @@ export async function checkForm(target, { engine = 'chromium', lang = 'en', batt
     let finalUrl = null;   // the URL the first load ended on; every reload must end there too
     let recording = null;  // the responses of the first load, replayed on every reload
     const guard = { reloadNavigationsBlocked: 0, reloadRequestsAborted: 0, reloadFulfilledFromCache: 0, postNavigationsAnswered: 0 };
-    await context.route('**/*', async route => {
+    const guardRoute = async route => {
       const r = route.request();
       const m = r.method();
       if (m !== 'GET' && m !== 'HEAD') {
@@ -321,7 +321,7 @@ export async function checkForm(target, { engine = 'chromium', lang = 'en', batt
         return r.isNavigationRequest() ? route.fulfill({ status: 204 }) : route.abort('blockedbyclient');
       }
       return route.continue();
-    });
+    };
     // The page's own WebSockets: in submit mode none may open, at any time — one opened before load would
     // still be connected after it and carry the typed value (review of #21, Astra C). A form under test needs
     // no WebSocket; on a URL they pass as before.
@@ -335,10 +335,10 @@ export async function checkForm(target, { engine = 'chromium', lang = 'en', batt
     // The second point is how Chromium 153 behaves under Playwright 1.63, not a rule written here. The test
     // "a socket a worker opened during load…" reads the frames a server receives: it fails if that changes.
     // To check again on every Playwright or Chromium upgrade.
-    await context.routeWebSocket(/.*/, ws => { if (submit) ws.close(); else ws.connectToServer(); });
+    const guardSocket = ws => { if (submit) ws.close(); else ws.connectToServer(); };
     // Counts submit events (capture, before the page's handlers) and cancels the default action (bubble,
     // after them). Registered before any page script.
-    await context.addInitScript(() => {
+    const initScript = () => {
       // window.name survives a navigation: a value stashed there by the previous document would reach this one.
       window.name = '';
       // No popup, ever: a same-origin popup opened during load could read the opener's field after it (Astra C).
@@ -350,11 +350,28 @@ export async function checkForm(target, { engine = 'chromium', lang = 'en', batt
       // teardown handlers never run: these listeners are registered first and stop the event for the rest.
       for (const type of ['pagehide', 'unload', 'beforeunload']) window.addEventListener(type, e => e.stopImmediatePropagation(), true);
       document.addEventListener('visibilitychange', e => e.stopImmediatePropagation(), true);
-    });
-    const page = await context.newPage();
-    // Any other page of this context is a popup the page opened without window.open (a target=_blank link,
-    // a form target): closed as soon as it exists, whatever the moment. Registered after our own page.
-    context.on('page', p => p.close().catch(() => {}));
+    };
+    // A context of its own for the first load and for every reload of the runner, each armed with the guards
+    // above before its first request. Storage of every kind (localStorage, sessionStorage, cookies, IndexedDB,
+    // Cache Storage) and history belong to the context: a new one starts with none, in every engine and on
+    // file:// as on http (review of PR #9: a page counting its submits in IndexedDB read the website field
+    // otherwise than on main). Closing the old one first ends its document and its timers, which could write
+    // storage again between a clear and the reload (review of 09/10, finding 6).
+    let context = null, page = null;
+    const open = async () => {
+      // Service workers are blocked: their requests can escape route interception.
+      context = await browser.newContext({ locale: LOCALE[lang] ?? 'en-GB', serviceWorkers: 'block', userAgent: `ua-agent-kit/${VERSION} (+https://github.com/guia-matthieu/ua-agent-kit)` });
+      await context.route('**/*', guardRoute);
+      await context.routeWebSocket(/.*/, guardSocket);
+      await context.addInitScript(initScript);
+      page = await context.newPage();
+      // Any other page of this context is a popup the page opened without window.open (a target=_blank link,
+      // a form target): closed as soon as it exists, whatever the moment. Registered after our own page.
+      context.on('page', p => p.close().catch(() => {}));
+    };
+    await open();
+    // what probeField types into: the page of the current context, which every reload replaces
+    const tab = { get page() { return page; } };
     recording = recordResponses(page);
     try {
       await page.goto(toUrl(target), { waitUntil: 'load', timeout: 30000 });
@@ -382,18 +399,22 @@ export async function checkForm(target, { engine = 'chromium', lang = 'en', batt
       // again, up to RELOAD_ATTEMPTS times, with the network guard unchanged; any other error propagates.
       // Review of #21: one such race turned a whole page into runner-error and lost the results collected.
       for (let attempt = 1; ; attempt++) {
-        // Storage survives a reload: a page keeping a "tried" flag there would carry it into the next case.
-        await page.evaluate(() => { try { localStorage.clear(); sessionStorage.clear(); } catch { /* opaque origin */ } }).catch(() => {});
-        await context.clearCookies();
         reloading = true;
         try {
+          // the old document still runs during this delay, under the reload lock
           if (reloadDelayMs) await new Promise(resolve => setTimeout(resolve, reloadDelayMs));
-          // To a URL with a fragment, from a document at the same address, goto is a same-document navigation:
-          // no new document, and a page that sets location.hash at load had its field reload-failed (review of
-          // 09/10). Leaving for about:blank first makes the goto below a load, fragment kept.
-          if (finalUrl.includes('#')) await page.goto('about:blank');
-          // In submit mode the reload is answered from the cache and takes milliseconds. A navigation the old
-          // document fires while it is under way can cancel it without any error: the competing navigation gets
+          // The reload is a load in a new context: no storage, no history, and no same-document navigation to
+          // a URL with a fragment (review of 09/10: a page setting location.hash at load had its field reload-failed).
+          if (reloadInPlace) {
+            await page.evaluate(() => { try { localStorage.clear(); sessionStorage.clear(); } catch { /* opaque origin */ } }).catch(() => {});
+            await context.clearCookies();
+            if (finalUrl.includes('#')) await page.goto('about:blank');
+          } else {
+            await context.close();
+            await open();
+          }
+          // In submit mode the reload is answered from the cache and takes milliseconds. A navigation the page
+          // fires while it is under way can cancel it without any error: the competing navigation gets
           // a 204 and commits nothing, and goto waits for a load that never comes (measured 28/09 on Linux,
           // Playwright 1.63 image: 1 run in 6 of the timer fixture). There a timeout is that race, and is retried.
           await page.goto(finalUrl, { waitUntil: 'load', timeout: submit ? 10000 : 30000 });
@@ -422,8 +443,8 @@ export async function checkForm(target, { engine = 'chromium', lang = 'en', batt
     const siteKind = found.websiteType === 'url' ? 'url' : 'domain';
     const siteCases = battery.cases.filter(c => c.kind === 'domain' || c.kind === 'url');
 
-    report.fields.email = found.email ? await probeTwice(page, found.email, 'email', emailCases, { submit, fresh }) : { status: 'not-testable', reason: 'no-field' };
-    report.fields.website = found.website ? await probeTwice(page, found.website, siteKind, siteCases, { submit, fresh }) : { status: 'not-testable', reason: 'no-field' };
+    report.fields.email = found.email ? await probeTwice(tab, found.email, 'email', emailCases, { submit, fresh }) : { status: 'not-testable', reason: 'no-field' };
+    report.fields.website = found.website ? await probeTwice(tab, found.website, siteKind, siteCases, { submit, fresh }) : { status: 'not-testable', reason: 'no-field' };
 
     if (keepPage) {
       report.__page = await page.evaluate(() => ({ submitted: window.__submitted, submits: window.__uaSubmits ?? 0, posts: window.__posts ?? [], nameAtLoad: window.__nameAtLoad, popupOpened: window.__popupOpened }));
