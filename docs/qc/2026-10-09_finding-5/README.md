@@ -98,7 +98,11 @@ The 3 decoy `fail` left on the trap pages are values the page's own pattern take
   as well, with a lower number). No page of the two benches calls `indexedDB`, `caches.open` or reads
   `history.length` (`grep` on `bench/`): the rows above stand. Fixture and script kept with the review harness
   (`reviews/review-pr9/`). Clearing IndexedDB in `fresh` changes `main`'s run on every page: left for a change of
-  its own.
+  its own. A second review (APPROVED) showed the same route through a page whose website field sits alone in a form
+  of its own, with no doubtful field: it is probed once, and still reads otherwise than on `main` (20 verdicts) when
+  the email field's form has a doubtful field and the page counts those submits in IndexedDB. A page is probed
+  exactly as on `main` when neither field's form has a doubtful field. Fixtures with the review harness
+  (`reviews/review-pr9-2/`).
 
 - A trap of type hidden is filled in both probes: a page that drops a submit when one is filled still reads every value
   as accepted (second row of the table above).

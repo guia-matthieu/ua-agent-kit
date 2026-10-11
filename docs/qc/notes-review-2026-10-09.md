@@ -57,7 +57,9 @@ repo with the review harness (`guia/tasks/ua-kit-review-2026-10-09_harness/revie
   (checks `@` before the trap) each defeat one choice. Proposed for a PR of its own: probe the field with `main`'s
   fill and with the doubtful fields (not `required`, not `type=hidden`) left empty, keep a verdict only when both
   give it, report the others `not-testable`. Every verdict then given is `main`'s; coverage can only be lost, and a
-  full scoring counts how much.
+  full scoring counts how much. Done in PR #9 (`2026-10-09_finding-5/`), where that claim is narrowed after review: it
+  holds for the email field; the website field can differ from `main` on a page that keeps state across the runner's
+  reloads (IndexedDB, `history`).
 
 Known limit until then: a page that drops without a word a submit whose trap field is filled reads every value as
 accepted.
