@@ -241,7 +241,11 @@ function tally(results, submit) {
 // Finding 5 (review of 09/10): no rule on what a person sees told a trap from a visible field a person fills
 // (two corrections rejected, each by a layout built in minutes). So the field is probed twice: with every
 // companion filled as before, and with the doubtful ones left empty. A verdict is kept only when both probes give
-// it; the others are reported not-testable. Every verdict given is the first probe's: coverage can only be lost.
+// it; the others are reported not-testable. The first probe is main's run: on the email field every verdict given
+// is main's. The website field is probed after the email field's submits, twice as many as on main when the email
+// field had a doubtful companion: a page that keeps across the runner's reloads what `fresh` does not clear
+// (IndexedDB, history) can read the website field otherwise than on main (review of PR #9, a page counting its
+// submits in IndexedDB).
 async function probeTwice(page, selector, kind, cases, opts) {
   const seen = {};
   const a = await probeField(page, selector, kind, cases, { ...opts, seen });

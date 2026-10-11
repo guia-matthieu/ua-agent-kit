@@ -12,15 +12,18 @@ nor of type hidden is doubtful: it may be a trap a person never sees. When the f
 field is probed a second time with the doubtful fields left empty. A case keeps its verdict when the two probes give
 the same verdict and outcome; otherwise it is `not-testable`, reason `fill-dependent` (or the second probe's own
 reason when that probe could not run the case). When the second probe does not test the field at all, or reads it
-with another kind, the field is `not-testable`, reason `fill-dependent`. Every verdict given is the first probe's,
-which is `main`'s: coverage can only be lost.
+with another kind, the field is `not-testable`, reason `fill-dependent`. Every verdict given is the first probe's.
+On the email field the first probe is `main`'s run, so every verdict given is `main`'s and coverage can only be lost.
+The website field is probed after the email field's submits, twice as many as on `main` when the email field had a
+doubtful companion: the same holds for it only when nothing of the page survives the runner's reloads (see Limits).
 
 Fields of type hidden are filled in both probes: 13 pages of the bench of 25/09 keep there the A-label copy of the
 value, which the page clears and writes again on submit (`../notes-review-2026-10-09.md`).
 
 ## Measured on the benches
 
-`rescored/SCORED-WITH.txt`: commit `49a5228`, `src/` not modified, 2026-10-09 17:05 → 17:55 UTC (50 min 11 s, four
+`rescored/SCORED-WITH.txt`: commit `49a5228`, `src/` not modified (the commit after it changes in `src/` only a
+comment of `form-runner.mjs` and the Markdown report, so the checksum of `form-runner.mjs` there is no longer the file's), 2026-10-09 17:05 → 17:55 UTC (50 min 11 s, four
 browsers; 32 min 44 s for the scoring of PR #8: the second probe runs on every form with a doubtful field).
 
 Result of `python3 docs/qc/2026-10-09_finding-5/compare.py`:
@@ -88,6 +91,14 @@ The 3 decoy `fail` left on the trap pages are values the page's own pattern take
 `user@exa mple.com` against `/^[^@]+@[^@]+\.[a-z]{2,4}$/`): both probes read them accepted.
 
 ## Limits
+
+- **Review of PR #9 (fresh context, REJECTED on this point only):** `fresh` clears localStorage, sessionStorage and
+  cookies, not IndexedDB, nor `history`. A page that counts its submits in IndexedDB and refuses the website field
+  past a number of them gave, on its website field, 6 verdicts the branch reads and `main` does not (`main` is caught
+  as well, with a lower number). No page of the two benches calls `indexedDB`, `caches.open` or reads
+  `history.length` (`grep` on `bench/`): the rows above stand. Fixture and script kept with the review harness
+  (`reviews/review-pr9/`). Clearing IndexedDB in `fresh` changes `main`'s run on every page: left for a change of
+  its own.
 
 - A trap of type hidden is filled in both probes: a page that drops a submit when one is filled still reads every value
   as accepted (second row of the table above).

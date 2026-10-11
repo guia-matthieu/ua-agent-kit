@@ -45,6 +45,7 @@ function fieldSection(name, f) {
   if (untested.length) {
     lines.push('', '| not-testable case | reason |', '|---|---|');
     for (const r of untested) lines.push(`| ${text(r.id)} | ${text(r.reason)} |`);
+    for (const reason of new Set(untested.map(r => r.reason))) if (WHY[reason]) lines.push('', `${reason}: ${WHY[reason]}`);
   }
   return lines.join('\n') + '\n';
 }

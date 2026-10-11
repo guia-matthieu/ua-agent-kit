@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { checkForm } from '../src/form-runner.mjs';
+import { renderMarkdown } from '../src/report.mjs';
 
 const fixture = name => new URL(`./fixtures/${name}`, import.meta.url).href;
 
@@ -234,6 +235,7 @@ test('a page that drops a submit with a trap filled: no value it refuses reads a
   const by = id => email.results.find(x => x.id === id);
   assert.equal(by('email-control-01').verdict, 'accepted', JSON.stringify(by('email-control-01')));
   for (const id of ['email-ascii-tld-long-01', 'email-guard-01', 'email-guard-02', 'email-guard-03']) assert.deepEqual([by(id).outcome, by(id).reason], ['not-testable', 'fill-dependent'], JSON.stringify(by(id)));
+  assert.match(renderMarkdown(r), /fill-dependent: The field was probed twice/);
 });
 
 for (const name of ['form-app-shell.html', 'form-slides-in.html']) {
