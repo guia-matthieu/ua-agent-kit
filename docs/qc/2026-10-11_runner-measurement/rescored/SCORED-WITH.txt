@@ -1,0 +1,7 @@
+sets: all three
+commit: 07fdb08
+src differs from that commit: no
+sha256 src/verdict.mjs: 2d209a4cb527aca1833e8a952e381c5d449b2d5ab35aa8aa4497cb525de31b65
+sha256 src/form-runner.mjs: 865f1cd3299b1ea9a20e03a8519ebcd0424c16f006f67865fd91d60d125b4850
+started: 2026-10-11T22:06:19.564Z
+ended: 2026-10-11T23:17:30.181Z
