@@ -163,7 +163,7 @@ test('a target behind a redirect: the redirect is followed once, reloads replay 
 test('a page whose fields change on reload: the cases left are not-testable, the results collected stay', async () => {
   const srv = await serveFixtures();
   try {
-    const report = await checkForm(srv.url('form-changes-on-reload.html'), { submit: true, battery: emailCases(4) });
+    const report = await checkForm(srv.url('form-changes-on-reload.html'), { submit: true, battery: emailCases(4), reloadInPlace: true });
     const email = report.fields.email;
     assert.equal(email.status, 'tested');
     assert.ok(['pass', 'fail'].includes(email.results[0].outcome), JSON.stringify(email.results[0]));

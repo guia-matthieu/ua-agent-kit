@@ -61,12 +61,12 @@ test('a text that changes with every value in a way the runner cannot follow: no
 });
 
 test('a baseline that could not be typed is not a baseline: the field is not-interactable', async () => {
-  const r = await checkForm(fixture('form-readonly-for-baseline.html'));
+  const r = await checkForm(fixture('form-readonly-for-baseline.html'), { reloadInPlace: true });
   assert.deepEqual({ status: r.fields.email.status, reason: r.fields.email.reason }, { status: 'not-testable', reason: 'not-interactable' });
 });
 
 test('a reload that fails before the second plain value: the field is not tested', async () => {
-  const r = await checkForm(fixture('form-stale-before-second.html'));
+  const r = await checkForm(fixture('form-stale-before-second.html'), { reloadInPlace: true });
   assert.deepEqual({ status: r.fields.email.status, reason: r.fields.email.reason }, { status: 'not-testable', reason: 'reload-failed' });
 });
 

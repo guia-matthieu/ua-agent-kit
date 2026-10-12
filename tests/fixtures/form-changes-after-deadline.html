@@ -1,0 +1,10 @@
+<!doctype html><html lang="en"><body>
+<!-- Once the time in its query string has passed, offers another email field. Every reload is a new context, so
+     a page can no longer count its documents; the clock is the one thing that differs from one reload to the next. -->
+<form id="f" novalidate><label>Email <input id="email" name="email" type="email"></label><button type="submit">Send</button></form>
+<script>
+const until = +new URLSearchParams(location.search).get('until');
+if (Date.now() > until) { const e = document.getElementById('email'); e.type = 'text'; e.name = 'contact'; e.id = 'contact'; }
+document.getElementById('f').addEventListener('submit', e => e.preventDefault());
+</script>
+</body></html>

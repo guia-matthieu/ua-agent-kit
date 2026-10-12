@@ -1,0 +1,16 @@
+<!doctype html><html lang="en"><body>
+<!-- Sets a fragment at load and refuses every value once the tab's history holds more than three entries: a page
+     with a fragment was reloaded through about:blank in the same tab, two entries each time (review of PR #9:
+     history is not cleared). -->
+<form id="f" novalidate><label>Email <input id="email" name="email" type="text"></label><div id="err"></div><button type="submit">Send</button></form>
+<script>
+if (!location.hash) location.hash = 'form';
+document.getElementById('f').addEventListener('submit', e => {
+  e.preventDefault();
+  const em = document.getElementById('email');
+  const refused = history.length > 3;
+  if (refused) em.setAttribute('aria-invalid', 'true'); else em.removeAttribute('aria-invalid');
+  document.getElementById('err').textContent = refused ? 'Too many attempts.' : '';
+});
+</script>
+</body></html>

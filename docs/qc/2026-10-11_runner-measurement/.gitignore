@@ -1,0 +1,3 @@
+# identical to ../2026-10-09_finding-5/rescored (see README): kept out of git, checksums in SHA256SUMS
+rescored/*.csv
+rescored/fields.json

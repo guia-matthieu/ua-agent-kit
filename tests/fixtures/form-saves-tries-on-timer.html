@@ -1,0 +1,18 @@
+<!doctype html><html lang="en"><body>
+<!-- Writes its count of submits to localStorage every millisecond, as a draft autosave does, and refuses every
+     value past two of them: storage cleared while the document still runs is written again before the reload
+     (review of 09/10, finding 6). -->
+<form id="f" novalidate><label>Email <input id="email" name="email" type="text"></label><div id="err"></div><button type="submit">Send</button></form>
+<script>
+let count = +(localStorage.getItem('tries') || 0);
+setInterval(() => { localStorage.setItem('tries', String(count)); }, 1);
+document.getElementById('f').addEventListener('submit', e => {
+  e.preventDefault();
+  count += 1;
+  const em = document.getElementById('email');
+  const refused = count > 2;
+  if (refused) em.setAttribute('aria-invalid', 'true'); else em.removeAttribute('aria-invalid');
+  document.getElementById('err').textContent = refused ? 'Too many attempts.' : '';
+});
+</script>
+</body></html>
