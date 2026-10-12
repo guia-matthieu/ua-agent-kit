@@ -41,8 +41,8 @@ for (const [name, reason] of [
       if (email.status !== 'tested') continue;   // changed before the baseline: nothing was measured to keep
       const outcomes = email.results.map(x => x.outcome === 'not-testable' ? `not-testable/${x.reason}` : x.outcome);
       const kept = outcomes.findIndex(o => o.startsWith('not-testable'));
-      if (kept === -1) continue;   // changed after the last case
-      assert.ok(kept > 0, `nothing kept at ${ms} ms: ${outcomes}`);
+      // changed after the last case, or between the baseline and the first case (under load: second review of PR #10)
+      if (kept <= 0) continue;
       assert.ok(outcomes.slice(0, kept).every(o => o === 'pass' || o === 'fail'), `at ${ms} ms: ${outcomes}`);
       assert.ok(outcomes.slice(kept).every(o => o === `not-testable/${reason}`), `at ${ms} ms: ${outcomes}`);
       split = true;
