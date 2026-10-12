@@ -476,7 +476,7 @@ export async function checkForm(target, { engine = 'chromium', lang = 'en', batt
     report.fields.website = found.website ? await probeTwice(tab, found.website, siteKind, siteCases, { submit, fresh }) : { status: 'not-testable', reason: 'no-field' };
 
     if (keepPage) {
-      report.__page = await page.evaluate(() => ({ submitted: window.__submitted, submits: window.__uaSubmits ?? 0, posts: window.__posts ?? [], nameAtLoad: window.__nameAtLoad, popupOpened: window.__popupOpened, rtc: window.__rtc }));
+      report.__page = await page.evaluate(() => ({ submitted: window.__submitted, submits: window.__uaSubmits ?? 0, posts: window.__posts ?? [], nameAtLoad: window.__nameAtLoad, popupOpened: window.__popupOpened, rtc: window.__rtc, sharedWorker: window.__sharedWorker }));
       report.__finalUrlAfter = page.url();
       report.__guard = guard;
       report.__pages = context.pages().length;

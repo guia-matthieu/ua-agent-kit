@@ -297,10 +297,25 @@ test('a page cannot start a shared worker, whose requests never come through the
   try {
     const report = await checkForm(srv.url('form-shared-worker-leak.html'), { submit: true, keepPage: true, battery: emailCases(3) });
     assert.equal(report.fields.email.status, 'tested');
+    // In submit mode the dead proxy alone stops this worker: without both the switch and the init script lines the
+    // requests below fail all the same. The constructor must be gone.
+    assert.deepEqual(report.__page.sharedWorker, ['undefined', 'undefined'], 'a frame still has SharedWorker');
     await new Promise(resolve => setTimeout(resolve, 200));   // a request still on its way when the browser closed
     assert.deepEqual(srv.received, [], 'a non-GET request reached the server');
     const out = srv.gets.filter(g => g.startsWith('/leak'));
     assert.deepEqual(out, [], `the shared worker got out: ${[...new Set(out)].join(' ')}`);
+  } finally { await srv.close(); }
+});
+
+test('in URL mode, which has no dead proxy, a shared worker never gets a POST out (form-shared-worker-leak.html)', async () => {
+  // main: 170 POSTs a run in URL mode (12/10); this is the mode where the switch and the init script are all there is
+  const srv = await serveFixtures();
+  try {
+    const report = await checkForm(srv.url('form-shared-worker-leak.html'), { battery: emailCases(3) });
+    assert.equal(report.submitExercised, false);
+    assert.equal(report.fields.email.status, 'tested');
+    await new Promise(resolve => setTimeout(resolve, 200));
+    assert.deepEqual(srv.received, [], `non-GET requests reached the server: ${srv.received.length}`);
   } finally { await srv.close(); }
 });
 

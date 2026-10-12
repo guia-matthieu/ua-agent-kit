@@ -87,3 +87,15 @@ Facts measured on 2026-10-12, Chromium 153 (headless shell 1243), Playwright 1.6
   nothing; TURN and ICE over TCP/TLS make no connection. Not measured: a public name (no external network),
   `dns-prefetch` and `preconnect` (no positive control), a cross-site iframe (its control gave 0, not conclusive),
   Linux and Windows.
+
+## A cross-family read of PR #11 (GPT-6 Astra, `b83419f`, code only, no measurement)
+
+- The shared worker test guarded neither of its two lines. In submit mode the dead proxy alone stops the worker:
+  with both `--disable-shared-workers` and the init script's `SharedWorker` deletion removed, the test still passed
+  (2 runs of 2). The fixture now records `typeof SharedWorker` in its window and in a fresh iframe, the submit-mode
+  test asserts both are `undefined`, and a URL-mode test (no proxy there) asserts no POST reaches the server.
+- Mutations, macOS: both lines: pass; switch alone: pass; init script alone: pass; both removed: both tests fail
+  (constructor present; 53 POSTs in URL mode). In Chromium either line is enough, so the tests guard the pair, not
+  each line. The init script line alone matters for Firefox and WebKit, not measured.
+- The launch switch `--force-webrtc-ip-handling-policy` is not guarded by any test either: the init script deletes
+  the constructor first.
