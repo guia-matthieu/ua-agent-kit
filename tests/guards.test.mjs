@@ -303,15 +303,13 @@ test('a page cannot start a shared worker, whose requests never come through the
   } finally { await srv.close(); }
 });
 
-test('a dedicated worker never sends the typed value while its document goes away: each one is closed first', async () => {
-  // The window is a race (main, at rest: 4 runs in 6 of a heavier version of this page leaked). The requests that
-  // arrive are what is checked; the counter shows the workers were closed from inside before their document went.
-  // It is not checked exactly: under load a worker may take longer than the runner waits, the blank page ends it.
+test('a dedicated worker never sends the typed value while its document goes away', async () => {
+  // main, at rest: 4 runs in 6 of a heavier version of this page leaked; this lighter one, made to stay quick with
+  // four test files at once, leaks on main only now and then. The test that fails there every time is the next one.
   const srv = await serveFixtures();
   try {
-    const report = await checkForm(srv.url('form-worker-burst.html'), { submit: true, keepPage: true, battery: emailCases(6) });
+    const report = await checkForm(srv.url('form-worker-burst.html'), { submit: true, battery: emailCases(6) });
     assert.equal(report.fields.email.status, 'tested');
-    assert.ok(report.__guard.workersStopped > 0, `workers stopped: ${report.__guard.workersStopped}`);
     await new Promise(resolve => setTimeout(resolve, 200));
     const out = srv.gets.filter(g => g.startsWith('/leak'));
     assert.deepEqual(out, [], `the worker got out: ${[...new Set(out.map(g => g.split('&')[0]))].join(' ')}`);
@@ -330,3 +328,19 @@ test('a page that keeps starting workers never gets a value out when a context c
     assert.deepEqual(out, [], `the workers got out: ${out.length} requests`);
   } finally { await srv.close(); }
 });
+
+// The worklet page fails on main every run. The keepalive page passes on main: it guards against a runner that sends the
+// page away before closing (second review of PR #11), which let its POSTs out in about 1 run of 6 at rest.
+for (const [name, what] of [['form-keepalive-beacon.html', 'a keepalive POST or a beacon of the document'], ['form-audio-worklet.html', 'an audio worklet module']]) {
+  test(`${what} never carries the typed value out (${name})`, async () => {
+    const srv = await serveFixtures();
+    try {
+      const report = await checkForm(srv.url(name), { submit: true, battery: emailCases(10) });
+      assert.equal(report.fields.email.status, 'tested');
+      await new Promise(resolve => setTimeout(resolve, 200));
+      assert.deepEqual(srv.received, [], `non-GET requests reached the server: ${srv.received.length}`);
+      const out = srv.gets.filter(g => g.startsWith('/leak'));
+      assert.deepEqual(out, [], `got out: ${[...new Set(out)].join(' ')}`);
+    } finally { await srv.close(); }
+  });
+}

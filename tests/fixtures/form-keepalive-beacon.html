@@ -1,0 +1,15 @@
+<!doctype html><html lang="en"><body>
+<!-- The document itself, no worker, sends the field's value by sendBeacon and by a keepalive POST every 2 ms. Such a
+     request is made to outlive its document: a runner that navigated the page away before closing let them out
+     (second review of PR #11: 34 POSTs in 25 runs). -->
+<form id="f" novalidate><label>Email <input id="email" name="email" type="text"></label><button type="submit">Send</button></form>
+<script>
+const em = document.getElementById('email');
+setInterval(() => {
+  const v = em.value; if (!v) return;
+  try { navigator.sendBeacon('/leak-beacon?v=' + encodeURIComponent(v), v); } catch { /* none */ }
+  fetch('/leak-keepalive?v=' + encodeURIComponent(v), { method: 'POST', body: v, keepalive: true }).catch(() => {});
+}, 2);
+document.getElementById('f').addEventListener('submit', e => e.preventDefault());
+</script>
+</body></html>

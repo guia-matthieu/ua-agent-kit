@@ -268,9 +268,15 @@ const FIELD_KEYS = ['email', 'website', 'websiteType', 'emailKey', 'websiteKey']
 // What Playwright says when a navigation is cut short by another one, or the document is torn down under it.
 const NAV_RACE = /net::ERR_ABORTED|interrupted by another navigation|Execution context was destroyed|frame was detached|Navigating frame was detached/;
 const RELOAD_ATTEMPTS = 3;   // the first try and two more
-const WORKER_CLOSE_MS = 300;   // a worker closed from inside goes in 4 to 85 ms (measured 12/10); a busy one never does
-const QUIET_MS = 100;          // no request handed to the guard for this long before a close
-const QUIET_MAX_MS = 2000;
+// The network of every context opened after load in submit mode, where the typed values are: a proxy nobody listens
+// on, loopback included (Chromium sends 127.0.0.1 and localhost around a proxy unless told `<-loopback>`). Such a
+// context needs no network: its reloads are answered from the first load by the route guard. What the guard does not
+// hold, or lets through, fails here: a request still in the guard when its context closes, a worker's request while
+// its document goes away, a page's keepalive or beacon, an audio worklet's module (reviews of PR #11, measured 12/10:
+// 21 POSTs and 8 GETs a run on main without it, 0 with it, every field still tested).
+// Measured on macOS. Chromium on Windows takes a per-context proxy only from a browser
+// launched with one: not measured there.
+const NO_NETWORK = { server: 'http://127.0.0.1:9', bypass: '<-loopback>' };
 const sameFields = (a, b) => FIELD_KEYS.every(k => a[k] === b[k]);
 const noHash = u => u.split('#')[0];   // a fragment never reaches a server; a page setting one at load is still the same page
 
@@ -284,9 +290,9 @@ const noHash = u => u.split('#')[0];   // a fragment never reaches a server; a p
 export async function checkForm(target, { engine = 'chromium', lang = 'en', battery = loadBattery(), keepPage = false, submit = !/^https?:\/\//i.test(target), reloadDelayMs = 0, reloadInPlace = false } = {}) {
   // No shared worker, ever: its requests never come through the route guard, so one that a page fed the typed
   // value sent it out after load, POST included, on every case (measured 12/10 on main, Chromium 153: 228 requests
-  // in one run). The switch removes the constructor in every frame; the init script below does it in every engine.
+  // in one run, in URL mode as in submit mode). The switch removes the constructor in every frame; the init script
+  // below does it in every engine.
   const browser = await pw[engine].launch(engine === 'chromium' ? { args: ['--disable-shared-workers'] } : {});
-  let stopWorkers = async () => {};
   const report = { target, finalUrl: null, title: null, engine, engineVersion: browser.version(), date: new Date().toISOString(), battery: battery.version, submitExercised: submit, fields: {}, catalogue: [] };
   try {
     // Guarantee: nothing but GET/HEAD leaves the page, armed before the first request so that a
@@ -298,11 +304,9 @@ export async function checkForm(target, { engine = 'chromium', lang = 'en', batt
     let loaded = false;
     let reloading = false; // the runner's own reloads, never the page's
     let finalUrl = null;   // the URL the first load ended on; every reload must end there too
-    let recording = null;
-    let lastRequestAt = 0;   // the last request the guard was handed (see stopWorkers)  // the responses of the first load, replayed on every reload
-    const guard = { reloadNavigationsBlocked: 0, reloadRequestsAborted: 0, reloadFulfilledFromCache: 0, postNavigationsAnswered: 0, workersStopped: 0 };
+    let recording = null;  // the responses of the first load, replayed on every reload
+    const guard = { reloadNavigationsBlocked: 0, reloadRequestsAborted: 0, reloadFulfilledFromCache: 0, postNavigationsAnswered: 0 };
     const guardRoute = async route => {
-      lastRequestAt = Date.now();
       const r = route.request();
       const m = r.method();
       if (m !== 'GET' && m !== 'HEAD') {
@@ -375,7 +379,7 @@ export async function checkForm(target, { engine = 'chromium', lang = 'en', batt
     let context = null, page = null;
     const open = async () => {
       // Service workers are blocked: their requests can escape route interception.
-      context = await browser.newContext({ locale: LOCALE[lang] ?? 'en-GB', serviceWorkers: 'block', userAgent: `ua-agent-kit/${VERSION} (+https://github.com/guia-matthieu/ua-agent-kit)` });
+      context = await browser.newContext({ ...(loaded && submit ? { proxy: NO_NETWORK } : {}), locale: LOCALE[lang] ?? 'en-GB', serviceWorkers: 'block', userAgent: `ua-agent-kit/${VERSION} (+https://github.com/guia-matthieu/ua-agent-kit)` });
       await context.route('**/*', guardRoute);
       await context.routeWebSocket(/.*/, guardSocket);
       await context.addInitScript(initScript);
@@ -383,25 +387,6 @@ export async function checkForm(target, { engine = 'chromium', lang = 'en', batt
       // Any other page of this context is a popup the page opened without window.open (a target=_blank link,
       // a form target): closed as soon as it exists, whatever the moment. Registered after our own page.
       context.on('page', p => p.close().catch(() => {}));
-    };
-    // Nothing may be on its way when a context or the browser closes. A request the guard is still handling then, or
-    // one a worker sends while its document goes away, is let through: the guard's answer is lost with the context
-    // (review of PR #11: 19 of 26 leaked POSTs had reached the guard, all arrived within ms of the close). So before
-    // every close: each worker is closed from inside while the guard still holds it (enough for a page that keeps
-    // its workers), the page goes to about:blank, which ends the document and every worker it still has (a page that
-    // keeps starting new ones), and the guard must then have seen no request for QUIET_MS.
-    // Measured 12/10, Chromium 153: 0 leaks on every page of the review; the request flow stops ~100 ms after the
-    // blank page. It narrows a window that Playwright leaves open; it is not a proof that none is left.
-    stopWorkers = async () => {
-      const closed = new WeakSet();
-      await Promise.all(page.workers().map(w => Promise.race([
-        new Promise(resolve => w.once('close', () => { if (!closed.has(w)) { closed.add(w); guard.workersStopped += 1; } resolve(); })),
-        w.evaluate(() => globalThis.close()).then(() => new Promise(() => {}), () => {}),
-        new Promise(resolve => setTimeout(resolve, WORKER_CLOSE_MS)),
-      ])));
-      await page.goto('about:blank').catch(() => {});
-      const since = Date.now();
-      while (Date.now() - lastRequestAt < QUIET_MS && Date.now() - since < QUIET_MAX_MS) await new Promise(resolve => setTimeout(resolve, 10));
     };
     await open();
     // what probeField types into: the page of the current context, which every reload replaces
@@ -439,7 +424,6 @@ export async function checkForm(target, { engine = 'chromium', lang = 'en', batt
           if (reloadDelayMs) await new Promise(resolve => setTimeout(resolve, reloadDelayMs));
           // The reload is a load in a new context: no storage, no history, and no same-document navigation to
           // a URL with a fragment (review of 09/10: a page setting location.hash at load had its field reload-failed).
-          await stopWorkers();
           if (reloadInPlace) {
             await page.evaluate(() => { try { localStorage.clear(); sessionStorage.clear(); } catch { /* opaque origin */ } }).catch(() => {});
             await context.clearCookies();
@@ -490,7 +474,6 @@ export async function checkForm(target, { engine = 'chromium', lang = 'en', batt
     }
     return report;
   } finally {
-    await stopWorkers().catch(() => {});   // the last document's workers hold the last case's value
     await browser.close();   // also on exceptions, so a failing run never leaves a browser open
   }
 }
