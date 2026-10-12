@@ -45,3 +45,17 @@ Facts measured on 2026-10-12, Chromium 153 (headless shell 1243), Playwright 1.6
   blank page ends whatever is left.
 - Not in this branch: an `audioWorklet` module added after load fetched its module URL, carrying the typed value,
   without going through `context.route` (8 GETs per run, on `main` and here). GET only; it needs its own change.
+
+## After the second review of PR #11 (`5fe7150`): a network the reload contexts do not have
+
+- Sending the page to `about:blank` before a close let out the document's own `sendBeacon` and keepalive POSTs,
+  which are made to outlive their document: 34 in 25 runs at `5fe7150` against 0 on `main` (second review), about 1
+  run in 6 at rest here. That approach (worker closed from inside, blank page, quiet wait, `workersStopped`) is gone.
+- In submit mode, a context opened after load needs no network: its reloads are answered from the first load by
+  the route guard. Such a context is now opened with a proxy nobody listens on, `http://127.0.0.1:9`, bypass
+  `<-loopback>` (without it Chromium sends 127.0.0.1 and localhost around the proxy). Applied to `main`'s runner
+  alone: a page that keeps starting workers 0 POSTs (21 without), an audio worklet module 0 GETs (8 without), a
+  shared worker with no switch 0, keepalive and beacons 0; every field still `tested`.
+- What this does not cover: URL mode (no reload context; the shared worker switch stays for it) and `reloadInPlace`
+  (tests only, no new context). Chromium on Windows takes a per-context proxy only from a browser launched with
+  one: not measured there. CI runs on Linux.
