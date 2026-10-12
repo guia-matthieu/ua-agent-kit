@@ -3,6 +3,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createServer } from 'node:http';
+import { createSocket } from 'node:dgram';
 import { loadBattery } from '../src/battery.mjs';
 import { checkForm } from '../src/form-runner.mjs';
 
@@ -288,4 +289,94 @@ test('a POST navigation the old document fires during a reload is answered on th
     assert.equal(report.fields.email.status, 'tested', JSON.stringify(report.fields.email));
     assert.ok(report.fields.email.results.every(r => r.outcome !== 'not-testable'), JSON.stringify(report.fields.email.results));
   } finally { await srv.close(); }
+});
+
+// ---- Review of PR #10: workers the route guard does not hold all the time ----
+test('a page cannot start a shared worker, whose requests never come through the guard (GET and POST)', async () => {
+  const srv = await serveFixtures();
+  try {
+    const report = await checkForm(srv.url('form-shared-worker-leak.html'), { submit: true, keepPage: true, battery: emailCases(3) });
+    assert.equal(report.fields.email.status, 'tested');
+    // In submit mode the dead proxy alone stops this worker: without both the switch and the init script lines the
+    // requests below fail all the same. The constructor must be gone.
+    assert.deepEqual(report.__page.sharedWorker, ['undefined', 'undefined'], 'a frame still has SharedWorker');
+    await new Promise(resolve => setTimeout(resolve, 200));   // a request still on its way when the browser closed
+    assert.deepEqual(srv.received, [], 'a non-GET request reached the server');
+    const out = srv.gets.filter(g => g.startsWith('/leak'));
+    assert.deepEqual(out, [], `the shared worker got out: ${[...new Set(out)].join(' ')}`);
+  } finally { await srv.close(); }
+});
+
+test('in URL mode, which has no dead proxy, a shared worker never gets a POST out (form-shared-worker-leak.html)', async () => {
+  // main: 170 POSTs a run in URL mode (12/10); this is the mode where the switch and the init script are all there is
+  const srv = await serveFixtures();
+  try {
+    const report = await checkForm(srv.url('form-shared-worker-leak.html'), { battery: emailCases(3) });
+    assert.equal(report.submitExercised, false);
+    assert.equal(report.fields.email.status, 'tested');
+    await new Promise(resolve => setTimeout(resolve, 200));
+    assert.deepEqual(srv.received, [], `non-GET requests reached the server: ${srv.received.length}`);
+  } finally { await srv.close(); }
+});
+
+test('a dedicated worker never sends the typed value while its document goes away', async () => {
+  // main, at rest: 4 runs in 6 of a heavier version of this page leaked; this lighter one, made to stay quick with
+  // four test files at once, leaks on main only now and then. The test that fails there every time is the next one.
+  const srv = await serveFixtures();
+  try {
+    const report = await checkForm(srv.url('form-worker-burst.html'), { submit: true, battery: emailCases(6) });
+    assert.equal(report.fields.email.status, 'tested');
+    await new Promise(resolve => setTimeout(resolve, 200));
+    const out = srv.gets.filter(g => g.startsWith('/leak'));
+    assert.deepEqual(out, [], `the worker got out: ${[...new Set(out.map(g => g.split('&')[0]))].join(' ')}`);
+  } finally { await srv.close(); }
+});
+
+test('a page that keeps starting workers never gets a value out when a context closes (POST and GET)', async () => {
+  // review of PR #11: the requests the guard was still handling at the close went out (on main 35 to 54 POSTs a run)
+  const srv = await serveFixtures();
+  try {
+    const report = await checkForm(srv.url('form-worker-spawner.html'), { submit: true, battery: emailCases(10) });
+    assert.equal(report.fields.email.status, 'tested');
+    await new Promise(resolve => setTimeout(resolve, 200));
+    assert.deepEqual(srv.received, [], `non-GET requests reached the server: ${srv.received.length}`);
+    const out = srv.gets.filter(g => g.startsWith('/leak'));
+    assert.deepEqual(out, [], `the workers got out: ${out.length} requests`);
+  } finally { await srv.close(); }
+});
+
+// The worklet page fails on main every run. The keepalive page passes on main: it guards against a runner that sends the
+// page away before closing (second review of PR #11), which let its POSTs out in about 1 run of 6 at rest.
+for (const [name, what] of [['form-keepalive-beacon.html', 'a keepalive POST or a beacon of the document'], ['form-audio-worklet.html', 'an audio worklet module']]) {
+  test(`${what} never carries the typed value out (${name})`, async () => {
+    const srv = await serveFixtures();
+    try {
+      const report = await checkForm(srv.url(name), { submit: true, battery: emailCases(10) });
+      assert.equal(report.fields.email.status, 'tested');
+      await new Promise(resolve => setTimeout(resolve, 200));
+      assert.deepEqual(srv.received, [], `non-GET requests reached the server: ${srv.received.length}`);
+      const out = srv.gets.filter(g => g.startsWith('/leak'));
+      assert.deepEqual(out, [], `got out: ${[...new Set(out)].join(' ')}`);
+    } finally { await srv.close(); }
+  });
+}
+
+test('no frame has a peer connection, and none carries the typed value out over UDP around the proxy (form-webrtc-udp.html)', async () => {
+  // third review of PR #11: the dead proxy holds HTTP only; ICE checks went out with the value, on main as on the branch
+  const udp = createSocket('udp4');
+  const datagrams = [];
+  udp.on('message', m => datagrams.push(m));
+  await new Promise(resolve => udp.bind(0, '127.0.0.1', resolve));
+  const srv = await serveFixtures();
+  try {
+    const cases = emailCases(6);
+    const report = await checkForm(`${srv.url('form-webrtc-udp.html')}?u=${udp.address().port}`, { submit: true, keepPage: true, battery: cases });
+    assert.equal(report.fields.email.status, 'tested');
+    // The launch switch alone stops this UDP but lets the value out by mDNS (fourth review): the constructor must be gone.
+    assert.deepEqual(report.__page.rtc, ['undefined', 'undefined', 'undefined', 'undefined'], 'a frame still has RTCPeerConnection');
+    await new Promise(resolve => setTimeout(resolve, 500));
+    const hex = v => Buffer.from(v).toString('hex').slice(0, 250);
+    const out = cases.cases.map(c => c.value).filter(v => datagrams.some(d => d.includes(hex(v))));
+    assert.deepEqual(out, [], `${datagrams.length} datagrams, values out: ${out.join(' ')}`);
+  } finally { udp.close(); await srv.close(); }
 });
