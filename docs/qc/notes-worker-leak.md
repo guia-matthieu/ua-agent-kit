@@ -23,3 +23,6 @@ Facts measured on 2026-10-12, Chromium 153 (headless shell 1243), Playwright 1.6
   locator timeout on a loaded machine, on `main` as on the branch. The test page sends 5 every 2 ms.
 - None of the 309 bench pages (`bench/runs`, 255; `bench/results/generations`, 54) starts a worker or a shared
   worker: the change cannot move a row of the rescore of 2026-10-11, which was not run again.
+- The shared worker leak is the same in URL mode (`checkForm` on an http target with its defaults, submit off, the
+  way a live site is checked): on `main`, 170 POST requests per run of 6 email cases carried the typed values; on
+  the branch, 0 (`worker-leak/probe-urlmode.mjs` of the review harness, 2 runs each).
