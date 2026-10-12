@@ -12,15 +12,19 @@ Facts met on the way: `../notes-worker-leak.md`.
 - **No shared worker**: Chromium is launched with `--disable-shared-workers` and the init script deletes
   `SharedWorker`. Its requests never reach the route guard: on `main` a page sent the typed values out by POST on every
   case, in submit mode and in URL mode.
-- **Nothing on its way when a context closes** (`stopWorkers`, before every reload and before the browser closes):
-  each worker is closed from inside while the guard holds it, the page goes to `about:blank`, and the guard must
-  then have been handed no request for 100 ms. A request the guard was still handling when its context closed went
-  out, and a page that keeps starting workers got past closing them one by one.
+- **The contexts that hold typed values have no network**: in submit mode every context opened after load (one per
+  reload, where the values are typed) gets a proxy nobody listens on, loopback included. Its reloads are answered from
+  the first load by the route guard, so it needs none. What the guard misses or lets go fails there: a request still in
+  the guard when its context closes, a worker's request while its document goes away, a keepalive or beacon, an
+  audio worklet module. An earlier attempt (closing workers, a blank page and a quiet wait before each close) was
+  dropped after the second review: the blank page let the document's keepalive and beacon POSTs out.
 
 ## Measured on the benches
 
-`rescored/SCORED-WITH.txt`: commit `f217d4b`, `src/` not modified, 2026-10-12 11:46 → 12:58 UTC (72 min 42 s, four
-browsers; 71 min 11 s for the scoring of 2026-10-11).
+`rescored/SCORED-WITH.txt`: commit `7258c9e`, `src/` not modified, 2026-10-12 14:28 → 15:33 UTC (65 min 27 s, four
+browsers; 71 min 11 s for the scoring of 2026-10-11). A first run at `7258c9e` was cut off by the end of a session
+at 111 pages of 309; it had retried 5 pages under load (`attempt 1 shaky`), each of which scored alone the same on the
+branch and on `main` (3 runs, every field `tested`). The complete run took no second attempt.
 
 ```
 bench-2026-09-25-runs.csv: 4428 rows before, 4428 after, 0 changed, 0 gone, 0 new
@@ -34,5 +38,4 @@ pages that took more than one attempt: 0
 ```
 
 The six files are byte for byte those of the scoring of 2026-10-11 and of PR #9 (`rescored/SHA256SUMS`, the same
-checksums): they are not committed a third time. No bench page starts a worker; the blank page and the quiet wait
-before each close change no verdict.
+checksums): they are not committed a third time. Every reload of every page ran in a context with no network; no verdict changed.
