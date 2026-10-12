@@ -1,0 +1,3 @@
+# the CSV files are kept out of git when identical to ../2026-10-09_finding-5/rescored (see README)
+rescored/*.csv
+rescored/fields.json
