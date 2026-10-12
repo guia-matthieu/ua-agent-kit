@@ -20,3 +20,12 @@ Facts the handoff of 09/10 did not foresee.
 - Mutation check: each new test was run against `main` (`8276f6b`, worktree with the test and fixture copied in) and
   fails there: the three `tests/fresh-context.test.mjs` tests (3 runs of 3), the finding 4 test of
   `tests/verdict.test.mjs`, the finding 3 test of `tests/form-runner.test.mjs`.
+- Review of PR #10 (R1): the first fix of finding 4 judged a domain case typed as a URL only as a URL, so a page that
+  cleaned `https://exa mple.com` down to `example.com` read as fail where `main` read rewritten-sanitized. The cleaned
+  value now passes if it is valid as the case's kind, or as a URL when a URL was typed. The added assertion fails on
+  `ebab855`.
+- Review of PR #10 (T1): in submit mode a reload is answered from the first load's recording, so neither storage (a
+  new context) nor a counting server can make a page change after a number of reloads. The two tests on the default
+  path use a page that changes once a time in its query string has passed; one run of 8 email cases takes about 6 s,
+  and that time is moved (500 to 7000 ms) until it falls inside the loop. Against `main` the read-only test fails
+  (no deadline keeps a measured case), the page-changed one passes (that handling was already right there).
