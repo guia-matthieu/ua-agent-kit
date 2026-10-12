@@ -207,8 +207,9 @@ async function probeField(tab, selector, kind, cases, { submit = false, fresh = 
     let submitted = false;
     if (submit) {
       // requestSubmit() runs native constraint validation, then the page's own submit handlers. The
-      // default action is cancelled by the init script and any navigation is aborted by the route guard,
-      // so nothing leaves the page. A native block (invalid field) means the event never fires.
+      // default action is cancelled by the init script and a navigation is answered by the route guard, so
+      // the submit itself sends nothing; what a handler sends is met by the guards in checkForm.
+      // A native block (invalid field) means the event never fires.
       const n0 = await tab.page.evaluate(() => window.__uaSubmits ?? 0);
       await tab.page.evaluate(sel => { const f = document.querySelector(sel).form; if (f) f.requestSubmit(); }, selector).catch(() => {});
       await tab.page.waitForTimeout(SETTLE_MS);
@@ -291,25 +292,28 @@ const noHash = u => u.split('#')[0];   // a fragment never reaches a server; a p
  *  that a fixture can count its documents in IndexedDB and change after a number of them; the runner's handling of
  *  a page that changes, or stops bringing a new document, is tested that way. */
 export async function checkForm(target, { engine = 'chromium', lang = 'en', battery = loadBattery(), keepPage = false, submit = !/^https?:\/\//i.test(target), reloadDelayMs = 0, reloadInPlace = false } = {}) {
-  // No shared worker, ever: its requests never come through the route guard, so one that a page fed the typed
-  // value sent it out after load, POST included, on every case (measured 12/10 on main, Chromium 153: 228 requests
-  // in one run, in URL mode as in submit mode). The switch removes the constructor in every frame; the init script
-  // below does it in every engine.
+  // No shared worker: its requests never come through the route guard, so one that a page fed the typed value sent
+  // it out after load, POST included, on every case (measured 12/10 on main, Chromium 153: 228 requests in one run,
+  // in URL mode as in submit mode). The switch removes the constructor in Chromium; the init script deletes it in
+  // the frames it reaches, in every engine (measured in Chromium only).
   // No WebRTC: a peer connection sends its ICE checks and STUN requests around a context's proxy, and a page can put
   // the typed value in them (third review of PR #11, Chromium 153 on macOS: 28 datagrams with a value in 3 runs, on
-  // main as with the dead proxy). What holds is the init script, which deletes the constructor in every frame and
-  // every engine. This switch is a second layer for Chromium only: it stops the unicast UDP, but not the names WebRTC
+  // main as with the dead proxy). What holds is the init script, which deletes the constructor in the frames it
+  // reaches (tested: the page and a fresh iframe; a cross-site frame and other engines not measured). This switch is a second layer for Chromium only: it stops the unicast UDP, but not the names WebRTC
   // resolves around the proxy, a `.local` candidate or a TURN host (fourth review: with the switch alone, 28 mDNS
   // queries in 2 runs carried the value onto the LAN).
   const browser = await pw[engine].launch(engine === 'chromium' ? { args: ['--disable-shared-workers', '--force-webrtc-ip-handling-policy=disable_non_proxied_udp'] } : {});
   const report = { target, finalUrl: null, title: null, engine, engineVersion: browser.version(), date: new Date().toISOString(), battery: battery.version, submitExercised: submit, fields: {}, catalogue: [] };
   try {
-    // Guarantee: nothing but GET/HEAD leaves the page, armed before the first request so that a
-    // script running during load cannot slip a POST in before the guard exists.
-    // After load, in submit mode, nothing goes out at all — any frame, any request type: a submit handler
+    // The route guard: nothing but GET/HEAD passes it, armed before the first request so that a script
+    // running during load cannot slip a POST in before the guard exists.
+    // After load, in submit mode, it lets nothing through — any frame, any request type: a submit handler
     // can leak the typed value through an iframe-targeted GET form, fetch, an image, a popup. Navigations
     // are answered 204 (Chromium commits an error page for an aborted navigation; a 204 leaves the
     // document in place), everything else is aborted. Before load, and on a URL, GET/HEAD pass as before.
+    // It holds only what comes through it: shared workers and WebRTC are removed at launch and by the init
+    // script, and the reload contexts have the dead proxy. What is known to get around it, or not measured:
+    // docs/qc/notes-worker-leak.md.
     let loaded = false;
     let reloading = false; // the runner's own reloads, never the page's
     let finalUrl = null;   // the URL the first load ended on; every reload must end there too
@@ -367,7 +371,8 @@ export async function checkForm(target, { engine = 'chromium', lang = 'en', batt
     const initScript = () => {
       // window.name survives a navigation: a value stashed there by the previous document would reach this one.
       window.name = '';
-      // No popup, ever: a same-origin popup opened during load could read the opener's field after it (Astra C).
+      // No popup from window.open (any other new page is closed as it appears, below): a same-origin popup opened
+      // during load could read the opener's field after it (Astra C).
       window.open = () => null;
       try { delete window.SharedWorker; } catch { /* not configurable */ }
       window.SharedWorker = undefined;
@@ -376,7 +381,8 @@ export async function checkForm(target, { engine = 'chromium', lang = 'en', batt
       window.addEventListener('submit', e => e.preventDefault());
       // Requests sent while a document unloads are not reliably intercepted by the route guard (measured
       // 25/09: images fired from pagehide/unload reached the server with the typed value). So the page's own
-      // teardown handlers never run: these listeners are registered first and stop the event for the rest.
+      // listeners for these events on window and document never run: these are registered first and stop the
+      // event for the rest. A request already on its way is the route guard's and the dead proxy's.
       for (const type of ['pagehide', 'unload', 'beforeunload']) window.addEventListener(type, e => e.stopImmediatePropagation(), true);
       document.addEventListener('visibilitychange', e => e.stopImmediatePropagation(), true);
     };
