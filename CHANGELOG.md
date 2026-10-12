@@ -6,6 +6,23 @@
 - **`--battery <file>`** on `ua-kit check` and `ua-kit score`: plays a pack or any file in the battery format. The file is checked against the schema first, and the report names it (`batteryFile` in JSON) so that its score is not read as a score on the standard battery. Without the option, nothing changes.
 - **Run of 2026-10-06** (`bench/runs/2026-10-06_state-catalogue/`): the bench replayed on seven more models, those listed in the catalogue of the French State's Albert API, called through OpenRouter. 126 first-draft pages scored on the standard battery and on the TLD packs, and a hardening turn (122 pages) that is not part of the kit's bench. Every page, the CSV files and the scripts are published; the first run and its numbers are untouched.
 
+### `ua-kit check`: values that left the page (all present in 0.1.0)
+
+0.1.0 says that nothing but `GET`/`HEAD` leaves the page. On a page built to do it, that was not true:
+
+- **A shared worker sent the typed values out by `POST`**, on every case, **in URL mode too** (a live site, the mode that never submits): 170 to 228 requests a run, measured on the runner as it was before #11. Its requests never reached the runner's network guard. Shared workers are now disabled (#11).
+- In submit mode (local files), the values also left through workers, requests still in flight when a context closed, keepalive `fetch` and `sendBeacon`, an audio worklet's module URL and WebRTC (ICE/STUN over UDP). Every context that holds typed values now has a proxy nobody listens on, and WebRTC is removed from every frame (#10, #11).
+- Each of these ways has a test in `tests/guards.test.mjs`; the descriptions of #10 and #11 say which of them fail on the runner before the change. What is not measured (other engines than Chromium, Linux and Windows for some channels, DNS of a public name) is listed in `docs/qc/notes-worker-leak.md`.
+- The bench pages were scored again with the proxy: 0 row changed (`docs/qc/2026-10-12_worker-leak/`). None of them uses WebRTC, removed after that scoring.
+
+### `ua-kit check`: how a page's answer is read
+
+- A refusal is read by its place, not its wording ("Enter a valid email address." read as accepted), and a baseline value the page refuses is no longer the reference (#6, #7).
+- A `POST` the page sends itself on submit no longer crashes the check; a page that sets a fragment at load is no longer `reload-failed` (#8).
+- A field that depends on what the runner fills in the other fields (an anti-spam trap, for instance) is probed twice; a verdict is kept only when both probes give it, otherwise `not-testable`, `fill-dependent` (#9).
+- Each reload runs in a new browser context: storage, IndexedDB and history start empty. A domain typed with `https://` and cleaned by the page is judged as a URL. A fill that fails after the first case keeps the cases already measured. Playwright is pinned to `~1.63.0` (#10).
+- Effect on the published bench results: see `docs/qc/` for each change; `bench/results/RESULTS.md` is not rewritten here.
+
 ## 0.1.0 — 2026-09-29
 
 First public release.
