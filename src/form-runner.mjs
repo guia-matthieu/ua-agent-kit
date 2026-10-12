@@ -276,7 +276,7 @@ const RELOAD_ATTEMPTS = 3;   // the first try and two more
 // worker's request while its document goes away, a page's keepalive or beacon, an audio worklet's module (reviews of
 // PR #11, measured 12/10 with pages served on 127.0.0.1: 21 POSTs and 8 GETs a run on main without it, 0 with it,
 // every field still tested; the same pages served on a LAN address leaked nothing on main, cause not known).
-// A proxy holds HTTP only: WebRTC's UDP goes around it, see the launch flag in checkForm.
+// A proxy holds HTTP only: WebRTC goes around it, see the launch switch and the init script in checkForm.
 // Measured on macOS. Chromium on Windows takes a per-context proxy only from a browser
 // launched with one: not measured there.
 const NO_NETWORK = { server: 'http://127.0.0.1:9', bypass: '<-loopback>' };
@@ -295,10 +295,12 @@ export async function checkForm(target, { engine = 'chromium', lang = 'en', batt
   // value sent it out after load, POST included, on every case (measured 12/10 on main, Chromium 153: 228 requests
   // in one run, in URL mode as in submit mode). The switch removes the constructor in every frame; the init script
   // below does it in every engine.
-  // No UDP outside the proxy: WebRTC sends its ICE checks and STUN requests around a context's proxy, and a page can
-  // put the typed value in them (third review of PR #11, Chromium 153 on macOS: 28 datagrams with a value in 3 runs,
-  // on main as with the dead proxy). With this policy a peer connection gets no UDP at all, and the dead proxy holds
-  // the rest. The init script removes the constructor too, for the other engines, where this was not measured.
+  // No WebRTC: a peer connection sends its ICE checks and STUN requests around a context's proxy, and a page can put
+  // the typed value in them (third review of PR #11, Chromium 153 on macOS: 28 datagrams with a value in 3 runs, on
+  // main as with the dead proxy). What holds is the init script, which deletes the constructor in every frame and
+  // every engine. This switch is a second layer for Chromium only: it stops the unicast UDP, but not the names WebRTC
+  // resolves around the proxy, a `.local` candidate or a TURN host (fourth review: with the switch alone, 28 mDNS
+  // queries in 2 runs carried the value onto the LAN).
   const browser = await pw[engine].launch(engine === 'chromium' ? { args: ['--disable-shared-workers', '--force-webrtc-ip-handling-policy=disable_non_proxied_udp'] } : {});
   const report = { target, finalUrl: null, title: null, engine, engineVersion: browser.version(), date: new Date().toISOString(), battery: battery.version, submitExercised: submit, fields: {}, catalogue: [] };
   try {
@@ -474,7 +476,7 @@ export async function checkForm(target, { engine = 'chromium', lang = 'en', batt
     report.fields.website = found.website ? await probeTwice(tab, found.website, siteKind, siteCases, { submit, fresh }) : { status: 'not-testable', reason: 'no-field' };
 
     if (keepPage) {
-      report.__page = await page.evaluate(() => ({ submitted: window.__submitted, submits: window.__uaSubmits ?? 0, posts: window.__posts ?? [], nameAtLoad: window.__nameAtLoad, popupOpened: window.__popupOpened }));
+      report.__page = await page.evaluate(() => ({ submitted: window.__submitted, submits: window.__uaSubmits ?? 0, posts: window.__posts ?? [], nameAtLoad: window.__nameAtLoad, popupOpened: window.__popupOpened, rtc: window.__rtc }));
       report.__finalUrlAfter = page.url();
       report.__guard = guard;
       report.__pages = context.pages().length;

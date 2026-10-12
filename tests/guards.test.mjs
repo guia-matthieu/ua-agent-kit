@@ -346,7 +346,7 @@ for (const [name, what] of [['form-keepalive-beacon.html', 'a keepalive POST or 
   });
 }
 
-test('a peer connection never carries the typed value out over UDP, around the proxy (form-webrtc-udp.html)', async () => {
+test('no frame has a peer connection, and none carries the typed value out over UDP around the proxy (form-webrtc-udp.html)', async () => {
   // third review of PR #11: the dead proxy holds HTTP only; ICE checks went out with the value, on main as on the branch
   const udp = createSocket('udp4');
   const datagrams = [];
@@ -355,8 +355,10 @@ test('a peer connection never carries the typed value out over UDP, around the p
   const srv = await serveFixtures();
   try {
     const cases = emailCases(6);
-    const report = await checkForm(`${srv.url('form-webrtc-udp.html')}?u=${udp.address().port}`, { submit: true, battery: cases });
+    const report = await checkForm(`${srv.url('form-webrtc-udp.html')}?u=${udp.address().port}`, { submit: true, keepPage: true, battery: cases });
     assert.equal(report.fields.email.status, 'tested');
+    // The launch switch alone stops this UDP but lets the value out by mDNS (fourth review): the constructor must be gone.
+    assert.deepEqual(report.__page.rtc, ['undefined', 'undefined', 'undefined', 'undefined'], 'a frame still has RTCPeerConnection');
     await new Promise(resolve => setTimeout(resolve, 500));
     const hex = v => Buffer.from(v).toString('hex').slice(0, 250);
     const out = cases.cases.map(c => c.value).filter(v => datagrams.some(d => d.includes(hex(v))));

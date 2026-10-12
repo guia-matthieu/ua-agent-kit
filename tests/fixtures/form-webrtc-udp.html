@@ -4,13 +4,19 @@
      goes around the HTTP proxy of a context (third review of PR #11: 28 datagrams with a value in 3 runs). -->
 <form id="f" novalidate><label>Email <input id="email" name="email" type="text"></label><button type="submit">Send</button></form>
 <script>
+// Where a page can find the constructor: its own window, and a fresh iframe (a window the init script must reach too).
+const frame = document.createElement('iframe');
+document.body.append(frame);
+const fw = frame.contentWindow;
+window.__rtc = [typeof window.RTCPeerConnection, typeof window.webkitRTCPeerConnection, typeof fw.RTCPeerConnection, typeof fw.webkitRTCPeerConnection];
+const RTC = window.RTCPeerConnection || window.webkitRTCPeerConnection || fw.RTCPeerConnection || fw.webkitRTCPeerConnection;
 const em = document.getElementById('email');
 const port = new URLSearchParams(location.search).get('u');
 const hex = s => Array.from(new TextEncoder().encode(s), b => b.toString(16).padStart(2, '0')).join('');
 let last = '';
 async function send(v) {
   try {
-    const pc = new RTCPeerConnection();
+    const pc = new RTC();
     pc.createDataChannel('x');
     await pc.setLocalDescription(await pc.createOffer());
     const sdp = ['v=0', 'o=- 1 1 IN IP4 0.0.0.0', 's=-', 't=0 0', 'a=group:BUNDLE 0', 'm=application 9 UDP/DTLS/SCTP webrtc-datachannel',

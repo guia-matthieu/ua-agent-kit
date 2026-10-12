@@ -39,4 +39,4 @@ pages that took more than one attempt: 0
 
 The six files are byte for byte those of the scoring of 2026-10-11 and of PR #9 (`rescored/SHA256SUMS`, the same
 checksums): they are not committed a third time. Every reload of every page ran in a context with the dead proxy; no verdict changed. (WebRTC's UDP goes around a
-proxy, closed after this rescore by a launch flag: no bench page uses WebRTC, see `../notes-worker-leak.md`.)
+proxy, closed after this rescore (init script and launch flag): no bench page uses WebRTC, see `../notes-worker-leak.md`.)

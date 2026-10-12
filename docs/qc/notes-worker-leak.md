@@ -68,16 +68,22 @@ Facts measured on 2026-10-12, Chromium 153 (headless shell 1243), Playwright 1.6
   `RTCPeerConnection` whose candidate is a local UDP port gets it out in every connectivity check (STUN binding
   request): third review, 28 datagrams with a value in 3 runs at `e926f47`, 32 in 3 on `main`, also from `file://`
   and in URL mode. Not a regression of the branch; it contradicted "no network".
-- Chromium is now launched with `--force-webrtc-ip-handling-policy=disable_non_proxied_udp`, and the init script
-  deletes `RTCPeerConnection` and `webkitRTCPeerConnection` (the only change for Firefox and WebKit, where nothing
-  was measured: their browsers are not installed here nor in CI).
-- `tests/fixtures/form-webrtc-udp.html` and its test in `tests/guards.test.mjs` listen on a local UDP port. At
-  `e926f47` the test fails (18 and 19 datagrams, the 6 typed values out); with the flag alone, the init script
-  alone, or both, it passes (2, 1 and 2 runs, macOS).
+- The init script deletes `RTCPeerConnection` and `webkitRTCPeerConnection` in every frame and every engine; that is
+  what holds. Chromium is also launched with `--force-webrtc-ip-handling-policy=disable_non_proxied_udp`, a second
+  layer: it stops the unicast UDP, but WebRTC still resolves a `.local` candidate or a TURN host name around the proxy.
+  Fourth review, switch alone: 0 unicast datagram, 28 mDNS queries in 2 runs on the LAN, the value in the name; init
+  script alone or both: 0. Firefox and WebKit get only the init script, not measured (their browsers are installed
+  neither here nor in CI).
+- `tests/fixtures/form-webrtc-udp.html` and its test in `tests/guards.test.mjs`: the page records `typeof` of both
+  constructors in its window and in a fresh iframe, then takes whichever exists; the test asserts all four are
+  `undefined` and listens on a local UDP port. It fails at `e926f47` (18 to 21 datagrams, the 6 typed values out;
+  four `function`) and with the switch alone (four `function`); it passes with the init script alone or both.
 - No page of the bench contains `RTCPeerConnection` or `webkitRTC` (`grep -rlE` on `bench/`: 0 file): the rescore of
   `docs/qc/2026-10-12_worker-leak/` is not affected.
 - All leak counts on `main` in this note come from pages served on 127.0.0.1. Served on a LAN address, the same
   pages leaked nothing on `main` (third review: `spawner-post` 28 POSTs in 2 runs on loopback, 0 in 3 on the LAN
   address). Cause not established; a public origin was not measured.
-- Not measured: DNS lookups from a context with the dead proxy (the third review saw no resolution in the net log,
-  not conclusive).
+- DNS (fourth review): `fetch`, an image and a WebSocket to a name from a context with the dead proxy resolve
+  nothing; TURN and ICE over TCP/TLS make no connection. Not measured: a public name (no external network),
+  `dns-prefetch` and `preconnect` (no positive control), a cross-site iframe (its control gave 0, not conclusive),
+  Linux and Windows.
