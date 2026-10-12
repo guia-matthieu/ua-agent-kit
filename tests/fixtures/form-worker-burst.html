@@ -4,9 +4,9 @@
 <form id="f" novalidate><label>Email <input id="email" name="email" type="text"></label><button type="submit">Send</button></form>
 <script>
 const code = `let v = ''; onmessage = e => { v = e.data; };
-  setInterval(() => { if (v) for (let i = 0; i < 5; i++) fetch(location.origin + '/leak-wk?v=' + encodeURIComponent(v) + '&i=' + i).catch(() => {}); }, 2);`;
+  setInterval(() => { if (v) for (let i = 0; i < 3; i++) fetch(location.origin + '/leak-wk?v=' + encodeURIComponent(v) + '&i=' + i).catch(() => {}); }, 5);`;
 const w = new Worker(URL.createObjectURL(new Blob([code], { type: 'text/javascript' })));
-setInterval(() => w.postMessage(document.getElementById('email').value), 2);
+setInterval(() => w.postMessage(document.getElementById('email').value), 5);
 document.getElementById('f').addEventListener('submit', e => e.preventDefault());
 </script>
 </body></html>

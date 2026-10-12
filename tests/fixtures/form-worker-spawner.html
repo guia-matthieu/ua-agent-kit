@@ -1,0 +1,15 @@
+<!doctype html><html lang="en"><body>
+<!-- Starts a new worker every 20 ms (ten alive at a time), each sending the field's value by POST and GET every 10 ms. Closing the
+     workers one by one never catches up with it: only ending the document stops them (review of PR #11). -->
+<form id="f" novalidate><label>Email <input id="email" name="email" type="text"></label><button type="submit">Send</button></form>
+<script>
+const em = document.getElementById('email');
+const workers = [];
+const code = `let v = ''; onmessage = e => { v = e.data; };
+  setInterval(() => { if (v) { fetch('${location.origin}/leak-spawn-post', { method: 'POST', body: v }).catch(() => {}); fetch('${location.origin}/leak-spawn?v=' + encodeURIComponent(v)).catch(() => {}); } }, 10);`;
+const src = URL.createObjectURL(new Blob([code], { type: 'text/javascript' }));
+setInterval(() => { workers.push(new Worker(src)); if (workers.length > 10) workers.shift().terminate(); }, 20);
+setInterval(() => workers.forEach(w => w.postMessage(em.value)), 10);
+document.getElementById('f').addEventListener('submit', e => e.preventDefault());
+</script>
+</body></html>

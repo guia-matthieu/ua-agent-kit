@@ -268,6 +268,9 @@ const FIELD_KEYS = ['email', 'website', 'websiteType', 'emailKey', 'websiteKey']
 // What Playwright says when a navigation is cut short by another one, or the document is torn down under it.
 const NAV_RACE = /net::ERR_ABORTED|interrupted by another navigation|Execution context was destroyed|frame was detached|Navigating frame was detached/;
 const RELOAD_ATTEMPTS = 3;   // the first try and two more
+const WORKER_CLOSE_MS = 300;   // a worker closed from inside goes in 4 to 85 ms (measured 12/10); a busy one never does
+const QUIET_MS = 100;          // no request handed to the guard for this long before a close
+const QUIET_MAX_MS = 2000;
 const sameFields = (a, b) => FIELD_KEYS.every(k => a[k] === b[k]);
 const noHash = u => u.split('#')[0];   // a fragment never reaches a server; a page setting one at load is still the same page
 
@@ -295,9 +298,11 @@ export async function checkForm(target, { engine = 'chromium', lang = 'en', batt
     let loaded = false;
     let reloading = false; // the runner's own reloads, never the page's
     let finalUrl = null;   // the URL the first load ended on; every reload must end there too
-    let recording = null;  // the responses of the first load, replayed on every reload
+    let recording = null;
+    let lastRequestAt = 0;   // the last request the guard was handed (see stopWorkers)  // the responses of the first load, replayed on every reload
     const guard = { reloadNavigationsBlocked: 0, reloadRequestsAborted: 0, reloadFulfilledFromCache: 0, postNavigationsAnswered: 0, workersStopped: 0 };
     const guardRoute = async route => {
+      lastRequestAt = Date.now();
       const r = route.request();
       const m = r.method();
       if (m !== 'GET' && m !== 'HEAD') {
@@ -379,18 +384,24 @@ export async function checkForm(target, { engine = 'chromium', lang = 'en', batt
       // a form target): closed as soon as it exists, whatever the moment. Registered after our own page.
       context.on('page', p => p.close().catch(() => {}));
     };
-    // A dedicated worker is cut off from the route guard while its document goes away, before it stops: a timer of
-    // its own sent the typed value out in that window (review of PR #10, 5 runs in 32 under load). So every worker
-    // is closed from inside, while the guard still holds it, before its document is replaced or its context closed.
-    // A worker that does not answer in time is left to the close as before.
+    // Nothing may be on its way when a context or the browser closes. A request the guard is still handling then, or
+    // one a worker sends while its document goes away, is let through: the guard's answer is lost with the context
+    // (review of PR #11: 19 of 26 leaked POSTs had reached the guard, all arrived within ms of the close). So before
+    // every close: each worker is closed from inside while the guard still holds it (enough for a page that keeps
+    // its workers), the page goes to about:blank, which ends the document and every worker it still has (a page that
+    // keeps starting new ones), and the guard must then have seen no request for QUIET_MS.
+    // Measured 12/10, Chromium 153: 0 leaks on every page of the review; the request flow stops ~100 ms after the
+    // blank page. It narrows a window that Playwright leaves open; it is not a proof that none is left.
     stopWorkers = async () => {
-      for (let round = 0; round < 3 && page.workers().length; round++) {
-        await Promise.all(page.workers().map(w => Promise.race([
-          new Promise(resolve => w.once('close', () => { guard.workersStopped += 1; resolve(); })),
-          w.evaluate(() => globalThis.close()).then(() => new Promise(() => {}), () => {}),
-          new Promise(resolve => setTimeout(resolve, 1000)),
-        ])));
-      }
+      const closed = new WeakSet();
+      await Promise.all(page.workers().map(w => Promise.race([
+        new Promise(resolve => w.once('close', () => { if (!closed.has(w)) { closed.add(w); guard.workersStopped += 1; } resolve(); })),
+        w.evaluate(() => globalThis.close()).then(() => new Promise(() => {}), () => {}),
+        new Promise(resolve => setTimeout(resolve, WORKER_CLOSE_MS)),
+      ])));
+      await page.goto('about:blank').catch(() => {});
+      const since = Date.now();
+      while (Date.now() - lastRequestAt < QUIET_MS && Date.now() - since < QUIET_MAX_MS) await new Promise(resolve => setTimeout(resolve, 10));
     };
     await open();
     // what probeField types into: the page of the current context, which every reload replaces
