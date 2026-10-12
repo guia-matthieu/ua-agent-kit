@@ -91,4 +91,6 @@ test('a domain case typed as a URL (decision D1) and cleaned by the page is judg
   assert.deepEqual(r, { verdict: 'accepted', rewritten: true, outcome: 'rewritten-sanitized' });
   // typed bare into a domain field, the same cleaning is judged as a domain, as before
   assert.equal(decide(domainReject, 'exa mple.com', state(''), state('example.com'), { submitted: true }).outcome, 'rewritten-sanitized');
+  // typed as a URL and cleaned down to the bare domain: still a valid value (review of PR #10)
+  assert.equal(decide(domainReject, 'https://exa mple.com', state(''), state('example.com'), { submitted: true }).outcome, 'rewritten-sanitized');
 });
