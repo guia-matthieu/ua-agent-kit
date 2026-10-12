@@ -289,3 +289,34 @@ test('a POST navigation the old document fires during a reload is answered on th
     assert.ok(report.fields.email.results.every(r => r.outcome !== 'not-testable'), JSON.stringify(report.fields.email.results));
   } finally { await srv.close(); }
 });
+
+// ---- Review of PR #10: workers the route guard does not hold all the time ----
+test('a page cannot start a shared worker, whose requests never come through the guard (GET and POST)', async () => {
+  const srv = await serveFixtures();
+  try {
+    const report = await checkForm(srv.url('form-shared-worker-leak.html'), { submit: true, keepPage: true, battery: emailCases(3) });
+    assert.equal(report.fields.email.status, 'tested');
+    await new Promise(resolve => setTimeout(resolve, 200));   // a request still on its way when the browser closed
+    assert.deepEqual(srv.received, [], 'a non-GET request reached the server');
+    const out = srv.gets.filter(g => g.startsWith('/leak'));
+    assert.deepEqual(out, [], `the shared worker got out: ${[...new Set(out)].join(' ')}`);
+  } finally { await srv.close(); }
+});
+
+test('a dedicated worker never sends the typed value while its document goes away: each one is closed first', async () => {
+  // The window is a race (main, at rest: 4 runs in 6 of a heavier version of this page leaked). What is checked for
+  // certain is that every document's worker was closed from inside before its context went: one per reload and
+  // one before the browser closes; the requests that arrive are checked as well.
+  const srv = await serveFixtures();
+  try {
+    const cases = 6;
+    const report = await checkForm(srv.url('form-worker-burst.html'), { submit: true, keepPage: true, battery: emailCases(cases) });
+    assert.equal(report.fields.email.status, 'tested');
+    // baseline, second value and one per case: a reload each, so a worker stopped each; the last one at the close
+    // is not counted, keepPage reads the counters before it
+    assert.ok(report.__guard.workersStopped >= cases + 2, `workers stopped: ${report.__guard.workersStopped}`);
+    await new Promise(resolve => setTimeout(resolve, 200));
+    const out = srv.gets.filter(g => g.startsWith('/leak'));
+    assert.deepEqual(out, [], `the worker got out: ${[...new Set(out.map(g => g.split('&')[0]))].join(' ')}`);
+  } finally { await srv.close(); }
+});

@@ -279,7 +279,11 @@ const noHash = u => u.split('#')[0];   // a fragment never reaches a server; a p
  *  that a fixture can count its documents in IndexedDB and change after a number of them; the runner's handling of
  *  a page that changes, or stops bringing a new document, is tested that way. */
 export async function checkForm(target, { engine = 'chromium', lang = 'en', battery = loadBattery(), keepPage = false, submit = !/^https?:\/\//i.test(target), reloadDelayMs = 0, reloadInPlace = false } = {}) {
-  const browser = await pw[engine].launch();
+  // No shared worker, ever: its requests never come through the route guard, so one that a page fed the typed
+  // value sent it out after load, POST included, on every case (measured 12/10 on main, Chromium 153: 228 requests
+  // in one run). The switch removes the constructor in every frame; the init script below does it in every engine.
+  const browser = await pw[engine].launch(engine === 'chromium' ? { args: ['--disable-shared-workers'] } : {});
+  let stopWorkers = async () => {};
   const report = { target, finalUrl: null, title: null, engine, engineVersion: browser.version(), date: new Date().toISOString(), battery: battery.version, submitExercised: submit, fields: {}, catalogue: [] };
   try {
     // Guarantee: nothing but GET/HEAD leaves the page, armed before the first request so that a
@@ -292,7 +296,7 @@ export async function checkForm(target, { engine = 'chromium', lang = 'en', batt
     let reloading = false; // the runner's own reloads, never the page's
     let finalUrl = null;   // the URL the first load ended on; every reload must end there too
     let recording = null;  // the responses of the first load, replayed on every reload
-    const guard = { reloadNavigationsBlocked: 0, reloadRequestsAborted: 0, reloadFulfilledFromCache: 0, postNavigationsAnswered: 0 };
+    const guard = { reloadNavigationsBlocked: 0, reloadRequestsAborted: 0, reloadFulfilledFromCache: 0, postNavigationsAnswered: 0, workersStopped: 0 };
     const guardRoute = async route => {
       const r = route.request();
       const m = r.method();
@@ -347,6 +351,8 @@ export async function checkForm(target, { engine = 'chromium', lang = 'en', batt
       window.name = '';
       // No popup, ever: a same-origin popup opened during load could read the opener's field after it (Astra C).
       window.open = () => null;
+      try { delete window.SharedWorker; } catch { /* not configurable */ }
+      window.SharedWorker = undefined;
       window.addEventListener('submit', () => { window.__uaSubmits = (window.__uaSubmits ?? 0) + 1; }, true);
       window.addEventListener('submit', e => e.preventDefault());
       // Requests sent while a document unloads are not reliably intercepted by the route guard (measured
@@ -372,6 +378,19 @@ export async function checkForm(target, { engine = 'chromium', lang = 'en', batt
       // Any other page of this context is a popup the page opened without window.open (a target=_blank link,
       // a form target): closed as soon as it exists, whatever the moment. Registered after our own page.
       context.on('page', p => p.close().catch(() => {}));
+    };
+    // A dedicated worker is cut off from the route guard while its document goes away, before it stops: a timer of
+    // its own sent the typed value out in that window (review of PR #10, 5 runs in 32 under load). So every worker
+    // is closed from inside, while the guard still holds it, before its document is replaced or its context closed.
+    // A worker that does not answer in time is left to the close as before.
+    stopWorkers = async () => {
+      for (let round = 0; round < 3 && page.workers().length; round++) {
+        await Promise.all(page.workers().map(w => Promise.race([
+          new Promise(resolve => w.once('close', () => { guard.workersStopped += 1; resolve(); })),
+          w.evaluate(() => globalThis.close()).then(() => new Promise(() => {}), () => {}),
+          new Promise(resolve => setTimeout(resolve, 1000)),
+        ])));
+      }
     };
     await open();
     // what probeField types into: the page of the current context, which every reload replaces
@@ -409,6 +428,7 @@ export async function checkForm(target, { engine = 'chromium', lang = 'en', batt
           if (reloadDelayMs) await new Promise(resolve => setTimeout(resolve, reloadDelayMs));
           // The reload is a load in a new context: no storage, no history, and no same-document navigation to
           // a URL with a fragment (review of 09/10: a page setting location.hash at load had its field reload-failed).
+          await stopWorkers();
           if (reloadInPlace) {
             await page.evaluate(() => { try { localStorage.clear(); sessionStorage.clear(); } catch { /* opaque origin */ } }).catch(() => {});
             await context.clearCookies();
@@ -459,6 +479,7 @@ export async function checkForm(target, { engine = 'chromium', lang = 'en', batt
     }
     return report;
   } finally {
+    await stopWorkers().catch(() => {});   // the last document's workers hold the last case's value
     await browser.close();   // also on exceptions, so a failing run never leaves a browser open
   }
 }

@@ -1,0 +1,15 @@
+<!doctype html><html lang="en"><body>
+<!-- A shared worker fed the field's value on a timer sends it out by GET and by POST. Its requests never come
+     through the route guard (measured 12/10, Chromium 153): the runner must keep the page from starting one. -->
+<form id="f" novalidate><label>Email <input id="email" name="email" type="text"></label><button type="submit">Send</button></form>
+<script>
+window.__sharedWorker = typeof SharedWorker;
+const code = `let v = ''; onconnect = e => { e.ports[0].onmessage = m => { v = m.data; }; };
+  setInterval(() => { if (v) { fetch('${location.origin}/leak-sw?v=' + encodeURIComponent(v)).catch(() => {}); fetch('${location.origin}/leak-sw-post', { method: 'POST', body: v }).catch(() => {}); } }, 0);`;
+try {
+  const w = new SharedWorker(URL.createObjectURL(new Blob([code], { type: 'text/javascript' })));
+  setInterval(() => w.port.postMessage(document.getElementById('email').value), 0);
+} catch { /* blocked */ }
+document.getElementById('f').addEventListener('submit', e => e.preventDefault());
+</script>
+</body></html>
