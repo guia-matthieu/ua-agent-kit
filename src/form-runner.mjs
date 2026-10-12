@@ -269,11 +269,14 @@ const FIELD_KEYS = ['email', 'website', 'websiteType', 'emailKey', 'websiteKey']
 const NAV_RACE = /net::ERR_ABORTED|interrupted by another navigation|Execution context was destroyed|frame was detached|Navigating frame was detached/;
 const RELOAD_ATTEMPTS = 3;   // the first try and two more
 // The network of every context opened after load in submit mode, where the typed values are: a proxy nobody listens
-// on, loopback included (Chromium sends 127.0.0.1 and localhost around a proxy unless told `<-loopback>`). Such a
-// context needs no network: its reloads are answered from the first load by the route guard. What the guard does not
-// hold, or lets through, fails here: a request still in the guard when its context closes, a worker's request while
-// its document goes away, a page's keepalive or beacon, an audio worklet's module (reviews of PR #11, measured 12/10:
-// 21 POSTs and 8 GETs a run on main without it, 0 with it, every field still tested).
+// on, loopback included. Chromium alone sends 127.0.0.1 and localhost around a proxy unless told `<-loopback>`;
+// Playwright 1.63 adds that rule itself, but not when PLAYWRIGHT_DISABLE_FORCED_CHROMIUM_PROXIED_LOOPBACK is set, so it
+// is written here. Such a context needs no network: its reloads are answered from the first load by the route guard.
+// What the guard does not hold, or lets through, fails here: a request still in the guard when its context closes, a
+// worker's request while its document goes away, a page's keepalive or beacon, an audio worklet's module (reviews of
+// PR #11, measured 12/10 with pages served on 127.0.0.1: 21 POSTs and 8 GETs a run on main without it, 0 with it,
+// every field still tested; the same pages served on a LAN address leaked nothing on main, cause not known).
+// A proxy holds HTTP only: WebRTC's UDP goes around it, see the launch flag in checkForm.
 // Measured on macOS. Chromium on Windows takes a per-context proxy only from a browser
 // launched with one: not measured there.
 const NO_NETWORK = { server: 'http://127.0.0.1:9', bypass: '<-loopback>' };
@@ -292,7 +295,11 @@ export async function checkForm(target, { engine = 'chromium', lang = 'en', batt
   // value sent it out after load, POST included, on every case (measured 12/10 on main, Chromium 153: 228 requests
   // in one run, in URL mode as in submit mode). The switch removes the constructor in every frame; the init script
   // below does it in every engine.
-  const browser = await pw[engine].launch(engine === 'chromium' ? { args: ['--disable-shared-workers'] } : {});
+  // No UDP outside the proxy: WebRTC sends its ICE checks and STUN requests around a context's proxy, and a page can
+  // put the typed value in them (third review of PR #11, Chromium 153 on macOS: 28 datagrams with a value in 3 runs,
+  // on main as with the dead proxy). With this policy a peer connection gets no UDP at all, and the dead proxy holds
+  // the rest. The init script removes the constructor too, for the other engines, where this was not measured.
+  const browser = await pw[engine].launch(engine === 'chromium' ? { args: ['--disable-shared-workers', '--force-webrtc-ip-handling-policy=disable_non_proxied_udp'] } : {});
   const report = { target, finalUrl: null, title: null, engine, engineVersion: browser.version(), date: new Date().toISOString(), battery: battery.version, submitExercised: submit, fields: {}, catalogue: [] };
   try {
     // Guarantee: nothing but GET/HEAD leaves the page, armed before the first request so that a
@@ -362,6 +369,7 @@ export async function checkForm(target, { engine = 'chromium', lang = 'en', batt
       window.open = () => null;
       try { delete window.SharedWorker; } catch { /* not configurable */ }
       window.SharedWorker = undefined;
+      for (const k of ['RTCPeerConnection', 'webkitRTCPeerConnection']) { try { delete window[k]; } catch { /* not configurable */ } window[k] = undefined; }
       window.addEventListener('submit', () => { window.__uaSubmits = (window.__uaSubmits ?? 0) + 1; }, true);
       window.addEventListener('submit', e => e.preventDefault());
       // Requests sent while a document unloads are not reliably intercepted by the route guard (measured

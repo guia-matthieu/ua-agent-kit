@@ -3,6 +3,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createServer } from 'node:http';
+import { createSocket } from 'node:dgram';
 import { loadBattery } from '../src/battery.mjs';
 import { checkForm } from '../src/form-runner.mjs';
 
@@ -344,3 +345,21 @@ for (const [name, what] of [['form-keepalive-beacon.html', 'a keepalive POST or 
     } finally { await srv.close(); }
   });
 }
+
+test('a peer connection never carries the typed value out over UDP, around the proxy (form-webrtc-udp.html)', async () => {
+  // third review of PR #11: the dead proxy holds HTTP only; ICE checks went out with the value, on main as on the branch
+  const udp = createSocket('udp4');
+  const datagrams = [];
+  udp.on('message', m => datagrams.push(m));
+  await new Promise(resolve => udp.bind(0, '127.0.0.1', resolve));
+  const srv = await serveFixtures();
+  try {
+    const cases = emailCases(6);
+    const report = await checkForm(`${srv.url('form-webrtc-udp.html')}?u=${udp.address().port}`, { submit: true, battery: cases });
+    assert.equal(report.fields.email.status, 'tested');
+    await new Promise(resolve => setTimeout(resolve, 500));
+    const hex = v => Buffer.from(v).toString('hex').slice(0, 250);
+    const out = cases.cases.map(c => c.value).filter(v => datagrams.some(d => d.includes(hex(v))));
+    assert.deepEqual(out, [], `${datagrams.length} datagrams, values out: ${out.join(' ')}`);
+  } finally { udp.close(); await srv.close(); }
+});

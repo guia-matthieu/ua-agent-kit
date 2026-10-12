@@ -12,7 +12,7 @@ Facts met on the way: `../notes-worker-leak.md`.
 - **No shared worker**: Chromium is launched with `--disable-shared-workers` and the init script deletes
   `SharedWorker`. Its requests never reach the route guard: on `main` a page sent the typed values out by POST on every
   case, in submit mode and in URL mode.
-- **The contexts that hold typed values have no network**: in submit mode every context opened after load (one per
+- **The contexts that hold typed values have no HTTP network**: in submit mode every context opened after load (one per
   reload, where the values are typed) gets a proxy nobody listens on, loopback included. Its reloads are answered from
   the first load by the route guard, so it needs none. What the guard misses or lets go fails there: a request still in
   the guard when its context closes, a worker's request while its document goes away, a keepalive or beacon, an
@@ -38,4 +38,5 @@ pages that took more than one attempt: 0
 ```
 
 The six files are byte for byte those of the scoring of 2026-10-11 and of PR #9 (`rescored/SHA256SUMS`, the same
-checksums): they are not committed a third time. Every reload of every page ran in a context with no network; no verdict changed.
+checksums): they are not committed a third time. Every reload of every page ran in a context with the dead proxy; no verdict changed. (WebRTC's UDP goes around a
+proxy, closed after this rescore by a launch flag: no bench page uses WebRTC, see `../notes-worker-leak.md`.)

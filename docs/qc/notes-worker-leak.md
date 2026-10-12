@@ -53,9 +53,31 @@ Facts measured on 2026-10-12, Chromium 153 (headless shell 1243), Playwright 1.6
   run in 6 at rest here. That approach (worker closed from inside, blank page, quiet wait, `workersStopped`) is gone.
 - In submit mode, a context opened after load needs no network: its reloads are answered from the first load by
   the route guard. Such a context is now opened with a proxy nobody listens on, `http://127.0.0.1:9`, bypass
-  `<-loopback>` (without it Chromium sends 127.0.0.1 and localhost around the proxy). Applied to `main`'s runner
+  `<-loopback>` (without it Chromium alone sends 127.0.0.1 and localhost around the proxy; Playwright 1.63 adds the
+  rule itself unless `PLAYWRIGHT_DISABLE_FORCED_CHROMIUM_PROXIED_LOOPBACK` is set: third review, `nobypass` 3/3 green,
+  2/3 failing with the variable). Applied to `main`'s runner
   alone: a page that keeps starting workers 0 POSTs (21 without), an audio worklet module 0 GETs (8 without), a
   shared worker with no switch 0, keepalive and beacons 0; every field still `tested`.
 - What this does not cover: URL mode (no reload context; the shared worker switch stays for it) and `reloadInPlace`
   (tests only, no new context). Chromium on Windows takes a per-context proxy only from a browser launched with
   one: not measured there. CI runs on Linux.
+
+## After the third review of PR #11 (`e926f47`): UDP goes around the proxy
+
+- A proxy holds HTTP only. A page that puts the typed value, hex-encoded, in the remote ICE ufrag of an
+  `RTCPeerConnection` whose candidate is a local UDP port gets it out in every connectivity check (STUN binding
+  request): third review, 28 datagrams with a value in 3 runs at `e926f47`, 32 in 3 on `main`, also from `file://`
+  and in URL mode. Not a regression of the branch; it contradicted "no network".
+- Chromium is now launched with `--force-webrtc-ip-handling-policy=disable_non_proxied_udp`, and the init script
+  deletes `RTCPeerConnection` and `webkitRTCPeerConnection` (the only change for Firefox and WebKit, where nothing
+  was measured: their browsers are not installed here nor in CI).
+- `tests/fixtures/form-webrtc-udp.html` and its test in `tests/guards.test.mjs` listen on a local UDP port. At
+  `e926f47` the test fails (18 and 19 datagrams, the 6 typed values out); with the flag alone, the init script
+  alone, or both, it passes (2, 1 and 2 runs, macOS).
+- No page of the bench contains `RTCPeerConnection` or `webkitRTC` (`grep -rlE` on `bench/`: 0 file): the rescore of
+  `docs/qc/2026-10-12_worker-leak/` is not affected.
+- All leak counts on `main` in this note come from pages served on 127.0.0.1. Served on a LAN address, the same
+  pages leaked nothing on `main` (third review: `spawner-post` 28 POSTs in 2 runs on loopback, 0 in 3 on the LAN
+  address). Cause not established; a public origin was not measured.
+- Not measured: DNS lookups from a context with the dead proxy (the third review saw no resolution in the net log,
+  not conclusive).

