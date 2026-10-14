@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulaire d'inscription</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .card {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 480px;
+            padding: 32px;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 24px;
+            text-align: center;
+            color: #1a1a1a;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 6px;
+            color: #4a4a4a;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #0066cc;
+            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.15);
+        }
+
+        input.invalid {
+            border-color: #d93025;
+            background-color: #fff8f7;
+        }
+
+        input.invalid:focus {
+            box-shadow: 0 0 0 3px rgba(217, 48, 37, 0.15);
+        }
+
+        .error-message {
+            color: #d93025;
+            font-size: 13px;
+            margin-top: 5px;
+            min-height: 18px;
+            display: none;
+        }
+
+        .error-message.visible {
+            display: block;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            background-color: #0066cc;
+            color: #ffffff;
+            border: none;
+            border-radius: 6px;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 10px;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0052a3;
+        }
+
+        .success-message {
+            display: none;
+            background-color: #e6f4ea;
+            color: #137333;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h1>Créer un compte</h1>
+        
+        <div id="successBox" class="success-message">
+            Inscription réussie !
+        </div>
+
+        <form id="registrationForm" novalidate>
+            <div class="form-group">
+                <label for="fullName">Nom complet</label>
+                <input type="text" id="fullName" name="fullName" placeholder="Ex. Jean Dupont" autocomplete="name">
+                <span id="fullNameError" class="error-message"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Adresse e-mail</label>
+                <input type="email" id="email" name="email" placeholder="Ex. jean.dupont@example.com" autocomplete="email">
+                <span id="emailError" class="error-message"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="website">Site web</label>
+                <input type="url" id="website" name="website" placeholder="https://monsite.com">
+                <span id="websiteError" class="error-message"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Mot de passe</label>
+                <input type="password" id="password" name="password" placeholder="8 caractères min., 1 lettre et 1 chiffre" autocomplete="new-password">
+                <span id="passwordError" class="error-message"></span>
+            </div>
+
+            <button type="submit">S'inscrire</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('registrationForm');
+            const successBox = document.getElementById('successBox');
+
+            const fields = {
+                fullName: {
+                    input: document.getElementById('fullName'),
+                    error: document.getElementById('fullNameError'),
+                    validate: (value) => {
+                        const trimmed = value.trim();
+                        if (trimmed === '') return 'Le nom complet est obligatoire.';
+                        if (trimmed.length < 3) return 'Le nom doit comporter au moins 3 caractères.';
+                        return '';
+                    }
+                },
+                email: {
+                    input: document.getElementById('email'),
+                    error: document.getElementById('emailError'),
+                    validate: (value) => {
+                        const trimmed = value.trim();
+                        if (trimmed === '') return 'L\'adresse e-mail est obligatoire.';
+                        if (/\s/.test(trimmed)) return 'L\'adresse e-mail ne doit pas contenir d\'espaces.';
+                        if (trimmed.includes('..')) return 'L\'adresse e-mail ne doit pas contenir de points consécutifs.';
+                        
+                        const emailRegex = /^[a-zA-Z0-9]+([._%+-][a-zA-Z0-9]+)*@[a-zA-Z0-9]+([.-][a-zA-Z0-9]+)*\.[a-zA-Z]{2,}$/;
+                        if (!emailRegex.test(trimmed)) {
+                            return 'Veuillez saisir une adresse e-mail valide (ex: utilisateur@domaine.com).';
+                        }
+                        return '';
+                    }
+                },
+                website: {
+                    input: document.getElementById('website'),
+                    error: document.getElementById('websiteError'),
+                    validate: (value) => {
+                        const trimmed = value.trim();
+                        if (trimmed === '') return 'L\'adresse du site web est obligatoire.';
+                        if (/\s/.test(trimmed)) return 'L\'adresse du site web ne doit pas contenir d\'espaces.';
+                        if (trimmed.includes('..')) return 'L\'adresse du site web ne doit pas contenir de points consécutifs.';
+
+                        try {
+                            const url = new URL(trimmed);
+                            if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+                                return 'L\'URL doit commencer par http:// ou https://';
+                            }
+                            
+                            const hostnameRegex = /^[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?)*\.[a-zA-Z]{2,}$/;
+                            if (!hostnameRegex.test(url.hostname)) {
+                                return 'Veuillez saisir un nom de domaine valide (ex: https://monsite.com).';
+                            }
+                        } catch (_) {
+                            return 'Veuillez saisir une URL valide (ex: https://monsite.com).';
+                        }
+                        return '';
+                    }
+                },
+                password: {
+                    input: document.getElementById('password'),
+                    error: document.getElementById('passwordError'),
+                    validate: (value) => {
+                        if (value === '') return 'Le mot de passe est obligatoire.';
+                        if (value.length < 8) return 'Le mot de passe doit comporter au moins 8 caractères.';
+                        if (!/[A-Za-z]/.test(value) || !/[0-9]/.test(value)) {
+                            return 'Le mot de passe doit contenir au moins une lettre et un chiffre.';
+                        }
+                        return '';
+                    }
+                }
+            };
+
+            function validateField(name) {
+                const field = fields[name];
+                const errorMessage = field.validate(field.input.value);
+
+                if (errorMessage) {
+                    field.error.textContent = errorMessage;
+                    field.error.classList.add('visible');
+                    field.input.classList.add('invalid');
+                    return false;
+                } else {
+                    field.error.textContent = '';
+                    field.error.classList.remove('visible');
+                    field.input.classList.remove('invalid');
+                    return true;
+                }
+            }
+
+            Object.keys(fields).forEach((key) => {
+                fields[key].input.addEventListener('input', () => {
+                    if (fields[key].input.classList.contains('invalid')) {
+                        validateField(key);
+                    }
+                });
+            });
+
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                successBox.style.display = 'none';
+
+                let isFormValid = true;
+
+                Object.keys(fields).forEach((key) => {
+                    const isValid = validateField(key);
+                    if (!isValid) {
+                        isFormValid = false;
+                    }
+                });
+
+                if (isFormValid) {
+                    successBox.style.display = 'block';
+                    form.reset();
+                    Object.keys(fields).forEach((key) => {
+                        fields[key].input.classList.remove('invalid');
+                        fields[key].error.classList.remove('visible');
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

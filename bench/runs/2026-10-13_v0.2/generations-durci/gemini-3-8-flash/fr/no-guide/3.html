@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulaire d'inscription</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .card {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 480px;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 24px;
+            color: #1a1a1a;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #333333;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px 12px;
+            font-size: 14px;
+            border: 1px solid #cccccc;
+            border-radius: 4px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input:focus {
+            border-color: #0066cc;
+        }
+
+        input.invalid {
+            border-color: #d93025;
+            background-color: #fff8f8;
+        }
+
+        .error-message {
+            color: #d93025;
+            font-size: 12px;
+            margin-top: 5px;
+            min-height: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #0052a3;
+        }
+
+        .success-banner {
+            display: none;
+            background-color: #e6f4ea;
+            color: #137333;
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h1>Inscription</h1>
+
+    <div id="successBanner" class="success-banner">
+        Inscription réussie avec succès !
+    </div>
+
+    <form id="registrationForm" novalidate>
+        <div class="form-group">
+            <label for="fullname">Nom complet</label>
+            <input type="text" id="fullname" name="fullname" placeholder="ex. Jean Dupont">
+            <span class="error-message" id="fullnameError"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Adresse e-mail</label>
+            <input type="email" id="email" name="email" placeholder="ex. jean.dupont@example.com">
+            <span class="error-message" id="emailError"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="website">Site web</label>
+            <input type="url" id="website" name="website" placeholder="ex. https://www.monsite.com">
+            <span class="error-message" id="websiteError"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Mot de passe</label>
+            <input type="password" id="password" name="password" placeholder="8 caractères min., 1 lettre et 1 chiffre">
+            <span class="error-message" id="passwordError"></span>
+        </div>
+
+        <button type="submit">Créer un compte</button>
+    </form>
+</div>
+
+<script>
+    const form = document.getElementById('registrationForm');
+    const successBanner = document.getElementById('successBanner');
+
+    const fields = {
+        fullname: {
+            input: document.getElementById('fullname'),
+            error: document.getElementById('fullnameError'),
+            validate: (value) => {
+                const val = value.trim();
+                if (!val) return "Le nom complet est obligatoire.";
+                if (val.length < 2) return "Le nom doit comporter au moins 2 caractères.";
+                return "";
+            }
+        },
+        email: {
+            input: document.getElementById('email'),
+            error: document.getElementById('emailError'),
+            validate: (value) => {
+                const val = value.trim();
+                if (!val) return "L'adresse e-mail est obligatoire.";
+                
+                // Vérifie l'absence d'espaces, de points consécutifs, et une structure valide (local@domaine.tld)
+                const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*\.[a-zA-Z]{2,}$/;
+                
+                if (val.includes('..') || !emailRegex.test(val)) {
+                    return "L'adresse e-mail n'est pas valide.";
+                }
+                return "";
+            }
+        },
+        website: {
+            input: document.getElementById('website'),
+            error: document.getElementById('websiteError'),
+            validate: (value) => {
+                const val = value.trim();
+                if (!val) return "Le site web est obligatoire.";
+                
+                // Rejette tout espace blanc
+                if (/\s/.test(val)) {
+                    return "L'URL ne doit pas contenir d'espaces.";
+                }
+
+                // Vérifie le protocole et la validité du nom de domaine (pas de doubles points, extension valide)
+                const urlRegex = /^https?:\/\/(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}(?::\d{1,5})?(?:\/[^\s]*)?$/i;
+                if (!urlRegex.test(val)) {
+                    return "Veuillez entrer une URL valide (ex. https://monsite.com).";
+                }
+
+                try {
+                    const parsedUrl = new URL(val);
+                    if (parsedUrl.protocol !== "http:" && parsedUrl.protocol !== "https:") {
+                        return "L'URL doit commencer par http:// ou https://.";
+                    }
+                } catch (_) {
+                    return "Veuillez entrer une URL valide (ex. https://monsite.com).";
+                }
+
+                return "";
+            }
+        },
+        password: {
+            input: document.getElementById('password'),
+            error: document.getElementById('passwordError'),
+            validate: (value) => {
+                if (!value) return "Le mot de passe est obligatoire.";
+                if (value.length < 8) return "Le mot de passe doit comporter au moins 8 caractères.";
+                if (!/[A-Za-z]/.test(value) || !/[0-9]/.test(value)) {
+                    return "Le mot de passe doit contenir au moins une lettre et un chiffre.";
+                }
+                return "";
+            }
+        }
+    };
+
+    function validateField(fieldKey) {
+        const field = fields[fieldKey];
+        const errorMessage = field.validate(field.input.value);
+
+        if (errorMessage) {
+            field.input.classList.add('invalid');
+            field.error.textContent = errorMessage;
+            return false;
+        } else {
+            field.input.classList.remove('invalid');
+            field.error.textContent = "";
+            return true;
+        }
+    }
+
+    Object.keys(fields).forEach(key => {
+        fields[key].input.addEventListener('input', () => {
+            if (fields[key].input.classList.contains('invalid')) {
+                validateField(key);
+            }
+        });
+    });
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        successBanner.style.display = 'none';
+
+        let isValid = true;
+
+        Object.keys(fields).forEach(key => {
+            const fieldValid = validateField(key);
+            if (!fieldValid) {
+                isValid = false;
+            }
+        });
+
+        if (isValid) {
+            successBanner.style.display = 'block';
+            form.reset();
+        }
+    });
+</script>
+
+</body>
+</html>

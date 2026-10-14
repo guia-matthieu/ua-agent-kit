@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: #f3f4f6;
+      color: #1f2937;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 0.75rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 28rem;
+      padding: 2rem;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: #111827;
+    }
+
+    p.subtitle {
+      font-size: 0.875rem;
+      color: #6b7280;
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin-bottom: 0.375rem;
+      color: #374151;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.625rem 0.75rem;
+      font-size: 0.9375rem;
+      border: 1px solid #d1d5db;
+      border-radius: 0.375rem;
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      background-color: #fff;
+    }
+
+    input:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    input.input-invalid {
+      border-color: #dc2626;
+      background-color: #fef2f2;
+    }
+
+    input.input-invalid:focus {
+      box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15);
+    }
+
+    .error-text {
+      color: #dc2626;
+      font-size: 0.8125rem;
+      margin-top: 0.375rem;
+      display: none;
+    }
+
+    .error-text.visible {
+      display: block;
+    }
+
+    .success-alert {
+      display: none;
+      background-color: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+      padding: 0.75rem 1rem;
+      border-radius: 0.375rem;
+      font-size: 0.875rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 0.75rem;
+      background-color: #2563eb;
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 0.9375rem;
+      border: none;
+      border-radius: 0.375rem;
+      cursor: pointer;
+      transition: background-color 0.15s ease;
+      margin-top: 0.5rem;
+    }
+
+    .btn-submit:hover {
+      background-color: #1d4ed8;
+    }
+
+    .btn-submit:active {
+      background-color: #1e40af;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h1>Create an account</h1>
+    <p class="subtitle">Please fill out the details below to sign up.</p>
+
+    <div id="successMessage" class="success-alert" role="status">
+      Account successfully created!
+    </div>
+
+    <!-- novalidate prevents inconsistent browser UA checks on valid Unicode emails -->
+    <form id="signupForm" novalidate>
+      <div class="form-group">
+        <label for="fullName">Full name</label>
+        <input 
+          type="text" 
+          id="fullName" 
+          name="fullName" 
+          autocomplete="name"
+          placeholder="Jane Doe"
+          aria-describedby="fullNameError"
+        >
+        <span id="fullNameError" class="error-text" role="alert"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email address</label>
+        <!-- type="text" with inputmode="email" ensures internationalized emails (RFC 6531) are not rejected by browsers -->
+        <input 
+          type="text" 
+          id="email" 
+          name="email" 
+          inputmode="email" 
+          autocomplete="email"
+          placeholder="jane@société.fr"
+          aria-describedby="emailError"
+        >
+        <span id="emailError" class="error-text" role="alert"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="website">Website</label>
+        <input 
+          type="url" 
+          id="website" 
+          name="website" 
+          autocomplete="url"
+          placeholder="https://example.technology"
+          aria-describedby="websiteError"
+        >
+        <span id="websiteError" class="error-text" role="alert"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input 
+          type="password" 
+          id="password" 
+          name="password" 
+          autocomplete="new-password"
+          placeholder="At least 8 characters"
+          aria-describedby="passwordError"
+        >
+        <span id="passwordError" class="error-text" role="alert"></span>
+      </div>
+
+      <button type="submit" class="btn-submit">Sign up</button>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById('signupForm');
+    const successMessage = document.getElementById('successMessage');
+
+    const fields = {
+      fullName: {
+        input: document.getElementById('fullName'),
+        error: document.getElementById('fullNameError'),
+        validate(value) {
+          const trimmed = value.trim();
+          if (!trimmed) {
+            return 'Full name is required.';
+          }
+          if (trimmed.length < 2) {
+            return 'Full name must be at least 2 characters.';
+          }
+          return '';
+        }
+      },
+      email: {
+        input: document.getElementById('email'),
+        error: document.getElementById('emailError'),
+        validate(value) {
+          const val = value.trim();
+          if (!val) {
+            return 'Email address is required.';
+          }
+          // Universal Acceptance compliant validation:
+          // Supports Unicode local parts (RFC 6531), internationalized domain names (U-labels & A-labels), and modern TLD lengths.
+          const atIndex = val.indexOf('@');
+          if (atIndex <= 0 || atIndex !== val.lastIndexOf('@')) {
+            return 'Please enter a valid email address with a single @.';
+          }
+
+          const localPart = val.slice(0, atIndex);
+          const domainPart = val.slice(atIndex + 1);
+
+          if (!localPart || /\s/.test(localPart)) {
+            return 'The email username cannot be empty or contain whitespace.';
+          }
+
+          if (!domainPart || /\s/.test(domainPart)) {
+            return 'The domain name cannot contain whitespace.';
+          }
+
+          const labels = domainPart.split('.');
+          if (labels.length < 2) {
+            return 'The domain name must contain a top-level domain (e.g. .com, .fr, .technology).';
+          }
+
+          for (const label of labels) {
+            if (!label || label.startsWith('-') || label.endsWith('-')) {
+              return 'Domain labels cannot be empty or start/end with a hyphen.';
+            }
+          }
+
+          const tld = labels[labels.length - 1];
+          if (tld.length < 2) {
+            return 'Top-level domain must be at least 2 characters long.';
+          }
+          if (/^\d+$/.test(tld)) {
+            return 'Top-level domain cannot be entirely numeric.';
+          }
+
+          return '';
+        }
+      },
+      website: {
+        input: document.getElementById('website'),
+        error: document.getElementById('websiteError'),
+        validate(value) {
+          const val = value.trim();
+          if (!val) {
+            return 'Website URL is required.';
+          }
+          try {
+            const parsed = new URL(val);
+            if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
+              return 'Website URL must begin with http:// or https://.';
+            }
+            if (!parsed.hostname.includes('.') && parsed.hostname !== 'localhost') {
+              return 'Please enter a valid domain name.';
+            }
+            const labels = parsed.hostname.split('.');
+            const tld = labels[labels.length - 1];
+            if (tld.length < 2 || /^\d+$/.test(tld)) {
+              return 'Please enter a valid top-level domain.';
+            }
+            return '';
+          } catch {
+            return 'Please enter a valid URL (e.g. https://example.com).';
+          }
+        }
+      },
+      password: {
+        input: document.getElementById('password'),
+        error: document.getElementById('passwordError'),
+        validate(value) {
+          if (!value) {
+            return 'Password is required.';
+          }
+          if (value.length < 8) {
+            return 'Password must be at least 8 characters long.';
+          }
+          return '';
+        }
+      }
+    };
+
+    function validateField(name) {
+      const field = fields[name];
+      const errorMessage = field.validate(field.input.value);
+
+      if (errorMessage) {
+        field.input.classList.add('input-invalid');
+        field.input.setAttribute('aria-invalid', 'true');
+        field.error.textContent = errorMessage;
+        field.error.classList.add('visible');
+        return false;
+      } else {
+        field.input.classList.remove('input-invalid');
+        field.input.removeAttribute('aria-invalid');
+        field.error.textContent = '';
+        field.error.classList.remove('visible');
+        return true;
+      }
+    }
+
+    // Clear validation error when user begins typing
+    Object.keys(fields).forEach((fieldName) => {
+      const field = fields[fieldName];
+      field.input.addEventListener('input', () => {
+        if (field.input.classList.contains('input-invalid')) {
+          validateField(fieldName);
+        }
+      });
+      field.input.addEventListener('blur', () => {
+        validateField(fieldName);
+      });
+    });
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      let isValid = true;
+      let firstInvalidInput = null;
+
+      Object.keys(fields).forEach((fieldName) => {
+        const fieldValid = validateField(fieldName);
+        if (!fieldValid) {
+          isValid = false;
+          if (!firstInvalidInput) {
+            firstInvalidInput = fields[fieldName].input;
+          }
+        }
+      });
+
+      if (!isValid) {
+        firstInvalidInput.focus();
+        successMessage.style.display = 'none';
+      } else {
+        successMessage.style.display = 'block';
+        form.reset();
+        Object.keys(fields).forEach((fieldName) => {
+          fields[fieldName].input.classList.remove('input-invalid');
+          fields[fieldName].input.removeAttribute('aria-invalid');
+        });
+      }
+    });
+  </script>
+</body>
+</html>

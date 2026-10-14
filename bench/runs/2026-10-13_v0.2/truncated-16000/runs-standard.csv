@@ -1,0 +1,5 @@
+model,model_version,lang,condition,repeat,field,case_id,class,expect,typed,verdict,rewritten,outcome,reason
+mistral-large-4-0,mistralai/mistral-large-4-0,en,guide,2,email,,,,,not-testable,,not-testable,truncated
+mistral-large-4-0,mistralai/mistral-large-4-0,en,guide,2,website,,,,,not-testable,,not-testable,truncated
+mistral-large-4-0,mistralai/mistral-large-4-0,en,guide,3,email,,,,,not-testable,,not-testable,truncated
+mistral-large-4-0,mistralai/mistral-large-4-0,en,guide,3,website,,,,,not-testable,,not-testable,truncated
