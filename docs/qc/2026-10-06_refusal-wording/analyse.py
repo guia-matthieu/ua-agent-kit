@@ -11,7 +11,7 @@ RUN = os.path.join(HERE, '..', '..', '..', 'bench', 'runs', '2026-10-06_state-ca
 ERR = re.compile(r'invalid|inv[aá]lid|no v[aá]lido|error|erreur|incorrect', re.I)   # the runner's word list
 
 pub = {}
-for r in csv.DictReader(open(os.path.join(RUN, 'runs-standard.csv'), encoding='utf-8')):
+for r in csv.DictReader(open(os.path.join(RUN, 'first-scoring', 'runs-standard.csv'), encoding='utf-8')):
     pub[(r['model'], r['lang'], r['condition'], r['repeat'], r['field'], r['case_id'])] = r
 rows = [r for r in json.load(open(os.path.join(HERE, 'probe-rows.json'), encoding='utf-8')) if r.get('field')]
 errors = [r for r in json.load(open(os.path.join(HERE, 'probe-rows.json'), encoding='utf-8')) if not r.get('field')]

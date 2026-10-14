@@ -14,7 +14,7 @@ def key(r):
     return (r['model'], r['lang'], r['condition'], str(r['repeat']), r['field'], r['case_id'])
 
 
-pub = {key(r): r for r in csv.DictReader(open(os.path.join(RUN, 'runs-standard.csv'), encoding='utf-8')) if r['field']}
+pub = {key(r): r for r in csv.DictReader(open(os.path.join(RUN, 'first-scoring', 'runs-standard.csv'), encoding='utf-8')) if r['field']}
 probe = {key(r): r for r in json.load(open(os.path.join(HERE, 'probe-rows.json'), encoding='utf-8')) if r.get('field')}
 fixed_all = json.load(open(os.path.join(HERE, 'fixed-rows.json'), encoding='utf-8'))
 fixed = {key(r): r for r in fixed_all if r.get('field')}

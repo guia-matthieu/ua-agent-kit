@@ -10,7 +10,7 @@ Y = os.path.join(KIT, 'docs/qc/2026-10-06_refusal-wording/rescored')
 T = os.path.join(HERE, 'rescored')
 SETS = [('bench of 2026-09-25, standard battery', os.path.join(KIT, 'bench/results/runs.csv'), None, os.path.join(T, 'bench-2026-09-25-runs.csv'))]
 for n in ['runs-standard.csv', 'runs-fr.csv', 'runs-durci-standard.csv', 'runs-durci-fr.csv']:
-    SETS.append(('run of 2026-10-06, ' + n, os.path.join(RUN, n), os.path.join(Y, n), os.path.join(T, n)))
+    SETS.append(('run of 2026-10-06, ' + n, os.path.join(RUN, 'first-scoring', n), os.path.join(Y, n), os.path.join(T, n)))
 key = lambda r: (r['model'], r['lang'], r['condition'], r['repeat'], r['field'], r['case_id'])
 page = lambda k: k[:4]
 
