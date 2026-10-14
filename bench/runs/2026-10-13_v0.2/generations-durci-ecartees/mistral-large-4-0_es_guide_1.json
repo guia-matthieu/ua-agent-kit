@@ -1,0 +1,54 @@
+{
+  "model": "mistral-large-4-0",
+  "model_version": "mistralai/mistral-large-4-0",
+  "lang": "es",
+  "condition": "guide",
+  "repeat": 1,
+  "turn": 2,
+  "usage": {
+    "prompt_tokens": 4453,
+    "completion_tokens": 22129,
+    "total_tokens": 26582,
+    "cost": 0,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+    },
+    "cost_details": {
+      "upstream_inference_cost": 0.04927765,
+      "upstream_inference_prompt_cost": 0.00302804,
+      "upstream_inference_completions_cost": 0.04624961
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 21885,
+      "image_tokens": 0,
+      "audio_tokens": 0
+    }
+  },
+  "finish_reason": "error",
+  "date": "2026-10-13T18:10:38.936Z",
+  "runner_error": null,
+  "standard": {
+    "email": {
+      "status": "not-testable",
+      "reason": "no-form"
+    },
+    "website": {
+      "status": "not-testable",
+      "reason": "no-form"
+    }
+  },
+  "fr": {
+    "email": {
+      "status": "not-testable",
+      "reason": "no-form"
+    },
+    "website": {
+      "status": "not-testable",
+      "reason": "no-form"
+    }
+  }
+}

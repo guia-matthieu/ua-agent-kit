@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulaire d'inscription</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 450px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+            text-align: center;
+        }
+
+        .subtitle {
+            color: #666;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            color: #555;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .required {
+            color: #e74c3c;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        input.valid {
+            border-color: #27ae60;
+            background-color: #f8fff9;
+        }
+
+        input.invalid {
+            border-color: #e74c3c;
+            background-color: #fff8f8;
+        }
+
+        .error-message {
+            display: block;
+            color: #e74c3c;
+            font-size: 13px;
+            margin-top: 6px;
+            min-height: 18px;
+            font-weight: 500;
+            opacity: 0;
+            transform: translateY(-5px);
+            transition: all 0.3s ease;
+        }
+
+        .error-message.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .hint {
+            font-size: 12px;
+            color: #888;
+            margin-top: 4px;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .success-message {
+            display: none;
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            border: 1px solid #c3e6cb;
+        }
+
+        .success-message.show {
+            display: block;
+            animation: slideDown 0.5s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .password-strength {
+            height: 4px;
+            background: #e0e0e0;
+            border-radius: 2px;
+            margin-top: 6px;
+            overflow: hidden;
+        }
+
+        .password-strength-bar {
+            height: 100%;
+            width: 0%;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .password-strength-bar.weak {
+            width: 33%;
+            background: #e74c3c;
+        }
+
+        .password-strength-bar.medium {
+            width: 66%;
+            background: #f39c12;
+        }
+
+        .password-strength-bar.strong {
+            width: 100%;
+            background: #27ae60;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Créer un compte</h1>
+        <p class="subtitle">Remplissez le formulaire ci-dessous pour vous inscrire</p>
+
+        <div id="successMessage" class="success-message" role="alert">
+            ✓ Inscription réussie ! Bienvenue parmi nous.
+        </div>
+
+        <form id="inscriptionForm" novalidate>
+            <div class="form-group" id="group-nom">
+                <label for="nom">Nom complet <span class="required">*</span></label>
+                <input
+                    type="text"
+                    id="nom"
+                    name="nom"
+                    placeholder="Jean Dupont"
+                    autocomplete="name"
+                    aria-describedby="error-nom"
+                    aria-required="true"
+                >
+                <span class="error-message" id="error-nom" aria-live="polite"></span>
+            </div>
+
+            <div class="form-group" id="group-email">
+                <label for="email">Adresse e-mail <span class="required">*</span></label>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="jean.dupont@exemple.com"
+                    autocomplete="email"
+                    aria-describedby="error-email"
+                    aria-required="true"
+                >
+                <span class="error-message" id="error-email" aria-live="polite"></span>
+            </div>
+
+            <div class="form-group" id="group-site">
+                <label for="site">Site web <span style="color: #999; font-weight: normal;">(optionnel)</span></label>
+                <input
+                    type="url"
+                    id="site"
+                    name="site"
+                    placeholder="https://www.exemple.com"
+                    autocomplete="url"
+                    aria-describedby="error-site"
+                >
+                <span class="error-message" id="error-site" aria-live="polite"></span>
+            </div>
+
+            <div class="form-group" id="group-password">
+                <label for="password">Mot de passe <span class="required">*</span></label>
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="••••••••"
+                    autocomplete="new-password"
+                    aria-describedby="error-password hint-password"
+                    aria-required="true"
+                >
+                <div class="password-strength">
+                    <div class="password-strength-bar" id="strengthBar"></div>
+                </div>
+                <span class="hint" id="hint-password">Minimum 8 caractères, 1 majuscule, 1 minuscule, 1 chiffre</span>
+                <span class="error-message" id="error-password" aria-live="polite"></span>
+            </div>
+
+            <button type="submit">S'inscrire</button>
+        </form>
+    </div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            const form = document.getElementById('inscriptionForm');
+            const successMessage = document.getElementById('successMessage');
+
+            // Éléments du formulaire
+            const nomInput = document.getElementById('nom');
+            const emailInput = document.getElementById('email');
+            const siteInput = document.getElementById('site');
+            const passwordInput = document.getElementById('password');
+            const strengthBar = document.getElementById('strengthBar');
+
+            // Fonctions de validation
+            const validators = {
+                nom: function(value) {
+                    const trimmed = value.trim();
+                    if (trimmed.length === 0) {
+                        return { valid: false, message: 'Le nom est requis.' };
+                    }
+                    if (trimmed.length < 2) {
+                        return { valid: false, message: 'Le nom doit contenir au moins 2 caractères.' };
+                    }
+                    if (!/^[a-zA-ZÀ-ÿ\s'-]+$/.test(trimmed)) {
+                        return { valid: false, message: 'Le nom ne doit contenir que des lettres, espaces, tirets ou apostrophes.' };
+                    }
+                    return { valid: true };
+                },
+
+                email: function(value) {
+                    const trimmed = value.trim();
+                    if (trimmed.length === 0) {
+                        return { valid: false, message: 'L\'adresse e-mail est requise.' };
+                    }
+                    // Regex stricte : interdit les points consécutifs dans le domaine
+                    // Format : partie-locale@label.label.tld
+                    const emailRegex = /^[a-zA-Z0-9._%+-]+@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/;
+                    if (!emailRegex.test(trimmed)) {
+                        return { valid: false, message: 'Veuillez entrer une adresse e-mail valide (ex: nom@domaine.com).' };
+                    }
+                    // Vérification supplémentaire : pas de .. dans la partie domaine
+                    const domain = trimmed.split('@')[1];
+                    if (domain.includes('..')) {
+                        return { valid: false, message: 'Le domaine ne doit pas contenir de points consécutifs.' };
+                    }
+                    // Vérifier que le domaine ne commence/finit pas par un point
+                    if (domain.startsWith('.') || domain.endsWith('.')) {
+                        return { valid: false, message: 'Le domaine est invalide.' };
+                    }
+                    return { valid: true };
+                },
+
+                site: function(value) {
+                    const trimmed = value.trim();
+                    if (trimmed.length === 0) {
+                        return { valid: true }; // Optionnel
+                    }
+
+                    // Rejeter immédiatement toute URL contenant des espaces
+                    if (/\s/.test(trimmed)) {
+                        return { valid: false, message: 'L\'URL ne doit pas contenir d\'espaces.' };
+                    }
+
+                    let urlToTest = trimmed;
+                    // Si pas de protocole, ajouter https://
+                    if (!/^https?:\/\//i.test(urlToTest)) {
+                        urlToTest = 'https://' + urlToTest;
+                    }
+
+                    try {
+                        const url = new URL(urlToTest);
+
+                        // Vérifications strictes sur le hostname
+                        const hostname = url.hostname;
+
+                        // Interdire les points consécutifs (ex: example..com)
+                        if (hostname.includes('..')) {
+                            return { valid: false, message: 'Le nom de domaine contient des points consécutifs invalides.' };
+                        }
+
+                        // Interdire les domaines commençant ou finissant par un point
+                        if (hostname.startsWith('.') || hostname.endsWith('.')) {
+                            return { valid: false, message: 'Le nom de domaine est invalide.' };
+                        }
+
+                        // Exiger au moins un point dans le domaine (éviter localhost)
+                        if (!hostname.includes('.')) {
+                            return { valid: false, message: 'Veuillez entrer une URL valide avec un domaine complet (ex: exemple.com).' };
+                        }
+
+                        // Vérifier que chaque segment (label) du domaine est valide
+                        const parts = hostname.split('.');
+                        for (const part of parts) {
+                            if (part.length === 0) {
+                                return { valid: false, message: 'Le domaine contient un segment vide.' };
+                            }
+                            // Caractères autorisés : lettres, chiffres, tirets
+                            if (!/^[a-zA-Z0-9-]+$/.test(part)) {
+                                return { valid: false, message: 'Le domaine contient des caractères invalides.' };
+                            }
+                            // Ne doit pas commencer ou finir par un tiret
+                            if (part.startsWith('-') || part.endsWith('-')) {
+                                return { valid: false, message: 'Les segments du domaine ne doivent pas commencer ou finir par un tiret.' };
+                            }
+                        }
+
+                        // Vérifier le TLD (dernier segment) : au moins 2 lettres
+                        const tld = parts[parts.length - 1];
+                        if (!/^[a-zA-Z]{2,}$/.test(tld)) {
+                            return { valid: false, message: 'L\'extension du domaine est invalide (minimum 2 lettres).' };
+                        }
+
+                        return { valid: true };
+                    } catch (e) {
+                        return { valid: false, message: 'Veuillez entrer une URL valide (ex: https://exemple.com).' };
+                    }
+                },
+
+                password: function(value) {
+                    if (value.length === 0) {
+                        return { valid: false, message: 'Le mot de passe est requis.' };
+                    }
+                    if (value.length < 8) {
+                        return { valid: false, message: 'Le mot de passe doit contenir au moins 8 caractères.' };
+                    }
+                    if (!/[A-Z]/.test(value)) {
+                        return { valid: false, message: 'Le mot de passe doit contenir au moins une majuscule.' };
+                    }
+                    if (!/[a-z]/.test(value)) {
+                        return { valid: false, message: 'Le mot de passe doit contenir au moins une minuscule.' };
+                    }
+                    if (!/[0-9]/.test(value)) {
+                        return { valid: false, message: 'Le mot de passe doit contenir au moins un chiffre.' };
+                    }
+                    return { valid: true };
+                }
+            };
+
+            // Afficher une erreur
+            function showError(fieldId, message) {
+                const group = document.getElementById('group-' + fieldId);
+                const errorSpan = document.getElementById('error-' + fieldId);
+                const input = document.getElementById(fieldId);
+
+                group.classList.add('has-error');
+                input.classList.remove('valid');
+                input.classList.add('invalid');
+                input.setAttribute('aria-invalid', 'true');
+                errorSpan.textContent = message;
+                errorSpan.classList.add('show');
+            }
+
+            // Effacer une erreur
+            function clearError(fieldId) {
+                const group = document.getElementById('group-' + fieldId);
+                const errorSpan = document.getElementById('error-' + fieldId);
+                const input = document.getElementById(fieldId);
+
+                group.classList.remove('has-error');
+                input.classList.remove('invalid');
+                input.classList.add('valid');
+                input.setAttribute('aria-invalid', 'false');
+                errorSpan.textContent = '';
+                errorSpan.classList.remove('show');
+            }
+
+            // Valider un champ spécifique
+            function validateField(fieldId) {
+                const input = document.getElementById(fieldId);
+                const value = input.value;
+                const result = validators[fieldId](value);
+
+                if (result.valid) {
+                    clearError(fieldId);
+                    return true;
+                } else {
+                    showError(fieldId, result.message);
+                    return false;
+                }
+            }
+
+            // Mettre à jour la barre de force du mot de passe
+            function updatePasswordStrength(password) {
+                let strength = 0;
+                if (password.length >= 8) strength++;
+                if (password.length >= 12) strength++;
+                if (/[A-Z]/.test(password) && /[a-z]/.test(password)) strength++;
+                if (/[0-9]/.test(password)) strength++;
+                if (/[^A-Za-z0-9]/.test(password)) strength++;
+
+                strengthBar.className = 'password-strength-bar';
+
+                if (password.length === 0) {
+                    strengthBar.style.width = '0%';
+                } else if (strength <= 2) {
+                    strengthBar.classList.add('weak');
+                } else if (strength <= 3) {
+                    strengthBar.classList.add('medium');
+                } else {
+                    strengthBar.classList.add('strong');
+                }
+            }
+
+            // Validation en temps réel (blur)
+            const fields = ['nom', 'email', 'site', 'password'];
+            fields.forEach(fieldId => {
+                const input = document.getElementById(fieldId);
+                input.addEventListener('blur', function() {
+                    if (this.value.trim() !== '' || fieldId !== 'site') {
+                        validateField(fieldId);
+                    }
+                });
+
+                input.addEventListener('input', function() {
+                    if (this.classList.contains('invalid')) {
+                        validateField(fieldId);
+                    }
+                    if (fieldId === 'password') {
+                        updatePasswordStrength(this.value);
+                    }
+                });
+            });
+
+            // Soumission du formulaire
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                let isValid = true;
+                let firstInvalidField = null;
+
+                // Valider tous les champs
+                fields.forEach(fieldId => {
+                    const fieldValid = validateField(fieldId);
+                    if (!fieldValid) {
+                        isValid = false;
+                        if (!firstInvalidField) {
+                            firstInvalidField = document.getElementById(fieldId);
+                        }
+                    }
+                });
+
+                if (isValid) {
+                    // Simuler l'envoi
+                    successMessage.classList.add('show');
+                    form.reset();
+
+                    // Réinitialiser les états visuels
+                    fields.forEach(fieldId => {
+                        const input = document.getElementById(fieldId);
+                        input.classList.remove('valid', 'invalid');
+                        input.setAttribute('aria-invalid', 'false');
+                        document.getElementById('error-' + fieldId).classList.remove('show');
+                    });
+                    strengthBar.className = 'password-strength-bar';
+                    strengthBar.style.width = '0%';
+
+                    // Masquer le message de succès après 5 secondes
+                    setTimeout(() => {
+                        successMessage.classList.remove('show');
+                    }, 5000);
+
+                    // Scroll vers le haut pour voir le message
+                    successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                } else {
+                    // Focus sur le premier champ invalide
+                    if (firstInvalidField) {
+                        firstInvalidField.focus();
+                        firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                    successMessage.classList.remove('show');
+                }
+            });
+
+            // Accessibilité : permettre la soumission avec Entrée
+            form.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
+                    e.preventDefault();
+                    form.dispatchEvent(new Event('submit'));
+                }
+            });
+        })();
+    </script>
+</body>
+</html>

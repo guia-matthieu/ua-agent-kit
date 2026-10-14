@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Crear cuenta — Formulario de registro</title>
+<!--
+  Formulario autónomo: sin frameworks, sin bibliotecas externas, sin CSS externo.
+
+  La validación aplica Aceptación Universal (UA) para correos, dominios y URL:
+  - Correos internacionalizados (EAI, RFC 6531): se aceptan caracteres Unicode
+    en la parte local y U-labels en el dominio (p. ej. marie.dupont@société.fr,
+    用户@example.com). La parte local admite +, ', apóstrofos tipográficos, etc.
+  - El dominio se convierte a A-labels con IDNA2008 / UTS #46 (vía new URL()).
+  - Sin límite de 2–4 letras para el TLD: se admite cualquier TLD de ≥2 letras
+    o un A-label «xn--…» (p. ej. .technology, .international, .xn--fiqs8s).
+  - El correo usa type="text" con validación propia porque los navegadores
+    discrepan con <input type="email"> ante correos Unicode: Chromium lo
+    reescribe a A-labels, Firefox lo acepta tal cual y WebKit lo rechaza.
+-->
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 2.5rem 1rem;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.5;
+    background: #f0f2f5;
+    color: #1c1e21;
+  }
+  main {
+    max-width: 30rem;
+    margin: 0 auto;
+    padding: 2rem;
+    background: #fff;
+    border: 1px solid #dcdfe3;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .08);
+  }
+  h1 { margin: 0 0 .25rem; font-size: 1.4rem; }
+  .sub { margin: 0 0 1.5rem; color: #606770; font-size: .9rem; }
+  .campo { margin-bottom: 1.1rem; }
+  label { display: block; font-weight: 600; margin-bottom: .3rem; font-size: .95rem; }
+  .req { color: #c62828; }
+  .opcional { font-weight: 400; color: #606770; font-size: .8rem; }
+  input[type="text"], input[type="password"] {
+    width: 100%;
+    padding: .55rem .7rem;
+    font: inherit;
+    border: 1px solid #b9bec5;
+    border-radius: 8px;
+    background: #fff;
+    color: inherit;
+  }
+  input:focus { outline: 2px solid #1b74e4; outline-offset: 1px; }
+  input.invalido { border-color: #c62828; }
+  input.invalido:focus { outline-color: #c62828; }
+  .error { margin: .3rem 0 0; font-size: .85rem; color: #c62828; }
+  .pista { margin: .3rem 0 0; font-size: .8rem; color: #606770; }
+  .pista code { background: #eef0f2; border-radius: 4px; padding: 0 .25rem; }
+  .mostrar-clave {
+    display: flex; align-items: center; gap: .4rem;
+    margin-top: .45rem; font-size: .85rem; font-weight: 400; color: #606770;
+  }
+  .mostrar-clave input { width: auto; }
+  button[type="submit"] {
+    width: 100%;
+    padding: .65rem;
+    font: inherit; font-weight: 600;
+    color: #fff; background: #1b74e4;
+    border: 0; border-radius: 8px; cursor: pointer;
+  }
+  button[type="submit"]:hover { background: #155fb8; }
+  button[type="submit"]:focus-visible { outline: 2px solid #0b3d91; outline-offset: 2px; }
+  .exito {
+    margin-top: 1.25rem;
+    padding: 1rem;
+    border: 1px solid #2e7d32;
+    border-radius: 8px;
+    background: #e8f5e9;
+    color: #1b5e20;
+    font-size: .9rem;
+  }
+  .exito h2 { margin: 0 0 .5rem; font-size: 1rem; }
+  .exito dt { font-weight: 600; }
+  .exito dd { margin: 0 0 .45rem; overflow-wrap: anywhere; }
+  .exito p { margin: .5rem 0 0; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Crear cuenta</h1>
+  <p class="sub">Todos los campos son obligatorios salvo el sitio web.</p>
+
+  <!-- novalidate: la validación la hacemos nosotros (mejor soporte de correos internacionalizados) -->
+  <form id="form-registro" novalidate>
+
+    <div class="campo">
+      <label for="nombre">Nombre completo <span class="req" aria-hidden="true">*</span></label>
+      <input type="text" id="nombre" name="nombre" autocomplete="name"
+             placeholder="p. ej. María Dupont" aria-required="true"
+             aria-describedby="error-nombre">
+      <p class="error" id="error-nombre" role="alert" hidden></p>
+    </div>
+
+    <div class="campo">
+      <label for="correo">Correo electrónico <span class="req" aria-hidden="true">*</span></label>
+      <!-- type="text" + validación propia: los navegadores discrepan con type="email" ante correos Unicode (EAI) -->
+      <input type="text" id="correo" name="correo" inputmode="email" autocomplete="email"
+             spellcheck="false" placeholder="marie.dupont@société.fr" aria-required="true"
+             aria-describedby="error-correo pista-correo">
+      <p class="pista" id="pista-correo">Se admiten correos internacionalizados, p. ej.
+        <bdi>marie.dupont@société.fr</bdi>, <bdi>josé.dupont@example.fr</bdi> o
+        <bdi>用户@example.com</bdi>.</p>
+      <p class="error" id="error-correo" role="alert" hidden></p>
+    </div>
+
+    <div class="campo">
+      <label for="sitio">Sitio web <span class="opcional">(opcional)</span></label>
+      <input type="text" id="sitio" name="sitio" inputmode="url" autocomplete="url"
+             spellcheck="false" placeholder="https://société.fr"
+             aria-describedby="error-sitio pista-sitio">
+      <p class="pista" id="pista-sitio">Acepta dominios internacionalizados, p. ej.
+        <bdi>https://société.fr</bdi>. Si omites el esquema, se añadirá <code>https://</code>.</p>
+      <p class="error" id="error-sitio" role="alert" hidden></p>
+    </div>
+
+    <div class="campo">
+      <label for="clave">Contraseña <span class="req" aria-hidden="true">*</span></label>
+      <input type="password" id="clave" name="clave" autocomplete="new-password"
+             aria-required="true" aria-describedby="error-clave pista-clave">
+      <p class="pista" id="pista-clave">Mínimo 8 caracteres, con al menos una letra y un número.</p>
+      <label class="mostrar-clave"><input type="checkbox" id="ver-clave"> Mostrar contraseña</label>
+      <p class="error" id="error-clave" role="alert" hidden></p>
+    </div>
+
+    <button type="submit">Registrarme</button>
+  </form>
+
+  <section id="exito" class="exito" aria-live="polite" hidden></section>
+
+  <noscript><p class="error">Activa JavaScript para validar el formulario antes de enviarlo.</p></noscript>
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  var form = document.getElementById('form-registro');
+  var exito = document.getElementById('exito');
+  var verClave = document.getElementById('ver-clave');
+  var inputClave = document.getElementById('clave');
+
+  verClave.addEventListener('change', function () {
+    inputClave.type = verClave.checked ? 'text' : 'password';
+  });
+
+  /* ---------- Utilidades ---------- */
+
+  // Convierte un dominio (U-labels o A-labels) a su forma ASCII (A-labels)
+  // con IDNA2008 / UTS #46, usando el parser de URL del navegador.
+  function dominioAAscii(dominio) {
+    return new URL('https://' + dominio + '/').hostname;
+  }
+
+  // Forma ASCII del correo completo: parte local tal cual + dominio en A-labels.
+  function correoAAscii(correo) {
+    var i = correo.lastIndexOf('@');
+    return correo.slice(0, i + 1) + dominioAAscii(correo.slice(i + 1));
+  }
+
+  function urlNormalizada(valor) {
+    var v = valor.trim();
+    if (!v) return '';
+    var conEsquema = /^[a-z][a-z0-9+.-]*:/i.test(v) ? v : 'https://' + v;
+    try { return new URL(conEsquema).href; } catch (e) { return v; }
+  }
+
+  /* ---------- Validadores (devuelven un mensaje de error o null) ---------- */
+
+  function validarNombre(valor) {
+    var v = valor.trim();
+    if (!v) return 'Introduce tu nombre completo.';
+    if (v.length < 2) return 'El nombre es demasiado corto.';
+    if (!/\p{L}/u.test(v)) return 'El nombre debe contener al menos una letra.';
+    if (!/^[\p{L}\p{M}][\p{L}\p{M}'’`.\- ]*$/u.test(v))
+      return 'Usa solo letras, espacios, apóstrofos, puntos o guiones.';
+    return null;
+  }
+
+  function validarCorreo(valor) {
+    var correo = valor.trim();
+    if (!correo) return 'Introduce tu correo electrónico.';
+    if (/\s/.test(correo)) return 'El correo no puede contener espacios.';
+    var partes = correo.split('@');
+    if (partes.length !== 2) return 'El correo debe contener exactamente una @.';
+    var local = partes[0];
+    var dominio = partes[1];
+    if (!local) return 'Falta la parte local (antes de la @).';
+    if (!dominio) return 'Falta el dominio (después de la @).';
+    // La parte local admite Unicode (RFC 6531): se comprueba en octetos UTF-8.
+    if (new TextEncoder().encode(local).length > 64)
+      return 'La parte local no puede superar los 64 octetos.';
+    if (/[\u0000-\u001F\u007F]/.test(local))
+      return 'La parte local contiene caracteres no permitidos.';
+    if (/[:/?#\[\]]/.test(dominio))
+      return 'El dominio contiene caracteres no permitidos.';
+    if (dominio.charAt(0) === '.' || dominio.charAt(dominio.length - 1) === '.' ||
+        dominio.indexOf('..') !== -1)
+      return 'El dominio tiene puntos al inicio, al final o consecutivos.';
+
+    var host;
+    try {
+      host = dominioAAscii(dominio); // IDNA2008 / UTS #46 → A-labels
+    } catch (e) {
+      return 'El dominio no es válido.';
+    }
+
+    var etiquetas = host.split('.');
+    if (etiquetas.length < 2)
+      return 'El dominio necesita al menos un punto y un TLD (p. ej. ejemplo.fr).';
+
+    // Etiquetas en forma A-label: LDH de 1–63 caracteres, o A-label «xn--…».
+    var patronEtiqueta = /^(xn--[a-z0-9-]+|[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)$/;
+    for (var i = 0; i < etiquetas.length; i++) {
+      if (etiquetas[i].length > 63 || !patronEtiqueta.test(etiquetas[i]))
+        return 'El dominio contiene una etiqueta no válida.';
+    }
+
+    // TLD: dos o más letras, o un A-label «xn--…» (p. ej. .technology, .xn--fiqs8s).
+    // Sin límite superior de 4 letras; no se rechazan las etiquetas «xn--».
+    var tld = etiquetas[etiquetas.length - 1];
+    if (!(/^xn--/.test(tld) || /^[a-z]{2,}$/.test(tld)))
+      return 'El TLD debe tener al menos dos letras o ser un A-label «xn--».';
+
+    if (host.length > 253) return 'El dominio no puede superar los 253 octetos.';
+    return null;
+  }
+
+  function validarSitio(valor) {
+    var v = valor.trim();
+    if (!v) return null; // campo opcional: solo se valida si tiene contenido
+    var conEsquema = /^[a-z][a-z0-9+.-]*:/i.test(v) ? v : 'https://' + v;
+    var u;
+    try {
+      u = new URL(conEsquema);
+    } catch (e) {
+      return 'La dirección del sitio web no es una URL válida.';
+    }
+    if (u.protocol !== 'https:' && u.protocol !== 'http:')
+      return 'El sitio web debe usar el esquema http:// o https://.';
+    if (!u.hostname || u.hostname.charAt(0) === '.' || u.hostname.indexOf('..') !== -1)
+      return 'La URL necesita un dominio válido.';
+    return null;
+  }
+
+  function validarClave(valor) {
+    if (!valor) return 'Introduce una contraseña.';
+    if (valor.length < 8) return 'La contraseña debe tener al menos 8 caracteres.';
+    if (valor.length > 72) return 'La contraseña no puede superar los 72 caracteres.';
+    if (!/\p{L}/u.test(valor)) return 'La contraseña debe contener al menos una letra.';
+    if (!/\p{N}/u.test(valor)) return 'La contraseña debe contener al menos un número.';
+    return null;
+  }
+
+  /* ---------- Esquema de campos ---------- */
+
+  var campos = [
+    { id: 'nombre', validar: validarNombre },
+    { id: 'correo', validar: validarCorreo },
+    { id: 'sitio',  validar: validarSitio },
+    { id: 'clave',  validar: validarClave }
+  ].map(function (c) {
+    return {
+      id: c.id,
+      validar: c.validar,
+      input: document.getElementById(c.id),
+      error: document.getElementById('error-' + c.id)
+    };
+  });
+
+  function mostrarError(campo, mensaje) {
+    campo.error.textContent = mensaje;
+    campo.error.hidden = false;
+    campo.input.classList.add('invalido');
+    campo.input.setAttribute('aria-invalid', 'true');
+  }
+
+  function limpiarError(campo) {
+    campo.error.textContent = '';
+    campo.error.hidden = true;
+    campo.input.classList.remove('invalido');
+    campo.input.removeAttribute('aria-invalid');
+  }
+
+  // Validación en vivo: si un campo ya muestra error, se revalida al escribir.
+  campos.forEach(function (campo) {
+    campo.input.addEventListener('input', function () {
+      if (!campo.error.hidden && campo.validar(campo.input.value) === null) {
+        limpiarError(campo);
+      }
+    });
+  });
+
+  /* ---------- Envío ---------- */
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var primeroInvalido = null;
+    var valores = {};
+
+    campos.forEach(function (campo) {
+      var error = campo.validar(campo.input.value);
+      if (error) {
+        mostrarError(campo, error);
+        if (!primeroInvalido) primeroInvalido = campo;
+      } else {
+        limpiarError(campo);
+        valores[campo.id] = campo.input.value.trim();
+      }
+    });
+
+    if (primeroInvalido) {
+      exito.hidden = true;
+      primeroInvalido.input.focus();
+      return;
+    }
+
+    // Resumen: se conserva lo que el usuario escribió y se muestra también la
+    // forma ASCII (A-labels) del correo, útil como clave de almacenamiento.
+    exito.innerHTML =
+      '<h2>✔ Datos validados correctamente</h2>' +
+      '<dl>' +
+      '<dt>Nombre</dt><dd></dd>' +
+      '<dt>Correo (tal como se escribió)</dt><dd></dd>' +
+      '<dt>Correo (forma ASCII / A-labels, IDNA2008)</dt><dd></dd>' +
+      (valores.sitio ? '<dt>Sitio web (normalizado)</dt><dd></dd>' : '') +
+      '</dl>' +
+      '<p>La contraseña cumple la política exigida y no se muestra. ' +
+      'En una aplicación real, estos datos se enviarían ahora al servidor.</p>';
+
+    var dds = exito.querySelectorAll('dd');
+    dds[0].textContent = valores.nombre;
+    dds[1].textContent = valores.correo;
+    dds[2].textContent = correoAAscii(valores.correo);
+    if (valores.sitio) dds[3].textContent = urlNormalizada(valores.sitio);
+
+    exito.hidden = false;
+    exito.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulaire d'inscription</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background-color: #f0f2f5;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .form-container {
+      background: #ffffff;
+      padding: 32px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 480px;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 24px;
+      text-align: center;
+      color: #1a1a1a;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #0066cc;
+      box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.2);
+    }
+
+    input.input-error {
+      border-color: #d32f2f;
+      background-color: #fff8f8;
+    }
+
+    input.input-error:focus {
+      box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.2);
+    }
+
+    .error-message {
+      color: #d32f2f;
+      font-size: 0.85rem;
+      margin-top: 5px;
+      min-height: 1.1rem;
+      display: block;
+    }
+
+    button[type="submit"] {
+      width: 100%;
+      padding: 12px;
+      background-color: #0066cc;
+      color: #ffffff;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #0052a3;
+    }
+
+    .success-banner {
+      display: none;
+      background-color: #e8f5e9;
+      color: #2e7d32;
+      border: 1px solid #a5d6a7;
+      padding: 14px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+      text-align: center;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-container">
+    <h1>Inscription</h1>
+
+    <div id="successBanner" class="success-banner" role="alert">
+      Inscription validée avec succès !
+    </div>
+
+    <form id="registrationForm" novalidate>
+      <div class="form-group">
+        <label for="fullname">Nom complet</label>
+        <input type="text" id="fullname" name="fullname" placeholder="Ex. Marie Curie" autocomplete="name" aria-describedby="fullnameError">
+        <span class="error-message" id="fullnameError" aria-live="polite"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Adresse e-mail</label>
+        <input type="text" id="email" name="email" inputmode="email" placeholder="Ex. marie.curie@société.fr" autocomplete="email" aria-describedby="emailError">
+        <span class="error-message" id="emailError" aria-live="polite"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="website">Site web</label>
+        <input type="url" id="website" name="website" placeholder="https://exemple.technology" autocomplete="url" aria-describedby="websiteError">
+        <span class="error-message" id="websiteError" aria-live="polite"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Mot de passe</label>
+        <input type="password" id="password" name="password" placeholder="8 caractères minimum" autocomplete="new-password" aria-describedby="passwordError">
+        <span class="error-message" id="passwordError" aria-live="polite"></span>
+      </div>
+
+      <button type="submit">S'inscrire</button>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById('registrationForm');
+    const successBanner = document.getElementById('successBanner');
+
+    const fields = {
+      fullname: {
+        input: document.getElementById('fullname'),
+        error: document.getElementById('fullnameError'),
+        validate: (val) => {
+          const trimmed = val.trim();
+          if (!trimmed) return 'Le nom complet est obligatoire.';
+          if (trimmed.length < 2) return 'Le nom doit contenir au moins 2 caractères.';
+          return '';
+        }
+      },
+      email: {
+        input: document.getElementById('email'),
+        error: document.getElementById('emailError'),
+        validate: (val) => {
+          const email = val.trim();
+          if (!email) return 'L\'adresse e-mail est obligatoire.';
+
+          if (/\s/.test(email)) {
+            return 'L\'adresse e-mail ne doit pas contenir d\'espaces.';
+          }
+
+          if (email.includes('..')) {
+            return 'L\'adresse e-mail ne peut pas comporter deux points consécutifs.';
+          }
+
+          const parts = email.split('@');
+          if (parts.length !== 2) {
+            return 'L\'adresse e-mail doit comporter un unique symbole "@".';
+          }
+
+          const [localPart, domainPart] = parts;
+
+          if (!localPart) {
+            return 'La partie précédant l\'arobase ne peut pas être vide.';
+          }
+
+          if (localPart.startsWith('.') || localPart.endsWith('.')) {
+            return 'La partie locale ne peut pas commencer ou finir par un point.';
+          }
+
+          if (localPart.length > 64) {
+            return 'La partie locale ne peut pas dépasser 64 caractères.';
+          }
+
+          // Caractères spéciaux interdits hors guillemets (RFC 5322)
+          if (/[\x00-\x1F\x7F()<>,;:\[\]\\"]/.test(localPart)) {
+            return 'La partie locale contient des caractères non autorisés.';
+          }
+
+          if (!domainPart) {
+            return 'Le nom de domaine est manquant.';
+          }
+
+          if (domainPart.startsWith('.') || domainPart.endsWith('.')) {
+            return 'Le domaine ne peut pas commencer ou finir par un point.';
+          }
+
+          if (domainPart.length > 253) {
+            return 'Le nom de domaine ne peut pas dépasser 253 caractères.';
+          }
+
+          const labels = domainPart.split('.');
+          if (labels.length < 2) {
+            return 'Le domaine doit comporter une extension valide (TLD).';
+          }
+
+          for (const label of labels) {
+            if (!label || label.length === 0) {
+              return 'Le domaine contient un format d\'étiquette invalide.';
+            }
+            if (label.length > 63) {
+              return 'Chaque étiquette de domaine est limitée à 63 caractères.';
+            }
+            if (label.startsWith('-') || label.endsWith('-')) {
+              return 'Une étiquette de domaine ne peut commencer ni finir par un tiret.';
+            }
+          }
+
+          const tld = labels[labels.length - 1];
+          if (tld.length < 2) {
+            return 'L\'extension du domaine doit comporter au moins 2 caractères.';
+          }
+          if (/^\d+$/.test(tld)) {
+            return 'L\'extension du domaine ne peut pas être entièrement numérique.';
+          }
+
+          return '';
+        }
+      },
+      website: {
+        input: document.getElementById('website'),
+        error: document.getElementById('websiteError'),
+        validate: (val) => {
+          const urlStr = val.trim();
+          if (!urlStr) return 'Le site web est obligatoire.';
+
+          // Rejeter explicitement tout espace présent dans l'URL
+          if (/\s/.test(urlStr)) {
+            return 'L\'adresse du site web ne doit pas contenir d\'espaces.';
+          }
+
+          if (!/^https?:\/\//i.test(urlStr)) {
+            return 'L\'URL doit débuter par http:// ou https://';
+          }
+
+          let parsedUrl;
+          try {
+            parsedUrl = new URL(urlStr);
+          } catch (e) {
+            return 'Veuillez saisir une URL valide (ex. https://monsite.fr).';
+          }
+
+          const hostname = parsedUrl.hostname;
+          if (!hostname) {
+            return 'L\'URL doit contenir un nom d\'hôte valide.';
+          }
+
+          if (hostname.includes('..')) {
+            return 'Le domaine ne peut pas comporter deux points consécutifs.';
+          }
+
+          if (hostname.startsWith('.') || hostname.endsWith('.')) {
+            return 'Le domaine ne peut pas commencer ou finir par un point.';
+          }
+
+          const hostLabels = hostname.split('.');
+          if (hostLabels.length < 2) {
+            return 'Le domaine doit comporter une extension valide (TLD).';
+          }
+
+          for (const label of hostLabels) {
+            if (!label || label.length === 0) {
+              return 'Le nom de domaine contient un format invalide.';
+            }
+            if (label.length > 63) {
+              return 'Une étiquette de domaine ne peut pas dépasser 63 caractères.';
+            }
+            if (label.startsWith('-') || label.endsWith('-')) {
+              return 'Une étiquette de domaine ne peut pas commencer ou finir par un tiret.';
+            }
+          }
+
+          const tld = hostLabels[hostLabels.length - 1];
+          if (tld.length < 2) {
+            return 'L\'extension du domaine doit comporter au moins 2 caractères.';
+          }
+          if (/^\d+$/.test(tld)) {
+            return 'L\'extension du domaine ne peut pas être entièrement numérique.';
+          }
+
+          return '';
+        }
+      },
+      password: {
+        input: document.getElementById('password'),
+        error: document.getElementById('passwordError'),
+        validate: (val) => {
+          if (!val) return 'Le mot de passe est obligatoire.';
+          if (val.length < 8) return 'Le mot de passe doit comporter au moins 8 caractères.';
+          return '';
+        }
+      }
+    };
+
+    function validateField(name) {
+      const field = fields[name];
+      const errorMessage = field.validate(field.input.value);
+
+      if (errorMessage) {
+        field.input.classList.add('input-error');
+        field.input.setAttribute('aria-invalid', 'true');
+        field.error.textContent = errorMessage;
+        return false;
+      } else {
+        field.input.classList.remove('input-error');
+        field.input.removeAttribute('aria-invalid');
+        field.error.textContent = '';
+        return true;
+      }
+    }
+
+    Object.keys(fields).forEach((fieldName) => {
+      fields[fieldName].input.addEventListener('input', () => {
+        validateField(fieldName);
+      });
+      fields[fieldName].input.addEventListener('blur', () => {
+        validateField(fieldName);
+      });
+    });
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      successBanner.style.display = 'none';
+
+      let isFormValid = true;
+      let firstInvalidInput = null;
+
+      Object.keys(fields).forEach((fieldName) => {
+        const isValid = validateField(fieldName);
+        if (!isValid) {
+          isFormValid = false;
+          if (!firstInvalidInput) {
+            firstInvalidInput = fields[fieldName].input;
+          }
+        }
+      });
+
+      if (firstInvalidInput) {
+        firstInvalidInput.focus();
+      }
+
+      if (isFormValid) {
+        successBanner.style.display = 'block';
+        form.reset();
+        Object.keys(fields).forEach((fieldName) => {
+          fields[fieldName].input.classList.remove('input-error');
+          fields[fieldName].input.removeAttribute('aria-invalid');
+          fields[fieldName].error.textContent = '';
+        });
+      }
+    });
+  </script>
+</body>
+</html>

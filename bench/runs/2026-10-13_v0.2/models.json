@@ -1,0 +1,29 @@
+{
+  "pinned": "2026-10-13 — models for v0.2, read that day in the OpenRouter catalogue: the most recent Gemini Flash and Mistral's most recent large model. Original provider pinned, no fallback. Same protocol as bench/runs/2026-10-06_state-catalogue/.",
+  "models": [
+    {
+      "key": "gemini-3-8-flash",
+      "slug": "google/gemini-3.8-flash",
+      "provider": "google-ai-studio"
+    },
+    {
+      "key": "mistral-large-4-0",
+      "slug": "mistralai/mistral-large-4-0",
+      "provider": "mistral",
+      "max_tokens": 64000
+    }
+  ],
+  "languages": [
+    "fr",
+    "en",
+    "es"
+  ],
+  "conditions": [
+    "no-guide",
+    "guide"
+  ],
+  "repeats": 3,
+  "temperature": null,
+  "max_tokens": 16000,
+  "max_tokens_note": "16000 for all, as on 2026-10-06; Mistral Large 4 raised to 64000 on 2026-10-13 after 2 of its first 6 replies (en/guide/2 and 3) spent 15 203 and 15 317 of 16 000 tokens reasoning and returned no page. Those two are kept in truncated-16000/ and were generated again. Same treatment as GLM 5.3 in the bench of 2026-09-25 (bench/models.json). Reasoning effort left at the provider default."
+}

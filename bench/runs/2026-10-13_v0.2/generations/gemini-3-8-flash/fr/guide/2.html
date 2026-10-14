@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulaire d'inscription</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background-color: #f0f2f5;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .form-container {
+      background: #ffffff;
+      padding: 32px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 480px;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 24px;
+      text-align: center;
+      color: #1a1a1a;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #0066cc;
+      box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.2);
+    }
+
+    input.input-error {
+      border-color: #d32f2f;
+      background-color: #fff8f8;
+    }
+
+    input.input-error:focus {
+      box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.2);
+    }
+
+    .error-message {
+      color: #d32f2f;
+      font-size: 0.85rem;
+      margin-top: 5px;
+      min-height: 1.1rem;
+      display: block;
+    }
+
+    button[type="submit"] {
+      width: 100%;
+      padding: 12px;
+      background-color: #0066cc;
+      color: #ffffff;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #0052a3;
+    }
+
+    .success-banner {
+      display: none;
+      background-color: #e8f5e9;
+      color: #2e7d32;
+      border: 1px solid #a5d6a7;
+      padding: 14px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+      text-align: center;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-container">
+    <h1>Inscription</h1>
+
+    <div id="successBanner" class="success-banner" role="alert">
+      Inscription validée avec succès !
+    </div>
+
+    <!-- novalidate pour laisser la logique de validation universelle à JavaScript -->
+    <form id="registrationForm" novalidate>
+      <div class="form-group">
+        <label for="fullname">Nom complet</label>
+        <input type="text" id="fullname" name="fullname" placeholder="Ex. Marie Curie" autocomplete="name">
+        <span class="error-message" id="fullnameError" aria-live="polite"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Adresse e-mail</label>
+        <!-- type="text" avec inputmode="email" pour accepter sans blocage les adresses internationalisées (EAI) -->
+        <input type="text" id="email" name="email" inputmode="email" placeholder="Ex. marie.curie@société.fr" autocomplete="email">
+        <span class="error-message" id="emailError" aria-live="polite"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="website">Site web</label>
+        <input type="url" id="website" name="website" placeholder="https://exemple.technology" autocomplete="url">
+        <span class="error-message" id="websiteError" aria-live="polite"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Mot de passe</label>
+        <input type="password" id="password" name="password" placeholder="8 caractères minimum" autocomplete="new-password">
+        <span class="error-message" id="passwordError" aria-live="polite"></span>
+      </div>
+
+      <button type="submit">S'inscrire</button>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById('registrationForm');
+    const successBanner = document.getElementById('successBanner');
+
+    const fields = {
+      fullname: {
+        input: document.getElementById('fullname'),
+        error: document.getElementById('fullnameError'),
+        validate: (val) => {
+          if (!val.trim()) return 'Le nom complet est obligatoire.';
+          if (val.trim().length < 2) return 'Le nom doit contenir au moins 2 caractères.';
+          return '';
+        }
+      },
+      email: {
+        input: document.getElementById('email'),
+        error: document.getElementById('emailError'),
+        validate: (val) => {
+          const email = val.trim();
+          if (!email) return 'L\'adresse e-mail est obligatoire.';
+
+          // Validation compatible Universal Acceptance (RFC 6531, IDN) :
+          // Accepte l'Unicode dans la partie locale et dans le nom de domaine,
+          // ne restreint pas la longueur du TLD, supporte les A-labels (xn--).
+          const atIndex = email.indexOf('@');
+          if (atIndex <= 0 || atIndex !== email.lastIndexOf('@')) {
+            return 'L\'adresse e-mail doit comporter un unique symbole "@".';
+          }
+
+          const localPart = email.slice(0, atIndex);
+          const domainPart = email.slice(atIndex + 1);
+
+          if (/\s/.test(localPart) || /\s/.test(domainPart)) {
+            return 'L\'adresse ne doit pas contenir d\'espaces.';
+          }
+
+          const labels = domainPart.split('.');
+          if (labels.length < 2) {
+            return 'Le domaine doit comporter une extension (TLD).';
+          }
+
+          if (labels.some(label => label.length === 0)) {
+            return 'Le nom de domaine contient un format invalide.';
+          }
+
+          const tld = labels[labels.length - 1];
+          // Le TLD doit avoir au moins 2 caractères ou être un label punycode (xn--)
+          if (tld.length < 2) {
+            return 'L\'extension du domaine doit comporter au moins 2 caractères.';
+          }
+
+          return '';
+        }
+      },
+      website: {
+        input: document.getElementById('website'),
+        error: document.getElementById('websiteError'),
+        validate: (val) => {
+          const urlStr = val.trim();
+          if (!urlStr) return 'Le site web est obligatoire.';
+
+          try {
+            const parsedUrl = new URL(urlStr);
+            if (parsedUrl.protocol !== 'http:' && parsedUrl.protocol !== 'https:') {
+              return 'L\'URL doit débuter par http:// ou https://';
+            }
+            if (!parsedUrl.hostname.includes('.')) {
+              return 'Le domaine de l\'URL doit comporter une extension valide.';
+            }
+          } catch (e) {
+            return 'Veuillez saisir une URL valide (ex. https://monsite.fr).';
+          }
+
+          return '';
+        }
+      },
+      password: {
+        input: document.getElementById('password'),
+        error: document.getElementById('passwordError'),
+        validate: (val) => {
+          if (!val) return 'Le mot de passe est obligatoire.';
+          if (val.length < 8) return 'Le mot de passe doit comporter au moins 8 caractères.';
+          return '';
+        }
+      }
+    };
+
+    function validateField(name) {
+      const field = fields[name];
+      const errorMessage = field.validate(field.input.value);
+
+      if (errorMessage) {
+        field.input.classList.add('input-error');
+        field.error.textContent = errorMessage;
+        return false;
+      } else {
+        field.input.classList.remove('input-error');
+        field.error.textContent = '';
+        return true;
+      }
+    }
+
+    // Validation à la saisie dès qu'un champ a été modifié
+    Object.keys(fields).forEach((fieldName) => {
+      fields[fieldName].input.addEventListener('input', () => {
+        validateField(fieldName);
+      });
+    });
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      successBanner.style.display = 'none';
+
+      let isFormValid = true;
+
+      // Valider tous les champs
+      Object.keys(fields).forEach((fieldName) => {
+        const isValid = validateField(fieldName);
+        if (!isValid) {
+          isFormValid = false;
+        }
+      });
+
+      if (isFormValid) {
+        successBanner.style.display = 'block';
+        form.reset();
+        Object.keys(fields).forEach((fieldName) => {
+          fields[fieldName].input.classList.remove('input-error');
+          fields[fieldName].error.textContent = '';
+        });
+      }
+    });
+  </script>
+</body>
+</html>

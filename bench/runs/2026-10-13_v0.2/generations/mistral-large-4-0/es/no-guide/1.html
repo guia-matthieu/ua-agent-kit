@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Registro</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+        .container {
+            background: #ffffff;
+            padding: 2.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 450px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #555;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        input:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+        input.invalid {
+            border-color: #f44336;
+            background-color: #ffebee;
+        }
+        .error-message {
+            color: #f44336;
+            font-size: 0.85rem;
+            margin-top: 0.35rem;
+            display: none;
+            font-weight: 500;
+        }
+        .error-message.visible {
+            display: block;
+        }
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            display: none;
+            text-align: center;
+            font-weight: 600;
+        }
+        .success-message.visible {
+            display: block;
+        }
+        button {
+            width: 100%;
+            padding: 0.85rem;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 0.5rem;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        button:active {
+            transform: scale(0.98);
+        }
+        .hint {
+            font-size: 0.8rem;
+            color: #888;
+            margin-top: 0.25rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Crear Cuenta</h1>
+        <div id="successMessage" class="success-message">¡Registro completado exitosamente!</div>
+
+        <form id="registroForm" novalidate>
+            <div class="form-group">
+                <label for="nombreCompleto">Nombre completo</label>
+                <input type="text" id="nombreCompleto" name="nombreCompleto" placeholder="Ej: María García López" autocomplete="name">
+                <div class="error-message" id="nombreCompletoError"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Dirección de correo electrónico</label>
+                <input type="email" id="email" name="email" placeholder="ejemplo@correo.com" autocomplete="email">
+                <div class="error-message" id="emailError"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="sitioWeb">Sitio web <span style="color: #999; font-weight: normal;">(opcional)</span></label>
+                <input type="url" id="sitioWeb" name="sitioWeb" placeholder="https://www.ejemplo.com">
+                <div class="error-message" id="sitioWebError"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Contraseña</label>
+                <input type="password" id="password" name="password" placeholder="••••••••" autocomplete="new-password">
+                <div class="hint">Mínimo 8 caracteres, con mayúscula, minúscula y número</div>
+                <div class="error-message" id="passwordError"></div>
+            </div>
+
+            <button type="submit">Registrarse</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('registroForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Limpiar estados previos
+            limpiarErrores();
+            document.getElementById('successMessage').classList.remove('visible');
+
+            let formularioValido = true;
+
+            // Validación Nombre Completo
+            const nombre = document.getElementById('nombreCompleto').value.trim();
+            if (!nombre) {
+                mostrarError('nombreCompleto', 'El nombre completo es obligatorio.');
+                formularioValido = false;
+            } else if (nombre.length < 3) {
+                mostrarError('nombreCompleto', 'El nombre debe tener al menos 3 caracteres.');
+                formularioValido = false;
+            } else if (nombre.split(/\s+/).length < 2) {
+                mostrarError('nombreCompleto', 'Ingresa nombre y apellido (mínimo dos palabras).');
+                formularioValido = false;
+            } else if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/.test(nombre)) {
+                mostrarError('nombreCompleto', 'El nombre solo puede contener letras y espacios.');
+                formularioValido = false;
+            }
+
+            // Validación Correo Electrónico
+            const email = document.getElementById('email').value.trim();
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!email) {
+                mostrarError('email', 'El correo electrónico es obligatorio.');
+                formularioValido = false;
+            } else if (!emailRegex.test(email)) {
+                mostrarError('email', 'Ingresa una dirección de correo electrónico válida (ej: usuario@dominio.com).');
+                formularioValido = false;
+            }
+
+            // Validación Sitio Web (opcional)
+            const sitioWeb = document.getElementById('sitioWeb').value.trim();
+            if (sitioWeb) {
+                const urlRegex = /^(https?:\/\/)?(www\.)?[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z]{2,}(\/[^\s]*)?$/;
+                if (!urlRegex.test(sitioWeb)) {
+                    mostrarError('sitioWeb', 'Ingresa una URL válida (ej: https://ejemplo.com o ejemplo.com).');
+                    formularioValido = false;
+                }
+            }
+
+            // Validación Contraseña
+            const password = document.getElementById('password').value;
+            if (!password) {
+                mostrarError('password', 'La contraseña es obligatoria.');
+                formularioValido = false;
+            } else if (password.length < 8) {
+                mostrarError('password', 'La contraseña debe tener al menos 8 caracteres.');
+                formularioValido = false;
+            } else if (!/(?=.*[a-z])/.test(password)) {
+                mostrarError('password', 'La contraseña debe contener al menos una letra minúscula.');
+                formularioValido = false;
+            } else if (!/(?=.*[A-Z])/.test(password)) {
+                mostrarError('password', 'La contraseña debe contener al menos una letra mayúscula.');
+                formularioValido = false;
+            } else if (!/(?=.*\d)/.test(password)) {
+                mostrarError('password', 'La contraseña debe contener al menos un número.');
+                formularioValido = false;
+            }
+
+            // Si todo es válido
+            if (formularioValido) {
+                document.getElementById('successMessage').classList.add('visible');
+                this.reset();
+                // Ocultar mensaje de éxito después de 4 segundos
+                setTimeout(() => {
+                    document.getElementById('successMessage').classList.remove('visible');
+                }, 4000);
+            } else {
+                // Enfocar el primer campo con error
+                const primerError = document.querySelector('.invalid');
+                if (primerError) {
+                    primerError.focus();
+                }
+            }
+        });
+
+        function mostrarError(campoId, mensaje) {
+            const input = document.getElementById(campoId);
+            const errorDiv = document.getElementById(campoId + 'Error');
+            input.classList.add('invalid');
+            errorDiv.textContent = mensaje;
+            errorDiv.classList.add('visible');
+        }
+
+        function limpiarErrores() {
+            const inputs = document.querySelectorAll('input');
+            const errores = document.querySelectorAll('.error-message');
+
+            inputs.forEach(input => input.classList.remove('invalid'));
+            errores.forEach(error => {
+                error.classList.remove('visible');
+                error.textContent = '';
+            });
+        }
+
+        // Limpiar error específico al escribir en el campo
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('input', function() {
+                this.classList.remove('invalid');
+                const errorDiv = document.getElementById(this.id + 'Error');
+                if (errorDiv) {
+                    errorDiv.classList.remove('visible');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Formulaire d’inscription avec validation JavaScript compatible adresses et domaines internationalisés (Universal Acceptance).">
+<title>Inscription · Créer un compte</title>
+<style>
+  :root{
+    --accent:#4f46e5;
+    --accent-fonce:#4338ca;
+    --erreur:#b91c1c;
+    --erreur-fond:#fef2f2;
+    --texte:#1f2937;
+    --secondaire:#6b7280;
+    --bordure:#d1d5db;
+    --fond:#eef1f6;
+    --carte:#ffffff;
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  [hidden]{display:none!important}
+  body{
+    margin:0;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:2.5rem 1rem;
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    line-height:1.5;
+    color:var(--texte);
+    background:linear-gradient(180deg,#eef2ff 0%,var(--fond) 45%,var(--fond) 100%);
+  }
+  .carte{
+    width:100%;
+    max-width:30rem;
+    background:var(--carte);
+    border:1px solid var(--bordure);
+    border-radius:.9rem;
+    padding:2rem;
+    box-shadow:0 12px 32px rgba(15,23,42,.08);
+  }
+  h1{margin:0 0 .25rem;font-size:1.5rem;line-height:1.2}
+  .sous-titre{margin:0 0 1.5rem;font-size:.9rem;color:var(--secondaire)}
+  .champ{margin-bottom:1.15rem}
+  .champ label{display:block;margin-bottom:.35rem;font-size:.95rem;font-weight:600}
+  .obligatoire{color:var(--erreur)}
+  .facultatif{font-weight:400;color:var(--secondaire)}
+  input[type="text"],input[type="password"]{
+    width:100%;
+    padding:.6rem .75rem;
+    font:inherit;
+    color:inherit;
+    background:#fff;
+    border:1px solid var(--bordure);
+    border-radius:.5rem;
+  }
+  input::placeholder{color:#9ca3af}
+  input:focus-visible{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
+  input.invalide{border-color:var(--erreur)}
+  input.invalide:focus-visible{outline-color:var(--erreur)}
+  .erreur{
+    margin:.45rem 0 0;
+    padding:.5rem .75rem;
+    font-size:.85rem;
+    color:var(--erreur);
+    background:var(--erreur-fond);
+    border-left:3px solid var(--erreur);
+    border-radius:.3rem;
+  }
+  .indice{margin:.45rem 0 0;font-size:.8rem;color:var(--secondaire)}
+  .case{
+    display:flex;
+    align-items:center;
+    gap:.5rem;
+    margin:-.35rem 0 1.25rem;
+    font-size:.85rem;
+    font-weight:400;
+    color:var(--secondaire);
+    cursor:pointer;
+  }
+  .case input{width:1rem;height:1rem;accent-color:var(--accent);cursor:pointer}
+  .bouton{
+    width:100%;
+    padding:.7rem 1rem;
+    font:inherit;
+    font-weight:600;
+    color:#fff;
+    background:var(--accent);
+    border:none;
+    border-radius:.5rem;
+    cursor:pointer;
+  }
+  .bouton:hover{background:var(--accent-fonce)}
+  .bouton:focus-visible{outline:2px solid var(--accent-fonce);outline-offset:2px}
+  .bouton-secondaire{color:var(--accent-fonce);background:#fff;border:1px solid var(--bordure)}
+  .bouton-secondaire:hover{background:var(--fond)}
+  #confirmation:focus{outline:none}
+  #confirmation h2{margin:0 0 .75rem;font-size:1.2rem}
+  .resume{
+    display:grid;
+    grid-template-columns:max-content 1fr;
+    gap:.4rem 1rem;
+    margin:0 0 1rem;
+    font-size:.9rem;
+  }
+  .resume dt{font-weight:600;color:var(--secondaire)}
+  .resume dd{margin:0;overflow-wrap:anywhere}
+  #confirmation .indice{margin:0 0 1.25rem}
+</style>
+</head>
+<body>
+<main class="carte">
+  <h1>Créer un compte</h1>
+  <p class="sous-titre">Les champs marqués d’un astérisque (<span class="obligatoire">*</span>) sont obligatoires.</p>
+
+  <noscript><p class="erreur">JavaScript est requis pour valider et envoyer ce formulaire.</p></noscript>
+
+  <form id="formulaire" novalidate>
+    <div class="champ">
+      <label for="nom">Nom complet <span class="obligatoire" aria-hidden="true">*</span></label>
+      <input type="text" id="nom" name="nom" autocomplete="name" autofocus required aria-describedby="nom-erreur">
+      <p class="erreur" id="nom-erreur" role="alert" hidden></p>
+    </div>
+
+    <div class="champ">
+      <label for="email">Adresse e-mail <span class="obligatoire" aria-hidden="true">*</span></label>
+      <!-- type="text" + validation maison : les navigateurs ne s’accordent pas sur
+           <input type="email"> avec les adresses internationalisées (EAI, RFC 6531).
+           Ici, « josé.dupont@société.fr » et « 用户@example.com » sont acceptés. -->
+      <input type="text" id="email" name="email" inputmode="email" autocomplete="email" spellcheck="false" placeholder="prenom.nom@exemple.fr" required aria-describedby="email-indice email-erreur">
+      <p class="indice" id="email-indice" hidden></p>
+      <p class="erreur" id="email-erreur" role="alert" hidden></p>
+    </div>
+
+    <div class="champ">
+      <label for="site">Site web <span class="facultatif">(facultatif)</span></label>
+      <input type="text" id="site" name="site" inputmode="url" autocomplete="url" spellcheck="false" placeholder="https://www.exemple.fr" aria-describedby="site-erreur">
+      <p class="erreur" id="site-erreur" role="alert" hidden></p>
+    </div>
+
+    <div class="champ">
+      <label for="motdepasse">Mot de passe <span class="obligatoire" aria-hidden="true">*</span></label>
+      <input type="password" id="motdepasse" name="motdepasse" autocomplete="new-password" required aria-describedby="motdepasse-indice motdepasse-erreur">
+      <p class="indice" id="motdepasse-indice">Au moins 8 caractères, avec une majuscule, une minuscule et un chiffre.</p>
+      <p class="erreur" id="motdepasse-erreur" role="alert" hidden></p>
+    </div>
+
+    <label class="case">
+      <input type="checkbox" id="voir-motdepasse">
+      Afficher le mot de passe
+    </label>
+
+    <button type="submit" class="bouton">S’inscrire</button>
+  </form>
+
+  <section id="confirmation" role="status" aria-labelledby="titre-confirmation" tabindex="-1" hidden>
+    <h2 id="titre-confirmation">Inscription validée ✓</h2>
+    <p>Voici les informations validées :</p>
+    <dl class="resume">
+      <dt>Nom</dt>
+      <dd id="resume-nom"></dd>
+      <dt>E-mail (tel que saisi)</dt>
+      <dd id="resume-email"></dd>
+      <dt>E-mail (domaine en A-label, IDNA2008)</dt>
+      <dd id="resume-email-ascii"></dd>
+      <dt>Site web (URL normalisée)</dt>
+      <dd id="resume-site"></dd>
+    </dl>
+    <p class="indice">Le mot de passe n’est jamais affiché ni journalisé.</p>
+    <button type="button" id="retour" class="bouton bouton-secondaire">Modifier mes informations</button>
+  </section>
+</main>
+
+<script>
+"use strict";
+
+/* ============================================================
+   Validation « Universal Acceptance » (RFC 5890/5891, UTS #46,
+   RFC 6530/6531) : les adresses e-mail et les domaines peuvent
+   être internationalisés (U-labels). On convertit en A-labels via
+   le parseur d’URL (UTS #46) tout en conservant la saisie de
+   l’utilisateur. Les TLD ne sont pas limités à 2–4 lettres.
+   ============================================================ */
+
+const encodeur = new TextEncoder();
+const enOctets = (texte) => encodeur.encode(texte).length;
+
+/* Convertit un domaine en A-labels (IDNA2008 / UTS #46).
+   Le constructeur URL applique UTS #46 aux hôtes et renvoie le nom
+   en minuscules (insensible à la casse), prêt pour un lookup DNS
+   ou une clé de stockage. */
+function domaineVersAscii(domaine) {
+  try {
+    const hote = new URL("https://" + domaine).hostname;
+    return hote.endsWith(".") ? hote.slice(0, -1) : hote;
+  } catch (e) {
+    return null;
+  }
+}
+
+/* Syntaxe minimale d’un domaine : étiquettes de 1 à 63 caractères,
+   séparées par des points, avec un TLD d’au moins deux lettres ou
+   une étiquette A « xn--… » (les « xn-- » ne sont PAS rejetés). */
+function verifierDomaine(domaine) {
+  if (/[\s/?#\\:@[\]]/.test(domaine)) {
+    return { ok: false, erreur: "Le domaine contient des caractères interdits (espace, « / », « : », « ? », « # »…)." };
+  }
+  const ascii = domaineVersAscii(domaine);
+  if (!ascii) {
+    return { ok: false, erreur: "Le nom de domaine est invalide." };
+  }
+  if (ascii.length > 253) {
+    return { ok: false, erreur: "Le nom de domaine dépasse 253 caractères (RFC 1035)." };
+  }
+  const etiquettes = ascii.split(".");
+  if (etiquettes.length < 2) {
+    return { ok: false, erreur: "Il manque un domaine de premier niveau (TLD), par exemple « .fr » ou « .technology »." };
+  }
+  for (const etiquette of etiquettes) {
+    if (etiquette.length < 1 || etiquette.length > 63) {
+      return { ok: false, erreur: "Chaque étiquette du domaine doit faire entre 1 et 63 caractères." };
+    }
+    if (!/^[a-z0-9]([a-z0-9-]*[a-z0-9])?$/i.test(etiquette)) {
+      return { ok: false, erreur: "Une étiquette du domaine est invalide : lettres, chiffres et traits d’union uniquement, sans trait d’union au début ni à la fin." };
+    }
+  }
+  const tld = etiquettes[etiquettes.length - 1];
+  if (!(/^[a-z]{2,}$/i.test(tld) || /^xn--/i.test(tld))) {
+    return { ok: false, erreur: "Le domaine de premier niveau (TLD) doit comporter au moins deux lettres ou être une étiquette A « xn--… »." };
+  }
+  return { ok: true, ascii: ascii };
+}
+
+/* Adresse e-mail : un seul « @ », partie locale non vide et sans espace
+   (elle peut contenir de l’Unicode, « + », « ' »… — RFC 6531), domaine
+   valide. La saisie est conservée ; le domaine est aussi fourni en A-label. */
+function verifierEmail(valeur) {
+  const texte = valeur.trim();
+  if (!texte) {
+    return { ok: false, erreur: "Veuillez saisir une adresse e-mail." };
+  }
+  if ((texte.match(/@/g) || []).length !== 1) {
+    return { ok: false, erreur: "L’adresse e-mail doit contenir un et un seul « @ »." };
+  }
+  const separation = texte.indexOf("@");
+  const partieLocale = texte.slice(0, separation);
+  const domaine = texte.slice(separation + 1);
+  if (!partieLocale) {
+    return { ok: false, erreur: "La partie locale (avant « @ ») est vide." };
+  }
+  if (/\s/.test(partieLocale)) {
+    return { ok: false, erreur: "La partie locale (avant « @ ») ne doit pas contenir d’espace." };
+  }
+  if (enOctets(partieLocale) > 64) {
+    return { ok: false, erreur: "La partie locale dépasse 64 octets (RFC 5321)." };
+  }
+  if (!domaine) {
+    return { ok: false, erreur: "Le domaine (après « @ ») est vide." };
+  }
+  const resultatDomaine = verifierDomaine(domaine);
+  if (!resultatDomaine.ok) {
+    return { ok: false, erreur: resultatDomaine.erreur };
+  }
+  const normalise = partieLocale + "@" + resultatDomaine.ascii;
+  if (enOctets(texte) > 254 || enOctets(normalise) > 254) {
+    return { ok: false, erreur: "L’adresse e-mail dépasse 254 octets au total." };
+  }
+  return {
+    ok: true,
+    texte: texte,                        /* conservée telle que saisie */
+    partieLocale: partieLocale,
+    domaineAscii: resultatDomaine.ascii  /* forme A-label (IDNA2008) */
+  };
+}
+
+/* Site web (facultatif) : schéma http(s) exigé, ajouté si absent.
+   Les domaines internationalisés sont acceptés et normalisés. */
+function verifierSite(valeur) {
+  const texte = valeur.trim();
+  if (!texte) {
+    return { ok: true, href: null }; /* champ facultatif */
+  }
+  let candidat = texte;
+  const avecScheme = /^([a-z][a-z0-9+.-]*):(\/\/)?/i.exec(candidat);
+  if (avecScheme) {
+    const scheme = avecScheme[1].toLowerCase();
+    const suite = candidat.slice(avecScheme[0].length);
+    const estHotePort = avecScheme[1].includes(".") || /^\d/.test(suite);
+    if (!estHotePort) {
+      if (scheme !== "http" && scheme !== "https") {
+        return { ok: false, erreur: "Seuls les protocoles « http » et « https » sont acceptés." };
+      }
+      if (!avecScheme[2]) {
+        return { ok: false, erreur: "Le schéma « " + scheme + ": » doit être suivi de « // » (ex. : « " + scheme + "://exemple.fr »)." };
+      }
+    } else {
+      candidat = "https://" + candidat; /* en réalité « hôte:port » */
+    }
+  } else {
+    candidat = "https://" + candidat; /* schéma ajouté automatiquement */
+  }
+  let url;
+  try {
+    url = new URL(candidat);
+  } catch (e) {
+    return { ok: false, erreur: "L’URL saisie n’est pas valide." };
+  }
+  if (url.protocol !== "http:" && url.protocol !== "https:") {
+    return { ok: false, erreur: "Seuls les protocoles « http » et « https » sont acceptés." };
+  }
+  const resultatDomaine = verifierDomaine(url.hostname);
+  if (!resultatDomaine.ok) {
+    return { ok: false, erreur: "Le nom de domaine du site est invalide : " + resultatDomaine.erreur };
+  }
+  return { ok: true, href: url.href, domaineAscii: resultatDomaine.ascii };
+}
+
+/* Nom complet : lettres (y compris accentuées et non latines), espaces,
+   apostrophes, points et traits d’union. */
+function verifierNom(valeur) {
+  const texte = valeur.trim().replace(/\s+/g, " ");
+  if (!texte) {
+    return { ok: false, erreur: "Veuillez saisir votre nom complet." };
+  }
+  if (texte.length < 2) {
+    return { ok: false, erreur: "Le nom doit comporter au moins 2 caractères." };
+  }
+  if (!/^[\p{L}][\p{L}\s'’.-]*$/u.test(texte)) {
+    return { ok: false, erreur: "Le nom ne doit contenir que des lettres, espaces, apostrophes, points ou traits d’union." };
+  }
+  return { ok: true, texte: texte };
+}
+
+/* Mot de passe : 8 caractères minimum, une majuscule, une minuscule, un chiffre. */
+function verifierMotDePasse(valeur) {
+  if (!valeur) {
+    return { ok: false, erreur: "Veuillez saisir un mot de passe." };
+  }
+  if (valeur.length < 8) {
+    return { ok: false, erreur: "Le mot de passe doit comporter au moins 8 caractères." };
+  }
+  if (!/\p{Lu}/u.test(valeur)) {
+    return { ok: false, erreur: "Ajoutez au moins une lettre majuscule (A, É…)." };
+  }
+  if (!/\p{Ll}/u.test(valeur)) {
+    return { ok: false, erreur: "Ajoutez au moins une lettre minuscule (a, é…)." };
+  }
+  if (!/\p{N}/u.test(valeur)) {
+    return { ok: false, erreur: "Ajoutez au moins un chiffre (0-9)." };
+  }
+  return { ok: true };
+}
+
+/* ---------- Liaison avec le DOM ---------- */
+
+const formulaire = document.getElementById("formulaire");
+const confirmation = document.getElementById("confirmation");
+const indiceEmail = document.getElementById("email-indice");
+
+const champs = [
+  { id: "nom",        valider: verifierNom,        garder: (r) => r.texte },
+  { id: "email",      valider: verifierEmail,      garder: (r) => r },
+  { id: "site",       valider: verifierSite,       garder: (r) => r },
+  { id: "motdepasse", valider: verifierMotDePasse, garder: () => null } /* jamais affiché */
+].map((champ) => ({
+  ...champ,
+  input: document.getElementById(champ.id),
+  message: document.getElementById(champ.id + "-erreur")
+}));
+
+let tentativeEnvoi = false;
+
+function afficherErreur(champ, erreur) {
+  if (erreur) {
+    champ.message.textContent = erreur;
+    champ.message.hidden = false;
+    champ.input.setAttribute("aria-invalid", "true");
+    champ.input.classList.add("invalide");
+  } else {
+    champ.message.textContent = "";
+    champ.message.hidden = true;
+    champ.input.removeAttribute("aria-invalid");
+    champ.input.classList.remove("invalide");
+  }
+}
+
+/* Montre la conversion IDNA du domaine e-mail lorsque la saisie diffère
+   de la forme A-label (la saisie de l’utilisateur reste conservée). */
+function mettreAJourIndiceEmail(valeur) {
+  const resultat = verifierEmail(valeur);
+  if (resultat.ok) {
+    const saisie = valeur.trim();
+    const domaineSaisi = saisie.slice(saisie.indexOf("@") + 1);
+    if (domaineSaisi.toLowerCase() !== resultat.domaineAscii) {
+      indiceEmail.textContent =
+        "Domaine converti en A-label (IDNA2008 / UTS #46) : « " +
+        resultat.domaineAscii + " » — votre saisie est conservée telle quelle.";
+      indiceEmail.hidden = false;
+      return;
+    }
+  }
+  indiceEmail.hidden = true;
+}
+
+function revalider(champ) {
+  const resultat = champ.valider(champ.input.value);
+  afficherErreur(champ, resultat.ok ? null : resultat.erreur);
+  if (champ.id === "email") {
+    mettreAJourIndiceEmail(champ.input.value);
+  }
+  return resultat;
+}
+
+/* Validation « à la volée » : on revalide un champ dès qu’il a une erreur
+   (ou après une première tentative d’envoi). */
+for (const champ of champs) {
+  champ.input.addEventListener("input", () => {
+    if (tentativeEnvoi || champ.input.getAttribute("aria-invalid") === "true") {
+      revalider(champ);
+    } else if (champ.id === "email") {
+      mettreAJourIndiceEmail(champ.input.value);
+    }
+  });
+  champ.input.addEventListener("blur", () => {
+    if (tentativeEnvoi) {
+      revalider(champ);
+    }
+  });
+}
+
+/* Afficher / masquer le mot de passe */
+const caseVoir = document.getElementById("voir-motdepasse");
+const champMdp = document.getElementById("motdepasse");
+caseVoir.addEventListener("change", () => {
+  champMdp.type = caseVoir.checked ? "text" : "password";
+});
+
+/* Soumission : validation complète de tous les champs avant « envoi » */
+formulaire.addEventListener("submit", (evenement) => {
+  evenement.preventDefault();
+  tentativeEnvoi = true;
+
+  let premierInvalide = null;
+  const donnees = {};
+  for (const champ of champs) {
+    const resultat = revalider(champ);
+    if (resultat.ok) {
+      donnees[champ.id] = champ.garder(resultat);
+    } else if (!premierInvalide) {
+      premierInvalide = champ.input;
+    }
+  }
+
+  if (premierInvalide) {
+    premierInvalide.focus();
+    return;
+  }
+
+  /* En production, cette charge utile serait envoyée au serveur.
+     On conserve la saisie ET la forme A-label du domaine (clé de stockage,
+     lookup DNS). Le mot de passe serait haché côté serveur, jamais affiché. */
+  const chargeUtile = {
+    nom: donnees.nom,
+    email_saisi: donnees.email.texte,
+    email_normalise: donnees.email.partieLocale + "@" + donnees.email.domaineAscii,
+    site: donnees.site.href
+  };
+  console.log("Charge utile (simulation d’envoi) :", chargeUtile);
+
+  document.getElementById("resume-nom").textContent = chargeUtile.nom;
+  document.getElementById("resume-email").textContent = chargeUtile.email_saisi;
+  document.getElementById("resume-email-ascii").textContent = chargeUtile.email_normalise;
+  document.getElementById("resume-site").textContent = chargeUtile.site || "—";
+
+  formulaire.hidden = true;
+  indiceEmail.hidden = true;
+  confirmation.hidden = false;
+  confirmation.focus();
+});
+
+/* Retour au formulaire pour modification */
+document.getElementById("retour").addEventListener("click", () => {
+  confirmation.hidden = true;
+  formulaire.hidden = false;
+  tentativeEnvoi = false;
+  for (const champ of champs) {
+    afficherErreur(champ, null);
+  }
+  document.getElementById("nom").focus();
+});
+</script>
+</body>
+</html>

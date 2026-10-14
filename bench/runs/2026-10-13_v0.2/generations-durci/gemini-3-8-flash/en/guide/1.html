@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up</title>
+  <style>
+    :root {
+      --bg-color: #f3f4f6;
+      --card-bg: #ffffff;
+      --text-color: #1f2937;
+      --label-color: #374151;
+      --border-color: #d1d5db;
+      --focus-color: #3b82f6;
+      --error-color: #dc2626;
+      --success-color: #16a34a;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 1.5rem;
+    }
+
+    .form-card {
+      background: var(--card-bg);
+      border-radius: 8px;
+      padding: 2rem;
+      width: 100%;
+      max-width: 480px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 0.35rem;
+      gap: 0.5rem;
+    }
+
+    label {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--label-color);
+      flex-shrink: 0;
+    }
+
+    .error-msg {
+      font-size: 0.8rem;
+      color: var(--error-color);
+      display: none;
+      text-align: right;
+      overflow-wrap: anywhere;
+    }
+
+    .error-msg.visible {
+      display: inline-block;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.625rem 0.75rem;
+      font-size: 0.95rem;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    input:focus {
+      border-color: var(--focus-color);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    }
+
+    input.invalid {
+      border-color: var(--error-color);
+    }
+
+    input.invalid:focus {
+      box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.2);
+    }
+
+    button[type="submit"] {
+      width: 100%;
+      padding: 0.75rem;
+      font-size: 1rem;
+      font-weight: 500;
+      color: #ffffff;
+      background-color: var(--focus-color);
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      transition: background-color 0.15s;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #2563eb;
+    }
+
+    .success-alert {
+      display: none;
+      background-color: #f0fdf4;
+      border: 1px solid var(--success-color);
+      color: var(--success-color);
+      padding: 0.75rem;
+      border-radius: 6px;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-card">
+    <h1>Create an Account</h1>
+    <div id="successMessage" class="success-alert" role="status">Sign up successful!</div>
+
+    <form id="signupForm" novalidate>
+      <div class="form-group">
+        <div class="label-row">
+          <label for="fullName">Full Name</label>
+          <span class="error-msg" id="nameError" role="alert"></span>
+        </div>
+        <input type="text" id="fullName" name="fullName" autocomplete="name" aria-describedby="nameError">
+      </div>
+
+      <div class="form-group">
+        <div class="label-row">
+          <label for="email">Email Address</label>
+          <span class="error-msg" id="emailError" role="alert"></span>
+        </div>
+        <input type="text" id="email" name="email" inputmode="email" autocomplete="email" placeholder="user@example.com" aria-describedby="emailError">
+      </div>
+
+      <div class="form-group">
+        <div class="label-row">
+          <label for="website">Website</label>
+          <span class="error-msg" id="websiteError" role="alert"></span>
+        </div>
+        <input type="text" id="website" name="website" placeholder="https://example.com" aria-describedby="websiteError">
+      </div>
+
+      <div class="form-group">
+        <div class="label-row">
+          <label for="password">Password</label>
+          <span class="error-msg" id="passwordError" role="alert"></span>
+        </div>
+        <input type="password" id="password" name="password" autocomplete="new-password" aria-describedby="passwordError">
+      </div>
+
+      <button type="submit">Sign Up</button>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById('signupForm');
+    const successMsg = document.getElementById('successMessage');
+
+    function validateDomainLabels(domain) {
+      if (domain.includes('..')) {
+        return 'Domain cannot contain consecutive dots.';
+      }
+      if (domain.startsWith('.') || domain.endsWith('.')) {
+        return 'Domain cannot start or end with a dot.';
+      }
+
+      const labels = domain.split('.');
+      if (labels.length < 2) {
+        return 'Domain must include a top-level domain (TLD).';
+      }
+
+      for (let i = 0; i < labels.length; i++) {
+        const label = labels[i];
+        if (!label) {
+          return 'Domain label cannot be empty.';
+        }
+        if (label.length > 63) {
+          return 'Domain label exceeds 63 characters.';
+        }
+        if (label.startsWith('-') || label.endsWith('-')) {
+          return 'Domain label cannot start or end with a hyphen.';
+        }
+        // Universal Acceptance: Accept Unicode letters, digits, and hyphens
+        if (/[^\p{L}\p{N}\p{M}-]/u.test(label)) {
+          return 'Domain contains invalid characters.';
+        }
+      }
+
+      const tld = labels[labels.length - 1];
+      const isPunycodeTld = /^xn--[a-z0-9]+(-[a-z0-9]+)*$/i.test(tld);
+      const isUnicodeTld = /^[\p{L}]{2,}$/u.test(tld);
+
+      if (!isPunycodeTld && !isUnicodeTld) {
+        return 'Invalid top-level domain (TLD).';
+      }
+
+      return '';
+    }
+
+    const fields = {
+      fullName: {
+        input: document.getElementById('fullName'),
+        error: document.getElementById('nameError'),
+        validate(val) {
+          const trimmed = val.trim();
+          if (!trimmed) return 'Name is required.';
+          if (trimmed.length < 2) return 'At least 2 characters required.';
+          return '';
+        }
+      },
+      email: {
+        input: document.getElementById('email'),
+        error: document.getElementById('emailError'),
+        validate(val) {
+          const trimmed = val.trim();
+          if (!trimmed) return 'Email is required.';
+
+          if (/\s/.test(trimmed)) {
+            return 'Email cannot contain spaces.';
+          }
+
+          const atIndex = trimmed.indexOf('@');
+          if (atIndex === -1 || atIndex !== trimmed.lastIndexOf('@')) {
+            return 'Must contain exactly one "@".';
+          }
+
+          const local = trimmed.slice(0, atIndex);
+          const domain = trimmed.slice(atIndex + 1);
+
+          if (!local) {
+            return 'Local part before "@" is required.';
+          }
+          if (local.startsWith('.') || local.endsWith('.')) {
+            return 'Email username cannot start or end with a dot.';
+          }
+          if (local.includes('..')) {
+            return 'Email username cannot contain consecutive dots.';
+          }
+
+          return validateDomainLabels(domain);
+        }
+      },
+      website: {
+        input: document.getElementById('website'),
+        error: document.getElementById('websiteError'),
+        validate(val) {
+          const trimmed = val.trim();
+          if (!trimmed) return 'Website is required.';
+
+          if (/\s/.test(trimmed)) {
+            return 'URL cannot contain spaces.';
+          }
+
+          let url;
+          try {
+            url = new URL(trimmed);
+          } catch {
+            return 'Invalid URL format (e.g. https://example.com).';
+          }
+
+          if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+            return 'Must use http:// or https:// protocol.';
+          }
+
+          if (!url.hostname) {
+            return 'URL must include a valid hostname.';
+          }
+
+          return validateDomainLabels(url.hostname);
+        }
+      },
+      password: {
+        input: document.getElementById('password'),
+        error: document.getElementById('passwordError'),
+        validate(val) {
+          if (!val) return 'Password is required.';
+          if (val.length < 8) return 'Must be at least 8 characters.';
+          return '';
+        }
+      }
+    };
+
+    function validateField(fieldName) {
+      const field = fields[fieldName];
+      const errorMessage = field.validate(field.input.value);
+
+      if (errorMessage) {
+        field.error.textContent = errorMessage;
+        field.error.classList.add('visible');
+        field.input.classList.add('invalid');
+        return false;
+      } else {
+        field.error.textContent = '';
+        field.error.classList.remove('visible');
+        field.input.classList.remove('invalid');
+        return true;
+      }
+    }
+
+    Object.keys(fields).forEach(fieldName => {
+      const { input } = fields[fieldName];
+      input.addEventListener('input', () => {
+        if (input.classList.contains('invalid')) {
+          validateField(fieldName);
+        }
+      });
+      input.addEventListener('blur', () => {
+        validateField(fieldName);
+      });
+    });
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      let isValid = true;
+      let firstInvalidInput = null;
+
+      for (const fieldName of Object.keys(fields)) {
+        const fieldValid = validateField(fieldName);
+        if (!fieldValid) {
+          isValid = false;
+          if (!firstInvalidInput) {
+            firstInvalidInput = fields[fieldName].input;
+          }
+        }
+      }
+
+      if (isValid) {
+        successMsg.style.display = 'block';
+        form.reset();
+      } else if (firstInvalidInput) {
+        successMsg.style.display = 'none';
+        firstInvalidInput.focus();
+      }
+    });
+  </script>
+</body>
+</html>

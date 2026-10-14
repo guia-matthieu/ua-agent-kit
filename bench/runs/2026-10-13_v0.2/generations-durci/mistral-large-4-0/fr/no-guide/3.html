@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inscription — Créer un compte</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  }
+
+  .card {
+    width: 100%;
+    max-width: 460px;
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 2.5rem 2.25rem;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+  }
+
+  h1 {
+    font-size: 1.6rem;
+    color: #1a202c;
+    margin-bottom: 0.35rem;
+  }
+
+  .subtitle {
+    color: #718096;
+    font-size: 0.95rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .field { margin-bottom: 1.25rem; }
+
+  label {
+    display: block;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #2d3748;
+    margin-bottom: 0.4rem;
+  }
+
+  .optional {
+    font-weight: 400;
+    color: #a0aec0;
+    font-size: 0.8rem;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="password"] {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    color: #1a202c;
+    background: #f7fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  }
+
+  input:focus {
+    border-color: #667eea;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+  }
+
+  input.invalid {
+    border-color: #e53e3e;
+    background: #fff5f5;
+  }
+
+  input.invalid:focus {
+    box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.2);
+  }
+
+  .error {
+    display: block;
+    color: #e53e3e;
+    font-size: 0.83rem;
+    margin-top: 0.35rem;
+  }
+
+  .error:empty { display: none; }
+
+  .hint {
+    display: block;
+    color: #a0aec0;
+    font-size: 0.78rem;
+    margin-top: 0.35rem;
+  }
+
+  .toggle-password {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 0.5rem;
+    font-size: 0.83rem;
+    color: #4a5568;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .toggle-password input { accent-color: #667eea; cursor: pointer; }
+
+  button[type="submit"] {
+    width: 100%;
+    margin-top: 0.5rem;
+    padding: 0.85rem 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #ffffff;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s, opacity 0.2s;
+  }
+
+  button[type="submit"]:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+  }
+
+  button[type="submit"]:active { transform: translateY(0); }
+
+  .success {
+    text-align: center;
+    padding: 1.5rem 0;
+  }
+
+  .success .check {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 1rem;
+    border-radius: 50%;
+    background: #c6f6d5;
+    color: #22543d;
+    font-size: 2rem;
+    line-height: 64px;
+  }
+
+  .success h2 { color: #22543d; margin-bottom: 0.5rem; }
+
+  .success p { color: #4a5568; font-size: 0.95rem; }
+
+  .demo-note {
+    margin-top: 1.25rem;
+    text-align: center;
+    font-size: 0.78rem;
+    color: #a0aec0;
+  }
+
+  @media (max-width: 480px) {
+    .card { padding: 1.75rem 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<main class="card">
+  <h1>Créer un compte</h1>
+  <p class="subtitle">Remplissez le formulaire ci-dessous pour vous inscrire.</p>
+
+  <form id="signup-form" novalidate>
+
+    <div class="field">
+      <label for="nom">Nom complet</label>
+      <input type="text" id="nom" name="nom" autocomplete="name" placeholder="Jean Dupont">
+      <span class="error" id="nom-error" role="alert"></span>
+    </div>
+
+    <div class="field">
+      <label for="email">Adresse e-mail</label>
+      <input type="email" id="email" name="email" autocomplete="email" placeholder="jean.dupont@exemple.fr">
+      <span class="error" id="email-error" role="alert"></span>
+    </div>
+
+    <div class="field">
+      <label for="site">Site web <span class="optional">(facultatif)</span></label>
+      <input type="text" id="site" name="site" inputmode="url" autocomplete="url" placeholder="https://mon-site.fr">
+      <span class="error" id="site-error" role="alert"></span>
+    </div>
+
+    <div class="field">
+      <label for="motdepasse">Mot de passe</label>
+      <input type="password" id="motdepasse" name="motdepasse" autocomplete="new-password" placeholder="••••••••">
+      <label class="toggle-password">
+        <input type="checkbox" id="show-password"> Afficher le mot de passe
+      </label>
+      <span class="hint">8 caractères minimum, avec une majuscule, une minuscule et un chiffre.</span>
+      <span class="error" id="motdepasse-error" role="alert"></span>
+    </div>
+
+    <button type="submit">S'inscrire</button>
+  </form>
+
+  <div class="success" id="success-box" hidden>
+    <div class="check">✓</div>
+    <h2>Inscription réussie !</h2>
+    <p>Bienvenue, <strong id="success-name"></strong>. Tous les champs sont valides.</p>
+  </div>
+
+  <p class="demo-note">Démonstration : aucune donnée n'est réellement envoyée.</p>
+</main>
+
+<script>
+(function () {
+  "use strict";
+
+  var form = document.getElementById("signup-form");
+  var successBox = document.getElementById("success-box");
+  var successName = document.getElementById("success-name");
+
+  /* ---------- Règles de validation ---------- */
+
+  function validateNom(value) {
+    var v = value.trim();
+    if (!v) return "Veuillez saisir votre nom complet.";
+    if (v.length < 3) return "Le nom doit contenir au moins 3 caractères.";
+    if (!/^[A-Za-zÀ-ÖØ-öø-ÿ'’ -]+$/.test(v)) return "Le nom ne doit contenir que des lettres.";
+    if (v.split(/\s+/).length < 2) return "Veuillez saisir votre prénom et votre nom.";
+    return "";
+  }
+
+  function validateEmail(value) {
+    var v = value.trim();
+    if (!v) return "Veuillez saisir votre adresse e-mail.";
+    if (/\s/.test(v)) return "L'adresse e-mail ne doit pas contenir d'espace.";
+    if (v.indexOf("@") !== v.lastIndexOf("@"))
+      return "L'adresse e-mail ne doit contenir qu'un seul « @ ».";
+
+    /* Partie locale : lettres, chiffres et . _ % + -
+       Domaine : labels alphanumériques (tiret autorisé au milieu),
+       sans points consécutifs ni points en début/fin de label,
+       suivi d'un TLD d'au moins 2 lettres. */
+    var emailPattern = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9]([A-Za-z0-9-]*[A-Za-z0-9])?(\.[A-Za-z0-9]([A-Za-z0-9-]*[A-Za-z0-9])?)*\.[A-Za-z]{2,}$/;
+
+    if (!emailPattern.test(v))
+      return "Format d'e-mail invalide (ex. : jean.dupont@exemple.fr).";
+    return "";
+  }
+
+  function validateSite(value) {
+    var v = value.trim();
+    if (!v) return ""; /* Champ facultatif */
+
+    /* Aucun espace autorisé n'importe où dans l'URL */
+    if (/\s/.test(v)) return "L'URL ne doit contenir aucun espace.";
+
+    /* Protocole http(s) optionnel, domaine avec labels valides
+       (pas de tiret en début/fin de label, pas de points consécutifs),
+       TLD d'au moins 2 lettres, port optionnel, chemin/requête/fragment
+       optionnels sans espace. */
+    var urlPattern = /^(https?:\/\/)?([A-Za-z0-9]([A-Za-z0-9-]*[A-Za-z0-9])?\.)+[A-Za-z]{2,}(:\d{1,5})?(\/[^\s?#]*)?(\?[^\s#]*)?(#[^\s]*)?$/i;
+
+    if (!urlPattern.test(v))
+      return "Format d'URL invalide (ex. : https://mon-site.fr).";
+
+    /* Vérification de la plage du port dans la partie autorité */
+    var authority = v.replace(/^https?:\/\//i, "").split(/[/?#]/)[0];
+    var portMatch = authority.match(/:(\d+)$/);
+    if (portMatch) {
+      var port = parseInt(portMatch[1], 10);
+      if (port < 1 || port > 65535)
+        return "Le numéro de port doit être compris entre 1 et 65535.";
+    }
+    return "";
+  }
+
+  function validateMotDePasse(value) {
+    if (!value) return "Veuillez saisir un mot de passe.";
+    if (value.length < 8) return "Le mot de passe doit contenir au moins 8 caractères.";
+    if (!/[a-z]/.test(value)) return "Ajoutez au moins une lettre minuscule.";
+    if (!/[A-Z]/.test(value)) return "Ajoutez au moins une lettre majuscule.";
+    if (!/\d/.test(value)) return "Ajoutez au moins un chiffre.";
+    return "";
+  }
+
+  /* ---------- Association champs / validateurs ---------- */
+
+  var fields = [
+    { input: document.getElementById("nom"),         error: document.getElementById("nom-error"),         validate: validateNom },
+    { input: document.getElementById("email"),       error: document.getElementById("email-error"),       validate: validateEmail },
+    { input: document.getElementById("site"),        error: document.getElementById("site-error"),        validate: validateSite },
+    { input: document.getElementById("motdepasse"),  error: document.getElementById("motdepasse-error"),  validate: validateMotDePasse }
+  ];
+
+  /* ---------- Affichage des erreurs ---------- */
+
+  function showError(field, message) {
+    field.input.classList.add("invalid");
+    field.input.setAttribute("aria-invalid", "true");
+    field.error.textContent = message;
+  }
+
+  function clearError(field) {
+    field.input.classList.remove("invalid");
+    field.input.removeAttribute("aria-invalid");
+    field.error.textContent = "";
+  }
+
+  function checkField(field) {
+    var message = field.validate(field.input.value);
+    if (message) {
+      showError(field, message);
+      return false;
+    }
+    clearError(field);
+    return true;
+  }
+
+  /* ---------- Validation en temps réel ---------- */
+
+  fields.forEach(function (field) {
+    field.input.addEventListener("blur", function () {
+      if (field.input.value.trim() !== "" || field.input.id === "motdepasse") {
+        checkField(field);
+      }
+    });
+    field.input.addEventListener("input", function () {
+      /* Efface l'erreur dès que la saisie redevient valide */
+      if (field.input.classList.contains("invalid") && !field.validate(field.input.value)) {
+        clearError(field);
+      }
+    });
+  });
+
+  /* ---------- Envoi du formulaire ---------- */
+
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    var allValid = true;
+    var firstInvalid = null;
+
+    fields.forEach(function (field) {
+      var ok = checkField(field);
+      if (!ok) {
+        allValid = false;
+        if (!firstInvalid) firstInvalid = field.input;
+      }
+    });
+
+    if (!allValid) {
+      firstInvalid.focus();
+      return;
+    }
+
+    /* Tous les champs sont valides : affichage du succès */
+    var nom = document.getElementById("nom").value.trim().split(/\s+/)[0];
+    successName.textContent = nom;
+    form.hidden = true;
+    successBox.hidden = false;
+  });
+
+  /* ---------- Afficher / masquer le mot de passe ---------- */
+
+  var pwdInput = document.getElementById("motdepasse");
+  var toggle = document.getElementById("show-password");
+  toggle.addEventListener("change", function () {
+    pwdInput.type = toggle.checked ? "text" : "password";
+  });
+})();
+</script>
+
+</body>
+</html>

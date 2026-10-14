@@ -1,0 +1,19 @@
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Crear cuenta — Formulario de registro</title>
+<!--
+  Formulario autónomo: sin frameworks, sin bibliotecas externas, sin CSS externo.
+
+  Validación con Aceptación Universal (UA) para correos, dominios y URL:
+  - Correos internacionalizados (EAI, RFC 6531): se aceptan caracteres Unicode
+    en la parte local y U-labels en el dominio (p. ej. marie.dupont@société.fr,
+    josé.dupont@example.fr, 用户@example.com). La parte local admite los
+    símbolos «atext» de RFC 5322 (+, ', !, #, $, %, &, *, -, /, =, ?, ^, _, `,
+    {, |, }, ~) y el punto.
+  - El dominio se convierte a A-labels con IDNA2008 / UTS #46 (vía new URL()).
+  - Sin límite de 2–4 letras para el TLD: se admite cualquier TLD de ≥2 letras
+    o un A-label «xn--…» (p. ej. .technology, .international, .xn--fiqs8s

@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign Up — Create Your Account</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #d946ef 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+    color: #1f2937;
+  }
+
+  .card {
+    background: #ffffff;
+    width: 100%;
+    max-width: 440px;
+    border-radius: 16px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+    padding: 2.5rem 2.25rem;
+  }
+
+  h1 { font-size: 1.55rem; color: #111827; margin-bottom: 0.35rem; }
+  .subtitle { font-size: 0.9rem; color: #6b7280; margin-bottom: 1.6rem; }
+
+  .field { margin-bottom: 1.05rem; }
+
+  label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+    color: #374151;
+  }
+  .optional { font-weight: 400; font-size: 0.75rem; color: #9ca3af; }
+
+  input {
+    width: 100%;
+    padding: 0.68rem 0.85rem;
+    font-size: 1rem;
+    font-family: inherit;
+    color: #111827;
+    background: #ffffff;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  input::placeholder { color: #9ca3af; }
+  input:focus {
+    outline: none;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.18);
+  }
+  input.invalid { border-color: #dc2626; }
+  input.invalid:focus {
+    border-color: #dc2626;
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15);
+  }
+
+  .password-wrapper { position: relative; }
+  .password-wrapper input { padding-right: 3.6rem; }
+  .toggle-password {
+    position: absolute;
+    top: 50%;
+    right: 0.5rem;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    padding: 0.3rem 0.5rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    font-family: inherit;
+    color: #6b7280;
+    cursor: pointer;
+    border-radius: 6px;
+  }
+  .toggle-password:hover { color: #4f46e5; }
+
+  .error {
+    min-height: 1.05em;
+    margin-top: 0.35rem;
+    font-size: 0.8rem;
+    color: #dc2626;
+  }
+  .hint {
+    min-height: 1.05em;
+    margin-top: 0.35rem;
+    font-size: 0.78rem;
+    color: #9ca3af;
+  }
+
+  button[type="submit"] {
+    width: 100%;
+    margin-top: 0.4rem;
+    padding: 0.78rem;
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: inherit;
+    color: #ffffff;
+    background: #4f46e5;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.05s ease;
+  }
+  button[type="submit"]:hover { background: #4338ca; }
+  button[type="submit"]:active { transform: scale(0.99); }
+  button[type="submit"]:focus-visible {
+    outline: 3px solid rgba(79, 70, 229, 0.45);
+    outline-offset: 2px;
+  }
+
+  .success { text-align: center; padding: 1rem 0; }
+  .success-icon {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 1rem;
+    border-radius: 50%;
+    background: #d1fae5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .success-icon svg { width: 28px; height: 28px; stroke: #059669; }
+  .success h2 { font-size: 1.35rem; color: #111827; margin-bottom: 0.5rem; }
+  .success p {
+    font-size: 0.92rem;
+    color: #4b5563;
+    line-height: 1.5;
+    margin-bottom: 1.25rem;
+  }
+  .link-button {
+    background: none;
+    border: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    font-family: inherit;
+    color: #4f46e5;
+    cursor: pointer;
+    padding: 0.4rem 0.6rem;
+    border-radius: 6px;
+  }
+  .link-button:hover { text-decoration: underline; }
+
+  @media (max-width: 480px) {
+    .card { padding: 1.75rem 1.25rem; }
+  }
+</style>
+</head>
+<body>
+<main class="card">
+  <div id="form-view">
+    <h1>Create your account</h1>
+    <p class="subtitle">Fill in the details below to sign up.</p>
+
+    <form id="signup-form" novalidate>
+      <div class="field">
+        <label for="full-name">Full name</label>
+        <input type="text" id="full-name" name="fullName" autocomplete="name" placeholder="Jane Doe" required aria-describedby="full-name-error">
+        <p class="error" id="full-name-error" aria-live="polite"></p>
+      </div>
+
+      <div class="field">
+        <label for="email">Email address</label>
+        <input type="email" id="email" name="email" autocomplete="email" placeholder="jane@example.com" spellcheck="false" required aria-describedby="email-error">
+        <p class="error" id="email-error" aria-live="polite"></p>
+      </div>
+
+      <div class="field">
+        <label for="website">Website <span class="optional">(optional)</span></label>
+        <input type="url" id="website" name="website" autocomplete="url" placeholder="https://example.com" spellcheck="false" aria-describedby="website-error">
+        <p class="error" id="website-error" aria-live="polite"></p>
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <div class="password-wrapper">
+          <input type="password" id="password" name="password" autocomplete="new-password" placeholder="••••••••" required aria-describedby="password-hint password-error">
+          <button type="button" class="toggle-password" id="toggle-password" aria-label="Show password" aria-pressed="false">Show</button>
+        </div>
+        <p class="hint" id="password-hint">At least 8 characters, with uppercase, lowercase and a number.</p>
+        <p class="error" id="password-error" aria-live="polite"></p>
+      </div>
+
+      <button type="submit">Sign up</button>
+    </form>
+  </div>
+
+  <div id="success-view" class="success" hidden tabindex="-1">
+    <div class="success-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+    </div>
+    <h2>Account created!</h2>
+    <p>Welcome, <strong id="success-name"></strong>. A confirmation link is on its way to <strong id="success-email"></strong>.</p>
+    <button type="button" class="link-button" id="reset-form">Sign up with a different account</button>
+  </div>
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  var form = document.getElementById('signup-form');
+  var formView = document.getElementById('form-view');
+  var successView = document.getElementById('success-view');
+
+  var fields = [
+    {
+      input: document.getElementById('full-name'),
+      error: document.getElementById('full-name-error'),
+      validate: function (value) {
+        var v = value.trim();
+        if (!v) return 'Please enter your full name.';
+        if (v.length < 2) return 'Your name must be at least 2 characters long.';
+        if (!/^[\p{L}][\p{L}\p{M}'’\- ]*$/u.test(v)) {
+          return 'Your name may only contain letters, spaces, hyphens and apostrophes.';
+        }
+        return '';
+      }
+    },
+    {
+      input: document.getElementById('email'),
+      error: document.getElementById('email-error'),
+      validate: function (value) {
+        var v = value.trim();
+        if (!v) return 'Please enter your email address.';
+        if (v.length > 254) return 'Your email address is too long.';
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) {
+          return 'Please enter a valid email address, e.g. name@example.com.';
+        }
+        return '';
+      }
+    },
+    {
+      input: document.getElementById('website'),
+      error: document.getElementById('website-error'),
+      validate: function (value) {
+        var v = value.trim();
+        if (!v) return ''; /* optional field */
+        var candidate = /^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(v) ? v : 'https://' + v;
+        try {
+          var url = new URL(candidate);
+          if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+            return 'Your website must use http:// or https://';
+          }
+          if (url.hostname.indexOf('.') === -1) {
+            return 'Please enter a valid website URL, e.g. https://example.com.';
+          }
+        } catch (e) {
+          return 'Please enter a valid website URL, e.g. https://example.com.';
+        }
+        return '';
+      }
+    },
+    {
+      input: document.getElementById('password'),
+      error: document.getElementById('password-error'),
+      validate: function (value) {
+        if (!value) return 'Please create a password.';
+        if (value.length < 8) return 'Your password must be at least 8 characters long.';
+        if (!/[a-z]/.test(value)) return 'Your password must contain a lowercase letter.';
+        if (!/[A-Z]/.test(value)) return 'Your password must contain an uppercase letter.';
+        if (!/\d/.test(value)) return 'Your password must contain a number.';
+        return '';
+      }
+    }
+  ];
+
+  function setError(field, message) {
+    field.error.textContent = message;
+    field.input.classList.toggle('invalid', message !== '');
+    if (message) {
+      field.input.setAttribute('aria-invalid', 'true');
+    } else {
+      field.input.removeAttribute('aria-invalid');
+    }
+  }
+
+  function validateField(field) {
+    var message = field.validate(field.input.value);
+    setError(field, message);
+    return message === '';
+  }
+
+  /* Live validation: check on blur, clear the error as soon as the user fixes it */
+  fields.forEach(function (field) {
+    field.input.addEventListener('blur', function () { validateField(field); });
+    field.input.addEventListener('input', function () {
+      if (field.input.classList.contains('invalid')) validateField(field);
+    });
+  });
+
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+
+    var firstInvalid = null;
+    fields.forEach(function (field) {
+      var ok = validateField(field);
+      if (!ok && firstInvalid === null) firstInvalid = field.input;
+    });
+
+    if (firstInvalid) {
+      firstInvalid.focus();
+      return;
+    }
+
+    document.getElementById('success-name').textContent =
+      fields[0].input.value.trim().split(/\s+/)[0];
+    document.getElementById('success-email').textContent =
+      fields[1].input.value.trim();
+
+    formView.hidden = true;
+    successView.hidden = false;
+    successView.focus();
+  });
+
+  document.getElementById('reset-form').addEventListener('click', function () {
+    form.reset();
+    fields.forEach(function (field) { setError(field, ''); });
+    successView.hidden = true;
+    formView.hidden = false;
+    fields[0].input.focus();
+  });
+
+  /* Show / hide password toggle */
+  var toggle = document.getElementById('toggle-password');
+  toggle.addEventListener('click', function () {
+    var pw = fields[3].input;
+    var show = pw.type === 'password';
+    pw.type = show ? 'text' : 'password';
+    toggle.textContent = show ? 'Hide' : 'Show';
+    toggle.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+    toggle.setAttribute('aria-pressed', show ? 'true' : 'false');
+  });
+})();
+</script>
+</body>
+</html>

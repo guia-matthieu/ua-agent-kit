@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --error: #dc2626;
+            --success: #16a34a;
+            --bg: #f3f4f6;
+            --card-bg: #ffffff;
+            --text: #1f2937;
+            --text-muted: #6b7280;
+            --border: #d1d5db;
+            --border-focus: #4f46e5;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .container {
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            width: 100%;
+            max-width: 480px;
+            padding: 2.5rem;
+        }
+
+        h1 {
+            color: var(--text);
+            font-size: 1.875rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            color: var(--text);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .required {
+            color: var(--error);
+        }
+
+        input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            outline: none;
+            background: #fafafa;
+        }
+
+        input:focus {
+            border-color: var(--border-focus);
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        input.error {
+            border-color: var(--error);
+            background: #fef2f2;
+        }
+
+        input.success {
+            border-color: var(--success);
+            background: #f0fdf4;
+        }
+
+        .error-message {
+            color: var(--error);
+            font-size: 0.8rem;
+            margin-top: 0.4rem;
+            display: none;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .error-message.visible {
+            display: flex;
+        }
+
+        .password-strength {
+            height: 4px;
+            border-radius: 2px;
+            margin-top: 0.5rem;
+            background: var(--border);
+            overflow: hidden;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .password-strength.visible {
+            opacity: 1;
+        }
+
+        .strength-bar {
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s, background-color 0.3s;
+            border-radius: 2px;
+        }
+
+        .strength-weak { background-color: #ef4444; width: 33%; }
+        .strength-medium { background-color: #f59e0b; width: 66%; }
+        .strength-strong { background-color: #10b981; width: 100%; }
+
+        .strength-text {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+            text-align: right;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .strength-text.visible {
+            opacity: 1;
+        }
+
+        button {
+            width: 100%;
+            padding: 0.875rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 0.5rem;
+        }
+
+        button:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            background: var(--text-muted);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .success-message {
+            display: none;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            color: #166534;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .success-message.visible {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hint {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 1.5rem;
+            }
+            h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Créer un compte</h1>
+        <p class="subtitle">Remplissez le formulaire ci-dessous pour vous inscrire</p>
+
+        <div id="successMessage" class="success-message">
+            ✓ Inscription réussie ! Bienvenue parmi nous.
+        </div>
+
+        <form id="registrationForm" novalidate>
+            <div class="form-group">
+                <label for="fullName">Nom complet <span class="required">*</span></label>
+                <input
+                    type="text"
+                    id="fullName"
+                    name="fullName"
+                    placeholder="Ex: Jean Dupont"
+                    autocomplete="name"
+                >
+                <div class="error-message" id="fullNameError"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Adresse e-mail <span class="required">*</span></label>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="Ex: jean.dupont@email.com"
+                    autocomplete="email"
+                >
+                <div class="error-message" id="emailError"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="website">Site web</label>
+                <input
+                    type="url"
+                    id="website"
+                    name="website"
+                    placeholder="Ex: https://www.monsite.com"
+                >
+                <div class="error-message" id="websiteError"></div>
+                <div class="hint">Optionnel - Laissez vide si vous n'avez pas de site</div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Mot de passe <span class="required">*</span></label>
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="••••••••"
+                    autocomplete="new-password"
+                >
+                <div class="password-strength" id="passwordStrength">
+                    <div class="strength-bar" id="strengthBar"></div>
+                </div>
+                <div class="strength-text" id="strengthText"></div>
+                <div class="error-message" id="passwordError"></div>
+                <div class="hint">Min. 8 caractères, 1 majuscule, 1 minuscule, 1 chiffre, 1 caractère spécial</div>
+            </div>
+
+            <button type="submit" id="submitBtn">S'inscrire</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('registrationForm');
+            const fullName = document.getElementById('fullName');
+            const email = document.getElementById('email');
+            const website = document.getElementById('website');
+            const password = document.getElementById('password');
+            const successMessage = document.getElementById('successMessage');
+            const passwordStrength = document.getElementById('passwordStrength');
+            const strengthBar = document.getElementById('strengthBar');
+            const strengthText = document.getElementById('strengthText');
+
+            // Expressions régulières strictes
+            const patterns = {
+                // Nom: lettres, espaces, tirets, apostrophes - au moins 2 mots
+                fullName: /^[a-zA-ZÀ-ÿ]+(?:[\s\-'][a-zA-ZÀ-ÿ]+)+$/,
+
+                // Email: RFC 5322 simplifié mais strict
+                // - Partie locale: caractères alphanumériques et !#$%&'*+/=?^_`{|}~- avec points non consécutifs
+                // - @ obligatoire
+                // - Domaine: labels (lettres/chiffres/tirets) séparés par des points, TLD alphabétique min 2 caractères
+                // Interdit: .. consécutifs, . au début/fin, espaces
+                email: /^[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$/,
+
+                // URL: protocole optionnel, domaine valide sans espaces, path/query/fragment optionnels sans espaces
+                // Interdit: espaces, .. dans le domaine, domaines invalides
+                website: /^(https?:\/\/)?(www\.)?([a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}(:\d{1,5})?(\/[^\s]*)?$/,
+
+                // Mot de passe: min 8 caractères, majuscule, minuscule, chiffre, spécial
+                password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+            };
+
+            // Messages d'erreur
+            const errorMessages = {
+                fullName: {
+                    empty: 'Le nom complet est requis',
+                    invalid: 'Veuillez entrer un nom complet valide (prénom et nom, sans chiffres)'
+                },
+                email: {
+                    empty: 'L\'adresse e-mail est requise',
+                    invalid: 'Adresse e-mail invalide (pas de double point, point au début/fin, ni espace)'
+                },
+                website: {
+                    invalid: 'URL invalide (pas d\'espace, format: https://exemple.com)'
+                },
+                password: {
+                    empty: 'Le mot de passe est requis',
+                    invalid: 'Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial (@$!%*?&)'
+                }
+            };
+
+            // Fonction pour afficher une erreur
+            function showError(input, errorElement, message) {
+                input.classList.add('error');
+                input.classList.remove('success');
+                errorElement.textContent = '⚠ ' + message;
+                errorElement.classList.add('visible');
+            }
+
+            // Fonction pour effacer une erreur
+            function clearError(input, errorElement) {
+                input.classList.remove('error');
+                input.classList.add('success');
+                errorElement.classList.remove('visible');
+                errorElement.textContent = '';
+            }
+
+            // Validation du nom complet
+            function validateFullName() {
+                const value = fullName.value.trim();
+                const errorEl = document.getElementById('fullNameError');
+
+                if (!value) {
+                    showError(fullName, errorEl, errorMessages.fullName.empty);
+                    return false;
+                }
+                // Vérification supplémentaire: au moins 2 caractères par mot
+                const words = value.split(/[\s\-']/);
+                if (words.some(w => w.length < 2) || !patterns.fullName.test(value)) {
+                    showError(fullName, errorEl, errorMessages.fullName.invalid);
+                    return false;
+                }
+                clearError(fullName, errorEl);
+                return true;
+            }
+
+            // Validation de l'email
+            function validateEmail() {
+                const value = email.value.trim();
+                const errorEl = document.getElementById('emailError');
+
+                if (!value) {
+                    showError(email, errorEl, errorMessages.email.empty);
+                    return false;
+                }
+
+                // Vérifications supplémentaires explicites pour les cas limites
+                if (value.includes('..') ||
+                    value.startsWith('.') ||
+                    value.includes(' ') ||
+                    !patterns.email.test(value)) {
+                    showError(email, errorEl, errorMessages.email.invalid);
+                    return false;
+                }
+
+                clearError(email, errorEl);
+                return true;
+            }
+
+            // Validation du site web (optionnel)
+            function validateWebsite() {
+                const value = website.value.trim();
+                const errorEl = document.getElementById('websiteError');
+
+                // Champ optionnel
+                if (!value) {
+                    website.classList.remove('error', 'success');
+                    errorEl.classList.remove('visible');
+                    return true;
+                }
+
+                // Vérification explicite des espaces et autres caractères interdits
+                if (value.includes(' ') ||
+                    value.includes('..') ||
+                    !patterns.website.test(value)) {
+                    showError(website, errorEl, errorMessages.website.invalid);
+                    return false;
+                }
+
+                clearError(website, errorEl);
+                return true;
+            }
+
+            // Validation du mot de passe + indicateur de force
+            function validatePassword() {
+                const value = password.value;
+                const errorEl = document.getElementById('passwordError');
+
+                if (!value) {
+                    showError(password, errorEl, errorMessages.password.empty);
+                    passwordStrength.classList.remove('visible');
+                    strengthText.classList.remove('visible');
+                    return false;
+                }
+
+                // Calcul de la force du mot de passe
+                let strength = 0;
+                if (value.length >= 8) strength++;
+                if (value.length >= 12) strength++;
+                if (/[a-z]/.test(value) && /[A-Z]/.test(value)) strength++;
+                if (/\d/.test(value)) strength++;
+                if (/[@$!%*?&]/.test(value)) strength++;
+
+                passwordStrength.classList.add('visible');
+                strengthText.classList.add('visible');
+
+                strengthBar.className = 'strength-bar';
+                if (strength <= 2) {
+                    strengthBar.classList.add('strength-weak');
+                    strengthText.textContent = 'Faible';
+                    strengthText.style.color = '#ef4444';
+                } else if (strength <= 4) {
+                    strengthBar.classList.add('strength-medium');
+                    strengthText.textContent = 'Moyen';
+                    strengthText.style.color = '#f59e0b';
+                } else {
+                    strengthBar.classList.add('strength-strong');
+                    strengthText.textContent = 'Fort';
+                    strengthText.style.color = '#10b981';
+                }
+
+                if (!patterns.password.test(value)) {
+                    showError(password, errorEl, errorMessages.password.invalid);
+                    return false;
+                }
+
+                clearError(password, errorEl);
+                return true;
+            }
+
+            // Validation en temps réel (au blur)
+            fullName.addEventListener('blur', validateFullName);
+            email.addEventListener('blur', validateEmail);
+            website.addEventListener('blur', validateWebsite);
+            password.addEventListener('blur', validatePassword);
+
+            // Validation pendant la saisie du mot de passe (pour l'indicateur)
+            password.addEventListener('input', function() {
+                if (password.value) {
+                    validatePassword();
+                } else {
+                    passwordStrength.classList.remove('visible');
+                    strengthText.classList.remove('visible');
+                    document.getElementById('passwordError').classList.remove('visible');
+                    password.classList.remove('error', 'success');
+                }
+            });
+
+            // Effacer l'erreur quand l'utilisateur corrige
+            [fullName, email, website, password].forEach(input => {
+                input.addEventListener('input', function() {
+                    if (input.classList.contains('error')) {
+                        input.classList.remove('error');
+                        const errorEl = document.getElementById(input.id + 'Error');
+                        if (errorEl) errorEl.classList.remove('visible');
+                    }
+                });
+            });
+
+            // Soumission du formulaire
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                // Masquer le message de succès précédent
+                successMessage.classList.remove('visible');
+
+                // Valider tous les champs
+                const isFullNameValid = validateFullName();
+                const isEmailValid = validateEmail();
+                const isWebsiteValid = validateWebsite();
+                const isPasswordValid = validatePassword();
+
+                // Si tout est valide
+                if (isFullNameValid && isEmailValid && isWebsiteValid && isPasswordValid) {
+                    // Simulation d'envoi
+                    const submitBtn = document.getElementById('submitBtn');
+                    const originalText = submitBtn.textContent;
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = 'Inscription en cours...';
+
+                    setTimeout(() => {
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = originalText;
+
+                        // Afficher le message de succès
+                        successMessage.classList.add('visible');
+
+                        // Réinitialiser le formulaire
+                        form.reset();
+                        [fullName, email, website, password].forEach(input => {
+                            input.classList.remove('success', 'error');
+                        });
+                        passwordStrength.classList.remove('visible');
+                        strengthText.classList.remove('visible');
+
+                        // Scroll vers le message de succès
+                        successMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+                        // Masquer le message après 5 secondes
+                        setTimeout(() => {
+                            successMessage.classList.remove('visible');
+                        }, 5000);
+                    }, 1000);
+
+                    console.log('Données du formulaire:', {
+                        fullName: fullName.value.trim(),
+                        email: email.value.trim(),
+                        website: website.value.trim() || 'Non renseigné',
+                        password: '********'
+                    });
+                } else {
+                    // Scroll vers le premier champ en erreur
+                    const firstError = document.querySelector('input.error');
+                    if (firstError) {
+                        firstError.focus();
+                        firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
