@@ -1,4 +1,5 @@
-"""Tables of the run of 2026-10-13 (v0.2), from the four CSV files next to this script. Same tables as the run of 2026-10-06.
+"""Tables of the run of 2026-10-13 (v0.2), from the four CSV files next to this script. The tables of the run of 2026-10-06,
+plus the hardening compared on the standard battery: on 2026-10-06 the comparison read the TLD packs only.
 Usage: python3 summary.py > RESULTS.md"""
 import collections
 import csv
@@ -116,6 +117,19 @@ print("\n**ASCII geoTLD values lost**\n\n| value | pages |\n|---|---|")
 for typed, n in sorted(values.items(), key=lambda x: -x[1]):
     if 'xn--' not in typed and typed.isascii():
         print(f"| `{typed}` | {n} |")
+
+S1, S2 = load('runs-standard.csv'), load('runs-durci-standard.csv')
+print("\n## Regressions at hardening, standard battery (valid values only, same pages)\n\n| model | guide | pages compared | pages with a regression | values lost | values regained |\n|---|---|---|---|---|---|")
+for _, m in ORDER:
+    for c in ('no-guide', 'guide'):
+        cs = {k for k in both if k[0] == m and k[2] == c}
+        lost = collections.Counter()
+        gain = 0
+        for k, (ok, g, _) in S1.items():
+            if cell(k) in cs and g != GUARDS and k in S2:
+                lost[cell(k)] += ok and not S2[k][0]
+                gain += not ok and S2[k][0]
+        print(f"| {m} | {WITH[c]} | {len(cs)} | {sum(1 for n in lost.values() if n)} | {sum(lost.values())} | {gain} |")
 
 
 def cost(folder):

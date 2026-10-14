@@ -6,8 +6,8 @@
 // Usage : node --env-file=.env durcir.mjs [fr|en|es ...]
 import { readFileSync, writeFileSync, mkdirSync, existsSync, appendFileSync } from 'node:fs';
 // Published as it ran on 2026-10-06 (comments in French). Three things changed for the repository: an unused import is gone, the kit is found
-// from this file's place, and the pack is read from pack-as-scored.json (see README.md). Added on 2026-10-14: a reply with
-// finish_reason 'error' is not written and the cell stays to do.
+// from this file's place, and the pack is read from pack-as-scored.json (see README.md). Added on 2026-10-14: a reply whose
+// finish_reason is neither 'stop' nor 'length' is not written and the cell stays to do.
 const KIT = new URL('../../../', import.meta.url).pathname;
 const { extractHtml, toRows, csvLine, COLUMNS } = await import(KIT + 'bench/run-bench.mjs');
 const { checkForm } = await import(KIT + 'src/form-runner.mjs');
@@ -52,8 +52,9 @@ async function runModel(m) {
       const user = readFileSync(KIT + `bench/prompts/${lang}.txt`, 'utf8').trim();
       const messages = [...(condition === 'guide' ? [{ role: 'system', content: guide }] : []), { role: 'user', content: user }, { role: 'assistant', content: '```html\n' + first + '\n```' }, { role: 'user', content: FIX[lang] }];
       const g = await call(m, messages);
-      // finish_reason 'error' = le fournisseur a coupé la réponse : rien n'est écrit, la cellule reste à faire (relance).
-      if (g.finishReason === 'error') throw new Error(`finish_reason error (${g.usage?.completion_tokens ?? '?'} tokens)`);
+      // Seuls 'stop' et 'length' sont des réponses du modèle ; 'error', null (pas de choices), 'content_filter'... viennent du
+      // fournisseur : rien n'est écrit, la cellule reste à faire (relance).
+      if (g.finishReason !== 'stop' && g.finishReason !== 'length') throw new Error(`finish_reason ${g.finishReason} (${g.usage?.completion_tokens ?? '?'} tokens)`);
       const html = extractHtml(g.text); writeFileSync(file, html);
       const meta = { model: m.key, model_version: g.modelVersion, lang, condition, repeat };
       const rS = await score(file, html, lang, std, g.finishReason), rF = await score(file, html, lang, fr, g.finishReason);

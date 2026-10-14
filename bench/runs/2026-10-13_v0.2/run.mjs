@@ -6,8 +6,8 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync, appendFileSync } from 'node:fs';
 import { execSync } from 'node:child_process';
 // Published as it ran on 2026-10-06 (comments in French). Two things changed for the repository: the kit is found
-// from this file's place, and the pack is read from pack-as-scored.json (see README.md). Added on 2026-10-14: a reply with
-// finish_reason 'error' is not written and the cell stays to do.
+// from this file's place, and the pack is read from pack-as-scored.json (see README.md). Added on 2026-10-14: a reply whose
+// finish_reason is neither 'stop' nor 'length' is not written and the cell stays to do.
 const KIT = new URL('../../../', import.meta.url).pathname;
 const { generate } = await import(KIT + 'bench/openrouter.mjs');
 const { extractHtml, toRows, csvLine, COLUMNS } = await import(KIT + 'bench/run-bench.mjs');
@@ -38,8 +38,9 @@ async function runModel(m) {
     try {
       const user = readFileSync(KIT + `bench/prompts/${lang}.txt`, 'utf8').trim();
       const g = await generate({ slug: m.slug, provider: m.provider, system: condition === 'guide' ? guide : null, user, maxTokens: m.max_tokens ?? cfg.max_tokens, temperature: cfg.temperature });
-      // finish_reason 'error' = le fournisseur a coupé la réponse : rien n'est écrit, la cellule reste à faire (relance).
-      if (g.finishReason === 'error') throw new Error(`finish_reason error (${g.usage?.completion_tokens ?? '?'} tokens)`);
+      // Seuls 'stop' et 'length' sont des réponses du modèle ; 'error', null (pas de choices), 'content_filter'... viennent du
+      // fournisseur : rien n'est écrit, la cellule reste à faire (relance).
+      if (g.finishReason !== 'stop' && g.finishReason !== 'length') throw new Error(`finish_reason ${g.finishReason} (${g.usage?.completion_tokens ?? '?'} tokens)`);
       if (g.finishReason === 'length') console.error(`TRUNCATED ${cell}`);
       const html = extractHtml(g.text);
       writeFileSync(file, html);

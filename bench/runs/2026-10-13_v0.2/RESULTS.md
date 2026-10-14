@@ -91,4 +91,13 @@ First draft: 36 pages generated, 35 testable. Hardening: 35 pages generated, 34 
 | value | pages |
 |---|---|
 
+## Regressions at hardening, standard battery (valid values only, same pages)
+
+| model | guide | pages compared | pages with a regression | values lost | values regained |
+|---|---|---|---|---|---|
+| gemini-3-8-flash | without | 9 | 9 | 184 | 16 |
+| gemini-3-8-flash | with | 9 | 4 | 4 | 0 |
+| mistral-large-4-0 | without | 9 | 8 | 120 | 14 |
+| mistral-large-4-0 | with | 7 | 0 | 0 | 26 |
+
 Cost reported by OpenRouter: first draft 0.888 USD, hardening 1.344 USD.

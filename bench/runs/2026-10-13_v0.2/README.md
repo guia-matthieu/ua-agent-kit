@@ -1,6 +1,6 @@
 # Run of 2026-10-13 — two recent models, for v0.2
 
-The protocol of `bench/runs/2026-10-06_state-catalogue/`, replayed on two models read that day in the OpenRouter catalogue: the most recent Gemini Flash and Mistral's most recent large model. Same scripts, same additions (TLD packs, hardening turn), same tables. Read the README of the 2026-10-06 run for what each addition is.
+The protocol of `bench/runs/2026-10-06_state-catalogue/`, replayed on two models chosen that day in the OpenRouter catalogue as the most recent Gemini Flash and Mistral's most recent large model. Same prompts, same additions (TLD packs, hardening turn), same tables, plus one: the hardening compared on the standard battery too. The runner is not the one of 2026-10-06 (see below). Read the README of the 2026-10-06 run for what each addition is.
 
 ## The models
 
@@ -11,6 +11,8 @@ In `models.json`: `google/gemini-3.8-flash` (provider `google-ai-studio`) and `m
 ## What is taken from the kit, unchanged
 
 Kit at commit `8175547`: the prompts `bench/prompts/{fr,en,es}.txt`, `GUIDE.md` as the system prompt of the `guide` condition, the runner `src/form-runner.mjs`, battery `battery/cases.json` 1.0.0 (82 cases), TLD packs as scored on 2026-10-06 (`pack-as-scored.json`, 62 cases), three repeats per cell, temperature and effort left at the provider's default, Chromium 153.0.8010.12 (Playwright 1.63.0).
+
+**Not the runner of 2026-10-06.** That run was scored at `8a7e65e`. Between the two commits, 22 commits changed `src/form-runner.mjs` and `src/verdict.mjs` (+341 / −64 lines): a baseline the page refuses is no longer the reference, a refusal is read by its place, every reload runs in a context of its own, the contexts that hold typed values have no network. The prompts, `GUIDE.md` and `battery/cases.json` are the same. The two runs share a design, not a scoring: compare their tables with that in mind.
 
 2 models × 3 languages × 2 conditions × 3 repeats = 36 pages, 35 of them testable. `mistral-large-4-0/es/guide/2` came back empty (`finish_reason: stop`, 16 479 reasoning tokens of 17 342) and is counted not testable, as Qwen3-Coder's empty page on 2026-10-06.
 
@@ -27,7 +29,7 @@ Four hardened pages of Mistral Large 4 were set aside and asked once more:
 | `en/guide/3` | `finish_reason: error` after 47 tokens, no page | page, `stop` |
 | `es/guide/1` | `finish_reason: error` after 22 129 tokens, a page cut short with no form | page, `stop` |
 
-`durcir.mjs` wrote the `error` answers as done cells. Both `durcir.mjs` and `run.mjs` now refuse an `error` answer: nothing is written and the cell stays to do. The four first answers and their CSV rows are in `generations-durci-ecartees/`.
+`durcir.mjs` wrote the `error` answers as done cells. Both `durcir.mjs` and `run.mjs` now keep only `stop` and `length` answers: any other `finish_reason` (`error`, `content_filter`, none) writes nothing and the cell stays to do. An empty `stop` answer is still written and counted not testable. The four first answers and their CSV rows are in `generations-durci-ecartees/`.
 
 ## Files
 
@@ -40,15 +42,15 @@ Four hardened pages of Mistral Large 4 were set aside and asked once more:
 | `runs-standard.csv`, `runs-fr.csv` | first draft, one row per case: standard battery, TLD packs |
 | `runs-durci-standard.csv`, `runs-durci-fr.csv` | the same after hardening |
 | `RESULTS.md` | the tables, written by `summary.py` |
-| `run.mjs`, `durcir.mjs`, `rescore.mjs` | the scripts of 2026-10-06, comments in French; the `error` check added on 2026-10-14 |
+| `run.mjs`, `durcir.mjs`, `rescore.mjs` | the scripts of 2026-10-06, comments in French; the `finish_reason` check added on 2026-10-14 |
 | `models.json`, `durcir-consignes.json`, `pack-as-scored.json`, `ids-scored-to-packs.json` | configuration, hardening request, pack and id map, as on 2026-10-06 |
 
 ## What the tables show
 
 - **The five geoTLDs in ASCII are accepted on 518 of 525 first-draft values**, both models, three languages, with and without the guide. No ASCII geoTLD is lost at hardening.
-- **The regression comes at the correction, without the guide.** Asked to tighten the validation, 16 of 18 pages without the guide start refusing a valid value they accepted before (108 values), against 0 of 16 with the guide.
-- **Accented local parts are what is lost.** Without the guide, both models refuse every accented local part after hardening (0 of 27 each, from 27 and 21). That is 48 of the 108 values; accented geoTLDs and A-labels make most of the rest.
-- **With the guide, hardening loses no valid value**, and pages passing the 62 cases go from 4 to 13 of 16. Guards refused: Gemini goes from 38 to 72 of 72, Large 4 from 47 to 46 of 56.
+- **The regression comes at the correction, without the guide.** On the TLD packs, asked to tighten the validation, 16 of 18 pages without the guide start refusing a valid value they accepted before (108 values), against 0 of 16 with the guide. On the standard battery: 17 of 18 pages without the guide (304 values), 4 of 16 with it (4 values).
+- **Accented local parts are what is lost.** On the TLD packs, without the guide, both models refuse every accented local part after hardening (0 of 27 each, from 27 and 21). That is 48 of the 108 values; accented geoTLDs and A-labels make most of the rest.
+- **With the guide, hardening loses no valid value of the TLD packs**, and pages passing the 62 cases go from 4 to 13 of 16. Guards refused: Gemini goes from 38 to 72 of 72, Large 4 from 47 to 46 of 56. On the standard battery, four of Gemini's nine pages with the guide start refusing `उपयोगकर्ता@उदाहरण.भारत`, an address in Devanagari on the `.भारत` TLD; Large 4 loses nothing.
 
 ## What this does not show
 
@@ -56,7 +58,8 @@ Four hardened pages of Mistral Large 4 were set aside and asked once more:
 - Through OpenRouter, provider pinned: not the provider's own API, nor its products.
 - One wording of the hardening request.
 - The client side only, as in the whole kit: no server, no storage, no mail delivery.
-- Mistral Large 4 has two holes with the guide: `es/guide/2` (first draft empty, so no hardening) and the hardening of `en/guide/2` (64 000 tokens twice).
+- Mistral Large 4 has two holes with the guide: `es/guide/2` (first draft empty, so no hardening) and the hardening of `en/guide/2` (an `error` answer, then 64 000 tokens with no page).
+- That the two models were the most recent of their families: `models.json` says so, no copy of the catalogue was kept. The page `.json` files record the model version, not the provider that served it.
 
 ## Cost
 
