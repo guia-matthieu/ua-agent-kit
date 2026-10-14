@@ -3,7 +3,7 @@ the reading of website guards still has a known blind spot. Usage: python3 docs/
 import collections, csv, json, math, os
 HERE = os.path.dirname(os.path.abspath(__file__))
 RUN = os.path.join(HERE, '..', '..', '..', 'bench', 'runs', '2026-10-06_state-catalogue')
-cls = {(r['field'], r['case_id']): r['class'] for r in csv.DictReader(open(os.path.join(RUN, 'runs-standard.csv'), encoding='utf-8')) if r['case_id']}
+cls = {(r['field'], r['case_id']): r['class'] for r in csv.DictReader(open(os.path.join(RUN, 'first-scoring', 'runs-standard.csv'), encoding='utf-8')) if r['case_id']}
 rows = [r for r in json.load(open(os.path.join(HERE, 'fixed-rows.json'), encoding='utf-8')) if r.get('field') and r['outcome'] in ('pass', 'fail')]
 P = collections.defaultdict(list)
 for r in rows: P[(r['model'], r['condition'], r['lang'], r['repeat'])].append(r)

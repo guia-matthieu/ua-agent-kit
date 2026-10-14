@@ -4,7 +4,7 @@ import collections, csv, json, os, re
 HERE = os.path.dirname(os.path.abspath(__file__))
 RUN = os.path.join(HERE, '..', '..', '..', 'bench', 'runs', '2026-10-06_state-catalogue')
 ERR = re.compile(r'invalid|inv[aá]lid|no v[aá]lido|error|erreur|incorrect', re.I)
-pub = {(r['model'], r['lang'], r['condition'], r['repeat'], r['field'], r['case_id']): r for r in csv.DictReader(open(os.path.join(RUN, 'runs-standard.csv'), encoding='utf-8'))}
+pub = {(r['model'], r['lang'], r['condition'], r['repeat'], r['field'], r['case_id']): r for r in csv.DictReader(open(os.path.join(RUN, 'first-scoring', 'runs-standard.csv'), encoding='utf-8'))}
 rows = [r for r in json.load(open(os.path.join(HERE, 'probe-rows.json'), encoding='utf-8')) if r.get('field')]
 pages = collections.defaultdict(lambda: {'n': 0, 'texts': collections.Counter(), 'classes': collections.Counter(), 'typed': []})
 for r in rows:

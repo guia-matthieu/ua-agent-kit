@@ -28,6 +28,12 @@ The pages were scored when these cases were one file with other ids. `pack-as-sc
 
 122 hardened pages, 119 testable and comparable with their first draft. Seven answers came back empty (0 bytes, `finish_reason: stop`), all from Qwen3-Coder; each was asked once more, four then returned a page and three stayed empty and are counted not testable. The empty answers are kept in `generations-durci-ecartees/`.
 
+## Scored again (2026-10-14)
+
+The tables and the four CSV files of this folder are those of the reference scoring, `docs/qc/2026-10-09_finding-5/rescored/` (runner at `49a5228`; the scorings at `07fdb08` and `7258c9e` gave the same files byte for byte). Between `8a7e65e` and that scoring, the runner changed the way it reads a page: a baseline value the page refuses is no longer the reference, a refusal is read by its place and not its wording, a text field that takes a domain only with `https://` gets it, a field whose verdict depends on what fills the other fields is not testable. What each change did to these pages: `docs/qc/`, one folder per change; the rows that differ from the first scoring: `docs/qc/2026-10-14_results-rescored/`.
+
+The first scoring, as published on 2026-10-06, is kept in `first-scoring/`: the four CSV files and `RESULTS.md`. The `.json` next to each page still hold the per-case results of the first scoring.
+
 ## Files
 
 | | |
@@ -37,15 +43,16 @@ The pages were scored when these cases were one file with other ids. `pack-as-sc
 | `runs-standard.csv`, `runs-fr.csv` | first draft, one row per case: standard battery, TLD packs |
 | `runs-durci-standard.csv`, `runs-durci-fr.csv` | the same after hardening |
 | `RESULTS.md` | the tables, written by `summary.py` |
+| `first-scoring/` | the CSV files and the tables of the first scoring, as published on 2026-10-06 |
 | `run.mjs`, `durcir.mjs`, `rescore.mjs` | the scripts as they ran, comments in French |
 | `iana-idn-tables/` | the IDN tables of the five geoTLDs as published at IANA, read on 2026-10-06 |
 
 ## What the tables show
 
 - **The five geoTLDs in ASCII are accepted on every first-draft page**: seven models, three languages, with and without the guide.
-- **Accented names are not accepted reliably.** For one code model the result changes with the language of the prompt; some chat models refuse them without the guide and accept them with it.
-- **No first-draft page passes the 62 cases.** Of 122 testable pages, 120 accept at least one guard. A page that accepts every valid value may simply be validating nothing: valid values accepted and guards refused have to be read side by side.
-- **The regression comes at the correction.** Asked to tighten the validation, 17 of 60 pages without the guide start refusing a valid value they accepted before, against 3 of 59 with the guide. This is the only place in the run where an ASCII geoTLD is refused: 8 values, all without the guide.
+- **Accented names are not accepted reliably.** For one code model the result changes with the language of the prompt; two chat models refuse some of them without the guide and accept them with it, and two others accept fewer with the guide than without it (`mistral-small-3-2`, `ministral-8b`).
+- **No first-draft page passes the 62 cases.** Of 122 testable pages, 119 accept at least one guard. A page that accepts every valid value may simply be validating nothing: valid values accepted and guards refused have to be read side by side.
+- **The regression comes at the correction.** Asked to tighten the validation, 37 of 60 pages without the guide start refusing a valid value they accepted before, against 9 of 59 with the guide. This is the only place in the run where an ASCII geoTLD is refused: 16 values, 11 without the guide and 5 with it.
 
 ## What this does not show
 
@@ -63,6 +70,6 @@ python3 bench/runs/2026-10-06_state-catalogue/summary.py      # the tables, from
 node bench/runs/2026-10-06_state-catalogue/rescore.mjs        # scores the 126 first-draft pages again, no API call
 ```
 
-`rescore.mjs` rewrites the two first-draft CSV files and the `.json` next to each page. Run from this repository on 2026-10-06, it gave back every row of the two published files (7 572 and 10 012 rows, no value changed); only the order of four cells that had been generated again differs. Generating again needs `OPENROUTER_API_KEY` (`run.mjs`, then `durcir.mjs`); cells that already have their pages are skipped.
+`rescore.mjs` rewrites the two first-draft CSV files and the `.json` next to each page. Run from this repository on 2026-10-06, it gave back every row of the two files of the first scoring (7 572 and 10 012 rows, no value changed); only the order of four cells that had been generated again differs. Run today it scores with the runner of the repository; it was not run for the scoring of 2026-10-14. Generating again needs `OPENROUTER_API_KEY` (`run.mjs`, then `durcir.mjs`); cells that already have their pages are skipped.
 
 To run the bench on another catalogue of models: copy `models.json`, change the slugs, run `run.mjs` in a folder of its own.
