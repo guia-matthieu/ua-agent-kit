@@ -77,8 +77,10 @@ The checker opens the page in a headless browser, finds the email and website fi
 
 **What leaves the page depends on the target.**
 
-- **A local file**: the submit event is dispatched after each case with its default action cancelled, and once the page has loaded no request of any kind leaves it (navigations, fetches, images, sockets and popups are blocked; the tests in `tests/guards.test.mjs` try each). Before load, only `GET` and `HEAD` pass.
-- **A URL**: the form is never submitted and every request other than `GET` or `HEAD` is blocked. `GET` requests and WebSocket connections that the page's own scripts open while values are typed (analytics, autocomplete) are **not** blocked and may carry a typed value, so check only pages whose owner agrees. A value the page did not visibly refuse is reported as `no-rejection-observed`, never as `accepted`.
+- **A local file**: the submit event is dispatched after each case with its default action cancelled, and once the page has loaded the runner's guards block every request (navigations, fetches, images, sockets, popups), and the contexts that hold typed values go through a proxy nobody listens on. Before load, only `GET` and `HEAD` pass.
+- **A URL**: the form is never submitted and the runner's guards block every request other than `GET` or `HEAD`. `GET` requests and WebSocket connections that the page's own scripts open while values are typed (analytics, autocomplete) are **not** blocked and may carry a typed value, so check only pages whose owner agrees. A value the page did not visibly refuse is reported as `no-rejection-observed`, never as `accepted`.
+
+In both modes shared workers and WebRTC are removed: in 0.1.0 their requests went around the guards (a shared worker's `POST` in URL mode too, see `CHANGELOG.md`). Each way a page was found to get around the guards is closed and has a test in `tests/guards.test.mjs`, run in Chromium on macOS and on Linux (CI). What is not measured (Firefox and WebKit for some channels, Windows, the DNS of a public name) is listed in `docs/qc/notes-worker-leak.md`.
 
 How to read a verdict: `accepted` (the submit went through and the page showed no refusal), `rejected-script` (the page showed a refusal it did not show for an ordinary value: `aria-invalid`, an error class, an error text, a custom validity), `rejected-native` (the browser refused the value and something enforced it), `no-rejection-observed` (nothing refused, and the submit never fired: always the case on a URL; on a local file it happens when the field has no `<form>` or when native validation blocks the submit, for example a required field the runner could not fill). A case *passes* when a valid value is accepted or an invalid one refused. `rewritten` counts cases where the field held something other than what was typed; `not-testable` means the field was missing or could not be typed into, or the runner's own reload between two cases failed or brought back a page with different fields.
 
@@ -156,23 +158,23 @@ Three models (`anthropic/claude-opus-5.5`, `openai/gpt-6-astra`, `z-ai/glm-5.3`)
 
 What this measures is one-shot generation through an API: no tools, no correction loop, no existing codebase. It shows what the guide changes in code a model writes from a prompt; what it changes for an agent at work in a real project is not measured here.
 
-The 82 cases of a page go through the same two fields and the same script: they are not 82 independent trials, and the page is the unit to count first. Pages where all 82 cases pass, out of 27 per condition: **1 with the prompt alone, 18 with the guide.**
+The 82 cases of a page go through the same two fields and the same script: they are not 82 independent trials, and the page is the unit to count first. Pages where all 82 cases pass, out of 27 per condition: **1 with the prompt alone, 19 with the guide.**
 
 | model | pages where the 82 cases pass, prompt alone | with `GUIDE.md` |
 |---|---|---|
 | Claude Opus 5.5 | 1/9 | 8/9 |
-| GPT-6 Astra | 0/9 | 5/9 |
+| GPT-6 Astra | 0/9 | 6/9 |
 | GLM 5.3 | 0/9 | 5/9 |
 
-A case passes when a valid value is accepted or an invalid one refused (see *How to read a verdict* above). Share of the 738 cases per model and condition (9 pages × 82) that passed; the guide raises both sides, valid values accepted from 89.8 % to 98.2 % and invalid values refused from 75.2 % to 95.6 %:
+A case passes when a valid value is accepted or an invalid one refused (see *How to read a verdict* above). Share of the 738 cases per model and condition (9 pages × 82) that passed; the guide raises both sides, valid values accepted from 89.8 % to 99.7 % and invalid values refused from 75.2 % to 95.6 %:
 
 | model | prompt alone | prompt + `GUIDE.md` |
 |---|---|---|
 | Claude Opus 5.5 | 86.4 % (638/738) | 99.7 % (736/738) |
-| GPT-6 Astra | 85.9 % (634/738) | 94.7 % (699/738) |
+| GPT-6 Astra | 85.9 % (634/738) | 98.4 % (726/738) |
 | GLM 5.3 | 88.5 % (653/738) | 98.6 % (728/738) |
 
-Two scoring rules were set after the pages had been looked at: a bare domain typed into a `type="url"` field gets `https://` in front, and on a form with `novalidate` a refusal is what the page shows, not the browser's internal validity flag. Their effect on every count is in `RESULTS.md`, with the gap between the two conditions under each combination of the rules: on the 79 cases the first scoring holds, with the guide the rate of all models is higher by 10.6 to 12.6 points whichever rules apply (`node bench/sensitivity.mjs`). Rule 1 looks at the type of the field: one GPT-6 Astra page with the guide asks for a full URL in a text field, does not get the `https://`, and holds 27 of that model's 39 failures.
+Two scoring rules were set after the pages had been looked at: a bare domain typed into a field that asks for a URL gets `https://` in front, and on a form with `novalidate` a refusal is what the page shows, not the browser's internal validity flag. Their effect on every count is in `RESULTS.md`, with the gap between the two conditions under each combination of the rules: on the 79 cases the first scoring holds, with the guide the rate of all models is higher by 10.6 to 13.8 points whichever rules apply (`node bench/sensitivity.mjs`). The pages were scored again on 15/10/2026 with the runner of 0.2.0: one GPT-6 Astra page with the guide, which asks for a full URL in a text field, now gets the `https://` and passes; in the scoring of 28/09 it held 27 of that model's 39 failures.
 
 Nine pages per model and condition, three per language: this is enough to see where forms fail, not to rank models. What the numbers say and what they do not, the two scoring rules and why they were set, per-class tables, cost and every limitation are in [`bench/results/RESULTS.md`](bench/results/RESULTS.md). Every generated page is in `bench/results/generations/`, and can be tried in a browser from the index at https://guia-matthieu.github.io/ua-agent-kit/bench/ (built from `runs.csv` by `node bench/build-index.mjs`); `node bench/run-bench.mjs --rescore` scores them again, byte for byte, with no API call.
 
