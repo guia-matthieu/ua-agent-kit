@@ -1,0 +1,25 @@
+| model | lang | condition | pass | fail | sanitized | not-observed | not-testable | rewritten |
+|---|---|---|---|---|---|---|---|---|
+| anthropic | en | guide | 246 | 0 | 0 | 0 | 0 | 0 |
+| anthropic | en | no-guide | 225 | 21 | 0 | 0 | 0 | 195 |
+| anthropic | es | guide | 244 | 2 | 0 | 0 | 0 | 0 |
+| anthropic | es | no-guide | 207 | 39 | 0 | 0 | 0 | 177 |
+| anthropic | fr | guide | 246 | 0 | 0 | 0 | 0 | 0 |
+| anthropic | fr | no-guide | 206 | 40 | 0 | 0 | 0 | 178 |
+| open-weight | en | guide | 241 | 5 | 0 | 0 | 0 | 0 |
+| open-weight | en | no-guide | 205 | 41 | 0 | 0 | 0 | 12 |
+| open-weight | es | guide | 242 | 4 | 0 | 0 | 0 | 0 |
+| open-weight | es | no-guide | 221 | 25 | 0 | 0 | 0 | 46 |
+| open-weight | fr | guide | 245 | 1 | 0 | 0 | 0 | 0 |
+| open-weight | fr | no-guide | 227 | 19 | 0 | 0 | 0 | 77 |
+| openai | en | guide | 246 | 0 | 0 | 0 | 0 | 0 |
+| openai | en | no-guide | 210 | 36 | 0 | 0 | 0 | 12 |
+| openai | es | guide | 238 | 8 | 0 | 0 | 0 | 0 |
+| openai | es | no-guide | 212 | 34 | 0 | 0 | 0 | 12 |
+| openai | fr | guide | 242 | 4 | 0 | 0 | 0 | 0 |
+| openai | fr | no-guide | 212 | 34 | 0 | 0 | 0 | 12 |
+
+| condition | pass | fail | sanitized | not-observed | not-testable | pass rate |
+|---|---|---|---|---|---|---|
+| guide | 2190 | 24 | 0 | 0 | 0 | 98.9 % |
+| no-guide | 1925 | 289 | 0 | 0 | 0 | 86.9 % |

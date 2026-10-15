@@ -1,0 +1,9 @@
+| scoring | anthropic no-guide → guide | openai no-guide → guide | open-weight no-guide → guide | all models | pages where the 79 cases pass |
+|---|---|---|---|---|---|
+| first scoring, neither rule | 72.4 → 96.2 % | 58.5 → 67.1 % | 73.7 → 77.4 % | 68.2 → 80.2 % | 1/27 → 11/27 |
+| rule 1 only | 85.9 → 99.7 % | 85.4 → 98.3 % | 84.0 → 98.7 % | 85.1 → 98.9 % | 1/27 → 19/27 |
+| rule 2 only | 72.4 → 96.2 % | 58.5 → 67.1 % | 77.8 → 77.2 % | 69.6 → 80.2 % | 1/27 → 11/27 |
+| both rules (current scoring) | 85.9 → 99.7 % | 85.4 → 98.3 % | 88.0 → 98.6 % | 86.5 → 98.9 % | 1/27 → 19/27 |
+| both rules, and the 26 bare domains of the page outside rule 1 counted as passing | 85.9 → 99.7 % | 85.4 → 98.3 % | 88.0 → 98.6 % | 86.5 → 98.9 % | 1/27 → 19/27 |
+
+4266 cases of 4428 in both scorings; 1240 under rule 1, 3026 under rule 2 or neither.
