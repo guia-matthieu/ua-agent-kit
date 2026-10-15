@@ -22,7 +22,7 @@
 - A `POST` the page sends itself on submit no longer crashes the check; a page that sets a fragment at load is no longer `reload-failed` (#8).
 - A field that depends on what the runner fills in the other fields (an anti-spam trap, for instance) is probed twice; a verdict is kept only when both probes give it, otherwise `not-testable`, `fill-dependent` (#9).
 - Each reload runs in a new browser context: storage, IndexedDB and history start empty. A domain typed with `https://` and cleaned by the page is judged as a URL. A fill that fails after the first case keeps the cases already measured. Playwright is pinned to `~1.63.0` (#10).
-- Effect on the published bench results: see `docs/qc/` for each change, and the comparison against the reference scoring (#16). The run of 2026-10-06 is scored again (#17); `bench/results/RESULTS.md` is not rewritten here.
+- Effect on the published bench results: see `docs/qc/` for each change, and the comparison against the reference scoring (#16). The run of 2026-10-06 is scored again (#17). The bench of 2026-09-25 is scored again (#18), and `bench/results/RESULTS.md` and the README give its numbers (#19): 27 cases change, all on one page that asks for a URL in a text field, now typed with `https://`; `openai` with the guide goes from 94.7 % to 98.4 %, pages where the 82 cases pass with the guide from 18 to 19 of 27. The scoring of 2026-09-28 is kept in `bench/results/scoring-2026-09-28/`.
 
 ## 0.1.0 — 2026-09-29
 
