@@ -1,4 +1,4 @@
-# Bench results — run of 2026-09-25, scored on 2026-09-28
+# Bench results — run of 2026-09-25, scored on 2026-10-15
 
 Do models write signup forms that accept every valid address and domain (long TLDs, IDNs, internationalised email) and does giving them `GUIDE.md` change that?
 
@@ -7,7 +7,7 @@ Do models write signup forms that accept every valid address and domain (long TL
 | | |
 |---|---|
 | Generation | 2026-09-25, 11:10 to 17:12 UTC. No page was generated again after that date |
-| Scoring | `node bench/run-bench.mjs --rescore` on 2026-09-28 (pass `2026-09-28T21:18:39.719Z` in `rescore.json`), kit at `9fc1cc7`, battery `1.0.0` |
+| Scoring | `node bench/run-bench.mjs --rescore` on 2026-10-15 (pass `2026-10-15T09:07:44.716Z` in `rescore.json`), kit at `4207a12`, battery `1.0.0`. The scoring of 2026-09-28 (kit at `9fc1cc7`), which earlier versions of this file describe, is kept in `scoring-2026-09-28/`: 27 rows differ, all on one page (see *What the numbers say*) |
 | Cases | 82 per page: 34 typed in the email field, 48 in the website field. 66 are valid values the form should accept, 16 are invalid values it should refuse |
 | Engine | Chromium 153.0.8010.12 (Playwright 1.63.0) |
 | Prompt | `bench/prompts/{en,fr,es}.txt`: a self-contained HTML signup form (name, email, website, password), JavaScript validation before submit, no framework |
@@ -28,7 +28,7 @@ Models pinned from the OpenRouter code-generation ranking by spend on 25/09 (`mo
 
 Each value is typed into the field, the field loses focus, and the form's submit event is dispatched with its default action cancelled. The runner then reads the field and the form.
 
-- **Refused** (`rejected-script`): the page shows a refusal it did not show for an ordinary value: `aria-invalid="true"`, an error class, an error text, or a custom validity set by its script.
+- **Refused** (`rejected-script`): the page shows a refusal it did not show for an ordinary value: `aria-invalid="true"`, an error class, an error text, a new text next to the field, or a custom validity set by its script.
 - **Accepted** (`accepted`): the submit event fired and the runner read none of these. It is what the runner observed, not a proof that the form went on to do its work.
 - **Refused by the browser** (`rejected-native`): the field reports a type or pattern mismatch *and* something enforces it. No case of this bench is in that situation (rule 2 below).
 
@@ -38,9 +38,9 @@ In the `.json` of each page every case carries what was read: `mismatch` (the fi
 
 Both were set after the first scoring of these pages (commit `55df22f`), once the pages had been looked at, and both change what is counted. Neither needed a page to be generated again.
 
-**1. In a `type="url"` field, a bare domain is typed with `https://` in front.** The battery holds bare domains (`boutique.corsica`) and full URLs (`https://boutique.corsica`). A field of type url holds a URL: for it a value without a scheme is a type mismatch, `example.com` included. The first scoring typed the bare domains as they are into the 39 pages that have such a field. Of 1 209 values, 1 049 were read as refused, `example.com` with the others. Those refusals could not tell how a page treats a long TLD or an IDN: they mixed a missing scheme with a refusal of the name. In any other field a bare domain is typed as it is. The column `typed` of `runs.csv` holds what was typed.
+**1. In a field that asks for a URL, a bare domain is typed with `https://` in front.** The battery holds bare domains (`boutique.corsica`) and full URLs (`https://boutique.corsica`). A field of type url holds a URL: for it a value without a scheme is a type mismatch, `example.com` included. The first scoring typed the bare domains as they are into the 39 pages that have such a field. Of 1 209 values, 1 049 were read as refused, `example.com` with the others. Those refusals could not tell how a page treats a long TLD or an IDN: they mixed a missing scheme with a refusal of the name. In any other field a bare domain is typed as it is. The column `typed` of `runs.csv` holds what was typed.
 
-This rule looks at the type of the field, not at what the page asks for. A page that asks for a full URL in a text field does not get the `https://` (one page does that, see below).
+A field asks for a URL when it is `type="url"`, or when it is a text field that refuses an ordinary bare domain and takes the same domain with `https://` (`schemeRequired` in the `baseline` of the field, in the `.json`). The second part was added to the runner after the scoring of 2026-09-28 (#7); one page of this bench is in that case (see *What the numbers say*).
 
 **2. On a form with `novalidate`, a refusal is what the page says.** The 54 forms have native validation switched off (`novalidate`): the browser does not hold the submit back on the form's constraints, and the submit event fired on each of the 4 428 cases. A Unicode local part in a `type="email"` field is a type mismatch for the browser, but on such a form nothing acts on it unless the page's script does. In 437 cases the field reports a mismatch that nothing enforces (`mismatch` true and `enforced` false in the `.json`). In 386 of them the page shows a refusal too; in 51 it shows none.
 
@@ -50,22 +50,21 @@ What the two rules changed, against the first scoring. It predates the three pla
 
 | rule | cases it applies to | were fail, are pass | were pass, are fail | same outcome |
 |---|---|---|---|---|
-| 1. `https://` in a `type="url"` field | 1 209 | 814 | 81 | 314 |
+| 1. `https://` in a field that asks for a URL | 1 240 | 840 | 81 | 319 |
 | 2. `novalidate` | 437 | 36 | 8 | 393 |
 
-With the two rules, 850 valid values go from fail to pass and 89 invalid values from pass to fail. The other 3 327 cases have the outcome they had.
+With the two rules, 876 valid values go from fail to pass and 89 invalid values from pass to fail. The other 3 301 cases have the outcome they had. Of the 1 240 cases of rule 1, 1 209 are in a `type="url"` field and 31 in the text field of `openai/fr/guide/3`.
 
 **The gap under each rule.** The two rules move many outcomes, so the gap between the two conditions is given here under each combination of them, from the first scoring (`runs-first-scoring.csv`, kit at `55df22f`) and the current one restricted to the same 79 cases (`node bench/sensitivity.mjs`):
 
 | scoring | anthropic no-guide → guide | openai no-guide → guide | open-weight no-guide → guide | all models | pages where the 79 cases pass |
 |---|---|---|---|---|---|
 | first scoring, neither rule | 72.4 → 96.2 % | 58.5 → 67.1 % | 73.7 → 77.4 % | 68.2 → 80.2 % | 1/27 → 11/27 |
-| rule 1 only | 85.9 → 99.7 % | 85.4 → 94.7 % | 84.0 → 98.7 % | 85.1 → 97.7 % | 1/27 → 18/27 |
+| rule 1 only | 85.9 → 99.7 % | 85.4 → 98.3 % | 84.0 → 98.7 % | 85.1 → 98.9 % | 1/27 → 19/27 |
 | rule 2 only | 72.4 → 96.2 % | 58.5 → 67.1 % | 77.8 → 77.2 % | 69.6 → 80.2 % | 1/27 → 11/27 |
-| both rules (current scoring) | 85.9 → 99.7 % | 85.4 → 94.7 % | 88.0 → 98.6 % | 86.5 → 97.7 % | 1/27 → 18/27 |
-| both rules, and the 26 bare domains of the page outside rule 1 counted as passing | 85.9 → 99.7 % | 85.4 → 98.3 % | 88.0 → 98.6 % | 86.5 → 98.9 % | 1/27 → 19/27 |
+| both rules (current scoring) | 85.9 → 99.7 % | 85.4 → 98.3 % | 88.0 → 98.6 % | 86.5 → 98.9 % | 1/27 → 19/27 |
 
-With the guide the rate of all models is higher under every combination, by 10.6 to 12.6 points, and so is the number of pages where the 79 cases pass. Per model it is higher in every row but one: `open-weight` under rule 2 alone, 77.8 % without the guide and 77.2 % with it. The last row is not a scoring: it shows what the page outside rule 1 (see *What the numbers say*) weighs, if its bare domains had passed: 26 among these 79 cases, 27 with `example.fr`.
+With the guide the rate of all models is higher under every combination, by 10.6 to 13.8 points, and so is the number of pages where the 79 cases pass. Per model it is higher in every row but one: `open-weight` under rule 2 alone, 77.8 % without the guide and 77.2 % with it.
 
 ## Results
 
@@ -76,11 +75,11 @@ With the guide the rate of all models is higher under every combination, by 10.6
 | anthropic | no-guide | 638 | 100 | 86.4 % | 517/594 (87.0 %) | 121/144 (84.0 %) |
 | anthropic | guide | 736 | 2 | 99.7 % | 592/594 (99.7 %) | 144/144 (100.0 %) |
 | openai | no-guide | 634 | 104 | 85.9 % | 540/594 (90.9 %) | 94/144 (65.3 %) |
-| openai | guide | 699 | 39 | 94.7 % | 567/594 (95.5 %) | 132/144 (91.7 %) |
+| openai | guide | 726 | 12 | 98.4 % | 594/594 (100.0 %) | 132/144 (91.7 %) |
 | open-weight | no-guide | 653 | 85 | 88.5 % | 543/594 (91.4 %) | 110/144 (76.4 %) |
 | open-weight | guide | 728 | 10 | 98.6 % | 591/594 (99.5 %) | 137/144 (95.1 %) |
 | all models | no-guide | 1925 | 289 | 86.9 % | 1600/1782 (89.8 %) | 325/432 (75.2 %) |
-| all models | guide | 2163 | 51 | 97.7 % | 1750/1782 (98.2 %) | 413/432 (95.6 %) |
+| all models | guide | 2190 | 24 | 98.9 % | 1777/1782 (99.7 %) | 413/432 (95.6 %) |
 
 The pass rate mixes two things: accepting what is valid and refusing what is not. The two columns on the right keep them apart.
 
@@ -91,7 +90,7 @@ The pass rate mixes two things: accepting what is valid and refusing what is not
 | anthropic | no-guide | 3/9 | 1/9 |
 | anthropic | guide | 8/9 | 8/9 |
 | openai | no-guide | 0/9 | 0/9 |
-| openai | guide | 8/9 | 5/9 |
+| openai | guide | 9/9 | 6/9 |
 | open-weight | no-guide | 5/9 | 0/9 |
 | open-weight | guide | 6/9 | 5/9 |
 
@@ -115,12 +114,12 @@ The pass rate mixes two things: accepting what is valid and refusing what is not
 | openai | en | no-guide | 210 | 36 | 0 | 0 | 0 | 12 |
 | openai | es | guide | 238 | 8 | 0 | 0 | 0 | 0 |
 | openai | es | no-guide | 212 | 34 | 0 | 0 | 0 | 12 |
-| openai | fr | guide | 215 | 31 | 0 | 0 | 0 | 0 |
+| openai | fr | guide | 242 | 4 | 0 | 0 | 0 | 0 |
 | openai | fr | no-guide | 212 | 34 | 0 | 0 | 0 | 12 |
 
 | condition | pass | fail | sanitized | not-observed | not-testable | pass rate |
 |---|---|---|---|---|---|---|
-| guide | 2163 | 51 | 0 | 0 | 0 | 97.7 % |
+| guide | 2190 | 24 | 0 | 0 | 0 | 98.9 % |
 | no-guide | 1925 | 289 | 0 | 0 | 0 | 86.9 % |
 
 ### Per class
@@ -132,13 +131,13 @@ Pass / cases, all languages, 9 pages per column. `ng` is `no-guide`, `g` is `gui
 | `eai-local` | accept | 3 | `用户@example.com` | 18/27 | 27/27 | 0/27 | 27/27 | 21/27 | 27/27 |
 | `eai-full` | accept | 3 | `用户@例子.中国` | 12/27 | 26/27 | 0/27 | 27/27 | 21/27 | 24/27 |
 | `email-idn-domain` | accept | 4 | `contact@société.fr` | 26/36 | 36/36 | 36/36 | 36/36 | 36/36 | 36/36 |
-| `idn-ulabel` | accept | 11 | `пример.рф` | 72/99 | 98/99 | 99/99 | 91/99 | 70/99 | 99/99 |
-| `idn-tld-alabel` | accept | 4 | TLD in `xn--` form | 20/36 | 36/36 | 36/36 | 33/36 | 27/36 | 36/36 |
-| `idn-sld-alabel` | accept | 4 | second level in `xn--` form | 36/36 | 36/36 | 36/36 | 34/36 | 36/36 | 36/36 |
-| `ascii-tld-long` | accept | 11 | `contact@boutique.corsica` | 99/99 | 99/99 | 99/99 | 95/99 | 99/99 | 99/99 |
-| `ascii-tld-short` | accept | 7 | two- to four-letter TLD | 63/63 | 63/63 | 63/63 | 60/63 | 63/63 | 63/63 |
-| `control` | accept | 16 | `example.com`, `example.fr` | 144/144 | 144/144 | 144/144 | 139/144 | 143/144 | 144/144 |
-| `boundary` | accept | 3 | a label of 63 octets | 27/27 | 27/27 | 27/27 | 25/27 | 27/27 | 27/27 |
+| `idn-ulabel` | accept | 11 | `пример.рф` | 72/99 | 98/99 | 99/99 | 99/99 | 70/99 | 99/99 |
+| `idn-tld-alabel` | accept | 4 | TLD in `xn--` form | 20/36 | 36/36 | 36/36 | 36/36 | 27/36 | 36/36 |
+| `idn-sld-alabel` | accept | 4 | second level in `xn--` form | 36/36 | 36/36 | 36/36 | 36/36 | 36/36 | 36/36 |
+| `ascii-tld-long` | accept | 11 | `contact@boutique.corsica` | 99/99 | 99/99 | 99/99 | 99/99 | 99/99 | 99/99 |
+| `ascii-tld-short` | accept | 7 | two- to four-letter TLD | 63/63 | 63/63 | 63/63 | 63/63 | 63/63 | 63/63 |
+| `control` | accept | 16 | `example.com`, `example.fr` | 144/144 | 144/144 | 144/144 | 144/144 | 143/144 | 144/144 |
+| `boundary` | accept | 3 | a label of 63 octets | 27/27 | 27/27 | 27/27 | 27/27 | 27/27 | 27/27 |
 | `boundary` | refuse | 1 | a label of 64 octets | 2/9 | 9/9 | 0/9 | 6/9 | 0/9 | 9/9 |
 | `guard` | refuse | 15 | `a@@b.com`, `bad..dots.com` | 119/135 | 135/135 | 94/135 | 126/135 | 110/135 | 128/135 |
 
@@ -147,10 +146,10 @@ Pass / cases, all languages, 9 pages per column. `ng` is `no-guide`, `g` is `gui
 | what was read | field | anthropic ng | anthropic g | openai ng | openai g | open-weight ng | open-weight g |
 |---|---|---|---|---|---|---|---|
 | valid value, refusal shown by the page | email | 39 | 1 | 54 | 0 | 13 | 3 |
-| valid value, refusal shown by the page | website | 38 | 1 | 0 | 27 | 38 | 0 |
+| valid value, refusal shown by the page | website | 38 | 1 | 0 | 0 | 38 | 0 |
 | invalid value, no refusal read after the submit | email | 1 | 0 | 0 | 0 | 8 | 0 |
 | invalid value, no refusal read after the submit | website | 22 | 0 | 50 | 12 | 26 | 7 |
-| **total** | | 100 | 2 | 104 | 39 | 85 | 10 |
+| **total** | | 100 | 2 | 104 | 12 | 85 | 10 |
 
 ### What the pages are made of
 
@@ -178,11 +177,11 @@ Pages whose website field is `type="url"`, out of 3 per language:
 
 ### What the numbers say, and no more
 
-- **With the guide the pass rate is higher for the three models**: 86.4 % to 99.7 %, 85.9 % to 94.7 %, 88.5 % to 98.6 %. In pages where the 66 valid cases pass: 3 to 8, 0 to 8 and 5 to 6, out of 9.
+- **With the guide the pass rate is higher for the three models**: 86.4 % to 99.7 %, 85.9 % to 98.4 %, 88.5 % to 98.6 %. In pages where the 66 valid cases pass: 3 to 8, 0 to 9 and 5 to 6, out of 9.
 - **Internationalised email.** Without the guide the 27 pages use `type="email"`, for which a Unicode local part is a type mismatch (`GUIDE.md`, item 4 of *Do*). The 9 `openai` pages are the only ones whose script reads the validity of its fields, and they refuse all 54 addresses of `eai-local` and `eai-full`. The other 18 pages check the address with a script of their own, which refuses 36 of 108. With the guide the 27 pages use `type="text"` and 158 of 162 such addresses pass.
-- **Long ASCII TLDs.** Every `ascii-tld-long` case passes but 4, and those 4 are the bare domains typed into the page of the next item, which refuses `example.com` in the same way.
-- **One page is outside rule 1.** `openai/fr/guide/3` asks for the website in a `type="text"` field, tells the user to start with `https://`, and its script refuses any value without a scheme. Its 27 failures are the 27 valid bare domains of the battery, `example.com` and `example.fr` included; its 12 full URLs pass. They are 27 of the 39 failures of `openai` with the guide, and the reason six classes are lower with the guide than without it for that model (`control`, `ascii-tld-short`, `ascii-tld-long`, `idn-sld-alabel`, `idn-tld-alabel`, `idn-ulabel`). The page asks for the same thing as a `type="url"` field and does not get the `https://` that rule 1 gives to such a field: these 27 failures come from the way values are typed, not from the way the page treats a name.
-- **IDNs in the website field.** Without the guide, the scripts of `anthropic` and `open-weight` pages refuse 38 valid internationalised domains each; `openai` pages refuse none. With the guide, one refusal is left outside the page above (`anthropic/es/guide/1`).
+- **Long ASCII TLDs.** Every `ascii-tld-long` case passes.
+- **One page asks for a URL in a text field.** `openai/fr/guide/3` asks for the website in a `type="text"` field, tells the user to start with `https://`, and its script refuses any value without a scheme. Under rule 1 its bare domains are typed with `https://`, and its 48 website cases pass. In the scoring of 2026-09-28 they were typed as they are: the 27 valid bare domains of the battery failed, `example.com` and `example.fr` included, and they were 27 of the 39 failures of `openai` with the guide (`scoring-2026-09-28/`). Those failures came from the way values were typed, not from the way the page treats a name. No class of `openai` is now lower with the guide than without it.
+- **IDNs in the website field.** Without the guide, the scripts of `anthropic` and `open-weight` pages refuse 38 valid internationalised domains each; `openai` pages refuse none. With the guide, one refusal is left (`anthropic/es/guide/1`).
 - **Invalid values.** The 16 invalid values of the battery are there so that a form cannot pass by accepting everything. With the guide 413 of 432 are refused, without it 325 of 432. Of the 126 that are not, 117 are in the website field and 110 of those in a `type="url"` field, which takes `https://-bad-.com` or a 64-octet label unless the page checks the host itself.
 - **Languages.** Three pages per cell: this protocol does not allow a conclusion on the effect of the prompt language.
 
@@ -230,8 +229,8 @@ With 131 072, the longest GLM reply used 71 084 completion tokens (`es/guide/2`)
 - The battery is finite: 82 values. Passing it is not accepting every valid address and domain.
 - One engine. `GUIDE.md` reports that browsers disagree on `type="email"`; these pages were scored in Chromium only.
 - The two rules of this scoring were set after the pages had been looked at, not before the run.
-- What a value is typed as depends on the type of the field (rule 1). It favours a page that asks for a URL with `type="url"` over a page that asks for it in a text field.
-- A refusal is read from the field and the form: `aria-invalid`, an error class, an error text in English, French or Spanish, a custom validity. An error text is looked for in the whole form, so a message about another field that appears with the tested value is read as a refusal of that value. A refusal shown only by a style is not read; no page of this bench has one.
+- What a value is typed as depends on how the field answers an ordinary value (rule 1). A text field that asks for a URL in its label only, and takes a bare domain, gets bare domains.
+- A refusal is read from the field and the form: `aria-invalid`, an error class, an error text in English, French or Spanish anywhere in the form, a new text next to the field (in its block, in what it names with `aria-describedby` or `aria-errormessage`, or after it and before the next control) whatever its words, a custom validity. An error text is looked for in the whole form, so a message about another field that appears with the tested value is read as a refusal of that value. A refusal shown only by a style is not read; no page of this bench has one.
 - Validation is observed on `input`, `blur` and `submit` of a local file. The submit is dispatched on the form, not through a button, and is cancelled: nothing leaves the page. The state is read 60 ms after each event (`SETTLE_MS` in `src/form-runner.mjs`): a validator that answers later than that is read too early. A server-side check is out of scope.
 - One model in the bench also reviewed the runner and this document (`openai/gpt-6-astra`).
 - Models, providers and dates as pinned above; a model version served later under the same slug may behave differently.

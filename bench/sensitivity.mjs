@@ -21,17 +21,11 @@ const now = all.filter(r => first.has(key(r)));
 if (now.length !== first.size) throw new Error(`runs.csv holds ${now.length} of the ${first.size} cases of the first scoring`);
 const perPage = now.length / new Set(now.map(r => [r.model, r.lang, r.condition, r.repeat].join('/'))).size;
 
-// The one page that asks for a full URL in a text field (RESULTS.md, "One page is outside rule 1").
-const outsidePage = 'openai/fr/guide/3';
-const bare = v => !/^https?:\/\//i.test(v);
-
 const variants = {
   'first scoring, neither rule': (f) => f,
   'rule 1 only': (f, n, r1) => (r1 ? n : f),
   'rule 2 only': (f, n, r1) => (r1 ? f : n),
   'both rules (current scoring)': (f, n) => n,
-  'both rules, and the 26 bare domains of the page outside rule 1 counted as passing': (f, n, r1, r) =>
-    [r.model, r.lang, r.condition, r.repeat].join('/') === outsidePage && r.field === 'website' && r.expect === 'accept' && bare(value[r.case_id]) ? 'pass' : n,
 };
 
 const models = ['anthropic', 'openai', 'open-weight'];
