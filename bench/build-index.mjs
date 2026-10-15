@@ -29,7 +29,8 @@ function parseCsv(text) {
 
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 
-export function buildIndex(rows) {
+/** `scoredOn`: the day of the --rescore pass that wrote runs.csv, from rescore.json, so the page cannot name another. */
+export function buildIndex(rows, scoredOn) {
   const pages = new Map();
   for (const r of rows) {
     const key = `${r.model}/${r.lang}/${r.condition}/${r.repeat}`;
@@ -69,7 +70,7 @@ td.n{font-variant-numeric:tabular-nums;white-space:nowrap}td.all{color:var(--ok)
 <h1>The 54 signup forms of the ua-agent-kit bench</h1>
 <p>Three models were asked for the same self-contained HTML signup form, in three languages, three times, with the prompt alone and with <a href="https://github.com/guia-matthieu/ua-agent-kit/blob/main/GUIDE.md">GUIDE.md</a> as the system prompt. Each form below is served exactly as the model wrote it. None of them sends anything anywhere; a form that posts gets an error page from this host.</p>
 <p>Try one: type <span class="tape">josé.dupont@example.fr</span>, <span class="tape">用户@例子.中国</span> or <span class="tape">contact@boutique.corsica</span> in the email field, then submit.</p>
-<p>Scores are the runner's, out of 82 cases per form (66 valid values to accept, 16 invalid ones to refuse), read in Chromium on 2026-09-28. How a case is scored, and the limits of this bench: <a href="https://github.com/guia-matthieu/ua-agent-kit/blob/main/bench/results/RESULTS.md">RESULTS.md</a>. Built from <code>bench/results/runs.csv</code> by <code>bench/build-index.mjs</code>.</p>
+<p>Scores are the runner's, out of 82 cases per form (66 valid values to accept, 16 invalid ones to refuse), read in Chromium on ${scoredOn}. How a case is scored, and the limits of this bench: <a href="https://github.com/guia-matthieu/ua-agent-kit/blob/main/bench/results/RESULTS.md">RESULTS.md</a>. Built from <code>bench/results/runs.csv</code> by <code>bench/build-index.mjs</code>.</p>
 <div class="scroll"><table>
 <thead><tr><th>model</th><th>language</th><th>condition</th><th>repeat</th><th>cases passed</th><th>valid accepted</th><th>invalid refused</th><th>classes with a failure</th><th></th></tr></thead>
 <tbody>
@@ -82,7 +83,8 @@ ${body}
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const rows = parseCsv(readFileSync(join(HERE, 'results', 'runs.csv'), 'utf8'));
-  const html = buildIndex(rows);
+  const { rescore_id } = JSON.parse(readFileSync(join(HERE, 'results', 'rescore.json'), 'utf8'));
+  const html = buildIndex(rows, rescore_id.slice(0, 10));
   const check = process.argv.includes('--check');
   const target = join(HERE, 'index.html');
   if (check) {

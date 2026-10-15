@@ -37,6 +37,12 @@
       "selector": "[data-ua-kit-field=\"email\"]",
       "kind": "email",
       "submitExercised": true,
+      "baseline": {
+        "typed": "ana.garcia@example.com",
+        "refused": false,
+        "schemeRequired": false,
+        "showed": false
+      },
       "results": [
         {
           "id": "email-control-01",
@@ -426,7 +432,8 @@
           "mismatch": false,
           "enforced": false,
           "signals": [
-            "aria-invalid"
+            "aria-invalid",
+            "field-text"
           ],
           "verdict": "rejected-script",
           "rewritten": false,
@@ -442,7 +449,8 @@
           "mismatch": false,
           "enforced": false,
           "signals": [
-            "aria-invalid"
+            "aria-invalid",
+            "field-text"
           ],
           "verdict": "rejected-script",
           "rewritten": false,
@@ -458,7 +466,8 @@
           "mismatch": false,
           "enforced": false,
           "signals": [
-            "aria-invalid"
+            "aria-invalid",
+            "field-text"
           ],
           "verdict": "rejected-script",
           "rewritten": false,
@@ -474,7 +483,8 @@
           "mismatch": false,
           "enforced": false,
           "signals": [
-            "aria-invalid"
+            "aria-invalid",
+            "field-text"
           ],
           "verdict": "rejected-script",
           "rewritten": false,
@@ -490,7 +500,8 @@
           "mismatch": false,
           "enforced": false,
           "signals": [
-            "aria-invalid"
+            "aria-invalid",
+            "field-text"
           ],
           "verdict": "rejected-script",
           "rewritten": false,
@@ -506,7 +517,8 @@
           "mismatch": false,
           "enforced": false,
           "signals": [
-            "aria-invalid"
+            "aria-invalid",
+            "field-text"
           ],
           "verdict": "rejected-script",
           "rewritten": false,
@@ -522,7 +534,8 @@
           "mismatch": false,
           "enforced": false,
           "signals": [
-            "aria-invalid"
+            "aria-invalid",
+            "field-text"
           ],
           "verdict": "rejected-script",
           "rewritten": false,
@@ -585,6 +598,12 @@
       "selector": "[data-ua-kit-field=\"website\"]",
       "kind": "url",
       "submitExercised": true,
+      "baseline": {
+        "typed": "https://example.com",
+        "refused": false,
+        "schemeRequired": false,
+        "showed": false
+      },
       "results": [
         {
           "id": "domain-control-01",
@@ -960,7 +979,8 @@
           "mismatch": false,
           "enforced": false,
           "signals": [
-            "aria-invalid"
+            "aria-invalid",
+            "field-text"
           ],
           "verdict": "rejected-script",
           "rewritten": false,
@@ -990,7 +1010,8 @@
           "mismatch": false,
           "enforced": false,
           "signals": [
-            "aria-invalid"
+            "aria-invalid",
+            "field-text"
           ],
           "verdict": "rejected-script",
           "rewritten": false,
@@ -1006,7 +1027,8 @@
           "mismatch": false,
           "enforced": false,
           "signals": [
-            "aria-invalid"
+            "aria-invalid",
+            "field-text"
           ],
           "verdict": "rejected-script",
           "rewritten": false,
@@ -1022,7 +1044,8 @@
           "mismatch": false,
           "enforced": false,
           "signals": [
-            "aria-invalid"
+            "aria-invalid",
+            "field-text"
           ],
           "verdict": "rejected-script",
           "rewritten": false,
@@ -1038,7 +1061,8 @@
           "mismatch": false,
           "enforced": false,
           "signals": [
-            "aria-invalid"
+            "aria-invalid",
+            "field-text"
           ],
           "verdict": "rejected-script",
           "rewritten": false,
@@ -1222,7 +1246,8 @@
           "mismatch": true,
           "enforced": false,
           "signals": [
-            "aria-invalid"
+            "aria-invalid",
+            "field-text"
           ],
           "verdict": "rejected-script",
           "rewritten": false,
@@ -1238,7 +1263,8 @@
           "mismatch": true,
           "enforced": false,
           "signals": [
-            "aria-invalid"
+            "aria-invalid",
+            "field-text"
           ],
           "verdict": "rejected-script",
           "rewritten": false,
@@ -1254,7 +1280,8 @@
           "mismatch": false,
           "enforced": false,
           "signals": [
-            "aria-invalid"
+            "aria-invalid",
+            "field-text"
           ],
           "verdict": "rejected-script",
           "rewritten": false,
@@ -1270,7 +1297,8 @@
           "mismatch": true,
           "enforced": false,
           "signals": [
-            "aria-invalid"
+            "aria-invalid",
+            "field-text"
           ],
           "verdict": "rejected-script",
           "rewritten": false,
@@ -1321,5 +1349,5 @@
       }
     }
   },
-  "rescore_id": "2026-09-28T21:18:39.719Z"
+  "rescore_id": "2026-10-15T09:07:44.716Z"
 }
