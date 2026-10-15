@@ -1,6 +1,6 @@
 {
   "name": "ua-agent-kit",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Universal Acceptance test battery, guide and form checker for AI coding agents",
   "type": "module",
   "license": "MIT",

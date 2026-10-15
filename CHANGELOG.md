@@ -1,10 +1,11 @@
 # Changelog
 
-## Unreleased
+## 0.2.0 — 2026-10-14
 
 - **TLD packs 0.2.0** (`battery/packs/tld/`): one file of cases per TLD, filed by kind of TLD and not by country. Six to start with, 62 cases in all: `geotld/bzh`, `geotld/corsica`, `geotld/alsace`, `geotld/paris`, `geotld/eus` and `cctld/fr` (accented names). Scored apart: the standard battery, its totals and the two commands are unchanged. Accented names on the geoTLDs are labelled as syntax cases. See `battery/packs/README.md`.
 - **`--battery <file>`** on `ua-kit check` and `ua-kit score`: plays a pack or any file in the battery format. The file is checked against the schema first, and the report names it (`batteryFile` in JSON) so that its score is not read as a score on the standard battery. Without the option, nothing changes.
-- **Run of 2026-10-06** (`bench/runs/2026-10-06_state-catalogue/`): the bench replayed on seven more models, those listed in the catalogue of the French State's Albert API, called through OpenRouter. 126 first-draft pages scored on the standard battery and on the TLD packs, and a hardening turn (122 pages) that is not part of the kit's bench. Every page, the CSV files and the scripts are published; the first run and its numbers are untouched.
+- **Run of 2026-10-06** (`bench/runs/2026-10-06_state-catalogue/`): the bench replayed on seven more models, those listed in the catalogue of the French State's Albert API, called through OpenRouter. 126 first-draft pages scored on the standard battery and on the TLD packs, and a hardening turn (122 pages) that is not part of the kit's bench. Every page, the CSV files and the scripts are published; the first run and its numbers are untouched. Its four CSV files and `RESULTS.md` now carry the reference scoring, after the runner fixes below; the scoring published on 2026-10-06 is kept in `first-scoring/`, and the run's README says which conclusions changed (#17).
+- **Run of 2026-10-13** (`bench/runs/2026-10-13_v0.2/`): the same protocol on Gemini 3.8 Flash and Mistral Large 4, through OpenRouter. 36 first-draft pages, 35 hardened; scored with the runner of this release, not the one of the run of 2026-10-06. Every page, the CSV files, the scripts and the answers set aside are published.
 
 ### `ua-kit check`: values that left the page (all present in 0.1.0)
 
@@ -21,7 +22,7 @@
 - A `POST` the page sends itself on submit no longer crashes the check; a page that sets a fragment at load is no longer `reload-failed` (#8).
 - A field that depends on what the runner fills in the other fields (an anti-spam trap, for instance) is probed twice; a verdict is kept only when both probes give it, otherwise `not-testable`, `fill-dependent` (#9).
 - Each reload runs in a new browser context: storage, IndexedDB and history start empty. A domain typed with `https://` and cleaned by the page is judged as a URL. A fill that fails after the first case keeps the cases already measured. Playwright is pinned to `~1.63.0` (#10).
-- Effect on the published bench results: see `docs/qc/` for each change; `bench/results/RESULTS.md` is not rewritten here.
+- Effect on the published bench results: see `docs/qc/` for each change, and the comparison against the reference scoring (#16). The run of 2026-10-06 is scored again (#17). The bench of 2026-09-25 is scored again (#18), and `bench/results/RESULTS.md` and the README give its numbers (#19): 27 cases change, all on one page that asks for a URL in a text field, now typed with `https://`; `openai` with the guide goes from 94.7 % to 98.4 %, pages where the 82 cases pass with the guide from 18 to 19 of 27. The scoring of 2026-09-28 is kept in `bench/results/scoring-2026-09-28/`.
 
 ## 0.1.0 — 2026-09-29
 
