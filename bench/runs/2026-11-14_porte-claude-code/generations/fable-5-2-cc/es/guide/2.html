@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Registro</title>
+<style>
+  :root {
+    --bg: #f3f4f8;
+    --card: #ffffff;
+    --text: #1c1f2a;
+    --muted: #5d6475;
+    --border: #c3c8d4;
+    --accent: #2f5bea;
+    --accent-text: #ffffff;
+    --error: #c0262d;
+    --error-bg: #fdf1f1;
+    --ok: #1b7a43;
+    --ok-bg: #ecf8f0;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #12141b;
+      --card: #1c1f2a;
+      --text: #eceef4;
+      --muted: #a3a9ba;
+      --border: #454b5c;
+      --accent: #7f9cff;
+      --accent-text: #10131c;
+      --error: #ff8f94;
+      --error-bg: #3a1c1f;
+      --ok: #7fdca4;
+      --ok-bg: #173224;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 2rem 1rem;
+    background: var(--bg);
+    color: var(--text);
+    font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  main {
+    width: 100%;
+    max-width: 30rem;
+    padding: 2rem;
+    background: var(--card);
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, .08);
+  }
+  h1 { margin: 0 0 .25rem; font-size: 1.6rem; }
+  .intro { margin: 0 0 1.5rem; color: var(--muted); }
+  .field { margin-bottom: 1.25rem; }
+  label { display: block; margin-bottom: .3rem; font-weight: 600; }
+  .optional { font-weight: 400; color: var(--muted); }
+  input[type="text"],
+  input[type="url"],
+  input[type="password"] {
+    width: 100%;
+    padding: .65rem .75rem;
+    font: inherit;
+    color: inherit;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  input:focus-visible,
+  button:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 1px;
+  }
+  input[aria-invalid="true"] {
+    border-color: var(--error);
+    background: var(--error-bg);
+  }
+  .hint { margin: .3rem 0 0; font-size: .85rem; color: var(--muted); }
+  .error {
+    margin: .3rem 0 0;
+    font-size: .9rem;
+    font-weight: 600;
+    color: var(--error);
+  }
+  .error:empty { display: none; }
+  .error::before { content: "⚠ "; }
+  .password-row { display: flex; gap: .5rem; }
+  .password-row input { flex: 1; min-width: 0; }
+  .toggle {
+    padding: 0 .9rem;
+    font: inherit;
+    color: inherit;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .submit {
+    width: 100%;
+    padding: .8rem 1rem;
+    font: inherit;
+    font-weight: 700;
+    color: var(--accent-text);
+    background: var(--accent);
+    border: 0;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .status {
+    margin: 1.25rem 0 0;
+    padding: .8rem 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+  }
+  .status:empty { display: none; }
+  .status.ok { color: var(--ok); background: var(--ok-bg); }
+  .status.ko { color: var(--error); background: var(--error-bg); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Crear una cuenta</h1>
+  <p class="intro">Rellena el formulario para registrarte.</p>
+
+  <!-- novalidate: la validación la hace el script, con las mismas reglas en todos los navegadores -->
+  <form id="signup" action="#" method="post" novalidate>
+
+    <div class="field">
+      <label for="fullname">Nombre completo</label>
+      <input type="text" id="fullname" name="fullname" autocomplete="name"
+             required aria-required="true" aria-describedby="fullname-error">
+      <p class="error" id="fullname-error" aria-live="polite"></p>
+    </div>
+
+    <div class="field">
+      <label for="email">Dirección de correo electrónico</label>
+      <!-- type="text" y no type="email": los navegadores rechazan o reescriben las
+           direcciones internacionalizadas (josé@example.fr, marie@société.fr) -->
+      <input type="text" id="email" name="email" inputmode="email" autocomplete="email"
+             autocapitalize="off" autocorrect="off" spellcheck="false"
+             required aria-required="true" aria-describedby="email-hint email-error">
+      <p class="hint" id="email-hint">Se admiten direcciones internacionalizadas, p.&nbsp;ej. josé.dupont@société.fr</p>
+      <p class="error" id="email-error" aria-live="polite"></p>
+      <!-- Forma ASCII (A-labels) del dominio; el campo visible conserva lo que la persona escribió -->
+      <input type="hidden" id="email-ascii" name="email_ascii">
+    </div>
+
+    <div class="field">
+      <label for="website">Sitio web <span class="optional">(opcional)</span></label>
+      <input type="url" id="website" name="website" inputmode="url" autocomplete="url"
+             autocapitalize="off" autocorrect="off" spellcheck="false"
+             aria-describedby="website-hint website-error">
+      <p class="hint" id="website-hint">P.&nbsp;ej. https://ejemplo.es o https://société.fr</p>
+      <p class="error" id="website-error" aria-live="polite"></p>
+      <input type="hidden" id="website-ascii" name="website_ascii">
+    </div>
+
+    <div class="field">
+      <label for="password">Contraseña</label>
+      <div class="password-row">
+        <input type="password" id="password" name="password" autocomplete="new-password"
+               required aria-required="true" aria-describedby="password-hint password-error">
+        <button type="button" class="toggle" id="toggle-password"
+                aria-controls="password" aria-pressed="false">Mostrar</button>
+      </div>
+      <p class="hint" id="password-hint">Mínimo 8 caracteres.</p>
+      <p class="error" id="password-error" aria-live="polite"></p>
+    </div>
+
+    <button type="submit" class="submit">Registrarse</button>
+    <p class="status" id="form-status" role="status" aria-live="polite"></p>
+  </form>
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  var PASSWORD_MIN = 8;
+
+  /* ---------- Dominios ---------- */
+
+  // Caracteres ASCII que no pueden aparecer en un dominio escrito por la persona
+  // (todo ASCII salvo letras, dígitos, guion y punto). Los caracteres no ASCII
+  // se dejan pasar: los valida la conversión IDNA de más abajo.
+  var FORBIDDEN_ASCII_IN_DOMAIN = /[\u0000-\u002C\u002F\u003A-\u0040\u005B-\u0060\u007B-\u007F]/;
+
+  // Convierte U-labels en A-labels (UTS #46) con el analizador de URL del navegador.
+  // Devuelve null si el dominio no es convertible.
+  function domainToAscii(domain) {
+    if (!domain || /\s/.test(domain) || FORBIDDEN_ASCII_IN_DOMAIN.test(domain)) {
+      return null;
+    }
+    try {
+      return new URL('http://' + domain + '/').hostname.toLowerCase();
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // Comprueba un nombre YA convertido a su forma ASCII (A-labels):
+  // etiquetas de 1 a 63 octetos, nombre de 253 como máximo, y un TLD de
+  // dos o más letras (sin tope propio de longitud) o un A-label «xn--».
+  function isValidAsciiHostname(host) {
+    if (!host || host.length > 253) { return false; }
+    var labels = host.toLowerCase().split('.');
+    if (labels.length < 2) { return false; }
+    for (var i = 0; i < labels.length; i++) {
+      var label = labels[i];
+      if (label.length < 1 || label.length > 63) { return false; }
+      if (!/^[a-z0-9-]+$/.test(label)) { return false; }
+      if (label.charAt(0) === '-' || label.charAt(label.length - 1) === '-') { return false; }
+    }
+    var tld = labels[labels.length - 1];
+    return /^[a-z]{2,}$/.test(tld) || /^xn--[a-z0-9-]+$/.test(tld);
+  }
+
+  /* ---------- Validadores: devuelven { error, normalized } ---------- */
+
+  function validateFullname(raw) {
+    if (!raw.trim()) {
+      return { error: 'Introduce tu nombre completo.' };
+    }
+    return { error: '' };
+  }
+
+  function validateEmail(raw) {
+    var value = raw.trim();
+    if (!value) {
+      return { error: 'Introduce tu dirección de correo electrónico.' };
+    }
+    if (/\s/.test(value)) {
+      return { error: 'La dirección no puede contener espacios.' };
+    }
+    var at = value.indexOf('@');
+    if (at === -1) {
+      return { error: 'Falta el símbolo «@» en la dirección.' };
+    }
+    if (at !== value.lastIndexOf('@')) {
+      return { error: 'La dirección solo puede contener un símbolo «@».' };
+    }
+    var local = value.slice(0, at);     // se acepta Unicode (RFC 6531) y símbolos como + o '
+    var domain = value.slice(at + 1);
+    if (!local) {
+      return { error: 'Falta la parte anterior al símbolo «@».' };
+    }
+    if (!domain) {
+      return { error: 'Falta el dominio después del símbolo «@».' };
+    }
+    var asciiDomain = domainToAscii(domain);
+    if (!asciiDomain || !isValidAsciiHostname(asciiDomain)) {
+      return { error: 'El dominio «' + domain + '» no es válido. Ejemplo: nombre@ejemplo.es' };
+    }
+    return { error: '', normalized: local + '@' + asciiDomain };
+  }
+
+  function validateWebsite(raw) {
+    var value = raw.trim();
+    if (!value) {
+      return { error: '', normalized: '' };   // campo opcional
+    }
+    if (/\s/.test(value)) {
+      return { error: 'La dirección del sitio web no puede contener espacios.' };
+    }
+    // Si no se indica esquema, se asume https://
+    var candidate = /^[a-z][a-z0-9+.-]*:\/\//i.test(value) ? value : 'https://' + value;
+    var url;
+    try {
+      url = new URL(candidate);   // convierte el dominio a A-labels (UTS #46)
+    } catch (e) {
+      return { error: 'Introduce una dirección web válida, p. ej. https://ejemplo.es' };
+    }
+    if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+      return { error: 'La dirección debe empezar por http:// o https://' };
+    }
+    if (url.username || url.password) {
+      return { error: 'La dirección no debe incluir usuario ni contraseña.' };
+    }
+    if (!isValidAsciiHostname(url.hostname)) {
+      return { error: 'El dominio del sitio web no es válido, p. ej. https://ejemplo.es' };
+    }
+    return { error: '', normalized: url.href };
+  }
+
+  function validatePassword(raw) {
+    if (!raw) {
+      return { error: 'Introduce una contraseña.' };
+    }
+    if (Array.from(raw).length < PASSWORD_MIN) {
+      return { error: 'La contraseña debe tener al menos ' + PASSWORD_MIN + ' caracteres.' };
+    }
+    return { error: '' };
+  }
+
+  /* ---------- Enlace con el formulario ---------- */
+
+  var form = document.getElementById('signup');
+  var status = document.getElementById('form-status');
+
+  var fields = [
+    { id: 'fullname', validate: validateFullname },
+    { id: 'email',    validate: validateEmail,   hidden: 'email-ascii' },
+    { id: 'website',  validate: validateWebsite, hidden: 'website-ascii' },
+    { id: 'password', validate: validatePassword }
+  ];
+
+  fields.forEach(function (field) {
+    field.input = document.getElementById(field.id);
+    field.errorEl = document.getElementById(field.id + '-error');
+    field.hiddenEl = field.hidden ? document.getElementById(field.hidden) : null;
+    field.touched = false;
+
+    field.input.addEventListener('blur', function () {
+      field.touched = true;
+      checkField(field);
+    });
+    field.input.addEventListener('input', function () {
+      status.textContent = '';
+      status.className = 'status';
+      if (field.touched) { checkField(field); }
+    });
+  });
+
+  function checkField(field) {
+    var result = field.validate(field.input.value);
+    if (result.error) {
+      field.errorEl.textContent = result.error;
+      field.input.setAttribute('aria-invalid', 'true');
+    } else {
+      field.errorEl.textContent = '';
+      field.input.removeAttribute('aria-invalid');
+    }
+    if (field.hiddenEl) {
+      field.hiddenEl.value = result.error ? '' : (result.normalized || '');
+    }
+    return !result.error;
+  }
+
+  form.addEventListener('submit', function (event) {
+    var firstInvalid = null;
+    fields.forEach(function (field) {
+      field.touched = true;
+      if (!checkField(field) && !firstInvalid) {
+        firstInvalid = field;
+      }
+    });
+
+    if (firstInvalid) {
+      event.preventDefault();
+      status.textContent = 'Revisa los campos marcados antes de continuar.';
+      status.className = 'status ko';
+      firstInvalid.input.focus();
+      return;
+    }
+
+    // Página autónoma, sin servidor: se detiene el envío y se confirma en pantalla.
+    // Con un servidor real, elimina la línea siguiente y ajusta el atributo «action»;
+    // se enviarán los valores tal como se escribieron y, además, email_ascii y
+    // website_ascii con el dominio convertido a A-labels.
+    event.preventDefault();
+    status.textContent = '¡Gracias! Los datos son válidos y el registro está listo para enviarse.';
+    status.className = 'status ok';
+  });
+
+  /* ---------- Mostrar / ocultar la contraseña ---------- */
+
+  var toggle = document.getElementById('toggle-password');
+  var passwordInput = document.getElementById('password');
+  toggle.addEventListener('click', function () {
+    var show = passwordInput.type === 'password';
+    passwordInput.type = show ? 'text' : 'password';
+    toggle.textContent = show ? 'Ocultar' : 'Mostrar';
+    toggle.setAttribute('aria-pressed', show ? 'true' : 'false');
+  });
+})();
+</script>
+</body>
+</html>

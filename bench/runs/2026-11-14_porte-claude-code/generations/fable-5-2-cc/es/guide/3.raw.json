@@ -1,0 +1,99 @@
+{
+  "duration_api_ms": 83454,
+  "stop_reason": "end_turn",
+  "total_cost_usd": 0.44817920000000006,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 5168,
+    "cache_read_input_tokens": 14376,
+    "output_tokens": 9065,
+    "output_tokens_details": {
+      "thinking_tokens": 4580
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 5168,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 9065,
+        "cache_read_input_tokens": 14376,
+        "cache_creation_input_tokens": 5168,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 5168
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-fable-5-2": {
+      "inputTokens": 2,
+      "outputTokens": 9065,
+      "cacheReadInputTokens": 14376,
+      "cacheCreationInputTokens": 5168,
+      "webSearchRequests": 0,
+      "costUSD": 0.44817920000000006,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 4580,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 5168,
+      "canonicalModel": "claude-fable-5-2",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+    "spawned": 0,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 0
+    },
+    "started_in_background": 0,
+    "max_depth": 0,
+    "spawned_by_subagents": 0,
+    "completed": 0,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {}
+  },
+  "safety_stops": 0,
+  "is_error": false,
+  "num_turns": 1,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "```html\n<!DOCTYPE html>\n<html lang=\"es\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<title>Registro</title>\n<style>\n  *, *::before, *::after { box-sizing: border-box; }\n\n  body {\n    margin: 0;\n    padding: 2rem 1rem;\n    font-family: system-ui, -apple-system, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif;\n    font-size: 1rem;\n    line-height: 1.5;\n    color: #1c2330;\n    background: #f2f4f8;\n  }\n\n  main {\n    max-width: 30rem;\n    margin: 0 auto;\n    padding: 2rem;\n    background: #fff;\n    border: 1px solid #d9dee7;\n    border-radius: 12px;\n  }\n\n  h1 {\n    margin: 0 0 1.5rem;\n    font-size: 1.5rem;\n    line-height: 1.2;\n  }\n\n  .campo { margin-bottom: 1.25rem; }\n\n  label {\n    display: block;\n    margin-bottom: 0.3rem;\n    font-weight: 600;\n  }\n\n  .opcional {\n    font-weight: 400;\n    color: #5a6475;\n  }\n\n  input {\n    display: block;\n    width: 100%;\n    padding: 0.6rem 0.75rem;\n    font: inherit;\n    color: inherit;\n    background: #fff;\n    border: 1px solid #8792a5;\n    border-radius: 8px;\n  }\n\n  input:focus-visible {\n    outline: 3px solid #9cc2ff;\n    outline-offset: 1px;\n    border-color: #1f5fd1;\n  }\n\n  input[aria-invalid=\"true\"] {\n    border-color: #b3261e;\n    background: #fff7f6;\n  }\n\n  .ayuda {\n    margin: 0.3rem 0 0;\n    font-size: 0.875rem;\n    color: #5a6475;\n  }\n\n  .error {\n    display: block;\n    margin-top: 0.3rem;\n    font-size: 0.875rem;\n    font-weight: 600;\n    color: #b3261e;\n    overflow-wrap: anywhere;\n  }\n\n  .error:empty { display: none; }\n\n  button {\n    width: 100%;\n    padding: 0.7rem 1rem;\n    font: inherit;\n    font-weight: 600;\n    color: #fff;\n    background: #1f5fd1;\n    border: 0;\n    border-radius: 8px;\n    cursor: pointer;\n  }\n\n  button:hover { background: #184caa; }\n\n  button:focus-visible {\n    outline: 3px solid #9cc2ff;\n    outline-offset: 2px;\n  }\n</style>\n</head>\n<body>\n<main>\n  <h1>Crear una cuenta</h1>\n\n  <!-- Indica en \"action\" la URL que debe recibir los datos. -->\n  <form id=\"registro\" action=\"\" method=\"post\" novalidate>\n\n    <div class=\"campo\">\n      <label for=\"nombre\">Nombre completo</label>\n      <input type=\"text\" id=\"nombre\" name=\"nombre\" autocomplete=\"name\"\n             aria-describedby=\"error-nombre\" required>\n      <span class=\"error\" id=\"error-nombre\" aria-live=\"polite\"></span>\n    </div>\n\n    <div class=\"campo\">\n      <label for=\"correo\">Dirección de correo electrónico</label>\n      <!--\n        type=\"text\" y no type=\"email\": los navegadores no tratan igual las\n        direcciones internacionalizadas (Chromium reescribe el dominio en\n        Punycode, WebKit lo rechaza y los tres rechazan una parte local con\n        Unicode). La comprobación se hace en el script de esta página.\n      -->\n      <input type=\"text\" id=\"correo\" name=\"correo\" inputmode=\"email\"\n             autocomplete=\"email\" autocapitalize=\"none\" autocorrect=\"off\"\n             spellcheck=\"false\" aria-describedby=\"ayuda-correo error-correo\" required>\n      <p class=\"ayuda\" id=\"ayuda-correo\">\n        Se aceptan direcciones internacionales, por ejemplo josé.dupont@société.fr\n      </p>\n      <span class=\"error\" id=\"error-correo\" aria-live=\"polite\"></span>\n    </div>\n\n    <div class=\"campo\">\n      <label for=\"web\">Sitio web <span class=\"opcional\">(opcional)</span></label>\n      <input type=\"url\" id=\"web\" name=\"web\" autocomplete=\"url\"\n             autocapitalize=\"none\" autocorrect=\"off\" spellcheck=\"false\"\n             placeholder=\"https://ejemplo.es\" aria-describedby=\"error-web\">\n      <span class=\"error\" id=\"error-web\" aria-live=\"polite\"></span>\n    </div>\n\n    <div class=\"campo\">\n      <label for=\"clave\">Contraseña</label>\n      <input type=\"password\" id=\"clave\" name=\"clave\" autocomplete=\"new-password\"\n             aria-describedby=\"ayuda-clave error-clave\" required>\n      <p class=\"ayuda\" id=\"ayuda-clave\">Mínimo 8 caracteres.</p>\n      <span class=\"error\" id=\"error-clave\" aria-live=\"polite\"></span>\n    </div>\n\n    <!--\n      Formas ASCII (A-labels, IDNA/UTS #46) para búsquedas DNS o claves de\n      almacenamiento. Los campos visibles conservan lo que la persona escribió.\n    -->\n    <input type=\"hidden\" id=\"correo-ascii\" name=\"correo_ascii\">\n    <input type=\"hidden\" id=\"web-ascii\" name=\"web_ascii\">\n\n    <button type=\"submit\">Registrarse</button>\n  </form>\n</main>\n\n<script>\n(function () {\n  'use strict';\n\n  var CLAVE_MINIMA = 8;\n\n  var formulario = document.getElementById('registro');\n  var campos = {\n    nombre: document.getElementById('nombre'),\n    correo: document.getElementById('correo'),\n    web: document.getElementById('web'),\n    clave: document.getElementById('clave')\n  };\n  var correoAscii = document.getElementById('correo-ascii');\n  var webAscii = document.getElementById('web-ascii');\n\n  /* ---------- Nombres de dominio ---------- */\n\n  // Convierte un dominio (U-labels o A-labels) a su forma ASCII con el\n  // analizador de URL del navegador, que aplica UTS #46. Devuelve null si\n  // el dominio no se puede convertir.\n  function dominioAAscii(dominio) {\n    if (dominio === '' || /[\\s\\/\\\\?#@:%\\[\\]]/u.test(dominio)) {\n      return null;\n    }\n    try {\n      return new URL('http://' + dominio + '/').hostname;\n    } catch (e) {\n      return null;\n    }\n  }\n\n  // Comprueba un nombre de host ya convertido a ASCII: etiquetas de 1 a 63\n  // octetos, 253 como máximo en total y un TLD de dos o más letras (sin\n  // límite superior) o una A-label \"xn--\".\n  function hostAsciiValido(host) {\n    if (host.endsWith('.')) {\n      host = host.slice(0, -1); // punto raíz final\n    }\n    if (host.length === 0 || host.length > 253) {\n      return false;\n    }\n    var etiquetas = host.toLowerCase().split('.');\n    if (etiquetas.length < 2) {\n      return false;\n    }\n    for (var i = 0; i < etiquetas.length; i++) {\n      var etiqueta = etiquetas[i];\n      if (etiqueta.length < 1 || etiqueta.length > 63 ||\n          etiqueta.startsWith('-') || etiqueta.endsWith('-')) {\n        return false;\n      }\n    }\n    var tld = etiquetas[etiquetas.length - 1];\n    if (tld.startsWith('xn--')) {\n      return tld.length > 4;\n    }\n    return /^[a-z]{2,}$/.test(tld);\n  }\n\n  /* ---------- Validadores: devuelven { error, ascii } ---------- */\n\n  function validarNombre(valor) {\n    if (valor.trim() === '') {\n      return { error: 'Introduce tu nombre completo.' };\n    }\n    return { error: '' };\n  }\n\n  // Comprobación mínima: una sola arroba, parte local no vacía y sin\n  // espacios (se admite Unicode, \"+\", \"'\", etc.) y un dominio válido.\n  function validarCorreo(valor) {\n    var correo = valor.trim();\n    if (correo === '') {\n      return { error: 'Introduce tu dirección de correo electrónico.' };\n    }\n    if (/\\s/u.test(correo)) {\n      return { error: 'La dirección de correo no puede contener espacios.' };\n    }\n    var partes = correo.split('@');\n    if (partes.length !== 2) {\n      return { error: 'La dirección debe contener una sola arroba (@).' };\n    }\n    var local = partes[0];\n    var dominio = partes[1];\n    if (local === '') {\n      return { error: 'Falta la parte anterior a la arroba (@).' };\n    }\n    if (dominio === '') {\n      return { error: 'Falta el dominio después de la arroba (@).' };\n    }\n    var ascii = dominio.endsWith('.') ? null : dominioAAscii(dominio);\n    if (ascii === null || !hostAsciiValido(ascii)) {\n      return {\n        error: 'El dominio «' + dominio + '» no es válido. Ejemplo: nombre@ejemplo.es'\n      };\n    }\n    return { error: '', ascii: local + '@' + ascii };\n  }\n\n  function validarWeb(valor) {\n    var texto = valor.trim();\n    if (texto === '') {\n      return { error: '', ascii: '' }; // campo opcional\n    }\n    var mensaje = 'Introduce una dirección web válida, por ejemplo https://ejemplo.es';\n    if (/\\s/u.test(texto)) {\n      return { error: 'La dirección web no puede contener espacios.' };\n    }\n    // Se admite \"ejemplo.es\" sin esquema: se asume https.\n    var conEsquema = /^[a-z][a-z0-9+.\\-]*:\\/\\//i.test(texto) ? texto : 'https://' + texto;\n    var url;\n    try {\n      url = new URL(conEsquema);\n    } catch (e) {\n      return { error: mensaje };\n    }\n    if (url.protocol !== 'http:' && url.protocol !== 'https:') {\n      return { error: 'La dirección web debe empezar por http:// o https://' };\n    }\n    if (!hostAsciiValido(url.hostname)) {\n      return { error: mensaje };\n    }\n    return { error: '', ascii: url.href };\n  }\n\n  function validarClave(valor) {\n    if (valor === '') {\n      return { error: 'Introduce una contraseña.' };\n    }\n    if (Array.from(valor).length < CLAVE_MINIMA) {\n      return { error: 'La contraseña debe tener al menos ' + CLAVE_MINIMA + ' caracteres.' };\n    }\n    return { error: '' };\n  }\n\n  var validadores = {\n    nombre: validarNombre,\n    correo: validarCorreo,\n    web: validarWeb,\n    clave: validarClave\n  };\n\n  /* ---------- Presentación de errores ---------- */\n\n  function mostrarResultado(clave, resultado) {\n    var campo = campos[clave];\n    var zonaError = document.getElementById('error-' + clave);\n    zonaError.textContent = resultado.error;\n    if (resultado.error) {\n      campo.setAttribute('aria-invalid', 'true');\n    } else {\n      campo.removeAttribute('aria-invalid');\n    }\n  }\n\n  function validarCampo(clave) {\n    var resultado = validadores[clave](campos[clave].value);\n    mostrarResultado(clave, resultado);\n    return resultado;\n  }\n\n  Object.keys(campos).forEach(function (clave) {\n    var campo = campos[clave];\n\n    // Al salir de un campo ya rellenado, se comprueba.\n    campo.addEventListener('blur', function () {\n      if (campo.value !== '') {\n        validarCampo(clave);\n      }\n    });\n\n    // Si el campo estaba marcado como no válido, se vuelve a comprobar al escribir.\n    campo.addEventListener('input', function () {\n      if (campo.getAttribute('aria-invalid') === 'true') {\n        validarCampo(clave);\n      }\n    });\n  });\n\n  /* ---------- Envío ---------- */\n\n  formulario.addEventListener('submit', function (evento) {\n    var primerNoValido = null;\n    var resultados = {};\n\n    Object.keys(campos).forEach(function (clave) {\n      resultados[clave] = validarCampo(clave);\n      if (resultados[clave].error && primerNoValido === null) {\n        primerNoValido = campos[clave];\n      }\n    });\n\n    if (primerNoValido !== null) {\n      evento.preventDefault();\n      primerNoValido.focus();\n      return;\n    }\n\n    // Todo es válido: se añaden las formas ASCII y el formulario se envía.\n    correoAscii.value = resultados.correo.ascii || '';\n    webAscii.value = resultados.web.ascii || '';\n  });\n})();\n</script>\n</body>\n</html>\n```",
+  "ttft_ms": 50178,
+  "type": "result",
+  "duration_ms": 83671,
+  "ttft_stream_ms": 934,
+  "time_to_request_ms": 212,
+  "first_content_frame_ms": 934,
+  "queued_turn_count": 0,
+  "result_index": 0
+}

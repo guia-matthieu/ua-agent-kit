@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Create your account</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #f4f5f7;
+    --card: #ffffff;
+    --text: #1c1e21;
+    --muted: #5f6672;
+    --border: #c3c8d1;
+    --accent: #2457d6;
+    --accent-text: #ffffff;
+    --error: #b3261e;
+    --success-bg: #e6f4ea;
+    --success-text: #14532d;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #15171a;
+      --card: #1f2226;
+      --text: #eceef1;
+      --muted: #a3aab5;
+      --border: #4a505a;
+      --accent: #8ab0ff;
+      --accent-text: #0d1526;
+      --error: #ff8a80;
+      --success-bg: #173222;
+      --success-text: #b7e4c7;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 3rem 1rem;
+    background: var(--bg);
+    color: var(--text);
+    font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", sans-serif;
+  }
+  main {
+    width: 100%;
+    max-width: 27rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+  }
+  h1 { margin: 0 0 1.5rem; font-size: 1.5rem; line-height: 1.25; }
+  .field { margin-bottom: 1.25rem; }
+  label { display: block; font-weight: 600; margin-bottom: 0.35rem; }
+  .optional { font-weight: 400; color: var(--muted); }
+  input {
+    width: 100%;
+    padding: 0.6rem 0.75rem;
+    font: inherit;
+    color: inherit;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  input:focus-visible, button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+  input[aria-invalid="true"] { border-color: var(--error); border-width: 2px; }
+  .password-row { display: flex; gap: 0.5rem; }
+  .password-row input { flex: 1; min-width: 0; }
+  .toggle {
+    flex: none;
+    padding: 0 0.9rem;
+    font: inherit;
+    color: inherit;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .hint { margin: 0.35rem 0 0; font-size: 0.875rem; color: var(--muted); }
+  .error { margin: 0.35rem 0 0; font-size: 0.875rem; font-weight: 600; color: var(--error); }
+  .error:empty { display: none; }
+  .error::before { content: "⚠ "; }
+  .submit {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    font: inherit;
+    font-weight: 600;
+    color: var(--accent-text);
+    background: var(--accent);
+    border: 0;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .status {
+    margin: 1.25rem 0 0;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    background: var(--success-bg);
+    color: var(--success-text);
+    overflow-wrap: anywhere;
+  }
+  .status:empty { display: none; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Create your account</h1>
+
+  <!--
+    No "action" attribute: the page then only shows a confirmation message.
+    Add action="/your-endpoint" and the form is posted normally once every field is valid.
+
+    The email field is deliberately type="text", not type="email": browsers disagree on
+    internationalized addresses (some reject "marie.dupont@société.fr", one silently rewrites
+    the domain to Punycode, and all reject a Unicode local part such as "josé@example.fr").
+    The script below does its own check and accepts them.
+  -->
+  <form id="signup-form" method="post" accept-charset="utf-8">
+    <div class="field">
+      <label for="name">Full name</label>
+      <input id="name" name="name" type="text" autocomplete="name" dir="auto" required
+             aria-describedby="name-error">
+      <p class="error" id="name-error" aria-live="polite"></p>
+    </div>
+
+    <div class="field">
+      <label for="email">Email address</label>
+      <input id="email" name="email" type="text" inputmode="email" autocomplete="email"
+             autocapitalize="none" autocorrect="off" spellcheck="false" required
+             aria-describedby="email-error">
+      <p class="error" id="email-error" aria-live="polite"></p>
+    </div>
+
+    <div class="field">
+      <label for="website">Website <span class="optional">(optional)</span></label>
+      <input id="website" name="website" type="text" inputmode="url" autocomplete="url"
+             autocapitalize="none" autocorrect="off" spellcheck="false"
+             aria-describedby="website-error">
+      <p class="error" id="website-error" aria-live="polite"></p>
+    </div>
+
+    <div class="field">
+      <label for="password">Password</label>
+      <div class="password-row">
+        <input id="password" name="password" type="password" autocomplete="new-password" required
+               aria-describedby="password-hint password-error">
+        <button type="button" class="toggle" id="toggle-password" aria-pressed="false"
+                aria-controls="password">Show</button>
+      </div>
+      <p class="hint" id="password-hint">At least 8 characters.</p>
+      <p class="error" id="password-error" aria-live="polite"></p>
+    </div>
+
+    <!-- What the user typed is sent as "email" / "website"; the forms below carry the
+         domain converted to A-labels (Punycode) for DNS lookups and storage keys. -->
+    <input type="hidden" name="email_ascii" id="email_ascii">
+    <input type="hidden" name="website_ascii" id="website_ascii">
+
+    <button type="submit" class="submit">Sign up</button>
+    <p class="status" id="form-status" role="status"></p>
+  </form>
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  var form = document.getElementById('signup-form');
+  var statusEl = document.getElementById('form-status');
+
+  // Validation is done here; the "required" attributes remain as a fallback without JavaScript.
+  form.noValidate = true;
+
+  /* ---------- Domain names ---------- */
+
+  // These two patterns are only ever applied to the A-label (ASCII, lower-case) form of a
+  // name, i.e. AFTER the IDNA conversion. Unicode domains are converted, never rejected.
+  var LDH_LABEL = /^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
+  // A TLD is two or more letters (no upper bound other than the 63-octet label limit)
+  // or an "xn--" A-label such as xn--p1ai (.рф).
+  var TLD = /^(?:[a-z]{2,}|xn--[a-z0-9-]+)$/;
+
+  function isAsciiHostname(host) {
+    if (host.length > 253) return false;
+    var labels = host.split('.');
+    if (labels.length < 2) return false;
+    for (var i = 0; i < labels.length; i++) {
+      if (labels[i].length > 63 || !LDH_LABEL.test(labels[i])) return false;
+    }
+    return TLD.test(labels[labels.length - 1]);
+  }
+
+  // Converts a domain name typed by the user (U-labels and/or A-labels, any case) to its
+  // A-label form with the browser's UTS #46 implementation. Returns null if it is not a
+  // valid domain name.
+  function domainToAscii(domain) {
+    if (!domain || /[\s\u0000-\u001f\u007f\/\\?#:%@\[\]]/.test(domain)) return null;
+    var ascii;
+    try {
+      ascii = new URL('http://' + domain + '/').hostname;
+    } catch (e) {
+      return null;
+    }
+    return isAsciiHostname(ascii) ? ascii : null;
+  }
+
+  /* ---------- Field validators: return { error } or { value[, ascii] } ---------- */
+
+  function validateName(raw) {
+    var value = raw.trim();
+    if (!value) return { error: 'Enter your full name.' };
+    if (!/\p{L}/u.test(value)) return { error: 'Your name should contain at least one letter.' };
+    return { value: value };
+  }
+
+  function validateEmail(raw) {
+    var value = raw.trim();
+    if (!value) return { error: 'Enter your email address.' };
+    if (/[\s\u0000-\u001f\u007f]/.test(value)) return { error: 'An email address cannot contain spaces.' };
+
+    var parts = value.split('@');
+    if (parts.length < 2) return { error: 'An email address needs an @, like name@example.com.' };
+    if (parts.length > 2) return { error: 'An email address can only contain one @.' };
+
+    var local = parts[0];
+    var domain = parts[1];
+    if (!local) return { error: 'Add the part before the @.' };
+    if (!domain) return { error: 'Add the domain after the @, like example.com.' };
+
+    var asciiDomain = domainToAscii(domain);
+    if (!asciiDomain) {
+      return { error: 'The part after the @ should be a domain name, like example.com.' };
+    }
+    // The local part is kept exactly as typed (it may contain Unicode, +, ' …).
+    return { value: value, ascii: local + '@' + asciiDomain };
+  }
+
+  function validateWebsite(raw) {
+    var value = raw.trim();
+    if (!value) return { value: '', ascii: '' }; // optional field
+    if (/\s/.test(value)) return { error: 'A web address cannot contain spaces.' };
+
+    var candidate = value.indexOf('://') === -1 ? 'https://' + value : value;
+    var url;
+    try {
+      url = new URL(candidate);
+    } catch (e) {
+      return { error: 'Enter a web address, like example.com or https://example.com.' };
+    }
+    if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+      return { error: 'The web address should start with http:// or https://.' };
+    }
+    if (url.username || url.password) {
+      return { error: 'The web address should not contain a user name or password.' };
+    }
+    // url.hostname is already in A-label form; a single trailing dot is legal in a URL.
+    if (!isAsciiHostname(url.hostname.replace(/\.$/, ''))) {
+      return { error: 'The web address needs a valid domain name, like example.com.' };
+    }
+    return { value: value, ascii: url.href };
+  }
+
+  function validatePassword(raw) {
+    if (!raw) return { error: 'Choose a password.' };
+    if (Array.from(raw).length < 8) return { error: 'Use at least 8 characters.' };
+    return { value: raw };
+  }
+
+  /* ---------- Wiring ---------- */
+
+  var fields = [
+    { id: 'name', validate: validateName },
+    { id: 'email', validate: validateEmail, asciiId: 'email_ascii' },
+    { id: 'website', validate: validateWebsite, asciiId: 'website_ascii' },
+    { id: 'password', validate: validatePassword }
+  ];
+
+  fields.forEach(function (field) {
+    field.input = document.getElementById(field.id);
+    field.errorEl = document.getElementById(field.id + '-error');
+    field.asciiEl = field.asciiId ? document.getElementById(field.asciiId) : null;
+
+    // Check when leaving a field that has been filled in…
+    field.input.addEventListener('blur', function () {
+      if (field.input.value !== '' || field.input.getAttribute('aria-invalid') === 'true') {
+        check(field);
+      }
+    });
+    // …and clear the error as soon as the value becomes valid.
+    field.input.addEventListener('input', function () {
+      statusEl.textContent = '';
+      if (field.input.getAttribute('aria-invalid') === 'true') check(field);
+    });
+  });
+
+  function check(field) {
+    var result = field.validate(field.input.value);
+    if (result.error) {
+      field.input.setAttribute('aria-invalid', 'true');
+      field.errorEl.textContent = result.error;
+    } else {
+      field.input.removeAttribute('aria-invalid');
+      field.errorEl.textContent = '';
+    }
+    if (field.asciiEl) field.asciiEl.value = result.error ? '' : result.ascii;
+    return result;
+  }
+
+  form.addEventListener('submit', function (event) {
+    var firstInvalid = null;
+    var results = {};
+
+    fields.forEach(function (field) {
+      var result = check(field);
+      results[field.id] = result;
+      if (result.error && !firstInvalid) firstInvalid = field.input;
+    });
+
+    if (firstInvalid) {
+      event.preventDefault();
+      statusEl.textContent = '';
+      firstInvalid.focus();
+      return;
+    }
+
+    // With an "action" attribute the browser now submits the form. Without one (standalone
+    // page), show a confirmation instead.
+    if (!form.hasAttribute('action')) {
+      event.preventDefault();
+      statusEl.textContent = 'Thanks, ' + results.name.value + '. Your details are valid and ready to send.';
+    }
+  });
+
+  var toggle = document.getElementById('toggle-password');
+  var password = document.getElementById('password');
+  toggle.addEventListener('click', function () {
+    var show = password.type === 'password';
+    password.type = show ? 'text' : 'password';
+    toggle.textContent = show ? 'Hide' : 'Show';
+    toggle.setAttribute('aria-pressed', String(show));
+  });
+})();
+</script>
+</body>
+</html>

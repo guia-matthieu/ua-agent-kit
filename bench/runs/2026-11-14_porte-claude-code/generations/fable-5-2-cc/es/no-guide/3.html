@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Crear cuenta</title>
+<!--
+  Formulario de registro autónomo (sin dependencias externas).
+  - La validación se hace en JavaScript; el atributo "novalidate" desactiva los avisos nativos del navegador.
+  - Para enviar los datos a un servidor, añade un atributo action al <form> (p. ej. action="/registro").
+    Sin action, la página muestra una confirmación local en lugar de enviar nada.
+  - La validación en el cliente no sustituye a la validación en el servidor.
+-->
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #f4f5f7;
+    --card: #ffffff;
+    --text: #1c1f24;
+    --muted: #5d6570;
+    --border: #aab1bb;
+    --accent: #2f5bd8;
+    --accent-text: #ffffff;
+    --error: #b3261e;
+    --error-bg: #fdf1f0;
+    --ok: #1c7a43;
+    --ok-bg: #edf8f1;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #14161a;
+      --card: #1e2127;
+      --text: #eceef1;
+      --muted: #a2a9b3;
+      --border: #5a626e;
+      --accent: #8fadff;
+      --accent-text: #0e1220;
+      --error: #ff8a80;
+      --error-bg: #3a1f1d;
+      --ok: #7ddba1;
+      --ok-bg: #17301f;
+    }
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+    background: var(--bg);
+    color: var(--text);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  main {
+    width: 100%;
+    max-width: 440px;
+    padding: 32px 28px;
+    background: var(--card);
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .12), 0 8px 24px rgba(0, 0, 0, .08);
+  }
+
+  h1 { margin: 0 0 4px; font-size: 1.6rem; line-height: 1.25; }
+  .intro { margin: 0 0 24px; color: var(--muted); font-size: .95rem; }
+
+  .field { margin-bottom: 20px; }
+
+  label { display: block; margin-bottom: 6px; font-weight: 600; }
+  .optional { font-weight: 400; color: var(--muted); }
+
+  input {
+    width: 100%;
+    min-height: 46px;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--card);
+    color: var(--text);
+    font: inherit;
+  }
+  input:focus-visible,
+  button:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .field.invalid input {
+    border-color: var(--error);
+    background: var(--error-bg);
+  }
+
+  .password-row { display: flex; gap: 8px; }
+  .password-row input { flex: 1; min-width: 0; }
+
+  .toggle {
+    flex: none;
+    min-height: 46px;
+    padding: 0 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: transparent;
+    color: var(--text);
+    font: inherit;
+    font-size: .9rem;
+    cursor: pointer;
+  }
+
+  .hint { margin: 6px 0 0; color: var(--muted); font-size: .875rem; }
+
+  .error {
+    margin: 6px 0 0;
+    color: var(--error);
+    font-size: .9rem;
+    font-weight: 600;
+  }
+  .error:empty { display: none; }
+  .error::before { content: "⚠ "; }
+
+  .submit {
+    width: 100%;
+    min-height: 48px;
+    margin-top: 4px;
+    border: 0;
+    border-radius: 8px;
+    background: var(--accent);
+    color: var(--accent-text);
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .submit:hover { filter: brightness(1.08); }
+
+  .success {
+    padding: 20px;
+    border: 1px solid var(--ok);
+    border-radius: 8px;
+    background: var(--ok-bg);
+  }
+  .success:focus { outline: none; }
+  .success h2 { margin: 0 0 6px; color: var(--ok); font-size: 1.25rem; }
+  .success p { margin: 0; overflow-wrap: anywhere; }
+
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Crear cuenta</h1>
+  <p class="intro">Todos los campos son obligatorios, salvo los marcados como opcionales.</p>
+
+  <form id="registro" method="post" novalidate>
+    <div class="field">
+      <label for="nombre">Nombre completo</label>
+      <input type="text" id="nombre" name="nombre" autocomplete="name" required
+             aria-describedby="nombre-error">
+      <p class="error" id="nombre-error" aria-live="polite"></p>
+    </div>
+
+    <div class="field">
+      <label for="email">Dirección de correo electrónico</label>
+      <input type="email" id="email" name="email" autocomplete="email" inputmode="email"
+             autocapitalize="off" spellcheck="false" required
+             aria-describedby="email-error">
+      <p class="error" id="email-error" aria-live="polite"></p>
+    </div>
+
+    <div class="field">
+      <label for="web">Sitio web <span class="optional">(opcional)</span></label>
+      <input type="url" id="web" name="web" autocomplete="url" inputmode="url"
+             autocapitalize="off" spellcheck="false" placeholder="https://ejemplo.com"
+             aria-describedby="web-error">
+      <p class="error" id="web-error" aria-live="polite"></p>
+    </div>
+
+    <div class="field">
+      <label for="contrasena">Contraseña</label>
+      <div class="password-row">
+        <input type="password" id="contrasena" name="contrasena" autocomplete="new-password" required
+               aria-describedby="contrasena-ayuda contrasena-error">
+        <button type="button" class="toggle" id="mostrar-contrasena"
+                aria-controls="contrasena" aria-pressed="false">Mostrar</button>
+      </div>
+      <p class="hint" id="contrasena-ayuda">Mínimo 8 caracteres, con al menos una letra y un número.</p>
+      <p class="error" id="contrasena-error" aria-live="polite"></p>
+    </div>
+
+    <button type="submit" class="submit">Crear cuenta</button>
+  </form>
+
+  <div class="success" id="confirmacion" role="status" tabindex="-1" hidden>
+    <h2>¡Todo correcto!</h2>
+    <p id="confirmacion-texto"></p>
+  </div>
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  const form = document.getElementById('registro');
+  const campos = ['nombre', 'email', 'web', 'contrasena'].map(function (id) {
+    return document.getElementById(id);
+  });
+
+  // Añade https:// si la persona escribió la dirección sin protocolo (p. ej. "ejemplo.com").
+  function normalizarUrl(valor) {
+    const v = valor.trim();
+    if (!v) return '';
+    return /^https?:\/\//i.test(v) ? v : 'https://' + v;
+  }
+
+  function esUrlValida(valor) {
+    let url;
+    try {
+      url = new URL(valor);
+    } catch (e) {
+      return false;
+    }
+    if (url.protocol !== 'http:' && url.protocol !== 'https:') return false;
+    if (url.username || url.password) return false;
+    return /^([a-z0-9-]+\.)+[a-z0-9-]{2,}$/i.test(url.hostname);
+  }
+
+  // Cada validador devuelve un mensaje de error, o una cadena vacía si el valor es válido.
+  const validadores = {
+    nombre: function (valor) {
+      const v = valor.trim();
+      if (!v) return 'Escribe tu nombre completo.';
+      if ((v.match(/\p{L}/gu) || []).length < 2) return 'El nombre debe tener al menos 2 letras.';
+      return '';
+    },
+    email: function (valor) {
+      const v = valor.trim();
+      if (!v) return 'Escribe tu dirección de correo electrónico.';
+      if (v.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) {
+        return 'Introduce un correo válido, por ejemplo nombre@ejemplo.com.';
+      }
+      return '';
+    },
+    web: function (valor) {
+      const v = normalizarUrl(valor);
+      if (!v) return ''; // campo opcional
+      if (!esUrlValida(v)) return 'Introduce una dirección web válida, por ejemplo https://ejemplo.com.';
+      return '';
+    },
+    contrasena: function (valor) {
+      if (!valor) return 'Escribe una contraseña.';
+      if (valor.length < 8) return 'La contraseña debe tener al menos 8 caracteres.';
+      if (!/\p{L}/u.test(valor) || !/\d/.test(valor)) {
+        return 'La contraseña debe incluir al menos una letra y un número.';
+      }
+      return '';
+    }
+  };
+
+  function mostrarError(input, mensaje) {
+    const contenedor = input.closest('.field');
+    document.getElementById(input.id + '-error').textContent = mensaje;
+    contenedor.classList.toggle('invalid', Boolean(mensaje));
+    if (mensaje) {
+      input.setAttribute('aria-invalid', 'true');
+    } else {
+      input.removeAttribute('aria-invalid');
+    }
+  }
+
+  function validarCampo(input) {
+    const mensaje = validadores[input.id](input.value);
+    mostrarError(input, mensaje);
+    return !mensaje;
+  }
+
+  // Limpia espacios sobrantes y completa el protocolo de la URL (la contraseña no se toca).
+  function normalizarCampo(input) {
+    if (input.id === 'web') {
+      input.value = normalizarUrl(input.value);
+    } else if (input.id !== 'contrasena') {
+      input.value = input.value.trim();
+    }
+  }
+
+  campos.forEach(function (input) {
+    // Al salir del campo: valida solo si hay algo escrito o si ya mostraba un error.
+    input.addEventListener('blur', function () {
+      normalizarCampo(input);
+      if (input.value || input.hasAttribute('aria-invalid')) validarCampo(input);
+    });
+    // Mientras se corrige un campo con error, el mensaje desaparece en cuanto el valor es válido.
+    input.addEventListener('input', function () {
+      if (input.hasAttribute('aria-invalid')) validarCampo(input);
+    });
+  });
+
+  const botonMostrar = document.getElementById('mostrar-contrasena');
+  const contrasena = document.getElementById('contrasena');
+  botonMostrar.addEventListener('click', function () {
+    const visible = contrasena.type === 'text';
+    contrasena.type = visible ? 'password' : 'text';
+    botonMostrar.textContent = visible ? 'Mostrar' : 'Ocultar';
+    botonMostrar.setAttribute('aria-pressed', String(!visible));
+  });
+
+  form.addEventListener('submit', function (evento) {
+    campos.forEach(normalizarCampo);
+    const invalidos = campos.filter(function (input) {
+      return !validarCampo(input);
+    });
+
+    if (invalidos.length > 0) {
+      evento.preventDefault();
+      invalidos[0].focus();
+      return;
+    }
+
+    // Con un atributo action, el navegador envía el formulario al servidor de forma normal.
+    if (form.hasAttribute('action')) return;
+
+    // Sin action no hay a dónde enviar: se muestra una confirmación local.
+    evento.preventDefault();
+    const confirmacion = document.getElementById('confirmacion');
+    document.getElementById('confirmacion-texto').textContent =
+      'Gracias, ' + document.getElementById('nombre').value +
+      '. Tus datos son válidos y están listos para enviarse.';
+    form.hidden = true;
+    confirmacion.hidden = false;
+    confirmacion.focus();
+  });
+})();
+</script>
+</body>
+</html>

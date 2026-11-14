@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Create your account</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #f4f5f7;
+    --card: #ffffff;
+    --text: #1c1e21;
+    --muted: #5c6370;
+    --border: #b6bcc6;
+    --accent: #1f5fd1;
+    --accent-text: #ffffff;
+    --error: #b3261e;
+    --success-bg: #e5f4e8;
+    --success-text: #14532d;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #15171a;
+      --card: #1f2226;
+      --text: #eceef1;
+      --muted: #a3aab5;
+      --border: #555c68;
+      --accent: #7aa7ff;
+      --accent-text: #0d1524;
+      --error: #ff8a80;
+      --success-bg: #173222;
+      --success-text: #b7e4c4;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 2rem 1rem;
+    background: var(--bg);
+    color: var(--text);
+    font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  main {
+    max-width: 28rem;
+    margin: 0 auto;
+    padding: 2rem;
+    background: var(--card);
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .15);
+  }
+  h1 { margin: 0 0 1.5rem; font-size: 1.5rem; }
+  .field { margin-bottom: 1.1rem; }
+  label { display: block; margin-bottom: .3rem; font-weight: 600; }
+  .optional { font-weight: 400; color: var(--muted); }
+  input {
+    display: block;
+    width: 100%;
+    padding: .6rem .7rem;
+    font: inherit;
+    color: inherit;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+  }
+  input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  input[aria-invalid="true"] { border-color: var(--error); border-width: 2px; }
+  .hint, .error { margin: .3rem 0 0; font-size: .875rem; }
+  .hint { color: var(--muted); }
+  .error { color: var(--error); font-weight: 600; }
+  button {
+    width: 100%;
+    margin-top: .5rem;
+    padding: .7rem 1rem;
+    font: inherit;
+    font-weight: 600;
+    color: var(--accent-text);
+    background: var(--accent);
+    border: 0;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  button:focus-visible { outline: 2px solid var(--text); outline-offset: 2px; }
+  #success {
+    margin: 1.25rem 0 0;
+    padding: .75rem 1rem;
+    border-radius: 6px;
+    background: var(--success-bg);
+    color: var(--success-text);
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1>Create your account</h1>
+
+  <!-- novalidate: validation is done in the script below so that every
+       browser applies the same rules and shows the same messages.
+       Set the action attribute to your signup endpoint; while it is empty,
+       a valid submission only displays the confirmation message. -->
+  <form id="signup" method="post" action="" novalidate>
+
+    <div class="field">
+      <label for="fullname">Full name</label>
+      <input id="fullname" name="fullname" type="text" autocomplete="name"
+             required aria-describedby="fullname-error">
+      <p class="error" id="fullname-error" aria-live="polite"></p>
+    </div>
+
+    <div class="field">
+      <label for="email">Email address</label>
+      <!-- type="text" on purpose: <input type="email"> rejects Unicode local
+           parts (josé@example.fr) in every browser, and browsers disagree on
+           internationalized domains (Chromium rewrites them to xn-- form,
+           WebKit rejects them). The script checks the address instead. -->
+      <input id="email" name="email" type="text" inputmode="email"
+             autocomplete="email" autocapitalize="none" autocorrect="off"
+             spellcheck="false" required aria-describedby="email-error">
+      <p class="error" id="email-error" aria-live="polite"></p>
+    </div>
+
+    <div class="field">
+      <label for="website">Website <span class="optional">(optional)</span></label>
+      <input id="website" name="website" type="url" inputmode="url"
+             autocomplete="url" autocapitalize="none" autocorrect="off"
+             spellcheck="false" aria-describedby="website-hint website-error">
+      <p class="hint" id="website-hint">For example example.org or https://société.fr</p>
+      <p class="error" id="website-error" aria-live="polite"></p>
+    </div>
+
+    <div class="field">
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password"
+             autocomplete="new-password" required
+             aria-describedby="password-hint password-error">
+      <p class="hint" id="password-hint">At least 8 characters.</p>
+      <p class="error" id="password-error" aria-live="polite"></p>
+    </div>
+
+    <!-- The visible fields keep exactly what the user typed. These carry the
+         converted (A-label / normalized) forms for DNS lookups and storage keys. -->
+    <input type="hidden" name="email_ascii">
+    <input type="hidden" name="website_ascii">
+
+    <button type="submit">Sign up</button>
+    <p id="success" role="status" hidden>Everything looks good. Your account details are ready to be sent.</p>
+  </form>
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  var form = document.getElementById('signup');
+  var success = document.getElementById('success');
+  var fields = ['fullname', 'email', 'website', 'password'].map(function (id) {
+    return document.getElementById(id);
+  });
+
+  /* ---------- Domain names ---------- */
+
+  // Checks a name already in ASCII (A-label) form: dot-separated labels of
+  // 1–63 letters, digits or hyphens, 253 characters at most in total.
+  // The top-level domain is two or more letters of ANY length (.fr, .corsica,
+  // .international) or an xn-- A-label (.xn--p1ai is .рф). No list of TLDs.
+  function isAsciiHostname(host) {
+    if (!host || host.length > 253) return false;
+    var labels = host.toLowerCase().split('.');
+    if (labels.length < 2) return false;
+    var label = /^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$/;
+    if (!labels.every(function (l) { return label.test(l); })) return false;
+    var tld = labels[labels.length - 1];
+    return /^[a-z]{2,}$/.test(tld) || /^xn--[a-z0-9-]+$/.test(tld);
+  }
+
+  // Converts a domain typed by the user (société.fr, 例子.中国, EXAMPLE.com)
+  // to its ASCII form using the browser's own IDNA / UTS #46 implementation
+  // (the URL parser). Returns null when it is not a valid domain name.
+  function domainToAscii(domain) {
+    if (!domain || /[\s\/\\?#@:%\[\]]/.test(domain)) return null;
+    var host;
+    try {
+      host = new URL('http://' + domain).hostname;
+    } catch (e) {
+      return null;
+    }
+    return isAsciiHostname(host) ? host : null;
+  }
+
+  /* ---------- Field checks: each returns { error, ascii? } ---------- */
+
+  function checkFullname(value) {
+    return { error: value.trim() ? '' : 'Enter your full name.' };
+  }
+
+  // Deliberately minimal: one @, a non-empty local part without spaces
+  // (Unicode, +, ' and other symbols are all fine), and a valid domain.
+  function checkEmail(value) {
+    var v = value.trim();
+    if (!v) return { error: 'Enter your email address.' };
+    if (/\s/.test(v)) return { error: 'An email address cannot contain spaces.' };
+    var parts = v.split('@');
+    if (parts.length !== 2) return { error: 'An email address needs exactly one @ sign.' };
+    if (!parts[0]) return { error: 'Add the part before the @ sign.' };
+    var asciiDomain = domainToAscii(parts[1]);
+    if (!asciiDomain) {
+      return { error: 'The part after the @ must be a domain name, such as example.com or société.fr.' };
+    }
+    return { error: '', ascii: parts[0] + '@' + asciiDomain };
+  }
+
+  function checkWebsite(value) {
+    var invalid = 'Enter a web address such as example.org or https://société.fr.';
+    var v = value.trim();
+    if (!v) return { error: '', ascii: '' }; // optional field
+    if (/\s/.test(v)) return { error: 'A web address cannot contain spaces.' };
+    var hasScheme = /^[a-z][a-z0-9+.-]*:\/\//i.test(v);
+    var url;
+    try {
+      url = new URL(hasScheme ? v : 'https://' + v);
+    } catch (e) {
+      return { error: invalid };
+    }
+    if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+      return { error: 'The web address must start with http:// or https://.' };
+    }
+    if (url.username || url.password) return { error: invalid };
+    // url.hostname is already converted to A-labels by the URL parser.
+    if (!isAsciiHostname(url.hostname.replace(/\.$/, ''))) return { error: invalid };
+    return { error: '', ascii: url.href };
+  }
+
+  function checkPassword(value) {
+    if (!value) return { error: 'Choose a password.' };
+    if (Array.from(value).length < 8) return { error: 'Use at least 8 characters.' };
+    return { error: '' };
+  }
+
+  var checks = {
+    fullname: checkFullname,
+    email: checkEmail,
+    website: checkWebsite,
+    password: checkPassword
+  };
+
+  /* ---------- Wiring ---------- */
+
+  function validateField(input) {
+    var result = checks[input.name](input.value);
+    document.getElementById(input.id + '-error').textContent = result.error;
+    if (result.error) {
+      input.setAttribute('aria-invalid', 'true');
+    } else {
+      input.removeAttribute('aria-invalid');
+    }
+    return result;
+  }
+
+  fields.forEach(function (input) {
+    // Check when the user leaves a field…
+    input.addEventListener('blur', function () {
+      if (input.value !== '') validateField(input);
+    });
+    // …and clear the error as soon as it is corrected.
+    input.addEventListener('input', function () {
+      success.hidden = true;
+      if (input.getAttribute('aria-invalid') === 'true') validateField(input);
+    });
+  });
+
+  form.addEventListener('submit', function (event) {
+    var results = {};
+    var firstInvalid = null;
+
+    fields.forEach(function (input) {
+      results[input.name] = validateField(input);
+      if (results[input.name].error && !firstInvalid) firstInvalid = input;
+    });
+
+    if (firstInvalid) {
+      event.preventDefault();
+      success.hidden = true;
+      firstInvalid.focus();
+      return;
+    }
+
+    form.elements.email_ascii.value = results.email.ascii;
+    form.elements.website_ascii.value = results.website.ascii;
+
+    // No endpoint configured: stay on the page and confirm.
+    // With an action attribute set, the form is submitted normally.
+    if (!form.getAttribute('action')) {
+      event.preventDefault();
+      success.hidden = false;
+    }
+  });
+})();
+</script>
+</body>
+</html>

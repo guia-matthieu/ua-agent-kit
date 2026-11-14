@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inscription</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #f3f4f8;
+    --card: #ffffff;
+    --text: #1c1f2a;
+    --muted: #5b6172;
+    --border: #b9bfcc;
+    --accent: #2f55d4;
+    --accent-text: #ffffff;
+    --error: #b3261e;
+    --error-bg: #fdf1f0;
+    --success: #1b6e3c;
+    --success-bg: #eaf6ee;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #12141b;
+      --card: #1c1f2a;
+      --text: #eceef4;
+      --muted: #a4abbd;
+      --border: #4a5064;
+      --accent: #8ea6ff;
+      --accent-text: #10131c;
+      --error: #ff8a80;
+      --error-bg: #3a1f1e;
+      --success: #7fd6a0;
+      --success-bg: #1a3325;
+    }
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 1.5rem;
+    background: var(--bg);
+    color: var(--text);
+    font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+
+  main {
+    width: 100%;
+    max-width: 28rem;
+    padding: 2rem;
+    background: var(--card);
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, .08);
+  }
+
+  h1 { margin: 0 0 .25rem; font-size: 1.5rem; }
+  .intro { margin: 0 0 1.5rem; color: var(--muted); font-size: .9rem; }
+
+  .field { margin-bottom: 1.1rem; }
+
+  label { display: block; margin-bottom: .3rem; font-weight: 600; }
+  .required { color: var(--error); }
+  .optional { font-weight: 400; color: var(--muted); }
+
+  input {
+    width: 100%;
+    padding: .6rem .75rem;
+    font: inherit;
+    color: inherit;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  input:focus-visible,
+  button:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 2px;
+  }
+  input[aria-invalid="true"] {
+    border-color: var(--error);
+    background: var(--error-bg);
+  }
+
+  .password-row { display: flex; gap: .5rem; }
+  .password-row input { flex: 1; min-width: 0; }
+
+  .toggle {
+    padding: 0 .8rem;
+    font: inherit;
+    font-size: .875rem;
+    color: inherit;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .hint, .error { margin: .3rem 0 0; font-size: .875rem; }
+  .hint { color: var(--muted); }
+  .error { color: var(--error); font-weight: 600; }
+  .error::before { content: "⚠ "; }
+  .error:empty { display: none; }
+
+  .submit {
+    width: 100%;
+    margin-top: .5rem;
+    padding: .75rem 1rem;
+    font: inherit;
+    font-weight: 600;
+    color: var(--accent-text);
+    background: var(--accent);
+    border: 0;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .submit:hover { filter: brightness(1.08); }
+
+  .success {
+    margin: 0 0 1.25rem;
+    padding: .75rem 1rem;
+    color: var(--success);
+    background: var(--success-bg);
+    border: 1px solid currentColor;
+    border-radius: 8px;
+    font-weight: 600;
+  }
+  .success:empty { display: none; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Créer un compte</h1>
+  <p class="intro">Les champs marqués d'un <span class="required">*</span> sont obligatoires.</p>
+
+  <p class="success" id="success" role="status" tabindex="-1"></p>
+
+  <!--
+    Sans attribut « action », la page fonctionne en mode démonstration :
+    un message de confirmation s'affiche une fois le formulaire valide.
+    Ajoutez action="/votre-url" pour que le formulaire soit réellement
+    envoyé (en POST) après validation.
+  -->
+  <form id="signup" method="post" novalidate>
+    <div class="field">
+      <label for="name">Nom complet <span class="required" aria-hidden="true">*</span></label>
+      <input type="text" id="name" name="name" autocomplete="name" maxlength="100"
+             required aria-describedby="name-error">
+      <p class="error" id="name-error"></p>
+    </div>
+
+    <div class="field">
+      <label for="email">Adresse e-mail <span class="required" aria-hidden="true">*</span></label>
+      <input type="email" id="email" name="email" autocomplete="email" maxlength="254"
+             inputmode="email" autocapitalize="off" spellcheck="false"
+             required aria-describedby="email-error">
+      <p class="error" id="email-error"></p>
+    </div>
+
+    <div class="field">
+      <label for="website">Site web <span class="optional">(facultatif)</span></label>
+      <input type="url" id="website" name="website" autocomplete="url" maxlength="2000"
+             inputmode="url" autocapitalize="off" spellcheck="false"
+             placeholder="https://exemple.fr" aria-describedby="website-error">
+      <p class="error" id="website-error"></p>
+    </div>
+
+    <div class="field">
+      <label for="password">Mot de passe <span class="required" aria-hidden="true">*</span></label>
+      <div class="password-row">
+        <input type="password" id="password" name="password" autocomplete="new-password"
+               required aria-describedby="password-hint password-error">
+        <button type="button" class="toggle" id="toggle-password"
+                aria-controls="password" aria-pressed="false">Afficher</button>
+      </div>
+      <p class="hint" id="password-hint">Au moins 8 caractères, dont une lettre et un chiffre.</p>
+      <p class="error" id="password-error"></p>
+    </div>
+
+    <button type="submit" class="submit">S'inscrire</button>
+  </form>
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  var form = document.getElementById('signup');
+  var success = document.getElementById('success');
+  var toggle = document.getElementById('toggle-password');
+  var submitted = false;
+
+  // Pour chaque champ : normalisation de la saisie, puis validation.
+  // validate() renvoie un message d'erreur, ou une chaîne vide si tout va bien.
+  var rules = {
+    name: {
+      normalize: function (v) { return v.trim().replace(/\s+/g, ' '); },
+      validate: function (v) {
+        if (!v) return 'Saisissez votre nom complet.';
+        if (v.length < 2 || !/\p{L}/u.test(v)) return 'Ce nom ne semble pas valide.';
+        return '';
+      }
+    },
+
+    email: {
+      normalize: function (v) { return v.trim(); },
+      validate: function (v) {
+        if (!v) return 'Saisissez votre adresse e-mail.';
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) {
+          return 'Saisissez une adresse e-mail valide, par exemple nom@exemple.fr.';
+        }
+        return '';
+      }
+    },
+
+    website: {
+      // « exemple.fr » devient « https://exemple.fr »
+      normalize: function (v) {
+        v = v.trim();
+        if (v && !/^[a-z][a-z0-9+.-]*:\/\//i.test(v)) v = 'https://' + v;
+        return v;
+      },
+      validate: function (v) {
+        if (!v) return ''; // champ facultatif
+        var invalid = 'Saisissez une adresse web valide, par exemple https://exemple.fr.';
+        if (/\s/.test(v)) return invalid;
+        var url;
+        try { url = new URL(v); } catch (e) { return invalid; }
+        if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+          return 'L\'adresse doit commencer par http:// ou https://.';
+        }
+        var host = url.hostname;
+        if (url.username || url.password ||
+            host.indexOf('.') < 1 || host.charAt(host.length - 1) === '.') {
+          return invalid;
+        }
+        return '';
+      }
+    },
+
+    password: {
+      normalize: function (v) { return v; }, // on ne modifie jamais un mot de passe
+      validate: function (v) {
+        if (!v) return 'Saisissez un mot de passe.';
+        if (v.length < 8) return 'Le mot de passe doit contenir au moins 8 caractères.';
+        if (!/\p{L}/u.test(v) || !/\d/.test(v)) {
+          return 'Le mot de passe doit contenir au moins une lettre et un chiffre.';
+        }
+        return '';
+      }
+    }
+  };
+
+  var names = Object.keys(rules);
+
+  function showError(input, message) {
+    var error = document.getElementById(input.id + '-error');
+    error.textContent = message;
+    if (message) {
+      input.setAttribute('aria-invalid', 'true');
+    } else {
+      input.removeAttribute('aria-invalid');
+    }
+  }
+
+  // Valide un champ ; si « commit » est vrai, la valeur normalisée
+  // est réécrite dans le champ (à éviter pendant la frappe).
+  function validateField(name, commit) {
+    var input = form.elements[name];
+    var value = rules[name].normalize(input.value);
+    if (commit && value !== input.value) input.value = value;
+    var message = rules[name].validate(value);
+    showError(input, message);
+    return !message;
+  }
+
+  names.forEach(function (name) {
+    var input = form.elements[name];
+
+    // À la sortie du champ : on valide s'il a été rempli
+    // (ou si un envoi a déjà été tenté).
+    input.addEventListener('blur', function () {
+      if (submitted || input.value !== '') validateField(name, true);
+    });
+
+    // Pendant la frappe : on met à jour une erreur déjà affichée.
+    input.addEventListener('input', function () {
+      success.textContent = '';
+      if (input.getAttribute('aria-invalid') === 'true') validateField(name, false);
+    });
+  });
+
+  function setPasswordVisible(visible) {
+    form.elements.password.type = visible ? 'text' : 'password';
+    toggle.setAttribute('aria-pressed', String(visible));
+    toggle.textContent = visible ? 'Masquer' : 'Afficher';
+  }
+
+  toggle.addEventListener('click', function () {
+    setPasswordVisible(form.elements.password.type === 'password');
+  });
+
+  form.addEventListener('submit', function (event) {
+    submitted = true;
+    success.textContent = '';
+
+    var firstInvalid = null;
+    names.forEach(function (name) {
+      if (!validateField(name, true) && !firstInvalid) {
+        firstInvalid = form.elements[name];
+      }
+    });
+
+    if (firstInvalid) {
+      event.preventDefault();
+      firstInvalid.focus();
+      return;
+    }
+
+    // Formulaire valide : envoi réel si une « action » est définie.
+    setPasswordVisible(false);
+    if (form.hasAttribute('action')) return;
+
+    // Sinon, mode démonstration.
+    event.preventDefault();
+    var fullName = form.elements.name.value;
+    form.reset();
+    submitted = false;
+    success.textContent = 'Merci ' + fullName + ', votre inscription est validée.';
+    success.focus();
+  });
+})();
+</script>
+</body>
+</html>

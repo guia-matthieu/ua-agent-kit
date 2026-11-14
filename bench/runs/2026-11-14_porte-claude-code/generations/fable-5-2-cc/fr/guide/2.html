@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inscription</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #f4f5f7;
+    --card: #ffffff;
+    --text: #1c1e21;
+    --muted: #5c6370;
+    --border: #b8bdc7;
+    --accent: #1a56db;
+    --accent-text: #ffffff;
+    --error: #b42318;
+    --success: #1a7f37;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #15171a;
+      --card: #1f2227;
+      --text: #eceef1;
+      --muted: #a3a9b5;
+      --border: #555c69;
+      --accent: #7aa7ff;
+      --accent-text: #0d1117;
+      --error: #ff8a80;
+      --success: #6fdd8b;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 2rem 1rem;
+    background: var(--bg);
+    color: var(--text);
+    font: 1rem/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  main {
+    max-width: 44rem;
+    margin: 0 auto;
+    padding: 1.5rem 2rem 2rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+  }
+  h1 { margin: 0 0 1.25rem; font-size: 1.5rem; }
+  .field { margin-bottom: 1.25rem; }
+  .field > label { display: block; font-weight: 600; }
+  .optional { font-weight: 400; color: var(--muted); }
+  .hint { margin: 0; font-size: 0.875rem; color: var(--muted); }
+  .control {
+    display: grid;
+    grid-template-columns: minmax(0, 20rem) minmax(0, 1fr);
+    gap: 0.25rem 0.75rem;
+    align-items: center;
+    margin-top: 0.35rem;
+  }
+  .control input {
+    width: 100%;
+    padding: 0.55rem 0.7rem;
+    font: inherit;
+    color: inherit;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 0.4rem;
+  }
+  .control input:focus-visible,
+  button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+  .control input[aria-invalid="true"] {
+    border-color: var(--error);
+    box-shadow: 0 0 0 1px var(--error);
+  }
+  .error {
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--error);
+    overflow-wrap: anywhere;
+  }
+  .toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 0.4rem;
+    font-size: 0.875rem;
+    color: var(--muted);
+  }
+  button[type="submit"] {
+    padding: 0.65rem 1.4rem;
+    font: inherit;
+    font-weight: 600;
+    color: var(--accent-text);
+    background: var(--accent);
+    border: 0;
+    border-radius: 0.4rem;
+    cursor: pointer;
+  }
+  #form-status { margin: 1rem 0 0; font-weight: 600; }
+  #form-status.success { color: var(--success); }
+  #form-status.failure { color: var(--error); }
+  #form-status:empty { display: none; }
+  @media (max-width: 36rem) {
+    main { padding: 1.25rem 1rem 1.5rem; }
+    .control { grid-template-columns: minmax(0, 1fr); }
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1>Créer un compte</h1>
+
+  <!--
+    Sans attribut « action », la page reste autonome : après validation, un
+    message de confirmation s'affiche et rien n'est envoyé.
+    Pour un envoi réel, ajoutez action="/votre-point-d-entree" : le formulaire
+    sera alors soumis normalement une fois tous les champs valides.
+  -->
+  <form id="signup-form" method="post" novalidate>
+
+    <div class="field">
+      <label for="fullname">Nom complet</label>
+      <div class="control">
+        <input id="fullname" name="fullname" type="text" autocomplete="name"
+               required aria-describedby="fullname-error">
+        <p class="error" id="fullname-error" aria-live="polite"></p>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="email">Adresse e-mail</label>
+      <p class="hint" id="email-hint">
+        Les adresses internationalisées sont acceptées, par exemple
+        josé.dupont@société.fr ou 用户@例子.中国.
+      </p>
+      <div class="control">
+        <!--
+          type="text" et non type="email" : selon le navigateur,
+          <input type="email"> refuse ou réécrit les domaines internationalisés
+          et refuse toujours une partie locale en Unicode. La vérification est
+          donc faite par le script ci-dessous.
+        -->
+        <input id="email" name="email" type="text" inputmode="email"
+               autocomplete="email" autocapitalize="off" autocorrect="off"
+               spellcheck="false" required
+               aria-describedby="email-hint email-error">
+        <p class="error" id="email-error" aria-live="polite"></p>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="website">Site web <span class="optional">(facultatif)</span></label>
+      <p class="hint" id="website-hint">
+        Par exemple https://exemple.fr ou https://société.fr.
+      </p>
+      <div class="control">
+        <input id="website" name="website" type="url" inputmode="url"
+               autocomplete="url" autocapitalize="off" spellcheck="false"
+               aria-describedby="website-hint website-error">
+        <p class="error" id="website-error" aria-live="polite"></p>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="password">Mot de passe</label>
+      <p class="hint" id="password-hint">Au moins 8 caractères.</p>
+      <div class="control">
+        <input id="password" name="password" type="password"
+               autocomplete="new-password" required
+               aria-describedby="password-hint password-error">
+        <p class="error" id="password-error" aria-live="polite"></p>
+      </div>
+      <label class="toggle">
+        <input type="checkbox" id="toggle-password"> Afficher le mot de passe
+      </label>
+    </div>
+
+    <!--
+      Formes converties (domaine en A-labels, IDNA / UTS #46), envoyées en plus
+      de ce que la personne a saisi : à utiliser pour les requêtes DNS et comme
+      clés de stockage, tout en conservant la saisie d'origine.
+    -->
+    <input type="hidden" id="email-ascii" name="email_ascii">
+    <input type="hidden" id="website-ascii" name="website_ascii">
+
+    <button type="submit">S'inscrire</button>
+    <p id="form-status" role="status"></p>
+  </form>
+</main>
+
+<script>
+(function () {
+  "use strict";
+
+  var PASSWORD_MIN_LENGTH = 8;
+
+  var form = document.getElementById("signup-form");
+  var status = document.getElementById("form-status");
+  var emailAscii = document.getElementById("email-ascii");
+  var websiteAscii = document.getElementById("website-ascii");
+
+  /* ---------- Noms de domaine ---------- */
+
+  // Vérifie un nom d'hôte déjà converti en A-labels (ASCII, minuscules).
+  // Aucune liste de TLD ni longueur maximale de TLD autre que celle d'un label :
+  // un TLD est soit composé d'au moins deux lettres, soit un A-label « xn-- ».
+  function isValidAsciiHostname(host) {
+    if (host === "" || host.length > 253) { return false; }
+    var labels = host.split(".");
+    if (labels.length < 2) { return false; }
+    for (var i = 0; i < labels.length; i++) {
+      // 1 à 63 octets, lettres, chiffres et tirets, sans tiret aux extrémités.
+      if (!/^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/.test(labels[i])) {
+        return false;
+      }
+    }
+    var tld = labels[labels.length - 1];
+    return /^[a-z]{2,}$/.test(tld) || /^xn--/.test(tld);
+  }
+
+  // Convertit un domaine saisi (U-labels ou A-labels, casse quelconque) en
+  // A-labels grâce à l'analyseur d'URL du navigateur (UTS #46), puis le vérifie.
+  // Renvoie la forme ASCII, ou null si le domaine n'est pas valide.
+  function domainToAscii(domain) {
+    // Caractères que l'analyseur d'URL interpréterait autrement que comme
+    // une partie du nom d'hôte (chemin, port, identifiants, IPv6, etc.).
+    if (domain === "" || /[\s\/\\?#@:\[\]%]/.test(domain)) { return null; }
+    var host;
+    try {
+      host = new URL("http://" + domain).hostname;
+    } catch (e) {
+      return null;
+    }
+    return isValidAsciiHostname(host) ? host : null;
+  }
+
+  function utf8Length(text) {
+    return new TextEncoder().encode(text).length;
+  }
+
+  /* ---------- Validation de chaque champ ---------- */
+  // Chaque fonction renvoie { error: "message ou chaîne vide", ascii: "..." }.
+
+  function validateFullname(raw) {
+    if (raw.trim() === "") {
+      return { error: "Indiquez votre nom complet." };
+    }
+    return { error: "" };
+  }
+
+  function validateEmail(raw) {
+    var value = raw.trim();
+    if (value === "") {
+      return { error: "Indiquez votre adresse e-mail." };
+    }
+    if (/\s/.test(value)) {
+      return { error: "L'adresse e-mail ne doit pas contenir d'espace." };
+    }
+    var parts = value.split("@");
+    if (parts.length < 2) {
+      return { error: "L'adresse e-mail doit contenir un « @ »." };
+    }
+    if (parts.length > 2) {
+      return { error: "L'adresse e-mail ne doit contenir qu'un seul « @ »." };
+    }
+    var local = parts[0];
+    var domain = parts[1];
+    if (local === "") {
+      return { error: "Il manque la partie située avant le « @ »." };
+    }
+    if (utf8Length(local) > 64) {
+      return { error: "La partie située avant le « @ » est trop longue." };
+    }
+    if (domain === "") {
+      return { error: "Il manque le domaine après le « @ »." };
+    }
+    var asciiDomain = domainToAscii(domain);
+    if (asciiDomain === null) {
+      return {
+        error: "Le domaine après le « @ » n'est pas valide " +
+               "(exemple attendu : nom@exemple.fr)."
+      };
+    }
+    // La partie locale est conservée telle quelle (Unicode autorisé, RFC 6531).
+    return { error: "", ascii: local + "@" + asciiDomain };
+  }
+
+  function validateWebsite(raw) {
+    var value = raw.trim();
+    if (value === "") {
+      return { error: "", ascii: "" }; // champ facultatif
+    }
+    var candidate = value;
+    if (!/^https?:\/\//i.test(value)) {
+      if (/^[a-z][a-z0-9+.-]*:\/\//i.test(value)) {
+        return { error: "L'adresse du site doit commencer par http:// ou https://." };
+      }
+      candidate = "https://" + value; // « exemple.fr » est accepté tel quel
+    }
+    var url;
+    try {
+      url = new URL(candidate);
+    } catch (e) {
+      return {
+        error: "Cette adresse de site n'est pas valide " +
+               "(exemple attendu : https://exemple.fr)."
+      };
+    }
+    // url.hostname est déjà converti en A-labels par le navigateur.
+    if (!isValidAsciiHostname(url.hostname)) {
+      return {
+        error: "Le nom de domaine du site n'est pas valide " +
+               "(exemple attendu : https://exemple.fr)."
+      };
+    }
+    return { error: "", ascii: url.href };
+  }
+
+  function validatePassword(raw) {
+    if (raw === "") {
+      return { error: "Choisissez un mot de passe." };
+    }
+    if (Array.from(raw).length < PASSWORD_MIN_LENGTH) {
+      return {
+        error: "Le mot de passe doit contenir au moins " +
+               PASSWORD_MIN_LENGTH + " caractères."
+      };
+    }
+    return { error: "" };
+  }
+
+  var fields = [
+    { id: "fullname", validate: validateFullname },
+    { id: "email",    validate: validateEmail,   asciiTarget: emailAscii },
+    { id: "website",  validate: validateWebsite, asciiTarget: websiteAscii },
+    { id: "password", validate: validatePassword }
+  ];
+
+  /* ---------- Affichage des erreurs ---------- */
+
+  function checkField(field) {
+    var input = document.getElementById(field.id);
+    var errorBox = document.getElementById(field.id + "-error");
+    var result = field.validate(input.value);
+
+    errorBox.textContent = result.error;
+    if (result.error) {
+      input.setAttribute("aria-invalid", "true");
+    } else {
+      input.removeAttribute("aria-invalid");
+    }
+    if (field.asciiTarget) {
+      field.asciiTarget.value = result.error ? "" : (result.ascii || "");
+    }
+    return result.error === "";
+  }
+
+  fields.forEach(function (field) {
+    var input = document.getElementById(field.id);
+
+    // Vérification en quittant le champ…
+    input.addEventListener("blur", function () {
+      if (input.value !== "" || input.hasAttribute("aria-invalid")) {
+        checkField(field);
+      }
+    });
+    // …puis correction en direct dès qu'une erreur est affichée.
+    input.addEventListener("input", function () {
+      status.textContent = "";
+      if (input.hasAttribute("aria-invalid")) {
+        checkField(field);
+      }
+    });
+  });
+
+  document.getElementById("toggle-password").addEventListener("change", function (event) {
+    document.getElementById("password").type = event.target.checked ? "text" : "password";
+  });
+
+  /* ---------- Envoi ---------- */
+
+  form.addEventListener("submit", function (event) {
+    var firstInvalid = null;
+
+    fields.forEach(function (field) {
+      if (!checkField(field) && firstInvalid === null) {
+        firstInvalid = document.getElementById(field.id);
+      }
+    });
+
+    if (firstInvalid !== null) {
+      event.preventDefault();
+      status.className = "failure";
+      status.textContent = "Le formulaire contient des erreurs : corrigez les champs signalés.";
+      firstInvalid.focus();
+      return;
+    }
+
+    // Espaces superflus retirés en début et fin (jamais dans le mot de passe).
+    ["fullname", "email", "website"].forEach(function (id) {
+      var input = document.getElementById(id);
+      input.value = input.value.trim();
+    });
+
+    if (!form.hasAttribute("action")) {
+      // Page autonome : pas de serveur, on confirme simplement la validation.
+      event.preventDefault();
+      status.className = "success";
+      status.textContent = "Tous les champs sont valides : inscription prête à être envoyée.";
+    }
+    // Avec un attribut « action », l'envoi natif du formulaire se poursuit.
+  });
+})();
+</script>
+</body>
+</html>

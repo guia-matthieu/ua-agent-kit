@@ -1,0 +1,99 @@
+{
+  "duration_api_ms": 74449,
+  "stop_reason": "end_turn",
+  "total_cost_usd": 0.3687072,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 3746,
+    "cache_read_input_tokens": 14376,
+    "output_tokens": 7647,
+    "output_tokens_details": {
+      "thinking_tokens": 3705
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 3746,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 7647,
+        "cache_read_input_tokens": 14376,
+        "cache_creation_input_tokens": 3746,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 3746
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-fable-5-2": {
+      "inputTokens": 2,
+      "outputTokens": 7647,
+      "cacheReadInputTokens": 14376,
+      "cacheCreationInputTokens": 3746,
+      "webSearchRequests": 0,
+      "costUSD": 0.3687072,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 3705,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 3746,
+      "canonicalModel": "claude-fable-5-2",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+    "spawned": 0,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 0
+    },
+    "started_in_background": 0,
+    "max_depth": 0,
+    "spawned_by_subagents": 0,
+    "completed": 0,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {}
+  },
+  "safety_stops": 0,
+  "is_error": false,
+  "num_turns": 1,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "```html\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<title>Create your account</title>\n<style>\n  :root {\n    color-scheme: light dark;\n    --bg: #f3f4f7;\n    --card: #ffffff;\n    --text: #1b1f27;\n    --muted: #5d6675;\n    --border: #c3c9d4;\n    --accent: #2f5bd8;\n    --accent-text: #ffffff;\n    --error: #b42318;\n    --success: #17663a;\n  }\n  @media (prefers-color-scheme: dark) {\n    :root {\n      --bg: #12151b;\n      --card: #1c2029;\n      --text: #eceef2;\n      --muted: #a3acbb;\n      --border: #475063;\n      --accent: #8eabff;\n      --accent-text: #10131a;\n      --error: #ff9d92;\n      --success: #7fdca4;\n    }\n  }\n\n  *, *::before, *::after { box-sizing: border-box; }\n  [hidden] { display: none !important; }\n\n  body {\n    margin: 0;\n    min-height: 100vh;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    padding: 24px 16px;\n    background: var(--bg);\n    color: var(--text);\n    font: 16px/1.5 system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif;\n  }\n\n  main {\n    width: 100%;\n    max-width: 440px;\n    padding: 32px 28px;\n    background: var(--card);\n    border: 1px solid var(--border);\n    border-radius: 12px;\n  }\n\n  h1 {\n    margin: 0 0 4px;\n    font-size: 1.5rem;\n    line-height: 1.25;\n  }\n  .intro {\n    margin: 0 0 24px;\n    color: var(--muted);\n  }\n\n  .field { margin-bottom: 18px; }\n\n  label {\n    display: block;\n    margin-bottom: 6px;\n    font-weight: 600;\n  }\n  .optional {\n    font-weight: 400;\n    color: var(--muted);\n  }\n\n  input {\n    width: 100%;\n    padding: 10px 12px;\n    font: inherit;\n    color: inherit;\n    background: transparent;\n    border: 1px solid var(--border);\n    border-radius: 8px;\n  }\n  input:focus-visible,\n  button:focus-visible,\n  #success:focus-visible {\n    outline: 2px solid var(--accent);\n    outline-offset: 2px;\n  }\n  input[aria-invalid=\"true\"] {\n    border-color: var(--error);\n    box-shadow: 0 0 0 1px var(--error);\n  }\n\n  .password-row {\n    display: flex;\n    gap: 8px;\n  }\n  .password-row input {\n    flex: 1;\n    min-width: 0;\n  }\n  .toggle {\n    flex: none;\n    min-width: 64px;\n    padding: 0 12px;\n    font: inherit;\n    color: inherit;\n    background: transparent;\n    border: 1px solid var(--border);\n    border-radius: 8px;\n    cursor: pointer;\n  }\n\n  .hint,\n  .error {\n    margin: 6px 0 0;\n    font-size: 0.875rem;\n  }\n  .hint { color: var(--muted); }\n  .error {\n    color: var(--error);\n    font-weight: 600;\n  }\n  .error::before { content: \"\\26A0\\FE0E\\00A0\"; }\n\n  .submit {\n    width: 100%;\n    margin-top: 6px;\n    padding: 12px 16px;\n    font: inherit;\n    font-weight: 600;\n    color: var(--accent-text);\n    background: var(--accent);\n    border: 0;\n    border-radius: 8px;\n    cursor: pointer;\n  }\n  .submit:hover { filter: brightness(1.08); }\n\n  #success h2 {\n    margin: 0 0 8px;\n    font-size: 1.25rem;\n    color: var(--success);\n  }\n  #success p { margin: 0; }\n</style>\n</head>\n<body>\n<main>\n  <!-- The novalidate attribute is added by the script, so the browser's\n       built-in validation still works as a fallback if JavaScript is off. -->\n  <form id=\"signup-form\" method=\"post\" action=\"\">\n    <h1>Create your account</h1>\n    <p class=\"intro\">Fill in your details to sign up.</p>\n\n    <div class=\"field\">\n      <label for=\"name\">Full name</label>\n      <input type=\"text\" id=\"name\" name=\"name\" autocomplete=\"name\"\n             required maxlength=\"100\" aria-describedby=\"name-error\">\n      <p class=\"error\" id=\"name-error\" hidden></p>\n    </div>\n\n    <div class=\"field\">\n      <label for=\"email\">Email address</label>\n      <input type=\"email\" id=\"email\" name=\"email\" autocomplete=\"email\"\n             inputmode=\"email\" autocapitalize=\"off\" spellcheck=\"false\"\n             required aria-describedby=\"email-error\">\n      <p class=\"error\" id=\"email-error\" hidden></p>\n    </div>\n\n    <div class=\"field\">\n      <label for=\"website\">Website <span class=\"optional\">(optional)</span></label>\n      <input type=\"text\" id=\"website\" name=\"website\" autocomplete=\"url\"\n             inputmode=\"url\" autocapitalize=\"off\" spellcheck=\"false\"\n             placeholder=\"https://example.com\" aria-describedby=\"website-error\">\n      <p class=\"error\" id=\"website-error\" hidden></p>\n    </div>\n\n    <div class=\"field\">\n      <label for=\"password\">Password</label>\n      <div class=\"password-row\">\n        <input type=\"password\" id=\"password\" name=\"password\"\n               autocomplete=\"new-password\" required minlength=\"8\"\n               aria-describedby=\"password-hint password-error\">\n        <button type=\"button\" class=\"toggle\" id=\"toggle-password\"\n                aria-label=\"Show password\" aria-controls=\"password\">Show</button>\n      </div>\n      <p class=\"hint\" id=\"password-hint\">At least 8 characters, including a letter and a number.</p>\n      <p class=\"error\" id=\"password-error\" hidden></p>\n    </div>\n\n    <button type=\"submit\" class=\"submit\">Sign up</button>\n  </form>\n\n  <div id=\"success\" tabindex=\"-1\" role=\"status\" hidden>\n    <h2>Account created</h2>\n    <p id=\"success-text\"></p>\n  </div>\n</main>\n\n<script>\n(function () {\n  'use strict';\n\n  var form = document.getElementById('signup-form');\n  var success = document.getElementById('success');\n  var successText = document.getElementById('success-text');\n  var toggle = document.getElementById('toggle-password');\n  var fields = ['name', 'email', 'website', 'password'].map(function (id) {\n    return document.getElementById(id);\n  });\n\n  // Use our own validation and messages instead of the browser's bubbles.\n  form.noValidate = true;\n\n  // Returns a URL object for a valid http(s) address, or null.\n  // A missing scheme is tolerated (\"example.com\" is read as \"https://example.com\").\n  function parseWebsite(value) {\n    var text = value.trim();\n    if (!/^https?:\\/\\//i.test(text)) {\n      text = 'https://' + text;\n    }\n    var url;\n    try {\n      url = new URL(text);\n    } catch (e) {\n      return null;\n    }\n    if (url.username || url.password) {\n      return null;\n    }\n    var labels = url.hostname.split('.');\n    var tld = labels[labels.length - 1];\n    var hasEmptyLabel = labels.some(function (label) { return label === ''; });\n    if (labels.length < 2 || hasEmptyLabel || tld.length < 2 || /^\\d+$/.test(tld)) {\n      return null;\n    }\n    return url;\n  }\n\n  // Each validator returns an error message, or an empty string when valid.\n  var validators = {\n    name: function (value) {\n      var v = value.trim();\n      if (!v) return 'Enter your full name.';\n      if (v.length < 2 || !/\\p{L}/u.test(v)) return 'Enter a valid name (at least 2 characters).';\n      if (v.length > 100) return 'Name must be 100 characters or fewer.';\n      return '';\n    },\n    email: function (value) {\n      var v = value.trim();\n      if (!v) return 'Enter your email address.';\n      if (v.length > 254 || !/^[^\\s@]+@[^\\s@.]+(\\.[^\\s@.]+)+$/.test(v)) {\n        return 'Enter a valid email address, like name@example.com.';\n      }\n      return '';\n    },\n    website: function (value) {\n      var v = value.trim();\n      if (!v) return ''; // optional field\n      if (!parseWebsite(v)) return 'Enter a valid web address, like https://example.com.';\n      return '';\n    },\n    password: function (value) {\n      if (!value) return 'Enter a password.';\n      if (value.length < 8) return 'Password must be at least 8 characters.';\n      if (!/\\p{L}/u.test(value) || !/\\d/.test(value)) {\n        return 'Password must include at least one letter and one number.';\n      }\n      return '';\n    }\n  };\n\n  function setError(input, message) {\n    var error = document.getElementById(input.id + '-error');\n    error.textContent = message;\n    error.hidden = !message;\n    if (message) {\n      input.setAttribute('aria-invalid', 'true');\n    } else {\n      input.removeAttribute('aria-invalid');\n    }\n  }\n\n  function validateField(input) {\n    var message = validators[input.name](input.value);\n    setError(input, message);\n    return !message;\n  }\n\n  fields.forEach(function (input) {\n    // Check a field when the user leaves it, but don't nag about fields\n    // they have only tabbed through without typing anything.\n    input.addEventListener('blur', function () {\n      if (input.value !== '' || input.hasAttribute('aria-invalid')) {\n        validateField(input);\n      }\n    });\n    // Once a field shows an error, clear it as soon as the value is fixed.\n    input.addEventListener('input', function () {\n      if (input.hasAttribute('aria-invalid')) {\n        validateField(input);\n      }\n    });\n  });\n\n  toggle.addEventListener('click', function () {\n    var password = document.getElementById('password');\n    var show = password.type === 'password';\n    password.type = show ? 'text' : 'password';\n    toggle.textContent = show ? 'Hide' : 'Show';\n    toggle.setAttribute('aria-label', show ? 'Hide password' : 'Show password');\n  });\n\n  form.addEventListener('submit', function (event) {\n    event.preventDefault();\n\n    var firstInvalid = null;\n    fields.forEach(function (input) {\n      if (!validateField(input) && !firstInvalid) {\n        firstInvalid = input;\n      }\n    });\n\n    if (firstInvalid) {\n      firstInvalid.focus();\n      return;\n    }\n\n    var data = {\n      name: form.elements.name.value.trim(),\n      email: form.elements.email.value.trim(),\n      website: form.elements.website.value.trim(),\n      password: form.elements.password.value\n    };\n    if (data.website && !/^https?:\\/\\//i.test(data.website)) {\n      data.website = 'https://' + data.website;\n    }\n\n    // All fields are valid. This page has no backend, so it only shows a\n    // confirmation. To send the data for real, replace the lines below with\n    // a request to your server, e.g. fetch('/signup', { method: 'POST', ... }),\n    // and always repeat the validation on the server.\n    successText.textContent =\n      'Thanks, ' + data.name.split(/\\s+/)[0] + '. We have your details for ' + data.email + '.';\n    form.hidden = true;\n    success.hidden = false;\n    success.focus();\n  });\n})();\n</script>\n</body>\n</html>\n```",
+  "ttft_ms": 44562,
+  "type": "result",
+  "duration_ms": 74566,
+  "ttft_stream_ms": 2475,
+  "time_to_request_ms": 115,
+  "first_content_frame_ms": 2475,
+  "queued_turn_count": 0,
+  "result_index": 0
+}
