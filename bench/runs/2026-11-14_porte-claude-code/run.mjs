@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // The page written by Fable 5.2 acting as a Claude Code agent (`claude -p`), instead of a raw API call.
-// Same prompts, same GUIDE.md, same battery, same runner as the v0.2 bench. This script only generates:
+// Same prompts, battery and runner as the v0.2 bench; GUIDE.md as it is at the kit's commit (see README.md: one
+// sentence differs from the bench of 2026-09-25). This script only generates:
 // scoring is `RESULTS_DIR=<this folder> node bench/run-bench.mjs --rescore`.
 // Usage: node run.mjs [lang/condition/repeat ...]   (no argument: the 18 cells; a cell whose .json exists is skipped)
 // Env: CLAUDE_BIN (default claude-bzh, the account whose plan pays), KEEP_RAW=1 keeps raw.json next to the page.

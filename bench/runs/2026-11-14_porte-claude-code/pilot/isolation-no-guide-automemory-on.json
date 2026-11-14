@@ -87,7 +87,7 @@
   "num_turns": 1,
   "subtype": "success",
   "api_error_status": null,
-  "result": "Aucun fichier d'instructions ou de mémoire ne m'a été transmis dans cette session, donc je n'ai aucune première ligne à citer.\n\n- **CLAUDE.md** (projet ou utilisateur) : aucun contenu reçu.\n- **MEMORY.md** (index de mémoire) : aucun contenu reçu. Je connais seulement l'emplacement du répertoire de mémoire (`~/.claude-bzh/projects/-private-var-folders-1s-65kbjjc57q1d562kfcc3rbx40000gn-T-tmp-vh2L2LNdQJ/memory/`) ; l'index est donc soit vide, soit inexistant.\n- **Mémoires individuelles** : aucune rappelée.\n\nSans outil, je ne peux pas vérifier si ces fichiers existent sur le disque ; je peux seulement dire qu'ils n'apparaissent pas dans mon contexte.",
+  "result": "Aucun fichier d'instructions ou de mémoire ne m'a été transmis dans cette session, donc je n'ai aucune première ligne à citer.\n\n- **CLAUDE.md** (projet ou utilisateur) : aucun contenu reçu.\n- **MEMORY.md** (index de mémoire) : aucun contenu reçu. Je connais seulement l'emplacement du répertoire de mémoire (`~/.claude-bzh/projects/<cell folder>/memory/`) ; l'index est donc soit vide, soit inexistant.\n- **Mémoires individuelles** : aucune rappelée.\n\nSans outil, je ne peux pas vérifier si ces fichiers existent sur le disque ; je peux seulement dire qu'ils n'apparaissent pas dans mon contexte.",
   "ttft_ms": 2637,
   "type": "result",
   "duration_ms": 5135,
