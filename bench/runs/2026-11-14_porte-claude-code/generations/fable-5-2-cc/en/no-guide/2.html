@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Create your account</title>
+<style>
+  :root {
+    --bg: #f3f4f7;
+    --card: #ffffff;
+    --text: #1c1f26;
+    --muted: #5b6270;
+    --border: #b9bfcb;
+    --accent: #2f5bd8;
+    --accent-hover: #2449b3;
+    --accent-text: #ffffff;
+    --error: #b42318;
+    --error-bg: #fef3f2;
+    --success: #17663a;
+    --success-bg: #ecfdf3;
+    --focus: rgba(47, 91, 216, 0.35);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #121418;
+      --card: #1c1f26;
+      --text: #eceef2;
+      --muted: #a3aab8;
+      --border: #4a5160;
+      --accent: #7c9cf5;
+      --accent-hover: #9bb3f8;
+      --accent-text: #10131a;
+      --error: #ffa094;
+      --error-bg: #3a1c19;
+      --success: #86e0ab;
+      --success-bg: #14301f;
+      --focus: rgba(124, 156, 245, 0.45);
+    }
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+    background: var(--bg);
+    color: var(--text);
+    font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 440px;
+    padding: 32px 28px;
+    background: var(--card);
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.06);
+  }
+
+  h1 {
+    margin: 0 0 4px;
+    font-size: 1.5rem;
+    line-height: 1.25;
+  }
+
+  .intro {
+    margin: 0 0 24px;
+    color: var(--muted);
+  }
+
+  .field { margin-bottom: 18px; }
+
+  label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+
+  .optional {
+    font-weight: 400;
+    color: var(--muted);
+  }
+
+  input {
+    display: block;
+    width: 100%;
+    padding: 10px 12px;
+    font: inherit;
+    color: inherit;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+
+  input:focus-visible,
+  button:focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 1px;
+    border-color: var(--accent);
+  }
+
+  input[aria-invalid="true"] {
+    border-color: var(--error);
+    box-shadow: 0 0 0 1px var(--error);
+  }
+
+  .password-wrap { position: relative; }
+  .password-wrap input { padding-right: 76px; }
+
+  .toggle {
+    position: absolute;
+    top: 50%;
+    right: 6px;
+    transform: translateY(-50%);
+    min-width: 60px;
+    padding: 5px 8px;
+    font: inherit;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--accent);
+    background: none;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  .hint {
+    margin: 6px 0 0;
+    font-size: 0.875rem;
+    color: var(--muted);
+  }
+
+  .error {
+    display: block;
+    margin-top: 6px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--error);
+  }
+
+  .error:empty { display: none; }
+
+  .error::before {
+    content: "\26A0\FE0E\00A0";
+  }
+
+  .submit {
+    width: 100%;
+    margin-top: 6px;
+    padding: 12px 16px;
+    font: inherit;
+    font-weight: 600;
+    color: var(--accent-text);
+    background: var(--accent);
+    border: 1px solid transparent;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .submit:hover { background: var(--accent-hover); }
+
+  .status {
+    margin: 0 0 18px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+  }
+
+  .status:empty { display: none; }
+  .status.is-error { color: var(--error); background: var(--error-bg); }
+  .status.is-success { color: var(--success); background: var(--success-bg); }
+</style>
+</head>
+<body>
+  <main class="card">
+    <h1>Create your account</h1>
+    <p class="intro">It only takes a minute.</p>
+
+    <!--
+      novalidate turns off the browser's built-in validation bubbles so the
+      JavaScript below controls every message. The `required` attribute is
+      still read by the script: add it to the website input to make that
+      field mandatory, or remove it from another input to make it optional.
+    -->
+    <form id="signup-form" novalidate>
+      <p id="form-status" class="status" role="status" aria-live="polite"></p>
+
+      <div class="field">
+        <label for="fullName">Full name</label>
+        <input type="text" id="fullName" name="fullName" required
+               autocomplete="name" autocapitalize="words" spellcheck="false"
+               aria-describedby="fullName-error">
+        <span class="error" id="fullName-error" aria-live="polite"></span>
+      </div>
+
+      <div class="field">
+        <label for="email">Email address</label>
+        <input type="email" id="email" name="email" required
+               autocomplete="email" autocapitalize="none" spellcheck="false"
+               inputmode="email" aria-describedby="email-error">
+        <span class="error" id="email-error" aria-live="polite"></span>
+      </div>
+
+      <div class="field">
+        <label for="website">Website <span class="optional">(optional)</span></label>
+        <input type="url" id="website" name="website"
+               autocomplete="url" autocapitalize="none" spellcheck="false"
+               inputmode="url" placeholder="https://example.com"
+               aria-describedby="website-error">
+        <span class="error" id="website-error" aria-live="polite"></span>
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <div class="password-wrap">
+          <input type="password" id="password" name="password" required
+                 autocomplete="new-password" autocapitalize="none" spellcheck="false"
+                 aria-describedby="password-hint password-error">
+          <button type="button" class="toggle" id="password-toggle"
+                  aria-controls="password" aria-pressed="false"
+                  aria-label="Show password">Show</button>
+        </div>
+        <p class="hint" id="password-hint">At least 8 characters, with a letter and a number.</p>
+        <span class="error" id="password-error" aria-live="polite"></span>
+      </div>
+
+      <button type="submit" class="submit">Create account</button>
+    </form>
+  </main>
+
+<script>
+(function () {
+  'use strict';
+
+  var form = document.getElementById('signup-form');
+  var statusEl = document.getElementById('form-status');
+  var toggle = document.getElementById('password-toggle');
+  var inputs = Array.prototype.slice.call(form.querySelectorAll('input[name]'));
+
+  var EMAIL_RE = /^[a-z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)+$/i;
+  // Hostname with at least one dot and an alphabetic (or punycode) top-level domain.
+  var HOST_RE = /^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+(?:[a-z]{2,63}|xn--[a-z0-9-]{1,59})$/i;
+  var HAS_SCHEME_RE = /^[a-z][a-z0-9+.-]*:\/\//i;
+
+  // Returns a URL object for an acceptable http(s) address, otherwise null.
+  // "example.com" is accepted and treated as "https://example.com".
+  function parseWebsite(value) {
+    if (/\s/.test(value)) return null;
+    var url;
+    try {
+      url = new URL(HAS_SCHEME_RE.test(value) ? value : 'https://' + value);
+    } catch (e) {
+      return null;
+    }
+    if (url.protocol !== 'http:' && url.protocol !== 'https:') return null;
+    if (url.username || url.password) return null;
+    if (!HOST_RE.test(url.hostname)) return null;
+    return url;
+  }
+
+  // Each rule: `empty` is shown when a required field is blank;
+  // `check` returns an error message, or '' when the value is fine.
+  var rules = {
+    fullName: {
+      empty: 'Enter your full name.',
+      check: function (v) {
+        if (v.length < 2) return 'Your name must be at least 2 characters long.';
+        if (v.length > 100) return 'Your name must be 100 characters or fewer.';
+        if (!/\p{L}/u.test(v)) return 'Your name must contain at least one letter.';
+        return '';
+      }
+    },
+    email: {
+      empty: 'Enter your email address.',
+      check: function (v) {
+        var local = v.slice(0, v.lastIndexOf('@'));
+        var ok = v.length <= 254 &&
+                 EMAIL_RE.test(v) &&
+                 local.length <= 64 &&
+                 !/^\.|\.\.|\.$/.test(local);
+        return ok ? '' : 'Enter a valid email address, like name@example.com.';
+      }
+    },
+    website: {
+      empty: 'Enter your website address.',
+      check: function (v) {
+        if (v.length > 2048) return 'That web address is too long.';
+        return parseWebsite(v) ? '' : 'Enter a valid web address, like https://example.com.';
+      }
+    },
+    password: {
+      empty: 'Choose a password.',
+      check: function (v) {
+        if (v.length < 8) return 'Your password must be at least 8 characters long.';
+        if (v.length > 128) return 'Your password must be 128 characters or fewer.';
+        if (!/\p{L}/u.test(v) || !/\d/.test(v)) {
+          return 'Your password must include at least one letter and one number.';
+        }
+        return '';
+      }
+    }
+  };
+
+  // Passwords are checked exactly as typed; everything else is trimmed.
+  function getValue(input) {
+    return input.name === 'password' ? input.value : input.value.trim();
+  }
+
+  function setError(input, message) {
+    document.getElementById(input.id + '-error').textContent = message;
+    if (message) {
+      input.setAttribute('aria-invalid', 'true');
+    } else {
+      input.removeAttribute('aria-invalid');
+    }
+  }
+
+  // Validates one field, updates its message, and returns true when valid.
+  // With `commit`, tidy the stored value (trim, add https://) as well.
+  function validateField(input, commit) {
+    var rule = rules[input.name];
+    var value = getValue(input);
+    var message = '';
+
+    if (value === '') {
+      message = input.required ? rule.empty : '';
+    } else {
+      message = rule.check(value);
+    }
+
+    setError(input, message);
+
+    if (commit && !message && input.name !== 'password') {
+      input.value = (input.name === 'website' && value !== '')
+        ? parseWebsite(value).href
+        : value;
+    }
+
+    return message === '';
+  }
+
+  function setStatus(message, kind) {
+    statusEl.textContent = message;
+    statusEl.className = 'status' + (kind ? ' is-' + kind : '');
+  }
+
+  function setPasswordVisible(visible) {
+    var password = document.getElementById('password');
+    password.type = visible ? 'text' : 'password';
+    toggle.textContent = visible ? 'Hide' : 'Show';
+    toggle.setAttribute('aria-pressed', String(visible));
+    toggle.setAttribute('aria-label', visible ? 'Hide password' : 'Show password');
+  }
+
+  toggle.addEventListener('click', function () {
+    setPasswordVisible(toggle.getAttribute('aria-pressed') !== 'true');
+  });
+
+  // When leaving a field: check it if something was typed or it was already flagged.
+  form.addEventListener('focusout', function (event) {
+    var input = event.target;
+    if (!rules[input.name]) return;
+    if (getValue(input) !== '' || input.getAttribute('aria-invalid') === 'true') {
+      validateField(input, true);
+    }
+  });
+
+  // While typing: once a field is flagged, clear the error as soon as it is fixed.
+  form.addEventListener('input', function (event) {
+    var input = event.target;
+    if (!rules[input.name]) return;
+    if (input.getAttribute('aria-invalid') === 'true') {
+      validateField(input, false);
+    }
+  });
+
+  form.addEventListener('submit', function (event) {
+    var invalid = inputs.filter(function (input) {
+      return !validateField(input, true);
+    });
+
+    if (invalid.length > 0) {
+      event.preventDefault();
+      setStatus(
+        invalid.length === 1
+          ? 'Please fix the highlighted field.'
+          : 'Please fix the ' + invalid.length + ' highlighted fields.',
+        'error'
+      );
+      invalid[0].focus();
+      return;
+    }
+
+    // All fields are valid. This page has no server behind it, so the
+    // submission stops here and a confirmation is shown instead. To send the
+    // data for real, give the <form> an action and method and delete the
+    // lines below (or replace them with a fetch() call). Client-side checks
+    // are a convenience only: always validate again on the server.
+    event.preventDefault();
+    var name = getValue(form.elements.fullName);
+    form.reset();
+    setPasswordVisible(false);
+    setStatus('Thanks, ' + name + '. Your details are valid and ready to be sent.', 'success');
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Registro</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    padding: 2rem 1rem;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #1c2330;
+    background: #f2f4f8;
+  }
+
+  main {
+    max-width: 30rem;
+    margin: 0 auto;
+    padding: 2rem;
+    background: #fff;
+    border: 1px solid #d9dee7;
+    border-radius: 12px;
+  }
+
+  h1 {
+    margin: 0 0 1.5rem;
+    font-size: 1.5rem;
+    line-height: 1.2;
+  }
+
+  .campo { margin-bottom: 1.25rem; }
+
+  label {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-weight: 600;
+  }
+
+  .opcional {
+    font-weight: 400;
+    color: #5a6475;
+  }
+
+  input {
+    display: block;
+    width: 100%;
+    padding: 0.6rem 0.75rem;
+    font: inherit;
+    color: inherit;
+    background: #fff;
+    border: 1px solid #8792a5;
+    border-radius: 8px;
+  }
+
+  input:focus-visible {
+    outline: 3px solid #9cc2ff;
+    outline-offset: 1px;
+    border-color: #1f5fd1;
+  }
+
+  input[aria-invalid="true"] {
+    border-color: #b3261e;
+    background: #fff7f6;
+  }
+
+  .ayuda {
+    margin: 0.3rem 0 0;
+    font-size: 0.875rem;
+    color: #5a6475;
+  }
+
+  .error {
+    display: block;
+    margin-top: 0.3rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #b3261e;
+    overflow-wrap: anywhere;
+  }
+
+  .error:empty { display: none; }
+
+  button {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    font: inherit;
+    font-weight: 600;
+    color: #fff;
+    background: #1f5fd1;
+    border: 0;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  button:hover { background: #184caa; }
+
+  button:focus-visible {
+    outline: 3px solid #9cc2ff;
+    outline-offset: 2px;
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1>Crear una cuenta</h1>
+
+  <!-- Indica en "action" la URL que debe recibir los datos. -->
+  <form id="registro" action="" method="post" novalidate>
+
+    <div class="campo">
+      <label for="nombre">Nombre completo</label>
+      <input type="text" id="nombre" name="nombre" autocomplete="name"
+             aria-describedby="error-nombre" required>
+      <span class="error" id="error-nombre" aria-live="polite"></span>
+    </div>
+
+    <div class="campo">
+      <label for="correo">Dirección de correo electrónico</label>
+      <!--
+        type="text" y no type="email": los navegadores no tratan igual las
+        direcciones internacionalizadas (Chromium reescribe el dominio en
+        Punycode, WebKit lo rechaza y los tres rechazan una parte local con
+        Unicode). La comprobación se hace en el script de esta página.
+      -->
+      <input type="text" id="correo" name="correo" inputmode="email"
+             autocomplete="email" autocapitalize="none" autocorrect="off"
+             spellcheck="false" aria-describedby="ayuda-correo error-correo" required>
+      <p class="ayuda" id="ayuda-correo">
+        Se aceptan direcciones internacionales, por ejemplo josé.dupont@société.fr
+      </p>
+      <span class="error" id="error-correo" aria-live="polite"></span>
+    </div>
+
+    <div class="campo">
+      <label for="web">Sitio web <span class="opcional">(opcional)</span></label>
+      <input type="url" id="web" name="web" autocomplete="url"
+             autocapitalize="none" autocorrect="off" spellcheck="false"
+             placeholder="https://ejemplo.es" aria-describedby="error-web">
+      <span class="error" id="error-web" aria-live="polite"></span>
+    </div>
+
+    <div class="campo">
+      <label for="clave">Contraseña</label>
+      <input type="password" id="clave" name="clave" autocomplete="new-password"
+             aria-describedby="ayuda-clave error-clave" required>
+      <p class="ayuda" id="ayuda-clave">Mínimo 8 caracteres.</p>
+      <span class="error" id="error-clave" aria-live="polite"></span>
+    </div>
+
+    <!--
+      Formas ASCII (A-labels, IDNA/UTS #46) para búsquedas DNS o claves de
+      almacenamiento. Los campos visibles conservan lo que la persona escribió.
+    -->
+    <input type="hidden" id="correo-ascii" name="correo_ascii">
+    <input type="hidden" id="web-ascii" name="web_ascii">
+
+    <button type="submit">Registrarse</button>
+  </form>
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  var CLAVE_MINIMA = 8;
+
+  var formulario = document.getElementById('registro');
+  var campos = {
+    nombre: document.getElementById('nombre'),
+    correo: document.getElementById('correo'),
+    web: document.getElementById('web'),
+    clave: document.getElementById('clave')
+  };
+  var correoAscii = document.getElementById('correo-ascii');
+  var webAscii = document.getElementById('web-ascii');
+
+  /* ---------- Nombres de dominio ---------- */
+
+  // Convierte un dominio (U-labels o A-labels) a su forma ASCII con el
+  // analizador de URL del navegador, que aplica UTS #46. Devuelve null si
+  // el dominio no se puede convertir.
+  function dominioAAscii(dominio) {
+    if (dominio === '' || /[\s\/\\?#@:%\[\]]/u.test(dominio)) {
+      return null;
+    }
+    try {
+      return new URL('http://' + dominio + '/').hostname;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // Comprueba un nombre de host ya convertido a ASCII: etiquetas de 1 a 63
+  // octetos, 253 como máximo en total y un TLD de dos o más letras (sin
+  // límite superior) o una A-label "xn--".
+  function hostAsciiValido(host) {
+    if (host.endsWith('.')) {
+      host = host.slice(0, -1); // punto raíz final
+    }
+    if (host.length === 0 || host.length > 253) {
+      return false;
+    }
+    var etiquetas = host.toLowerCase().split('.');
+    if (etiquetas.length < 2) {
+      return false;
+    }
+    for (var i = 0; i < etiquetas.length; i++) {
+      var etiqueta = etiquetas[i];
+      if (etiqueta.length < 1 || etiqueta.length > 63 ||
+          etiqueta.startsWith('-') || etiqueta.endsWith('-')) {
+        return false;
+      }
+    }
+    var tld = etiquetas[etiquetas.length - 1];
+    if (tld.startsWith('xn--')) {
+      return tld.length > 4;
+    }
+    return /^[a-z]{2,}$/.test(tld);
+  }
+
+  /* ---------- Validadores: devuelven { error, ascii } ---------- */
+
+  function validarNombre(valor) {
+    if (valor.trim() === '') {
+      return { error: 'Introduce tu nombre completo.' };
+    }
+    return { error: '' };
+  }
+
+  // Comprobación mínima: una sola arroba, parte local no vacía y sin
+  // espacios (se admite Unicode, "+", "'", etc.) y un dominio válido.
+  function validarCorreo(valor) {
+    var correo = valor.trim();
+    if (correo === '') {
+      return { error: 'Introduce tu dirección de correo electrónico.' };
+    }
+    if (/\s/u.test(correo)) {
+      return { error: 'La dirección de correo no puede contener espacios.' };
+    }
+    var partes = correo.split('@');
+    if (partes.length !== 2) {
+      return { error: 'La dirección debe contener una sola arroba (@).' };
+    }
+    var local = partes[0];
+    var dominio = partes[1];
+    if (local === '') {
+      return { error: 'Falta la parte anterior a la arroba (@).' };
+    }
+    if (dominio === '') {
+      return { error: 'Falta el dominio después de la arroba (@).' };
+    }
+    var ascii = dominio.endsWith('.') ? null : dominioAAscii(dominio);
+    if (ascii === null || !hostAsciiValido(ascii)) {
+      return {
+        error: 'El dominio «' + dominio + '» no es válido. Ejemplo: nombre@ejemplo.es'
+      };
+    }
+    return { error: '', ascii: local + '@' + ascii };
+  }
+
+  function validarWeb(valor) {
+    var texto = valor.trim();
+    if (texto === '') {
+      return { error: '', ascii: '' }; // campo opcional
+    }
+    var mensaje = 'Introduce una dirección web válida, por ejemplo https://ejemplo.es';
+    if (/\s/u.test(texto)) {
+      return { error: 'La dirección web no puede contener espacios.' };
+    }
+    // Se admite "ejemplo.es" sin esquema: se asume https.
+    var conEsquema = /^[a-z][a-z0-9+.\-]*:\/\//i.test(texto) ? texto : 'https://' + texto;
+    var url;
+    try {
+      url = new URL(conEsquema);
+    } catch (e) {
+      return { error: mensaje };
+    }
+    if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+      return { error: 'La dirección web debe empezar por http:// o https://' };
+    }
+    if (!hostAsciiValido(url.hostname)) {
+      return { error: mensaje };
+    }
+    return { error: '', ascii: url.href };
+  }
+
+  function validarClave(valor) {
+    if (valor === '') {
+      return { error: 'Introduce una contraseña.' };
+    }
+    if (Array.from(valor).length < CLAVE_MINIMA) {
+      return { error: 'La contraseña debe tener al menos ' + CLAVE_MINIMA + ' caracteres.' };
+    }
+    return { error: '' };
+  }
+
+  var validadores = {
+    nombre: validarNombre,
+    correo: validarCorreo,
+    web: validarWeb,
+    clave: validarClave
+  };
+
+  /* ---------- Presentación de errores ---------- */
+
+  function mostrarResultado(clave, resultado) {
+    var campo = campos[clave];
+    var zonaError = document.getElementById('error-' + clave);
+    zonaError.textContent = resultado.error;
+    if (resultado.error) {
+      campo.setAttribute('aria-invalid', 'true');
+    } else {
+      campo.removeAttribute('aria-invalid');
+    }
+  }
+
+  function validarCampo(clave) {
+    var resultado = validadores[clave](campos[clave].value);
+    mostrarResultado(clave, resultado);
+    return resultado;
+  }
+
+  Object.keys(campos).forEach(function (clave) {
+    var campo = campos[clave];
+
+    // Al salir de un campo ya rellenado, se comprueba.
+    campo.addEventListener('blur', function () {
+      if (campo.value !== '') {
+        validarCampo(clave);
+      }
+    });
+
+    // Si el campo estaba marcado como no válido, se vuelve a comprobar al escribir.
+    campo.addEventListener('input', function () {
+      if (campo.getAttribute('aria-invalid') === 'true') {
+        validarCampo(clave);
+      }
+    });
+  });
+
+  /* ---------- Envío ---------- */
+
+  formulario.addEventListener('submit', function (evento) {
+    var primerNoValido = null;
+    var resultados = {};
+
+    Object.keys(campos).forEach(function (clave) {
+      resultados[clave] = validarCampo(clave);
+      if (resultados[clave].error && primerNoValido === null) {
+        primerNoValido = campos[clave];
+      }
+    });
+
+    if (primerNoValido !== null) {
+      evento.preventDefault();
+      primerNoValido.focus();
+      return;
+    }
+
+    // Todo es válido: se añaden las formas ASCII y el formulario se envía.
+    correoAscii.value = resultados.correo.ascii || '';
+    webAscii.value = resultados.web.ascii || '';
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sign up</title>
+<style>
+  :root {
+    --bg: #f4f5f7;
+    --card: #ffffff;
+    --text: #1c1e21;
+    --muted: #5f6672;
+    --border: #c5cad3;
+    --accent: #1f5fd1;
+    --error: #b3261e;
+    --success: #1b6e3c;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #15171a;
+      --card: #1f2226;
+      --text: #eceef1;
+      --muted: #a1a8b3;
+      --border: #4a505a;
+      --accent: #7aa7ff;
+      --error: #ff8a80;
+      --success: #7fd6a0;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 2rem 1rem;
+    background: var(--bg);
+    color: var(--text);
+    font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  main {
+    max-width: 26rem;
+    margin: 0 auto;
+    padding: 2rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+  h1 { margin: 0 0 1.5rem; font-size: 1.5rem; }
+  .field { margin-bottom: 1.25rem; }
+  label { display: block; margin-bottom: 0.3rem; font-weight: 600; }
+  .optional { font-weight: 400; color: var(--muted); }
+  input[type="text"], input[type="url"], input[type="password"] {
+    width: 100%;
+    padding: 0.6rem 0.7rem;
+    font: inherit;
+    color: inherit;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .field.invalid input[type="text"],
+  .field.invalid input[type="url"],
+  .field.invalid input[type="password"] { border-color: var(--error); }
+  .hint, .error { margin: 0.3rem 0 0; font-size: 0.875rem; }
+  .hint { color: var(--muted); }
+  .error { color: var(--error); }
+  .error:empty { display: none; }
+  .toggle { display: inline-flex; align-items: center; gap: 0.4rem; margin-top: 0.4rem; font-weight: 400; font-size: 0.875rem; }
+  button {
+    width: 100%;
+    padding: 0.7rem;
+    font: inherit;
+    font-weight: 600;
+    color: #fff;
+    background: #1f5fd1;
+    border: 0;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  #form-status { margin: 1rem 0 0; color: var(--success); font-weight: 600; }
+  #form-status:empty { display: none; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Create your account</h1>
+
+  <!-- novalidate: validation and error messages are handled by the script below. -->
+  <form id="signup" method="post" novalidate>
+
+    <div class="field">
+      <label for="name">Full name</label>
+      <input id="name" name="name" type="text" autocomplete="name" required aria-describedby="name-error">
+      <p class="error" id="name-error" aria-live="polite"></p>
+    </div>
+
+    <div class="field">
+      <label for="email">Email address</label>
+      <!-- type="text" on purpose: type="email" rejects or rewrites internationalized
+           addresses (Unicode local parts and domains) depending on the browser. -->
+      <input id="email" name="email" type="text" inputmode="email" autocomplete="email"
+             autocapitalize="off" autocorrect="off" spellcheck="false" required aria-describedby="email-error">
+      <p class="error" id="email-error" aria-live="polite"></p>
+    </div>
+
+    <div class="field">
+      <label for="website">Website <span class="optional">(optional)</span></label>
+      <input id="website" name="website" type="url" inputmode="url" autocomplete="url"
+             autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="https://"
+             aria-describedby="website-error">
+      <p class="error" id="website-error" aria-live="polite"></p>
+    </div>
+
+    <div class="field">
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password" autocomplete="new-password" required
+             aria-describedby="password-hint password-error">
+      <p class="hint" id="password-hint">At least 8 characters.</p>
+      <p class="error" id="password-error" aria-live="polite"></p>
+      <label class="toggle"><input type="checkbox" id="show-password"> Show password</label>
+    </div>
+
+    <!-- The visible fields keep exactly what the user typed. These carry the same values
+         with the domain converted to A-labels (IDNA / UTS #46), for DNS lookups and
+         storage keys. The server must redo this conversion rather than trust the client. -->
+    <input type="hidden" id="email_ascii" name="email_ascii">
+    <input type="hidden" id="website_ascii" name="website_ascii">
+
+    <button type="submit">Sign up</button>
+    <p id="form-status" role="status"></p>
+  </form>
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  var form = document.getElementById('signup');
+  var status = document.getElementById('form-status');
+
+  // ---- Domain names -------------------------------------------------------
+
+  // Characters that would make the URL parser read something other than a host.
+  var NOT_HOST = /[\s\/\\?#:@%\[\]]/;
+  // One label in A-label (ASCII) form: 1–63 letters, digits or hyphens, no edge hyphen.
+  var LABEL = /^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/;
+  // TLD: two or more letters (no upper cap beyond the 63-octet label limit),
+  // or an A-label such as xn--p1ai (.рф).
+  var TLD = /^(?:[a-z]{2,}|xn--[a-z0-9-]+)$/;
+
+  // Checks a host name that is already in lower-case ASCII form.
+  function isHostname(host) {
+    if (!host || host.length > 253) return false;
+    var labels = host.split('.');
+    if (labels.length < 2) return false;
+    for (var i = 0; i < labels.length; i++) {
+      if (!LABEL.test(labels[i])) return false;
+    }
+    return TLD.test(labels[labels.length - 1]);
+  }
+
+  // Converts a domain (U-labels or A-labels, any case) to its A-label form using
+  // the browser's URL parser, which applies UTS #46. Returns null if it is not valid.
+  function domainToAscii(domain) {
+    if (!domain || NOT_HOST.test(domain)) return null;
+    var host;
+    try {
+      host = new URL('http://' + domain).hostname;
+    } catch (e) {
+      return null;
+    }
+    return isHostname(host) ? host : null;
+  }
+
+  // ---- Field checks: each returns { error } or { ascii } ------------------
+
+  function checkName(raw) {
+    if (!raw.trim()) return { error: 'Enter your full name.' };
+    return {};
+  }
+
+  function checkEmail(raw) {
+    var value = raw.trim();
+    if (!value) return { error: 'Enter your email address.' };
+    if (/\s/.test(value)) return { error: 'An email address cannot contain spaces.' };
+
+    var at = value.indexOf('@');
+    if (at === -1 || at !== value.lastIndexOf('@')) {
+      return { error: 'An email address has exactly one “@”, as in name@example.com.' };
+    }
+    var local = value.slice(0, at);     // any non-space characters, Unicode included
+    var domain = value.slice(at + 1);
+    if (!local) return { error: 'Add the part before the “@”.' };
+    if (!domain) return { error: 'Add the domain after the “@”, as in name@example.com.' };
+
+    var host = domainToAscii(domain);
+    if (!host) return { error: 'The part after the “@” is not a valid domain name.' };
+
+    return { ascii: local + '@' + host };
+  }
+
+  function checkWebsite(raw) {
+    var value = raw.trim();
+    if (!value) return { ascii: '' };   // optional field
+    if (/\s/.test(value)) return { error: 'A web address cannot contain spaces.' };
+
+    var hasScheme = /^[a-z][a-z0-9+.-]*:\/\//i.test(value);
+    var url;
+    try {
+      url = new URL(hasScheme ? value : 'https://' + value);
+    } catch (e) {
+      return { error: 'Enter a valid web address, such as https://example.com.' };
+    }
+    if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+      return { error: 'The web address must start with http:// or https://.' };
+    }
+    if (url.username || url.password) {
+      return { error: 'The web address must not contain a user name or password.' };
+    }
+    // url.hostname is already in A-label form.
+    if (!isHostname(url.hostname)) {
+      return { error: 'Enter a valid web address, such as https://example.com.' };
+    }
+    return { ascii: url.href };
+  }
+
+  function checkPassword(raw) {
+    if (!raw) return { error: 'Choose a password.' };
+    if (Array.from(raw).length < 8) return { error: 'Use at least 8 characters.' };
+    return {};
+  }
+
+  // ---- Wiring -------------------------------------------------------------
+
+  var checks = {
+    name: checkName,
+    email: checkEmail,
+    website: checkWebsite,
+    password: checkPassword
+  };
+  var fieldIds = Object.keys(checks);
+
+  function validateField(id) {
+    var input = document.getElementById(id);
+    var result = checks[id](input.value);
+    var invalid = Boolean(result.error);
+
+    document.getElementById(id + '-error').textContent = result.error || '';
+    input.setAttribute('aria-invalid', invalid ? 'true' : 'false');
+    input.closest('.field').classList.toggle('invalid', invalid);
+
+    var hidden = document.getElementById(id + '_ascii');
+    if (hidden) hidden.value = invalid ? '' : (result.ascii || '');
+
+    return !invalid;
+  }
+
+  fieldIds.forEach(function (id) {
+    var input = document.getElementById(id);
+    input.addEventListener('blur', function () {
+      // Don't flag a field the user has merely tabbed through.
+      if (input.value || input.getAttribute('aria-invalid') === 'true') validateField(id);
+    });
+    input.addEventListener('input', function () {
+      status.textContent = '';
+      // Once a field is marked invalid, clear the error as soon as it is fixed.
+      if (input.getAttribute('aria-invalid') === 'true') validateField(id);
+    });
+  });
+
+  document.getElementById('show-password').addEventListener('change', function (event) {
+    document.getElementById('password').type = event.target.checked ? 'text' : 'password';
+  });
+
+  form.addEventListener('submit', function (event) {
+    status.textContent = '';
+    var firstInvalid = null;
+
+    fieldIds.forEach(function (id) {
+      if (!validateField(id) && !firstInvalid) firstInvalid = document.getElementById(id);
+    });
+
+    if (firstInvalid) {
+      event.preventDefault();
+      firstInvalid.focus();
+      return;
+    }
+
+    // All fields are valid. With an action attribute on the form, the browser now
+    // submits it normally. Without one (this standalone page), just confirm.
+    if (!form.hasAttribute('action')) {
+      event.preventDefault();
+      status.textContent = 'Everything looks good. Your account can be created.';
+    }
+  });
+})();
+</script>
+</body>
+</html>

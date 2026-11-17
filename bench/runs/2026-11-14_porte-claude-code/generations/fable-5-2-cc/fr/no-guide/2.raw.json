@@ -1,0 +1,99 @@
+{
+  "duration_api_ms": 93858,
+  "stop_reason": "end_turn",
+  "total_cost_usd": 0.4573052,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 3411,
+    "cache_read_input_tokens": 14766,
+    "output_tokens": 9994,
+    "output_tokens_details": {
+      "thinking_tokens": 5587
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 3411,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 9994,
+        "cache_read_input_tokens": 14766,
+        "cache_creation_input_tokens": 3411,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 3411
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-fable-5-2": {
+      "inputTokens": 2,
+      "outputTokens": 9994,
+      "cacheReadInputTokens": 14766,
+      "cacheCreationInputTokens": 3411,
+      "webSearchRequests": 0,
+      "costUSD": 0.4573052,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 5587,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 3411,
+      "canonicalModel": "claude-fable-5-2",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+    "spawned": 0,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 0
+    },
+    "started_in_background": 0,
+    "max_depth": 0,
+    "spawned_by_subagents": 0,
+    "completed": 0,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {}
+  },
+  "safety_stops": 0,
+  "is_error": false,
+  "num_turns": 1,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "```html\n<!DOCTYPE html>\n<html lang=\"fr\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<title>Inscription</title>\n<style>\n  :root {\n    --bg: #f3f4f6;\n    --card: #ffffff;\n    --text: #1b1f24;\n    --muted: #5b6370;\n    --border: #8a919c;\n    --accent: #1d4ed8;\n    --accent-text: #ffffff;\n    --error: #b42318;\n    --success-bg: #e7f6ec;\n    --success-text: #14532d;\n    --success-border: #2e7d4f;\n  }\n\n  @media (prefers-color-scheme: dark) {\n    :root {\n      --bg: #14161a;\n      --card: #1e2126;\n      --text: #e8eaed;\n      --muted: #a3a9b3;\n      --border: #737b87;\n      --accent: #8ab4ff;\n      --accent-text: #10131a;\n      --error: #ff9b8f;\n      --success-bg: #15301f;\n      --success-text: #b7ecc8;\n      --success-border: #4caf7a;\n    }\n  }\n\n  *, *::before, *::after { box-sizing: border-box; }\n\n  body {\n    margin: 0;\n    min-height: 100vh;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    padding: 1.5rem 1rem;\n    background: var(--bg);\n    color: var(--text);\n    font-family: system-ui, -apple-system, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif;\n    line-height: 1.5;\n  }\n\n  .card {\n    width: 100%;\n    max-width: 26rem;\n    padding: 2rem 1.75rem;\n    background: var(--card);\n    border-radius: 0.75rem;\n    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 8px 24px rgba(0, 0, 0, 0.08);\n  }\n\n  h1 {\n    margin: 0 0 0.25rem;\n    font-size: 1.5rem;\n    line-height: 1.25;\n  }\n\n  .intro {\n    margin: 0 0 1.25rem;\n    color: var(--muted);\n    font-size: 0.9375rem;\n  }\n\n  .field { margin-bottom: 0.5rem; }\n\n  label {\n    display: block;\n    margin-bottom: 0.3rem;\n    font-weight: 600;\n    font-size: 0.9375rem;\n  }\n\n  input {\n    width: 100%;\n    padding: 0.6rem 0.75rem;\n    border: 1px solid var(--border);\n    border-radius: 0.4rem;\n    background: var(--card);\n    color: var(--text);\n    font: inherit;\n    font-size: 1rem;\n  }\n\n  input::placeholder { color: var(--muted); opacity: 0.8; }\n\n  input:focus-visible,\n  button:focus-visible {\n    outline: 3px solid var(--accent);\n    outline-offset: 2px;\n  }\n\n  input[aria-invalid=\"true\"] {\n    border-color: var(--error);\n    box-shadow: 0 0 0 1px var(--error);\n  }\n\n  .password-row {\n    display: flex;\n    gap: 0.5rem;\n  }\n\n  .password-row input { flex: 1; min-width: 0; }\n\n  .toggle {\n    flex: none;\n    min-width: 5.5rem;\n    padding: 0 0.75rem;\n    border: 1px solid var(--border);\n    border-radius: 0.4rem;\n    background: transparent;\n    color: var(--text);\n    font: inherit;\n    font-size: 0.875rem;\n    cursor: pointer;\n  }\n\n  .hint {\n    margin: 0.3rem 0 0;\n    color: var(--muted);\n    font-size: 0.8125rem;\n  }\n\n  /* L'emplacement du message est réservé pour éviter les sauts de mise en page. */\n  .error {\n    margin: 0.25rem 0 0;\n    min-height: 1.3rem;\n    color: var(--error);\n    font-size: 0.8125rem;\n    font-weight: 600;\n    line-height: 1.3rem;\n  }\n\n  .error:not(:empty)::before { content: \"⚠ \"; }\n\n  .submit {\n    width: 100%;\n    margin-top: 0.5rem;\n    padding: 0.7rem 1rem;\n    border: 0;\n    border-radius: 0.4rem;\n    background: var(--accent);\n    color: var(--accent-text);\n    font: inherit;\n    font-weight: 600;\n    cursor: pointer;\n  }\n\n  .submit:hover { filter: brightness(1.1); }\n\n  .success { margin: 0; }\n\n  .success:not(:empty) {\n    margin-bottom: 1.25rem;\n    padding: 0.75rem 1rem;\n    border: 1px solid var(--success-border);\n    border-radius: 0.4rem;\n    background: var(--success-bg);\n    color: var(--success-text);\n    font-size: 0.9375rem;\n  }\n</style>\n</head>\n<body>\n<main class=\"card\">\n  <h1>Créer un compte</h1>\n  <p class=\"intro\">Tous les champs sont obligatoires.</p>\n\n  <p class=\"success\" id=\"success\" role=\"status\"></p>\n\n  <!-- Ajoutez les attributs action et method pour envoyer réellement les données à un serveur. -->\n  <form id=\"signup-form\" novalidate>\n    <div class=\"field\">\n      <label for=\"fullname\">Nom complet</label>\n      <input type=\"text\" id=\"fullname\" name=\"fullname\" autocomplete=\"name\"\n             required aria-describedby=\"fullname-error\">\n      <p class=\"error\" id=\"fullname-error\" aria-live=\"polite\"></p>\n    </div>\n\n    <div class=\"field\">\n      <label for=\"email\">Adresse e-mail</label>\n      <input type=\"email\" id=\"email\" name=\"email\" autocomplete=\"email\"\n             placeholder=\"prenom.nom@exemple.fr\"\n             required aria-describedby=\"email-error\">\n      <p class=\"error\" id=\"email-error\" aria-live=\"polite\"></p>\n    </div>\n\n    <div class=\"field\">\n      <label for=\"website\">Site web</label>\n      <input type=\"url\" id=\"website\" name=\"website\" autocomplete=\"url\"\n             placeholder=\"https://exemple.fr\"\n             required aria-describedby=\"website-error\">\n      <p class=\"error\" id=\"website-error\" aria-live=\"polite\"></p>\n    </div>\n\n    <div class=\"field\">\n      <label for=\"password\">Mot de passe</label>\n      <div class=\"password-row\">\n        <input type=\"password\" id=\"password\" name=\"password\" autocomplete=\"new-password\"\n               required aria-describedby=\"password-hint password-error\">\n        <button type=\"button\" class=\"toggle\" id=\"toggle-password\"\n                aria-controls=\"password\" aria-label=\"Afficher le mot de passe\">Afficher</button>\n      </div>\n      <p class=\"hint\" id=\"password-hint\">Au moins 8 caractères, dont une lettre et un chiffre.</p>\n      <p class=\"error\" id=\"password-error\" aria-live=\"polite\"></p>\n    </div>\n\n    <button type=\"submit\" class=\"submit\">S’inscrire</button>\n  </form>\n</main>\n\n<script>\n(function () {\n  'use strict';\n\n  const form = document.getElementById('signup-form');\n  const success = document.getElementById('success');\n  const toggle = document.getElementById('toggle-password');\n  const fields = ['fullname', 'email', 'website', 'password'].map(function (id) {\n    return document.getElementById(id);\n  });\n\n  // Analyse l'adresse du site ; accepte « exemple.fr » en ajoutant https://.\n  // Renvoie un objet URL si l'adresse est valide, sinon null.\n  function parseWebsite(raw) {\n    const value = raw.trim();\n    if (!value || /\\s/.test(value)) return null;\n\n    const candidate = /^https?:\\/\\//i.test(value) ? value : 'https://' + value;\n    let url;\n    try {\n      url = new URL(candidate);\n    } catch (e) {\n      return null;\n    }\n    if (url.username || url.password) return null;\n\n    const labels = url.hostname.split('.');\n    if (labels.length < 2) return null;\n    const labelsValid = labels.every(function (label) {\n      return /^[a-z0-9]([a-z0-9-]*[a-z0-9])?$/i.test(label);\n    });\n    if (!labelsValid) return null;\n\n    const tld = labels[labels.length - 1];\n    if (tld.length < 2 || !/[a-z]/i.test(tld)) return null;\n\n    return url;\n  }\n\n  // Chaque validateur renvoie un message d'erreur, ou une chaîne vide si la valeur est valide.\n  const validators = {\n    fullname: function (value) {\n      const v = value.trim();\n      if (!v) return 'Veuillez saisir votre nom complet.';\n      if (v.length < 2 || !/\\p{L}/u.test(v)) return 'Ce nom ne semble pas valide.';\n      if (v.length > 100) return 'Le nom ne doit pas dépasser 100 caractères.';\n      return '';\n    },\n\n    email: function (value) {\n      const v = value.trim();\n      if (!v) return 'Veuillez saisir votre adresse e-mail.';\n      if (v.length > 254 || !/^[^\\s@]+@[^\\s@.]+(\\.[^\\s@.]+)*\\.[^\\s@.]{2,}$/.test(v)) {\n        return 'Adresse e-mail invalide (exemple : nom@exemple.fr).';\n      }\n      return '';\n    },\n\n    website: function (value) {\n      if (!value.trim()) return 'Veuillez saisir l’adresse de votre site web.';\n      if (!parseWebsite(value)) return 'Adresse invalide (exemple : https://exemple.fr).';\n      return '';\n    },\n\n    password: function (value) {\n      if (!value) return 'Veuillez choisir un mot de passe.';\n      if (value.length < 8) return 'Le mot de passe doit contenir au moins 8 caractères.';\n      if (!/\\p{L}/u.test(value) || !/\\d/.test(value)) {\n        return 'Le mot de passe doit contenir au moins une lettre et un chiffre.';\n      }\n      return '';\n    }\n  };\n\n  function setError(input, message) {\n    document.getElementById(input.id + '-error').textContent = message;\n    if (message) {\n      input.setAttribute('aria-invalid', 'true');\n    } else {\n      input.removeAttribute('aria-invalid');\n    }\n  }\n\n  function validateField(input) {\n    const message = validators[input.id](input.value);\n    setError(input, message);\n    return !message;\n  }\n\n  function setPasswordVisible(visible) {\n    const password = document.getElementById('password');\n    password.type = visible ? 'text' : 'password';\n    toggle.textContent = visible ? 'Masquer' : 'Afficher';\n    toggle.setAttribute('aria-label', (visible ? 'Masquer' : 'Afficher') + ' le mot de passe');\n  }\n\n  fields.forEach(function (input) {\n    // À la sortie du champ : on valide seulement si quelque chose a été saisi.\n    input.addEventListener('blur', function () {\n      if (input.value !== '') validateField(input);\n    });\n\n    // Pendant la saisie : l'erreur disparaît dès que la valeur devient valide.\n    input.addEventListener('input', function () {\n      success.textContent = '';\n      if (input.getAttribute('aria-invalid') === 'true') validateField(input);\n    });\n  });\n\n  toggle.addEventListener('click', function () {\n    setPasswordVisible(document.getElementById('password').type === 'password');\n  });\n\n  form.addEventListener('submit', function (event) {\n    let firstInvalid = null;\n    fields.forEach(function (input) {\n      if (!validateField(input) && !firstInvalid) firstInvalid = input;\n    });\n\n    if (firstInvalid) {\n      event.preventDefault();\n      success.textContent = '';\n      firstInvalid.focus();\n      return;\n    }\n\n    // Normalisation des valeurs avant l'envoi.\n    const fullname = document.getElementById('fullname');\n    const email = document.getElementById('email');\n    const website = document.getElementById('website');\n    fullname.value = fullname.value.trim().replace(/\\s+/g, ' ');\n    email.value = email.value.trim();\n    website.value = parseWebsite(website.value).href;\n\n    // Si le formulaire possède un attribut action, l'envoi natif se poursuit.\n    if (form.hasAttribute('action')) return;\n\n    // Sinon (page de démonstration sans serveur), on affiche une confirmation.\n    event.preventDefault();\n    const name = fullname.value;\n    form.reset();\n    setPasswordVisible(false);\n    fields.forEach(function (input) { setError(input, ''); });\n    success.textContent = 'Merci, ' + name + ' ! Toutes les informations sont valides.';\n  });\n})();\n</script>\n</body>\n</html>\n```",
+  "ttft_ms": 62282,
+  "type": "result",
+  "duration_ms": 94088,
+  "ttft_stream_ms": 828,
+  "time_to_request_ms": 229,
+  "first_content_frame_ms": 828,
+  "queued_turn_count": 0,
+  "result_index": 0
+}

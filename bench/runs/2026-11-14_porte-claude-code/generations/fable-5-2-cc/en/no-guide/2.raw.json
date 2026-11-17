@@ -1,0 +1,99 @@
+{
+  "duration_api_ms": 108216,
+  "stop_reason": "end_turn",
+  "total_cost_usd": 0.49963820000000003,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 3410,
+    "cache_read_input_tokens": 14711,
+    "output_tokens": 11053,
+    "output_tokens_details": {
+      "thinking_tokens": 6068
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 3410,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 11053,
+        "cache_read_input_tokens": 14711,
+        "cache_creation_input_tokens": 3410,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 3410
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-fable-5-2": {
+      "inputTokens": 2,
+      "outputTokens": 11053,
+      "cacheReadInputTokens": 14711,
+      "cacheCreationInputTokens": 3410,
+      "webSearchRequests": 0,
+      "costUSD": 0.49963820000000003,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 6068,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 3410,
+      "canonicalModel": "claude-fable-5-2",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+    "spawned": 0,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 0
+    },
+    "started_in_background": 0,
+    "max_depth": 0,
+    "spawned_by_subagents": 0,
+    "completed": 0,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {}
+  },
+  "safety_stops": 0,
+  "is_error": false,
+  "num_turns": 1,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "```html\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<meta name=\"color-scheme\" content=\"light dark\">\n<title>Create your account</title>\n<style>\n  :root {\n    --bg: #f3f4f7;\n    --card: #ffffff;\n    --text: #1c1f26;\n    --muted: #5b6270;\n    --border: #b9bfcb;\n    --accent: #2f5bd8;\n    --accent-hover: #2449b3;\n    --accent-text: #ffffff;\n    --error: #b42318;\n    --error-bg: #fef3f2;\n    --success: #17663a;\n    --success-bg: #ecfdf3;\n    --focus: rgba(47, 91, 216, 0.35);\n  }\n\n  @media (prefers-color-scheme: dark) {\n    :root {\n      --bg: #121418;\n      --card: #1c1f26;\n      --text: #eceef2;\n      --muted: #a3aab8;\n      --border: #4a5160;\n      --accent: #7c9cf5;\n      --accent-hover: #9bb3f8;\n      --accent-text: #10131a;\n      --error: #ffa094;\n      --error-bg: #3a1c19;\n      --success: #86e0ab;\n      --success-bg: #14301f;\n      --focus: rgba(124, 156, 245, 0.45);\n    }\n  }\n\n  *, *::before, *::after { box-sizing: border-box; }\n\n  body {\n    margin: 0;\n    min-height: 100vh;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    padding: 24px 16px;\n    background: var(--bg);\n    color: var(--text);\n    font: 16px/1.5 system-ui, -apple-system, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif;\n  }\n\n  .card {\n    width: 100%;\n    max-width: 440px;\n    padding: 32px 28px;\n    background: var(--card);\n    border-radius: 12px;\n    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.06);\n  }\n\n  h1 {\n    margin: 0 0 4px;\n    font-size: 1.5rem;\n    line-height: 1.25;\n  }\n\n  .intro {\n    margin: 0 0 24px;\n    color: var(--muted);\n  }\n\n  .field { margin-bottom: 18px; }\n\n  label {\n    display: block;\n    margin-bottom: 6px;\n    font-weight: 600;\n  }\n\n  .optional {\n    font-weight: 400;\n    color: var(--muted);\n  }\n\n  input {\n    display: block;\n    width: 100%;\n    padding: 10px 12px;\n    font: inherit;\n    color: inherit;\n    background: transparent;\n    border: 1px solid var(--border);\n    border-radius: 8px;\n  }\n\n  input:focus-visible,\n  button:focus-visible {\n    outline: 3px solid var(--focus);\n    outline-offset: 1px;\n    border-color: var(--accent);\n  }\n\n  input[aria-invalid=\"true\"] {\n    border-color: var(--error);\n    box-shadow: 0 0 0 1px var(--error);\n  }\n\n  .password-wrap { position: relative; }\n  .password-wrap input { padding-right: 76px; }\n\n  .toggle {\n    position: absolute;\n    top: 50%;\n    right: 6px;\n    transform: translateY(-50%);\n    min-width: 60px;\n    padding: 5px 8px;\n    font: inherit;\n    font-size: 0.875rem;\n    font-weight: 600;\n    color: var(--accent);\n    background: none;\n    border: 1px solid transparent;\n    border-radius: 6px;\n    cursor: pointer;\n  }\n\n  .hint {\n    margin: 6px 0 0;\n    font-size: 0.875rem;\n    color: var(--muted);\n  }\n\n  .error {\n    display: block;\n    margin-top: 6px;\n    font-size: 0.875rem;\n    font-weight: 600;\n    color: var(--error);\n  }\n\n  .error:empty { display: none; }\n\n  .error::before {\n    content: \"\\26A0\\FE0E\\00A0\";\n  }\n\n  .submit {\n    width: 100%;\n    margin-top: 6px;\n    padding: 12px 16px;\n    font: inherit;\n    font-weight: 600;\n    color: var(--accent-text);\n    background: var(--accent);\n    border: 1px solid transparent;\n    border-radius: 8px;\n    cursor: pointer;\n  }\n\n  .submit:hover { background: var(--accent-hover); }\n\n  .status {\n    margin: 0 0 18px;\n    padding: 10px 12px;\n    border-radius: 8px;\n    font-weight: 600;\n    overflow-wrap: anywhere;\n  }\n\n  .status:empty { display: none; }\n  .status.is-error { color: var(--error); background: var(--error-bg); }\n  .status.is-success { color: var(--success); background: var(--success-bg); }\n</style>\n</head>\n<body>\n  <main class=\"card\">\n    <h1>Create your account</h1>\n    <p class=\"intro\">It only takes a minute.</p>\n\n    <!--\n      novalidate turns off the browser's built-in validation bubbles so the\n      JavaScript below controls every message. The `required` attribute is\n      still read by the script: add it to the website input to make that\n      field mandatory, or remove it from another input to make it optional.\n    -->\n    <form id=\"signup-form\" novalidate>\n      <p id=\"form-status\" class=\"status\" role=\"status\" aria-live=\"polite\"></p>\n\n      <div class=\"field\">\n        <label for=\"fullName\">Full name</label>\n        <input type=\"text\" id=\"fullName\" name=\"fullName\" required\n               autocomplete=\"name\" autocapitalize=\"words\" spellcheck=\"false\"\n               aria-describedby=\"fullName-error\">\n        <span class=\"error\" id=\"fullName-error\" aria-live=\"polite\"></span>\n      </div>\n\n      <div class=\"field\">\n        <label for=\"email\">Email address</label>\n        <input type=\"email\" id=\"email\" name=\"email\" required\n               autocomplete=\"email\" autocapitalize=\"none\" spellcheck=\"false\"\n               inputmode=\"email\" aria-describedby=\"email-error\">\n        <span class=\"error\" id=\"email-error\" aria-live=\"polite\"></span>\n      </div>\n\n      <div class=\"field\">\n        <label for=\"website\">Website <span class=\"optional\">(optional)</span></label>\n        <input type=\"url\" id=\"website\" name=\"website\"\n               autocomplete=\"url\" autocapitalize=\"none\" spellcheck=\"false\"\n               inputmode=\"url\" placeholder=\"https://example.com\"\n               aria-describedby=\"website-error\">\n        <span class=\"error\" id=\"website-error\" aria-live=\"polite\"></span>\n      </div>\n\n      <div class=\"field\">\n        <label for=\"password\">Password</label>\n        <div class=\"password-wrap\">\n          <input type=\"password\" id=\"password\" name=\"password\" required\n                 autocomplete=\"new-password\" autocapitalize=\"none\" spellcheck=\"false\"\n                 aria-describedby=\"password-hint password-error\">\n          <button type=\"button\" class=\"toggle\" id=\"password-toggle\"\n                  aria-controls=\"password\" aria-pressed=\"false\"\n                  aria-label=\"Show password\">Show</button>\n        </div>\n        <p class=\"hint\" id=\"password-hint\">At least 8 characters, with a letter and a number.</p>\n        <span class=\"error\" id=\"password-error\" aria-live=\"polite\"></span>\n      </div>\n\n      <button type=\"submit\" class=\"submit\">Create account</button>\n    </form>\n  </main>\n\n<script>\n(function () {\n  'use strict';\n\n  var form = document.getElementById('signup-form');\n  var statusEl = document.getElementById('form-status');\n  var toggle = document.getElementById('password-toggle');\n  var inputs = Array.prototype.slice.call(form.querySelectorAll('input[name]'));\n\n  var EMAIL_RE = /^[a-z0-9.!#$%&'*+\\/=?^_`{|}~-]+@[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)+$/i;\n  // Hostname with at least one dot and an alphabetic (or punycode) top-level domain.\n  var HOST_RE = /^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\\.)+(?:[a-z]{2,63}|xn--[a-z0-9-]{1,59})$/i;\n  var HAS_SCHEME_RE = /^[a-z][a-z0-9+.-]*:\\/\\//i;\n\n  // Returns a URL object for an acceptable http(s) address, otherwise null.\n  // \"example.com\" is accepted and treated as \"https://example.com\".\n  function parseWebsite(value) {\n    if (/\\s/.test(value)) return null;\n    var url;\n    try {\n      url = new URL(HAS_SCHEME_RE.test(value) ? value : 'https://' + value);\n    } catch (e) {\n      return null;\n    }\n    if (url.protocol !== 'http:' && url.protocol !== 'https:') return null;\n    if (url.username || url.password) return null;\n    if (!HOST_RE.test(url.hostname)) return null;\n    return url;\n  }\n\n  // Each rule: `empty` is shown when a required field is blank;\n  // `check` returns an error message, or '' when the value is fine.\n  var rules = {\n    fullName: {\n      empty: 'Enter your full name.',\n      check: function (v) {\n        if (v.length < 2) return 'Your name must be at least 2 characters long.';\n        if (v.length > 100) return 'Your name must be 100 characters or fewer.';\n        if (!/\\p{L}/u.test(v)) return 'Your name must contain at least one letter.';\n        return '';\n      }\n    },\n    email: {\n      empty: 'Enter your email address.',\n      check: function (v) {\n        var local = v.slice(0, v.lastIndexOf('@'));\n        var ok = v.length <= 254 &&\n                 EMAIL_RE.test(v) &&\n                 local.length <= 64 &&\n                 !/^\\.|\\.\\.|\\.$/.test(local);\n        return ok ? '' : 'Enter a valid email address, like name@example.com.';\n      }\n    },\n    website: {\n      empty: 'Enter your website address.',\n      check: function (v) {\n        if (v.length > 2048) return 'That web address is too long.';\n        return parseWebsite(v) ? '' : 'Enter a valid web address, like https://example.com.';\n      }\n    },\n    password: {\n      empty: 'Choose a password.',\n      check: function (v) {\n        if (v.length < 8) return 'Your password must be at least 8 characters long.';\n        if (v.length > 128) return 'Your password must be 128 characters or fewer.';\n        if (!/\\p{L}/u.test(v) || !/\\d/.test(v)) {\n          return 'Your password must include at least one letter and one number.';\n        }\n        return '';\n      }\n    }\n  };\n\n  // Passwords are checked exactly as typed; everything else is trimmed.\n  function getValue(input) {\n    return input.name === 'password' ? input.value : input.value.trim();\n  }\n\n  function setError(input, message) {\n    document.getElementById(input.id + '-error').textContent = message;\n    if (message) {\n      input.setAttribute('aria-invalid', 'true');\n    } else {\n      input.removeAttribute('aria-invalid');\n    }\n  }\n\n  // Validates one field, updates its message, and returns true when valid.\n  // With `commit`, tidy the stored value (trim, add https://) as well.\n  function validateField(input, commit) {\n    var rule = rules[input.name];\n    var value = getValue(input);\n    var message = '';\n\n    if (value === '') {\n      message = input.required ? rule.empty : '';\n    } else {\n      message = rule.check(value);\n    }\n\n    setError(input, message);\n\n    if (commit && !message && input.name !== 'password') {\n      input.value = (input.name === 'website' && value !== '')\n        ? parseWebsite(value).href\n        : value;\n    }\n\n    return message === '';\n  }\n\n  function setStatus(message, kind) {\n    statusEl.textContent = message;\n    statusEl.className = 'status' + (kind ? ' is-' + kind : '');\n  }\n\n  function setPasswordVisible(visible) {\n    var password = document.getElementById('password');\n    password.type = visible ? 'text' : 'password';\n    toggle.textContent = visible ? 'Hide' : 'Show';\n    toggle.setAttribute('aria-pressed', String(visible));\n    toggle.setAttribute('aria-label', visible ? 'Hide password' : 'Show password');\n  }\n\n  toggle.addEventListener('click', function () {\n    setPasswordVisible(toggle.getAttribute('aria-pressed') !== 'true');\n  });\n\n  // When leaving a field: check it if something was typed or it was already flagged.\n  form.addEventListener('focusout', function (event) {\n    var input = event.target;\n    if (!rules[input.name]) return;\n    if (getValue(input) !== '' || input.getAttribute('aria-invalid') === 'true') {\n      validateField(input, true);\n    }\n  });\n\n  // While typing: once a field is flagged, clear the error as soon as it is fixed.\n  form.addEventListener('input', function (event) {\n    var input = event.target;\n    if (!rules[input.name]) return;\n    if (input.getAttribute('aria-invalid') === 'true') {\n      validateField(input, false);\n    }\n  });\n\n  form.addEventListener('submit', function (event) {\n    var invalid = inputs.filter(function (input) {\n      return !validateField(input, true);\n    });\n\n    if (invalid.length > 0) {\n      event.preventDefault();\n      setStatus(\n        invalid.length === 1\n          ? 'Please fix the highlighted field.'\n          : 'Please fix the ' + invalid.length + ' highlighted fields.',\n        'error'\n      );\n      invalid[0].focus();\n      return;\n    }\n\n    // All fields are valid. This page has no server behind it, so the\n    // submission stops here and a confirmation is shown instead. To send the\n    // data for real, give the <form> an action and method and delete the\n    // lines below (or replace them with a fetch() call). Client-side checks\n    // are a convenience only: always validate again on the server.\n    event.preventDefault();\n    var name = getValue(form.elements.fullName);\n    form.reset();\n    setPasswordVisible(false);\n    setStatus('Thanks, ' + name + '. Your details are valid and ready to be sent.', 'success');\n  });\n})();\n</script>\n</body>\n</html>\n```",
+  "ttft_ms": 70292,
+  "type": "result",
+  "duration_ms": 108353,
+  "ttft_stream_ms": 2726,
+  "time_to_request_ms": 135,
+  "first_content_frame_ms": 2726,
+  "queued_turn_count": 0,
+  "result_index": 0
+}

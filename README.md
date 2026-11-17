@@ -158,6 +158,8 @@ Three models (`anthropic/claude-opus-5.5`, `openai/gpt-6-astra`, `z-ai/glm-5.3`)
 
 What this measures is one-shot generation through an API: no tools, no correction loop, no existing codebase. It shows what the guide changes in code a model writes from a prompt; what it changes for an agent at work in a real project is not measured here.
 
+A first look at the agent gate is in [`bench/runs/2026-11-14_porte-claude-code/`](bench/runs/2026-11-14_porte-claude-code/README.md): Claude Fable 5.2 writing the same page as a Claude Code agent in an empty folder, `GUIDE.md` given as the folder's `CLAUDE.md`, 18 pages. 96.5 % of cases pass with the prompt alone, 99.9 % with the guide. It is another model at another gate, so it does not separate the effect of the gate from that of the model, and still no existing codebase.
+
 The 82 cases of a page go through the same two fields and the same script: they are not 82 independent trials, and the page is the unit to count first. Pages where all 82 cases pass, out of 27 per condition: **1 with the prompt alone, 19 with the guide.**
 
 | model | pages where the 82 cases pass, prompt alone | with `GUIDE.md` |

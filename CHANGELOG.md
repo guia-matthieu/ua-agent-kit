@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- **Run of 2026-11-14** (`bench/runs/2026-11-14_porte-claude-code/`): the page written by Claude Fable 5.2 as a Claude Code agent (`claude -p` in an empty folder, `GUIDE.md` as `CLAUDE.md`), same prompts, battery and runner. 18 pages: 96.5 % of cases pass without the guide, 99.9 % with it. `cost.csv` gives the API-equivalent price of each page from Claude Code's token counters, with Claude Code's own input apart.
+
 ## 0.2.0 — 2026-10-14
 
 - **TLD packs 0.2.0** (`battery/packs/tld/`): one file of cases per TLD, filed by kind of TLD and not by country. Six to start with, 62 cases in all: `geotld/bzh`, `geotld/corsica`, `geotld/alsace`, `geotld/paris`, `geotld/eus` and `cctld/fr` (accented names). Scored apart: the standard battery, its totals and the two commands are unchanged. Accented names on the geoTLDs are labelled as syntax cases. See `battery/packs/README.md`.

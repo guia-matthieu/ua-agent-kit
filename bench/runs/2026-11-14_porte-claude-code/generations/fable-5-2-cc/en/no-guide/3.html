@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Create your account</title>
+<style>
+  :root {
+    --bg: #f4f5f7;
+    --card: #ffffff;
+    --text: #1a1d21;
+    --muted: #5c6470;
+    --border: #c4c9d1;
+    --accent: #2f5fe0;
+    --accent-text: #ffffff;
+    --error: #b42318;
+    --error-bg: #fef3f2;
+    --success: #0b6b3a;
+    --success-bg: #e9f7ef;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #121417;
+      --card: #1c1f24;
+      --text: #eceef1;
+      --muted: #a2a9b4;
+      --border: #4a515c;
+      --accent: #7fa2ff;
+      --accent-text: #0d1220;
+      --error: #ff8f85;
+      --error-bg: #3a1a17;
+      --success: #7fdca6;
+      --success-bg: #12301f;
+    }
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+    background: var(--bg);
+    color: var(--text);
+    font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  main {
+    width: 100%;
+    max-width: 440px;
+    padding: 32px 28px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+
+  h1 {
+    margin: 0 0 4px;
+    font-size: 1.5rem;
+    line-height: 1.25;
+  }
+
+  .intro {
+    margin: 0 0 24px;
+    color: var(--muted);
+  }
+
+  .field { margin-bottom: 20px; }
+
+  label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+
+  .optional {
+    font-weight: 400;
+    color: var(--muted);
+  }
+
+  input {
+    width: 100%;
+    padding: 10px 12px;
+    font: inherit;
+    color: inherit;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+
+  input:focus-visible,
+  button:focus-visible,
+  .status:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  input[aria-invalid="true"] {
+    border-color: var(--error);
+    background: var(--error-bg);
+  }
+
+  .password-wrap { position: relative; }
+  .password-wrap input { padding-right: 68px; }
+
+  .toggle {
+    position: absolute;
+    top: 50%;
+    right: 6px;
+    transform: translateY(-50%);
+    padding: 4px 10px;
+    font: inherit;
+    font-size: 0.875rem;
+    color: var(--accent);
+    background: transparent;
+    border: 0;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  .hint,
+  .error {
+    margin: 0;
+    font-size: 0.875rem;
+  }
+
+  .hint {
+    margin-top: 6px;
+    color: var(--muted);
+  }
+
+  .error {
+    color: var(--error);
+    font-weight: 500;
+  }
+
+  .error:not(:empty) { margin-top: 6px; }
+
+  .submit {
+    width: 100%;
+    margin-top: 4px;
+    padding: 12px 16px;
+    font: inherit;
+    font-weight: 600;
+    color: var(--accent-text);
+    background: var(--accent);
+    border: 0;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .submit:hover { filter: brightness(1.08); }
+
+  .status {
+    margin: 0 0 20px;
+    padding: 12px 14px;
+    color: var(--success);
+    background: var(--success-bg);
+    border: 1px solid currentColor;
+    border-radius: 8px;
+  }
+
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Create your account</h1>
+  <p class="intro">Fill in the details below to sign up.</p>
+
+  <div id="form-status" class="status" role="status" tabindex="-1" hidden></div>
+
+  <form id="signup-form" novalidate>
+    <div class="field">
+      <label for="name">Full name</label>
+      <input type="text" id="name" name="name" autocomplete="name"
+             aria-required="true" aria-describedby="name-error">
+      <p class="error" id="name-error" aria-live="polite"></p>
+    </div>
+
+    <div class="field">
+      <label for="email">Email address</label>
+      <input type="email" id="email" name="email" autocomplete="email"
+             autocapitalize="none" spellcheck="false"
+             aria-required="true" aria-describedby="email-error">
+      <p class="error" id="email-error" aria-live="polite"></p>
+    </div>
+
+    <div class="field">
+      <label for="website">Website <span class="optional">(optional)</span></label>
+      <input type="url" id="website" name="website" autocomplete="url"
+             autocapitalize="none" spellcheck="false" placeholder="https://example.com"
+             aria-describedby="website-error">
+      <p class="error" id="website-error" aria-live="polite"></p>
+    </div>
+
+    <div class="field">
+      <label for="password">Password</label>
+      <div class="password-wrap">
+        <input type="password" id="password" name="password" autocomplete="new-password"
+               aria-required="true" aria-describedby="password-hint password-error">
+        <button type="button" class="toggle" id="password-toggle"
+                aria-controls="password" aria-pressed="false">Show</button>
+      </div>
+      <p class="hint" id="password-hint">At least 8 characters, with at least one letter and one number.</p>
+      <p class="error" id="password-error" aria-live="polite"></p>
+    </div>
+
+    <button type="submit" class="submit">Sign up</button>
+  </form>
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  var HOSTNAME_RE = /^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+(?:[a-z]{2,63}|xn--[a-z0-9-]{1,59})$/i;
+  var EMAIL_LOCAL_RE = /^[A-Za-z0-9.!#$%&'*+\/=?^_`{|}~-]+$/;
+  var HAS_SCHEME_RE = /^[a-z][a-z0-9+.-]*:\/\//i;
+
+  // Returns the address with a scheme if it is a valid http(s) URL, otherwise null.
+  function parseWebsite(raw) {
+    var value = raw.trim();
+    if (/\s/.test(value)) return null;
+
+    var withScheme = HAS_SCHEME_RE.test(value) ? value : 'https://' + value;
+    var url;
+    try {
+      url = new URL(withScheme);
+    } catch (e) {
+      return null;
+    }
+
+    if (url.protocol !== 'http:' && url.protocol !== 'https:') return null;
+    if (url.username || url.password) return null;
+    if (!HOSTNAME_RE.test(url.hostname)) return null;
+    return withScheme;
+  }
+
+  // Each validator returns an error message, or an empty string when the value is valid.
+  var validators = {
+    name: function (raw) {
+      var value = raw.trim();
+      if (!value) return 'Enter your full name.';
+      if (value.length < 2) return 'Name must be at least 2 characters.';
+      if (value.length > 100) return 'Name must be 100 characters or fewer.';
+      if (!/\p{L}/u.test(value)) return 'Name must contain at least one letter.';
+      return '';
+    },
+
+    email: function (raw) {
+      var value = raw.trim();
+      var invalid = 'Enter a valid email address, like name@example.com.';
+      if (!value) return 'Enter your email address.';
+      if (value.length > 254) return 'Email address must be 254 characters or fewer.';
+
+      var at = value.lastIndexOf('@');
+      if (at < 1) return invalid;
+
+      var local = value.slice(0, at);
+      var domain = value.slice(at + 1);
+      if (local.length > 64 || !EMAIL_LOCAL_RE.test(local)) return invalid;
+      if (local.charAt(0) === '.' || local.charAt(local.length - 1) === '.' || local.indexOf('..') !== -1) return invalid;
+      if (!HOSTNAME_RE.test(domain)) return invalid;
+      return '';
+    },
+
+    website: function (raw) {
+      var value = raw.trim();
+      if (!value) return ''; // optional field
+      if (value.length > 2048) return 'Web address must be 2048 characters or fewer.';
+      if (!parseWebsite(value)) return 'Enter a valid web address, like https://example.com.';
+      return '';
+    },
+
+    password: function (value) {
+      // Not trimmed: spaces are legitimate password characters.
+      if (!value) return 'Enter a password.';
+      if (value.length < 8) return 'Password must be at least 8 characters.';
+      if (value.length > 128) return 'Password must be 128 characters or fewer.';
+      if (!/\p{L}/u.test(value) || !/\d/.test(value)) {
+        return 'Password must include at least one letter and one number.';
+      }
+      return '';
+    }
+  };
+
+  var form = document.getElementById('signup-form');
+  var status = document.getElementById('form-status');
+  var toggle = document.getElementById('password-toggle');
+
+  var fields = Object.keys(validators).map(function (key) {
+    return {
+      key: key,
+      input: document.getElementById(key),
+      error: document.getElementById(key + '-error'),
+      validate: validators[key]
+    };
+  });
+
+  function setError(field, message) {
+    field.error.textContent = message;
+    if (message) {
+      field.input.setAttribute('aria-invalid', 'true');
+    } else {
+      field.input.removeAttribute('aria-invalid');
+    }
+  }
+
+  function validateField(field) {
+    var message = field.validate(field.input.value);
+    setError(field, message);
+    return !message;
+  }
+
+  fields.forEach(function (field) {
+    // On blur, check fields the user has filled in; empty required fields are reported on submit.
+    field.input.addEventListener('blur', function () {
+      if (field.key === 'website') {
+        var normalized = parseWebsite(field.input.value);
+        if (field.input.value.trim() && normalized) field.input.value = normalized;
+      }
+      if (field.input.value || field.input.hasAttribute('aria-invalid')) {
+        validateField(field);
+      }
+    });
+
+    // Once an error is showing, re-check as the user types so it clears as soon as it is fixed.
+    field.input.addEventListener('input', function () {
+      if (field.input.hasAttribute('aria-invalid')) validateField(field);
+    });
+  });
+
+  function setPasswordVisible(visible) {
+    var password = document.getElementById('password');
+    password.type = visible ? 'text' : 'password';
+    toggle.textContent = visible ? 'Hide' : 'Show';
+    toggle.setAttribute('aria-pressed', String(visible));
+  }
+
+  toggle.addEventListener('click', function () {
+    setPasswordVisible(toggle.getAttribute('aria-pressed') !== 'true');
+  });
+
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+    status.hidden = true;
+
+    var invalid = fields.filter(function (field) {
+      return !validateField(field);
+    });
+
+    if (invalid.length) {
+      invalid[0].input.focus();
+      return;
+    }
+
+    var data = {
+      name: form.elements.name.value.trim(),
+      email: form.elements.email.value.trim(),
+      website: form.elements.website.value.trim() ? parseWebsite(form.elements.website.value) : '',
+      password: form.elements.password.value
+    };
+
+    // All fields are valid. Send `data` to your server here (and validate it again
+    // on the server: client-side checks can always be bypassed).
+    status.textContent = 'Thanks, ' + data.name + '! Your account has been created.';
+    status.hidden = false;
+    form.reset();
+    setPasswordVisible(false);
+    status.focus();
+  });
+})();
+</script>
+</body>
+</html>

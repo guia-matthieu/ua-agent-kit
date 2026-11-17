@@ -1,0 +1,99 @@
+{
+  "duration_api_ms": 74962,
+  "stop_reason": "end_turn",
+  "total_cost_usd": 0.3721852,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 3411,
+    "cache_read_input_tokens": 14766,
+    "output_tokens": 7866,
+    "output_tokens_details": {
+      "thinking_tokens": 3684
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 3411,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 7866,
+        "cache_read_input_tokens": 14766,
+        "cache_creation_input_tokens": 3411,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 3411
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-fable-5-2": {
+      "inputTokens": 2,
+      "outputTokens": 7866,
+      "cacheReadInputTokens": 14766,
+      "cacheCreationInputTokens": 3411,
+      "webSearchRequests": 0,
+      "costUSD": 0.3721852,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 3684,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 3411,
+      "canonicalModel": "claude-fable-5-2",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+    "spawned": 0,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 0
+    },
+    "started_in_background": 0,
+    "max_depth": 0,
+    "spawned_by_subagents": 0,
+    "completed": 0,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {}
+  },
+  "safety_stops": 0,
+  "is_error": false,
+  "num_turns": 1,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "```html\n<!DOCTYPE html>\n<html lang=\"fr\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<title>Inscription</title>\n<style>\n  :root {\n    color-scheme: light dark;\n    --bg: #f3f4f8;\n    --card: #ffffff;\n    --text: #1c1f2a;\n    --muted: #5b6172;\n    --border: #b9bfcc;\n    --accent: #2f55d4;\n    --accent-text: #ffffff;\n    --error: #b3261e;\n    --error-bg: #fdf1f0;\n    --success: #1b6e3c;\n    --success-bg: #eaf6ee;\n  }\n  @media (prefers-color-scheme: dark) {\n    :root {\n      --bg: #12141b;\n      --card: #1c1f2a;\n      --text: #eceef4;\n      --muted: #a4abbd;\n      --border: #4a5064;\n      --accent: #8ea6ff;\n      --accent-text: #10131c;\n      --error: #ff8a80;\n      --error-bg: #3a1f1e;\n      --success: #7fd6a0;\n      --success-bg: #1a3325;\n    }\n  }\n\n  *, *::before, *::after { box-sizing: border-box; }\n\n  body {\n    margin: 0;\n    min-height: 100vh;\n    display: grid;\n    place-items: center;\n    padding: 1.5rem;\n    background: var(--bg);\n    color: var(--text);\n    font: 16px/1.5 system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif;\n  }\n\n  main {\n    width: 100%;\n    max-width: 28rem;\n    padding: 2rem;\n    background: var(--card);\n    border-radius: 12px;\n    box-shadow: 0 4px 24px rgba(0, 0, 0, .08);\n  }\n\n  h1 { margin: 0 0 .25rem; font-size: 1.5rem; }\n  .intro { margin: 0 0 1.5rem; color: var(--muted); font-size: .9rem; }\n\n  .field { margin-bottom: 1.1rem; }\n\n  label { display: block; margin-bottom: .3rem; font-weight: 600; }\n  .required { color: var(--error); }\n  .optional { font-weight: 400; color: var(--muted); }\n\n  input {\n    width: 100%;\n    padding: .6rem .75rem;\n    font: inherit;\n    color: inherit;\n    background: transparent;\n    border: 1px solid var(--border);\n    border-radius: 8px;\n  }\n  input:focus-visible,\n  button:focus-visible {\n    outline: 3px solid var(--accent);\n    outline-offset: 2px;\n  }\n  input[aria-invalid=\"true\"] {\n    border-color: var(--error);\n    background: var(--error-bg);\n  }\n\n  .password-row { display: flex; gap: .5rem; }\n  .password-row input { flex: 1; min-width: 0; }\n\n  .toggle {\n    padding: 0 .8rem;\n    font: inherit;\n    font-size: .875rem;\n    color: inherit;\n    background: transparent;\n    border: 1px solid var(--border);\n    border-radius: 8px;\n    cursor: pointer;\n  }\n\n  .hint, .error { margin: .3rem 0 0; font-size: .875rem; }\n  .hint { color: var(--muted); }\n  .error { color: var(--error); font-weight: 600; }\n  .error::before { content: \"⚠ \"; }\n  .error:empty { display: none; }\n\n  .submit {\n    width: 100%;\n    margin-top: .5rem;\n    padding: .75rem 1rem;\n    font: inherit;\n    font-weight: 600;\n    color: var(--accent-text);\n    background: var(--accent);\n    border: 0;\n    border-radius: 8px;\n    cursor: pointer;\n  }\n  .submit:hover { filter: brightness(1.08); }\n\n  .success {\n    margin: 0 0 1.25rem;\n    padding: .75rem 1rem;\n    color: var(--success);\n    background: var(--success-bg);\n    border: 1px solid currentColor;\n    border-radius: 8px;\n    font-weight: 600;\n  }\n  .success:empty { display: none; }\n</style>\n</head>\n<body>\n<main>\n  <h1>Créer un compte</h1>\n  <p class=\"intro\">Les champs marqués d'un <span class=\"required\">*</span> sont obligatoires.</p>\n\n  <p class=\"success\" id=\"success\" role=\"status\" tabindex=\"-1\"></p>\n\n  <!--\n    Sans attribut « action », la page fonctionne en mode démonstration :\n    un message de confirmation s'affiche une fois le formulaire valide.\n    Ajoutez action=\"/votre-url\" pour que le formulaire soit réellement\n    envoyé (en POST) après validation.\n  -->\n  <form id=\"signup\" method=\"post\" novalidate>\n    <div class=\"field\">\n      <label for=\"name\">Nom complet <span class=\"required\" aria-hidden=\"true\">*</span></label>\n      <input type=\"text\" id=\"name\" name=\"name\" autocomplete=\"name\" maxlength=\"100\"\n             required aria-describedby=\"name-error\">\n      <p class=\"error\" id=\"name-error\"></p>\n    </div>\n\n    <div class=\"field\">\n      <label for=\"email\">Adresse e-mail <span class=\"required\" aria-hidden=\"true\">*</span></label>\n      <input type=\"email\" id=\"email\" name=\"email\" autocomplete=\"email\" maxlength=\"254\"\n             inputmode=\"email\" autocapitalize=\"off\" spellcheck=\"false\"\n             required aria-describedby=\"email-error\">\n      <p class=\"error\" id=\"email-error\"></p>\n    </div>\n\n    <div class=\"field\">\n      <label for=\"website\">Site web <span class=\"optional\">(facultatif)</span></label>\n      <input type=\"url\" id=\"website\" name=\"website\" autocomplete=\"url\" maxlength=\"2000\"\n             inputmode=\"url\" autocapitalize=\"off\" spellcheck=\"false\"\n             placeholder=\"https://exemple.fr\" aria-describedby=\"website-error\">\n      <p class=\"error\" id=\"website-error\"></p>\n    </div>\n\n    <div class=\"field\">\n      <label for=\"password\">Mot de passe <span class=\"required\" aria-hidden=\"true\">*</span></label>\n      <div class=\"password-row\">\n        <input type=\"password\" id=\"password\" name=\"password\" autocomplete=\"new-password\"\n               required aria-describedby=\"password-hint password-error\">\n        <button type=\"button\" class=\"toggle\" id=\"toggle-password\"\n                aria-controls=\"password\" aria-pressed=\"false\">Afficher</button>\n      </div>\n      <p class=\"hint\" id=\"password-hint\">Au moins 8 caractères, dont une lettre et un chiffre.</p>\n      <p class=\"error\" id=\"password-error\"></p>\n    </div>\n\n    <button type=\"submit\" class=\"submit\">S'inscrire</button>\n  </form>\n</main>\n\n<script>\n(function () {\n  'use strict';\n\n  var form = document.getElementById('signup');\n  var success = document.getElementById('success');\n  var toggle = document.getElementById('toggle-password');\n  var submitted = false;\n\n  // Pour chaque champ : normalisation de la saisie, puis validation.\n  // validate() renvoie un message d'erreur, ou une chaîne vide si tout va bien.\n  var rules = {\n    name: {\n      normalize: function (v) { return v.trim().replace(/\\s+/g, ' '); },\n      validate: function (v) {\n        if (!v) return 'Saisissez votre nom complet.';\n        if (v.length < 2 || !/\\p{L}/u.test(v)) return 'Ce nom ne semble pas valide.';\n        return '';\n      }\n    },\n\n    email: {\n      normalize: function (v) { return v.trim(); },\n      validate: function (v) {\n        if (!v) return 'Saisissez votre adresse e-mail.';\n        if (!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]{2,}$/.test(v)) {\n          return 'Saisissez une adresse e-mail valide, par exemple nom@exemple.fr.';\n        }\n        return '';\n      }\n    },\n\n    website: {\n      // « exemple.fr » devient « https://exemple.fr »\n      normalize: function (v) {\n        v = v.trim();\n        if (v && !/^[a-z][a-z0-9+.-]*:\\/\\//i.test(v)) v = 'https://' + v;\n        return v;\n      },\n      validate: function (v) {\n        if (!v) return ''; // champ facultatif\n        var invalid = 'Saisissez une adresse web valide, par exemple https://exemple.fr.';\n        if (/\\s/.test(v)) return invalid;\n        var url;\n        try { url = new URL(v); } catch (e) { return invalid; }\n        if (url.protocol !== 'http:' && url.protocol !== 'https:') {\n          return 'L\\'adresse doit commencer par http:// ou https://.';\n        }\n        var host = url.hostname;\n        if (url.username || url.password ||\n            host.indexOf('.') < 1 || host.charAt(host.length - 1) === '.') {\n          return invalid;\n        }\n        return '';\n      }\n    },\n\n    password: {\n      normalize: function (v) { return v; }, // on ne modifie jamais un mot de passe\n      validate: function (v) {\n        if (!v) return 'Saisissez un mot de passe.';\n        if (v.length < 8) return 'Le mot de passe doit contenir au moins 8 caractères.';\n        if (!/\\p{L}/u.test(v) || !/\\d/.test(v)) {\n          return 'Le mot de passe doit contenir au moins une lettre et un chiffre.';\n        }\n        return '';\n      }\n    }\n  };\n\n  var names = Object.keys(rules);\n\n  function showError(input, message) {\n    var error = document.getElementById(input.id + '-error');\n    error.textContent = message;\n    if (message) {\n      input.setAttribute('aria-invalid', 'true');\n    } else {\n      input.removeAttribute('aria-invalid');\n    }\n  }\n\n  // Valide un champ ; si « commit » est vrai, la valeur normalisée\n  // est réécrite dans le champ (à éviter pendant la frappe).\n  function validateField(name, commit) {\n    var input = form.elements[name];\n    var value = rules[name].normalize(input.value);\n    if (commit && value !== input.value) input.value = value;\n    var message = rules[name].validate(value);\n    showError(input, message);\n    return !message;\n  }\n\n  names.forEach(function (name) {\n    var input = form.elements[name];\n\n    // À la sortie du champ : on valide s'il a été rempli\n    // (ou si un envoi a déjà été tenté).\n    input.addEventListener('blur', function () {\n      if (submitted || input.value !== '') validateField(name, true);\n    });\n\n    // Pendant la frappe : on met à jour une erreur déjà affichée.\n    input.addEventListener('input', function () {\n      success.textContent = '';\n      if (input.getAttribute('aria-invalid') === 'true') validateField(name, false);\n    });\n  });\n\n  function setPasswordVisible(visible) {\n    form.elements.password.type = visible ? 'text' : 'password';\n    toggle.setAttribute('aria-pressed', String(visible));\n    toggle.textContent = visible ? 'Masquer' : 'Afficher';\n  }\n\n  toggle.addEventListener('click', function () {\n    setPasswordVisible(form.elements.password.type === 'password');\n  });\n\n  form.addEventListener('submit', function (event) {\n    submitted = true;\n    success.textContent = '';\n\n    var firstInvalid = null;\n    names.forEach(function (name) {\n      if (!validateField(name, true) && !firstInvalid) {\n        firstInvalid = form.elements[name];\n      }\n    });\n\n    if (firstInvalid) {\n      event.preventDefault();\n      firstInvalid.focus();\n      return;\n    }\n\n    // Formulaire valide : envoi réel si une « action » est définie.\n    setPasswordVisible(false);\n    if (form.hasAttribute('action')) return;\n\n    // Sinon, mode démonstration.\n    event.preventDefault();\n    var fullName = form.elements.name.value;\n    form.reset();\n    submitted = false;\n    success.textContent = 'Merci ' + fullName + ', votre inscription est validée.';\n    success.focus();\n  });\n})();\n</script>\n</body>\n</html>\n```",
+  "ttft_ms": 43516,
+  "type": "result",
+  "duration_ms": 75202,
+  "ttft_stream_ms": 2522,
+  "time_to_request_ms": 236,
+  "first_content_frame_ms": 2522,
+  "queued_turn_count": 0,
+  "result_index": 0
+}

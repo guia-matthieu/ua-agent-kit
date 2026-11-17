@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inscription</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #f4f5f7;
+    --card: #ffffff;
+    --text: #1c1f24;
+    --muted: #5d6673;
+    --border: #b9c0ca;
+    --accent: #1d5fd1;
+    --error: #b3261e;
+    --ok: #1b6e3c;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #15171a;
+      --card: #1f2227;
+      --text: #eceef1;
+      --muted: #a3acb8;
+      --border: #4a515c;
+      --accent: #7aa7ff;
+      --error: #ff8a80;
+      --ok: #7ad79c;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 2rem 1rem;
+    background: var(--bg);
+    color: var(--text);
+    font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  main {
+    max-width: 30rem;
+    margin: 0 auto;
+    padding: 2rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+  h1 { margin: 0 0 1.5rem; font-size: 1.5rem; }
+  .field { margin-bottom: 1.25rem; }
+  label { display: block; margin-bottom: 0.3rem; font-weight: 600; }
+  .optional { font-weight: 400; color: var(--muted); }
+  input {
+    display: block;
+    width: 100%;
+    padding: 0.6rem 0.75rem;
+    font: inherit;
+    color: inherit;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  input:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+  }
+  input[aria-invalid="true"] { border-color: var(--error); }
+  .hint { margin: 0.3rem 0 0; font-size: 0.85rem; color: var(--muted); }
+  .error {
+    display: block;
+    min-height: 1.3rem;
+    margin-top: 0.3rem;
+    font-size: 0.875rem;
+    color: var(--error);
+  }
+  button {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    font: inherit;
+    font-weight: 600;
+    color: #fff;
+    background: #1d5fd1;
+    border: 0;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  button:hover { background: #174ca8; }
+  button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  #success {
+    margin: 1.25rem 0 0;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--ok);
+    border-radius: 8px;
+    color: var(--ok);
+  }
+  #success[hidden] { display: none; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Créer un compte</h1>
+
+  <!--
+    Sans attribut « action », la page affiche simplement une confirmation.
+    Ajoutez action="/votre-url" (et method="post") pour un envoi réel :
+    le formulaire sera alors soumis normalement une fois les champs valides.
+  -->
+  <form id="signup" method="post" novalidate>
+
+    <div class="field">
+      <label for="name">Nom complet</label>
+      <input id="name" name="name" type="text" autocomplete="name"
+             aria-required="true" aria-describedby="name-error">
+      <span class="error" id="name-error" aria-live="polite"></span>
+    </div>
+
+    <div class="field">
+      <label for="email">Adresse e-mail</label>
+      <!--
+        type="text" et non type="email" : selon le navigateur, type="email"
+        refuse les adresses internationalisées (josé@exemple.fr, marie@société.fr)
+        ou réécrit le domaine en Punycode avant que le script ne lise la valeur.
+      -->
+      <input id="email" name="email" type="text" inputmode="email" autocomplete="email"
+             autocapitalize="none" autocorrect="off" spellcheck="false"
+             aria-required="true" aria-describedby="email-hint email-error">
+      <p class="hint" id="email-hint">Les adresses accentuées ou non latines sont acceptées (ex. : josé.dupont@société.fr).</p>
+      <span class="error" id="email-error" aria-live="polite"></span>
+    </div>
+
+    <div class="field">
+      <label for="website">Site web <span class="optional">(facultatif)</span></label>
+      <input id="website" name="website" type="url" inputmode="url" autocomplete="url"
+             autocapitalize="none" autocorrect="off" spellcheck="false"
+             placeholder="https://exemple.fr" aria-describedby="website-error">
+      <span class="error" id="website-error" aria-live="polite"></span>
+    </div>
+
+    <div class="field">
+      <label for="password">Mot de passe</label>
+      <input id="password" name="password" type="password" autocomplete="new-password"
+             aria-required="true" aria-describedby="password-hint password-error">
+      <p class="hint" id="password-hint">8 caractères minimum.</p>
+      <span class="error" id="password-error" aria-live="polite"></span>
+    </div>
+
+    <!-- Formes converties (domaine en A-labels, IDNA/UTS #46) envoyées en plus
+         de la saisie d'origine, qui reste intacte dans « email » et « website ». -->
+    <input type="hidden" id="email_ascii" name="email_ascii">
+    <input type="hidden" id="website_ascii" name="website_ascii">
+
+    <button type="submit">S’inscrire</button>
+    <p id="success" role="status" hidden></p>
+  </form>
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  var PASSWORD_MIN = 8;
+
+  /* ---------- Noms de domaine ---------- */
+
+  // Vérifie un nom d'hôte déjà converti en ASCII (A-labels, minuscules).
+  // Aucune limite arbitraire sur la longueur du TLD : seules s'appliquent
+  // les limites du DNS (63 octets par label, 253 pour le nom complet).
+  function isValidHostname(host) {
+    if (!host || host.length > 253) return false;
+    var labels = host.split('.');
+    if (labels.length < 2) return false;
+    for (var i = 0; i < labels.length; i++) {
+      if (labels[i].length < 1 || labels[i].length > 63) return false;
+    }
+    // TLD : au moins deux lettres, ou un A-label « xn-- » (ex. xn--p1ai = .рф).
+    return /^(?:[a-z]{2,}|xn--[a-z0-9-]+)$/.test(labels[labels.length - 1]);
+  }
+
+  // Convertit un domaine saisi (U-labels ou A-labels, casse quelconque) en
+  // A-labels via l'analyseur d'URL du navigateur (UTS #46).
+  // Renvoie null si le domaine n'est pas valide.
+  function domainToAscii(domain) {
+    // Caractères qui auraient un sens particulier dans une URL.
+    if (!domain || /[\s\/\\:@?#\[\]%]/.test(domain)) return null;
+    var host;
+    try {
+      host = new URL('http://' + domain).hostname;
+    } catch (e) {
+      return null;
+    }
+    return isValidHostname(host) ? host : null;
+  }
+
+  /* ---------- Validateurs : renvoient { error, ascii } ---------- */
+
+  function checkName(raw) {
+    if (!raw.trim()) return { error: 'Saisissez votre nom complet.' };
+    return { error: '' };
+  }
+
+  function checkEmail(raw) {
+    var value = raw.trim();
+    if (!value) return { error: 'Saisissez votre adresse e-mail.' };
+    if (/\s/.test(value)) return { error: 'L’adresse e-mail ne doit pas contenir d’espace.' };
+
+    var parts = value.split('@');
+    if (parts.length !== 2) return { error: 'L’adresse e-mail doit contenir un seul « @ ».' };
+
+    var local = parts[0];
+    var domain = parts[1];
+    if (!local) return { error: 'Il manque la partie située avant le « @ ».' };
+    if (!domain) return { error: 'Il manque le nom de domaine après le « @ ».' };
+
+    // La partie locale est acceptée telle quelle (Unicode, +, ', etc.).
+    var asciiDomain = domainToAscii(domain);
+    if (!asciiDomain) {
+      return { error: 'Le nom de domaine après le « @ » n’est pas valide (ex. : exemple.fr).' };
+    }
+    return { error: '', ascii: local + '@' + asciiDomain };
+  }
+
+  function checkWebsite(raw) {
+    var value = raw.trim();
+    if (!value) return { error: '', ascii: '' }; // champ facultatif
+    if (/\s/.test(value)) return { error: 'L’adresse du site ne doit pas contenir d’espace.' };
+
+    var invalid = { error: 'Saisissez une adresse de site valide (ex. : https://exemple.fr).' };
+    var hasScheme = /^[a-z][a-z0-9+.-]*:\/\//i.test(value);
+    var url;
+    try {
+      url = new URL(hasScheme ? value : 'https://' + value);
+    } catch (e) {
+      return invalid;
+    }
+    if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+      return { error: 'L’adresse du site doit commencer par http:// ou https://.' };
+    }
+    if (url.username || url.password || !isValidHostname(url.hostname)) return invalid;
+    return { error: '', ascii: url.href };
+  }
+
+  function checkPassword(raw) {
+    if (!raw) return { error: 'Choisissez un mot de passe.' };
+    if (Array.from(raw).length < PASSWORD_MIN) {
+      return { error: 'Le mot de passe doit contenir au moins ' + PASSWORD_MIN + ' caractères.' };
+    }
+    return { error: '' };
+  }
+
+  /* ---------- Liaison au formulaire ---------- */
+
+  var form = document.getElementById('signup');
+  var success = document.getElementById('success');
+
+  var fields = [
+    { id: 'name',     check: checkName },
+    { id: 'email',    check: checkEmail,   asciiId: 'email_ascii' },
+    { id: 'website',  check: checkWebsite, asciiId: 'website_ascii' },
+    { id: 'password', check: checkPassword }
+  ];
+
+  fields.forEach(function (field) {
+    field.input = document.getElementById(field.id);
+    field.errorEl = document.getElementById(field.id + '-error');
+    field.asciiEl = field.asciiId ? document.getElementById(field.asciiId) : null;
+
+    // Validation à la sortie du champ, puis correction en direct
+    // tant qu'une erreur est affichée.
+    field.input.addEventListener('blur', function () {
+      if (field.input.value !== '') validateField(field);
+    });
+    field.input.addEventListener('input', function () {
+      success.hidden = true;
+      if (field.input.getAttribute('aria-invalid') === 'true') validateField(field);
+    });
+  });
+
+  function validateField(field) {
+    var result = field.check(field.input.value);
+    field.errorEl.textContent = result.error;
+    if (result.error) {
+      field.input.setAttribute('aria-invalid', 'true');
+    } else {
+      field.input.removeAttribute('aria-invalid');
+    }
+    // La saisie de l'utilisateur n'est jamais réécrite ; la forme convertie
+    // est transmise à part.
+    if (field.asciiEl) field.asciiEl.value = result.error ? '' : (result.ascii || '');
+    return !result.error;
+  }
+
+  form.addEventListener('submit', function (event) {
+    var firstInvalid = null;
+    fields.forEach(function (field) {
+      if (!validateField(field) && !firstInvalid) firstInvalid = field.input;
+    });
+
+    if (firstInvalid) {
+      event.preventDefault();
+      success.hidden = true;
+      firstInvalid.focus();
+      return;
+    }
+
+    // Tous les champs sont valides. Si le formulaire a une destination,
+    // on laisse l'envoi se faire ; sinon on affiche une confirmation.
+    if (!form.hasAttribute('action')) {
+      event.preventDefault();
+      success.textContent = 'Merci ' + fields[0].input.value.trim() + ', votre inscription est valide.';
+      success.hidden = false;
+    }
+  });
+})();
+</script>
+</body>
+</html>

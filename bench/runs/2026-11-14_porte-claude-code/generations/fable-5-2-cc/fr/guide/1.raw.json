@@ -1,0 +1,99 @@
+{
+  "duration_api_ms": 138567,
+  "stop_reason": "end_turn",
+  "total_cost_usd": 0.6662031999999999,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 5167,
+    "cache_read_input_tokens": 14376,
+    "output_tokens": 14516,
+    "output_tokens_details": {
+      "thinking_tokens": 9197
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 5167,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 14516,
+        "cache_read_input_tokens": 14376,
+        "cache_creation_input_tokens": 5167,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 5167
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "modelUsage": {
+    "claude-fable-5-2": {
+      "inputTokens": 2,
+      "outputTokens": 14516,
+      "cacheReadInputTokens": 14376,
+      "cacheCreationInputTokens": 5167,
+      "webSearchRequests": 0,
+      "costUSD": 0.6662031999999999,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 9197,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 5167,
+      "canonicalModel": "claude-fable-5-2",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+    "spawned": 0,
+    "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 0
+    },
+    "started_in_background": 0,
+    "max_depth": 0,
+    "spawned_by_subagents": 0,
+    "completed": 0,
+    "failed": 0,
+    "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+    },
+    "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+    },
+    "by_type": {}
+  },
+  "safety_stops": 0,
+  "is_error": false,
+  "num_turns": 1,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "```html\n<!DOCTYPE html>\n<html lang=\"fr\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<title>Inscription</title>\n<style>\n  :root {\n    color-scheme: light dark;\n    --bg: #f4f5f7;\n    --card: #ffffff;\n    --text: #1c1e21;\n    --muted: #5c6370;\n    --border: #b9bfc9;\n    --accent: #1a56db;\n    --accent-text: #ffffff;\n    --error: #b3261e;\n    --success: #1b6e3c;\n  }\n  @media (prefers-color-scheme: dark) {\n    :root {\n      --bg: #15171a;\n      --card: #1f2226;\n      --text: #eceef1;\n      --muted: #a3aab5;\n      --border: #4a505a;\n      --accent: #8ab4ff;\n      --accent-text: #10131a;\n      --error: #ffb4ab;\n      --success: #8fd9a8;\n    }\n  }\n  * { box-sizing: border-box; }\n  body {\n    margin: 0;\n    padding: 2rem 1rem;\n    background: var(--bg);\n    color: var(--text);\n    font: 16px/1.5 system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif;\n  }\n  main {\n    max-width: 30rem;\n    margin: 0 auto;\n    padding: 2rem;\n    background: var(--card);\n    border-radius: 12px;\n    box-shadow: 0 1px 4px rgba(0, 0, 0, .15);\n  }\n  h1 { margin: 0 0 1.5rem; font-size: 1.5rem; }\n  .field { margin-bottom: 1.25rem; }\n  label { display: block; margin-bottom: .25rem; font-weight: 600; }\n  .optional { font-weight: 400; color: var(--muted); }\n  input {\n    width: 100%;\n    padding: .6rem .75rem;\n    font: inherit;\n    color: inherit;\n    background: transparent;\n    border: 1px solid var(--border);\n    border-radius: 6px;\n  }\n  input:focus-visible, button:focus-visible {\n    outline: 2px solid var(--accent);\n    outline-offset: 2px;\n  }\n  input[aria-invalid=\"true\"] { border-color: var(--error); border-width: 2px; }\n  .password-row { display: flex; gap: .5rem; }\n  .password-row input { flex: 1; min-width: 0; }\n  .hint { display: block; margin-top: .25rem; font-size: .875rem; color: var(--muted); }\n  .error {\n    display: block;\n    margin-top: .25rem;\n    font-size: .875rem;\n    font-weight: 600;\n    color: var(--error);\n  }\n  .error:empty { display: none; }\n  button {\n    font: inherit;\n    cursor: pointer;\n    border-radius: 6px;\n  }\n  .toggle {\n    padding: .6rem .75rem;\n    color: inherit;\n    background: transparent;\n    border: 1px solid var(--border);\n  }\n  .submit {\n    width: 100%;\n    padding: .75rem 1rem;\n    font-weight: 600;\n    color: var(--accent-text);\n    background: var(--accent);\n    border: 0;\n  }\n  #form-status { margin: 1rem 0 0; font-weight: 600; color: var(--success); }\n  #form-status:empty { display: none; }\n</style>\n</head>\n<body>\n<main>\n  <h1>Créer un compte</h1>\n\n  <!--\n    Sans attribut « action », la page affiche simplement un message de réussite\n    (mode démonstration). Ajoutez action=\"/votre-url\" pour l'envoi réel :\n    le formulaire sera alors transmis normalement une fois les champs validés.\n    La validation côté client ne remplace jamais la validation côté serveur.\n  -->\n  <form id=\"signup-form\" method=\"post\" novalidate>\n\n    <div class=\"field\">\n      <label for=\"fullname\">Nom complet</label>\n      <input type=\"text\" id=\"fullname\" name=\"fullname\" autocomplete=\"name\" required\n             aria-describedby=\"fullname-error\">\n      <span class=\"error\" id=\"fullname-error\" aria-live=\"polite\"></span>\n    </div>\n\n    <div class=\"field\">\n      <label for=\"email\">Adresse e-mail</label>\n      <!--\n        type=\"text\" et non type=\"email\" : selon le navigateur, type=\"email\" rejette\n        les adresses internationalisées (société.fr, josé@…) ou réécrit le domaine\n        en Punycode avant que le script ne lise la valeur.\n      -->\n      <input type=\"text\" id=\"email\" name=\"email\" inputmode=\"email\" autocomplete=\"email\"\n             autocapitalize=\"off\" autocorrect=\"off\" spellcheck=\"false\" required\n             aria-describedby=\"email-hint email-error\">\n      <span class=\"hint\" id=\"email-hint\">Exemple : marie.dupont@société.fr — les accents et les autres écritures sont acceptés.</span>\n      <span class=\"error\" id=\"email-error\" aria-live=\"polite\"></span>\n      <!-- Forme technique (domaine converti en A-labels), envoyée en plus de la saisie d'origine. -->\n      <input type=\"hidden\" id=\"email-ascii\" name=\"email_ascii\">\n    </div>\n\n    <div class=\"field\">\n      <label for=\"website\">Site web <span class=\"optional\">(facultatif)</span></label>\n      <input type=\"url\" id=\"website\" name=\"website\" autocomplete=\"url\"\n             autocapitalize=\"off\" autocorrect=\"off\" spellcheck=\"false\"\n             aria-describedby=\"website-hint website-error\">\n      <span class=\"hint\" id=\"website-hint\">Exemple : https://société.fr ou exemple.corsica</span>\n      <span class=\"error\" id=\"website-error\" aria-live=\"polite\"></span>\n      <input type=\"hidden\" id=\"website-ascii\" name=\"website_ascii\">\n    </div>\n\n    <div class=\"field\">\n      <label for=\"password\">Mot de passe</label>\n      <div class=\"password-row\">\n        <input type=\"password\" id=\"password\" name=\"password\" autocomplete=\"new-password\" required\n               aria-describedby=\"password-hint password-error\">\n        <button type=\"button\" class=\"toggle\" id=\"password-toggle\" aria-pressed=\"false\"\n                aria-controls=\"password\">Afficher</button>\n      </div>\n      <span class=\"hint\" id=\"password-hint\">8 caractères minimum.</span>\n      <span class=\"error\" id=\"password-error\" aria-live=\"polite\"></span>\n    </div>\n\n    <button type=\"submit\" class=\"submit\">S'inscrire</button>\n    <p id=\"form-status\" role=\"status\"></p>\n  </form>\n</main>\n\n<script>\n(function () {\n  'use strict';\n\n  var PASSWORD_MIN = 8;\n  var NAME_MAX = 200;\n\n  /* ---------- Noms de domaine ---------- */\n\n  // Convertit un nom de domaine (U-labels ou A-labels) en A-labels minuscules\n  // grâce à l'analyseur d'URL du navigateur (UTS #46). Renvoie null si invalide.\n  function domainToAscii(domain) {\n    // En ASCII, seuls les lettres, chiffres, tirets et points sont admis ;\n    // les caractères non ASCII sont laissés à l'appréciation de la conversion IDNA.\n    if (/[^A-Za-z0-9.\\-\\u0080-\\u{10FFFF}]/u.test(domain)) return null;\n    try {\n      return new URL('http://' + domain + '/').hostname;\n    } catch (e) {\n      return null;\n    }\n  }\n\n  // Vérifie un nom d'hôte déjà converti en A-labels. Renvoie un message d'erreur ou null.\n  // Aucune liste d'extensions ni longueur maximale d'extension autre que celle d'un label (63).\n  function hostError(asciiHost) {\n    if (asciiHost.length > 253) {\n      return 'Le nom de domaine est trop long (253 caractères au maximum).';\n    }\n    var labels = asciiHost.split('.');\n    if (labels.length < 2) {\n      return 'Le nom de domaine doit comporter une extension, par exemple « .fr » ou « .corsica ».';\n    }\n    for (var i = 0; i < labels.length; i++) {\n      var label = labels[i];\n      if (label.length === 0) {\n        return 'Le nom de domaine ne doit ni commencer ni finir par un point, ni contenir deux points à la suite.';\n      }\n      if (label.length > 63) {\n        return 'Une partie du nom de domaine est trop longue (63 caractères au maximum entre deux points).';\n      }\n      if (!/^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/.test(label)) {\n        return 'Le nom de domaine contient un caractère non autorisé ou un tiret mal placé.';\n      }\n    }\n    var tld = labels[labels.length - 1];\n    if (!/^(?:[a-z]{2,}|xn--[a-z0-9-]+)$/.test(tld)) {\n      return 'L\\'extension du nom de domaine n\\'est pas valide.';\n    }\n    return null;\n  }\n\n  /* ---------- Validateurs : renvoient { error, normalized } ---------- */\n\n  function validateName(raw) {\n    var value = raw.trim();\n    if (!value) return { error: 'Indiquez votre nom complet.' };\n    if (!/\\p{L}/u.test(value)) return { error: 'Le nom doit contenir au moins une lettre.' };\n    if (Array.from(value).length > NAME_MAX) {\n      return { error: 'Le nom est trop long (' + NAME_MAX + ' caractères au maximum).' };\n    }\n    return { error: null };\n  }\n\n  function validateEmail(raw) {\n    var value = raw.trim();\n    if (!value) return { error: 'Indiquez votre adresse e-mail.' };\n    if (/[\\s\\u0000-\\u001F\\u007F]/.test(value)) {\n      return { error: 'L\\'adresse e-mail ne doit pas contenir d\\'espace.' };\n    }\n    var parts = value.split('@');\n    if (parts.length !== 2) {\n      return { error: 'L\\'adresse e-mail doit contenir un « @ », et un seul.' };\n    }\n    var local = parts[0];\n    var domain = parts[1];\n    if (!local) return { error: 'Il manque la partie située avant le « @ ».' };\n    if (!domain) return { error: 'Il manque le nom de domaine après le « @ ».' };\n\n    var asciiDomain = domainToAscii(domain);\n    if (asciiDomain === null) {\n      return { error: 'Le nom de domaine « ' + domain + ' » n\\'est pas valide.' };\n    }\n    var problem = hostError(asciiDomain);\n    if (problem) return { error: problem };\n\n    // La partie locale est conservée telle quelle (Unicode autorisé, RFC 6531).\n    return { error: null, normalized: local + '@' + asciiDomain };\n  }\n\n  function validateWebsite(raw) {\n    var value = raw.trim();\n    if (!value) return { error: null, normalized: '' }; // champ facultatif\n    if (/[\\s\\u0000-\\u001F\\u007F]/.test(value)) {\n      return { error: 'L\\'adresse du site ne doit pas contenir d\\'espace.' };\n    }\n    var hasScheme = /^[a-z][a-z0-9+.\\-]*:\\/\\//i.test(value);\n    var url;\n    try {\n      url = new URL(hasScheme ? value : 'https://' + value);\n    } catch (e) {\n      return { error: 'Cette adresse de site n\\'est pas valide. Exemple : https://société.fr' };\n    }\n    if (url.protocol !== 'http:' && url.protocol !== 'https:') {\n      return { error: 'L\\'adresse du site doit commencer par « http:// » ou « https:// ».' };\n    }\n    if (url.username || url.password) {\n      return { error: 'L\\'adresse du site ne doit pas contenir d\\'identifiant ni de mot de passe.' };\n    }\n    var problem = hostError(url.hostname.replace(/\\.$/, ''));\n    if (problem) return { error: problem };\n    return { error: null, normalized: url.href };\n  }\n\n  function validatePassword(raw) {\n    if (!raw) return { error: 'Choisissez un mot de passe.' };\n    if (Array.from(raw).length < PASSWORD_MIN) {\n      return { error: 'Le mot de passe doit contenir au moins ' + PASSWORD_MIN + ' caractères.' };\n    }\n    return { error: null };\n  }\n\n  /* ---------- Liaison avec le formulaire ---------- */\n\n  var form = document.getElementById('signup-form');\n  var status = document.getElementById('form-status');\n\n  function field(id, validate, outputId) {\n    return {\n      input: document.getElementById(id),\n      errorEl: document.getElementById(id + '-error'),\n      output: outputId ? document.getElementById(outputId) : null,\n      validate: validate\n    };\n  }\n\n  var fields = [\n    field('fullname', validateName),\n    field('email', validateEmail, 'email-ascii'),\n    field('website', validateWebsite, 'website-ascii'),\n    field('password', validatePassword)\n  ];\n\n  // Valide un champ, affiche ou efface son message d'erreur. Renvoie true si valide.\n  function check(f) {\n    var result = f.validate(f.input.value);\n    f.errorEl.textContent = result.error || '';\n    if (result.error) {\n      f.input.setAttribute('aria-invalid', 'true');\n    } else {\n      f.input.removeAttribute('aria-invalid');\n    }\n    if (f.output) {\n      // La saisie d'origine reste dans le champ visible ; la forme convertie part en champ caché.\n      f.output.value = result.error ? '' : (result.normalized || '');\n    }\n    return !result.error;\n  }\n\n  fields.forEach(function (f) {\n    f.input.addEventListener('blur', function () {\n      check(f);\n    });\n    f.input.addEventListener('input', function () {\n      status.textContent = '';\n      // Pendant la frappe, on ne revalide que les champs déjà signalés en erreur.\n      if (f.input.getAttribute('aria-invalid') === 'true') check(f);\n    });\n  });\n\n  form.addEventListener('submit', function (event) {\n    var firstInvalid = null;\n    fields.forEach(function (f) {\n      if (!check(f) && !firstInvalid) firstInvalid = f.input;\n    });\n\n    if (firstInvalid) {\n      event.preventDefault();\n      status.textContent = '';\n      firstInvalid.focus();\n      return;\n    }\n\n    if (!form.hasAttribute('action')) {\n      // Mode démonstration : aucune destination configurée, on n'envoie rien.\n      event.preventDefault();\n      status.textContent = 'Tous les champs sont valides : le formulaire est prêt à être envoyé.';\n    }\n    // Sinon, l'envoi natif du formulaire se poursuit.\n  });\n\n  /* ---------- Afficher / masquer le mot de passe ---------- */\n\n  var passwordInput = document.getElementById('password');\n  var toggle = document.getElementById('password-toggle');\n  toggle.addEventListener('click', function () {\n    var reveal = passwordInput.type === 'password';\n    passwordInput.type = reveal ? 'text' : 'password';\n    toggle.textContent = reveal ? 'Masquer' : 'Afficher';\n    toggle.setAttribute('aria-pressed', String(reveal));\n  });\n})();\n</script>\n</body>\n</html>\n```",
+  "ttft_ms": 99358,
+  "type": "result",
+  "duration_ms": 138771,
+  "ttft_stream_ms": 722,
+  "time_to_request_ms": 200,
+  "first_content_frame_ms": 722,
+  "queued_turn_count": 0,
+  "result_index": 0
+}
