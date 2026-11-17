@@ -1,6 +1,8 @@
 # Changelog
 
-## Unreleased
+## 0.2.1 — 2026-11-17
+
+Bench data and documentation only: the package code, the battery (1.0.0), the TLD packs (0.2.0), the pattern catalogue and the guide are unchanged.
 
 - **Run of 2026-11-14** (`bench/runs/2026-11-14_porte-claude-code/`): the page written by Claude Fable 5.2 as a Claude Code agent (`claude -p` in an empty folder, `GUIDE.md` as `CLAUDE.md`), same prompts, battery and runner. 18 pages: 96.5 % of cases pass without the guide, 99.9 % with it. `cost.csv` gives the API-equivalent price of each page from Claude Code's token counters, with Claude Code's own input apart.
 
